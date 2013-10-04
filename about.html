@@ -1,0 +1,74 @@
+<!--
+Web Based Configuration Tool for WB40NBT/WB45NBT
+Joe Conley, joe.conley@lairdtech.com
+Version: 0.74
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>SCU - About</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Web based configuration tool for WB platform">
+    <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
+    <link rel="icon" href="/assets/img/laird_logo.png">
+    <!-- Le styles -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+
+    <div class="container">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<a class="brand" href="http://www.lairdtech.com/" target="_blank"><img src="/assets/img/laird_logo.png" class="" width="130" height="90"></a>
+			<ul class="nav">
+				<li><a href="/status.html">Status</a></li>
+				<li><a href="/profileconfig.html">Profile Configuration</a></li>
+				<li><a href="/globalconfig.html">Global Configuration</a></li>
+				<li class="active"><a href="/about.html">About</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<?php
+	exec('sdc_cli version', $sdcversion);
+	$version=$sdcversion;
+	$RSSI=$sdcstatus;
+	$subRSSI=substr($RSSI[3],10,3);
+	$RSSIMeter=100+$subRSSI+20;
+	?>
+      <div class="row-fluid show-grid">
+	<div class="span12"><h2>WB About</h2></div>
+	<div class="span4"><h6><?php echo $version[0]; ?></h6></div>
+	<div class="span4"><h6><?php echo $version[1]; ?></h6></div>
+	<div class="span4"><h6><?php echo $version[2]; ?></h6></div>
+	<div class="span4"><h6><?php echo $version[3]; ?></h6></div>
+	<div class="span4"><h6><?php echo $version[4]; ?></h6></div>
+	<div class="span4"><h6><?php echo $version[5]; ?></h6></div>
+	<div class="span4"><h6>Web SCU Version: 0.74</h6></div>
+	<div class="span4"><h6>Bootstrap code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a></h6></div>
+
+      </div> <!-- /row-fluid -->
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../assets/js/bootstrap.js"></script>
+
+
+  </body>
+</html>

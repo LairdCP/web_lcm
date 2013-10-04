@@ -1,0 +1,601 @@
+<!--
+Web Based Configuration Tool for WB40NBT/WB45NBT
+Joe Conley, joe.conley@lairdtech.com
+Version: 0.74
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Web based configuration tool for WB platform">
+    <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
+    <link rel="icon" href="/assets/img/laird_logo.png">
+
+    <!-- Le styles -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="container">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<a class="brand" href="http://www.lairdtech.com/" target="_blank"><img src="/assets/img/laird_logo.png" class="" width="130" height="90"></a>
+			<ul class="nav">
+				<li><a href="/status.html">Status</a></li>
+				<li><a href="/profileconfig.html">Profile Configuration</a></li>
+				<li class="active"><a href="/globalconfig.html">Global Configuration</a></li>
+				<li><a href="/about.html">About</a></li>
+			</ul>
+		</div> <!-- /navbar-inner -->
+	</div> <!-- /navbar navbar-fixed-top -->
+	<form name='globalEdit' action='' method='post'>
+	<div class="row-fluid show-grid">
+	<div class="span12">
+		<h2>Global Configuration</h2>
+		<?php
+		if (isset($_POST['globalSub']))
+		{
+			?>
+			<div class="alert alert-success">
+			<h4>Success!</h4>
+			<?php
+			echo "<h6>Summited Global Configuration</h6>";
+			?>
+			</div>
+			<?php
+			echo "<br>";
+		}
+		else
+		{
+
+		}
+		?>
+	</div>
+	<div class="span6"><h6>
+		<?php
+		exec('sdc_cli status', $sdcstatus);
+		$TitleStatus=ucwords(substr($sdcstatus[0],11));
+		if (strlen($TitleStatus) == 9)
+		{
+			echo "<title>SCU - $TitleStatus</title>";
+		}
+		else
+		{
+			echo "<title>SCU - Enabled</title>";
+		}
+		exec('sdc_cli global show', $globalShow);
+		echo "";
+		$getFrag=substr($globalShow[0],29);
+		if ($getFrag == "<unsupported>")
+		{
+			echo "Fragmentation Threshold:<br><input type='text' name='Frag' value='$getFrag' disabled>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "Fragmentation Threshold:<br><input type='text' name='Frag' value='$getFrag'>";
+			echo "<br>";
+		}
+		$getRTS=substr($globalShow[1],19);
+		echo "RTS Threshold:<br><input type='text' name='RTS' value='$getRTS'>";
+		echo "<br>";
+
+		$getRXDiv=substr($globalShow[2],18);
+		if ($getRXDiv == "<unsupported>")
+		{
+			echo "RX Diversity:<br><input type='text' name='RXdiv' value='$getRXDiv' disabled>";
+			echo "<br>";
+		}
+		elseif ($getRXDiv == "main")
+		{
+			echo "RX Diversity:<br><select name='RXdiv'>";
+			echo "<option value='main' selected>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='start_main'>On-Start on Main</option>";
+			echo "<option value='start_aux'>On-Start on AUX</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getRXDiv == "aux")
+		{
+			echo "RX Diversity:<br><select name='RXdiv'>";
+			echo "<option value='main'>Main Only</option>";
+			echo "<option value='aux' selected>AUX Only</option>";
+			echo "<option value='start_main'>On-Start on Main</option>";
+			echo "<option value='start_aux'>On-Start on AUX</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getRXDiv == "start_main")
+		{
+			echo "RX Diversity:<br><select name='RXdiv'>";
+			echo "<option value='main'>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='start_main' selected>On-Start on Main</option>";
+			echo "<option value='start_aux'>On-Start on AUX</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getRXDiv == "start_aux")
+		{
+			echo "RX Diversity:<br><select name='RXdiv'>";
+			echo "<option value='main'>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='start_main'>On-Start on Main</option>";
+			echo "<option value='start_aux' selected>On-Start on AUX</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "RX Diversity:<br><select name='RXdiv'>";
+			echo "<option value='main' selected>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='start_main'>On-Start on Main</option>";
+			echo "<option value='start_aux'>On-Start on AUX</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		$getTXDiv=substr($globalShow[3],18);
+		if ($getTXDiv == "<unsupported>")
+		{
+			echo "TX Diversity:<br><input type='text' name='TXdiv' value='$getTXDiv' disabled>";
+			echo "<br>";
+		}
+		elseif ($getTXDiv == "main")
+		{
+			echo "TX Diversity:<br><select name='TXdiv'>";
+			echo "<option value='main' selected>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='on'>On</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTXDiv == "aux")
+		{
+			echo "TX Diversity:<br><select name='TXdiv'>";
+			echo "<option value='main'>Main Only</option>";
+			echo "<option value='aux' selected>AUX Only</option>";
+			echo "<option value='on'>On</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTXDiv == "on")
+		{
+			echo "TX Diversity:<br><select name='TXdiv'>";
+			echo "<option value='main'>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='on' selected>On</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "TX Diversity:<br><select name='TXdiv'>";
+			echo "<option value='main'>Main Only</option>";
+			echo "<option value='aux'>AUX Only</option>";
+			echo "<option value='on'>On</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getTrigger=substr($globalShow[4],18,3);
+		$num = -95; 
+		echo "Roam Trigger:<br><select name='Trigger'>";
+		while($num < -50)
+		{
+			$num = $num + 5;
+			if ($num == $getTrigger)
+			{
+				echo "<option value='$num' selected>$num dBm</option>";
+			}
+			else
+			{
+				echo "<option value='$num'>$num dBm</option>";
+			}
+		}
+		echo "</select>";
+		echo "<br>";
+
+		$getDelta=substr($globalShow[5],16,3);
+		$num1 = 40; 
+		echo "Roam Delta:<br><select name='Delta'>";
+		while($num1 > 5)
+		{
+			$num1 = $num1 - 5;
+			if ($num1 == $getDelta)
+			{
+				echo "<option value='$num1' selected>$num1 dBm</option>";
+			}
+			else
+			{
+				echo "<option value='$num1'>$num1 dBm</option>";
+			}
+		}
+		echo "</select>";
+		echo "<br>";
+
+		$getPeriod=substr($globalShow[6],17,3);
+		$num2 = 65; 
+		echo "Roam Period:<br><select name='Period'>";
+		while($num2 > 5)
+		{
+			$num2 = $num2 - 5;
+			if ($num2 == $getPeriod)
+			{
+				echo "<option value='$num2' selected>$num2 Sec</option>";
+			}
+			else
+			{
+				echo "<option value='$num2'>$num2 Sec</option>";
+			}
+		}
+		echo "</select>";
+		echo "<br>";
+
+		$getCoexist=substr($globalShow[7],16);
+		if ($getCoexist == "on")
+		{
+			echo "BT Coexist:<br><select name='Coexist'>";
+			echo "<option value='on' selected>On</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getCoexist == "off")
+		{
+			echo "BT Coexist:<br><select name='Coexist'>";
+			echo "<option value='on'>On</option>";
+			echo "<option value='off' selected>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "BT Coexist:<br><select name='Coexist'>";
+			echo "<option value='on'>On</option>";
+			echo "<option value='off' selected>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getTXMax=substr($globalShow[8],12);
+		echo "TX Max:<br><input type='text' name='TXMax' value='$getTXMax'>";
+		echo "<br>";
+
+		$getRegDom=substr($globalShow[9],23);
+		echo "Regulatory domain:<br><input type='text' name='RegDom' value='$getRegDom' disabled>";
+		echo "<br>";
+
+		?>
+		</h6>
+		</div> <!-- first span  -->
+		<h6>
+		<div class="span6" style="padding-top:1%;">
+		<?php
+		$getWMM=substr($globalShow[10],9);
+		if ($getWMM == "on")
+		{
+			echo "WMM:<br><select name='WMM'>";
+			echo "<option value='on' selected>On</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getWMM == "off")
+		{
+			echo "WMM:<br><select name='WMM'>";
+			echo "<option value='on'>On</option>";
+			echo "<option value='off' selected>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "WMM:<br><select name='WMM'>";
+			echo "<option value='on'>On</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getCCX=substr($globalShow[11],18);
+		if ($getCCX == "full")
+		{
+			echo "CCX Features:<br><select name='CCX'>";
+			echo "<option value='full' selected>Full</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getCCX == "off")
+		{
+			echo "CCX Features:<br><select name='CCX'>";
+			echo "<option value='full'>Full</option>";
+			echo "<option value='off' selected>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "CCX Features:<br><select name='CCX'>";
+			echo "<option value='full'>Full</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getCert=substr($globalShow[12],23);
+		echo "Certificate store:<br><input type='text' name='Cert' value='$getCert'>";
+		echo "<br>";
+
+		$getBGChan=substr($globalShow[13],20);
+		echo "BG Channel Set:<br><input type='text' name='BGChan' value='$getBGChan'>";
+		echo "<br>";
+
+		$getAggScan=substr($globalShow[14],21);
+		echo "Aggressive scan:<br><input type='text' name='AggScan' value='$getAggScan' disabled>";
+		echo "<br>";
+
+		$getPMK=substr($globalShow[15],17);
+		if ($getPMK == "0")
+		{
+			echo "PMK Caching:<br><select name='PMK'>";
+			echo "<option value='0' selected>Standard</option>";
+			echo "<option value='1'>OPMK</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getPMK == "1")
+		{
+			echo "PMK Caching:<br><select name='PMK'>";
+			echo "<option value='0'>Standard</option>";
+			echo "<option value='1' selected>OPMK</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "PMK Caching:<br><select name='PMK'>";
+			echo "<option value='0'>Standard</option>";
+			echo "<option value='1'>OPMK</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getAdhoc=substr($globalShow[16],27);
+		echo "Default Adhoc Channel:<br><input type='text' name='Adhoc' value='$getAdhoc'>";
+		echo "<br>";
+
+		$getScan=substr($globalShow[17],19);
+		echo "Scan DFS time:<br><input type='text' name='Scan' value='$getScan'>";
+		echo "<br>";
+
+		$getDFS=substr($globalShow[18],18);
+		if ($getDFS == "full")
+		{
+			echo "DFS Channels:<br><select name='DFS'>";
+			echo "<option value='on' selected>Full</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getDFS == "off")
+		{
+			echo "DFS Channels:<br><select name='DFS'>";
+			echo "<option value='on'>Full</option>";
+			echo "<option value='off' selected>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "DFS Channels:<br><select name='DFS'>";
+			echo "<option value='on'>Full</option>";
+			echo "<option value='off'>Off</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getServer=substr($globalShow[19],22);
+		if ($getServer == "acs")
+		{
+			echo "Auth Server Type:<br><select name='Server'>";
+			echo "<option value='1' selected>ACS</option>";
+			echo "<option value='2'>SBR</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getServer == "sbr")
+		{
+			echo "Auth Server Type:<br><select name='Server'>";
+			echo "<option value='1'>ACS</option>";
+			echo "<option value='2' selected>SBR</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "Auth Server Type:<br><select name='Server'>";
+			echo "<option value='1'>ACS</option>";
+			echo "<option value='2'>SBR</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		$getFIPS=substr($globalShow[20],15);
+		if ($getFIPS == "enabled")
+		{
+			echo "FIPS mode:<br><select name='FIPS'>";
+			echo "<option value='enabled' selected>Enabled</option>";
+			echo "<option value='disabled'>Disabled</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getFIPS == "disabled")
+		{
+			echo "FIPS mode:<br><select name='FIPS'>";
+			echo "<option value='enabled'>Enabled</option>";
+			echo "<option value='disabled' selected>Disabled</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		else
+		{
+			echo "FIPS mode:<br><select name='FIPS'>";
+			echo "<option value='enabled'>Enabled</option>";
+			echo "<option value='disabled'>Disabled</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+
+		echo $globalShow[21];
+		echo "<br>";
+		?>
+		</div> <!-- second span  -->
+		</h6>
+		<div class="span4 offset3" style="text-align: center;">
+		<input type = "hidden" name = "globalEdit" value = "<?php echo $_POST['globalEdit']; ?>"/>
+		<br>
+		<div class="toSubmit">
+		<button class="btn btn-primary" type='submit' name='globalSub'>Submit</button>
+		</div>
+		</div> <!-- submit span  -->
+		</form>
+	</div> <!-- /row-fluid -->
+		<?php		
+		if (isset($_POST['globalEdit']))
+		{
+			$globalEdit=$_POST["globalEdit"];
+			$Frag=$_POST["Frag"];
+			$RTS=$_POST["RTS"];
+			$RXdiv=$_POST["RXdiv"];
+			$TXdiv=$_POST["TXdiv"];
+			$Trigger=$_POST["Trigger"];
+			$Delta=$_POST["Delta"];
+			$Period=$_POST["Period"];
+			$Coexist=$_POST["Coexist"];
+			$TXMax=$_POST["TXMax"];
+			$WMM=$_POST["WMM"];
+			$CCX=$_POST["CCX"];
+			$Cert=$_POST["Cert"];
+			$BGChan=$_POST["BGChan"];
+			$PMK=$_POST["PMK"];
+			$Adhoc=$_POST["Adhoc"];
+			$Scan=$_POST["Scan"];
+			$DFS=$_POST["DFS"];
+			$Server=$_POST["Server"];
+			$FIPS=$_POST["FIPS"];
+
+
+			if ($Frag != $getFrag)
+			{
+				exec("sdc_cli global set frag $Frag");
+			}
+			if ($RTS != $getRTS)
+			{
+				exec("sdc_cli global set rts $RTS");
+			}
+			if ($RXdiv != $getRXDiv)
+			{
+				exec("sdc_cli global set rx-diversity $RXdiv");
+			}
+			if ($TXdiv != $getTXDiv)
+			{
+				exec("sdc_cli global set tx-diversity $TXdiv");
+			}
+			if ($Trigger != $getTrigger)
+			{
+				exec("sdc_cli global set roam-trigger $Trigger");
+			}
+			if ($Delta != $getDelta)
+			{
+				exec("sdc_cli global set roam-delta $Delta");
+			}
+			if ($Period != $getPeriod)
+			{
+				exec("sdc_cli global set roam-period $Period");
+			}
+			if ($Coexist != $getCoexist)
+			{
+				exec("sdc_cli global set bt-coexist $Coexist");
+			}
+			if ($TXMax != $getTXMax)
+			{
+				exec("sdc_cli global set tx-max $TXMax");
+			}
+			if ($WMM != $getWMM)
+			{
+				exec("sdc_cli global set wmm $WMM");
+			}
+			if ($CCX != $getCCX)
+			{
+				exec("sdc_cli global set ccx-features $CCX");
+				?>
+				<script>
+				alert("CCX Features:\nThe radio must be re-enabled\nfor the changes to take\neffect.");
+				</script>
+				<?php
+			}
+			if ($Cert != $getCert)
+			{
+				exec("sdc_cli global set certpath $Cert");
+			}
+			if ($BGChan != $getBGChan)
+			{
+				exec("sdc_cli global set bg-channel-set $BGChan");
+			}
+			if ($PMK != $getPMK)
+			{
+				exec("sdc_cli global set pmk-caching $PMK");
+			}
+			if ($Adhoc != $getAdhoc)
+			{
+				exec("sdc_cli global set def-adhoc-channel $Adhoc");
+			}
+			if ($Scan != $getScan)
+			{
+				exec("sdc_cli global set scan-dfs-time $Scan");
+			}
+			if ($DFS != $getDFS)
+			{
+				exec("sdc_cli global set dfs-channels $DFS");
+			}
+			if ($Server != $getServer)
+			{
+				exec("sdc_cli global set auth-server-type $Server");
+			}
+			if ($FIPS != $getFIPS)
+			{
+				exec("sdc_cli global set fips-mode $FIPS");
+			}
+
+			echo "<form id=refresh action='' method = 'post'>";
+			echo "</form>";
+			echo "<script>document.getElementById('refresh').submit();</script>";
+
+		}
+		?>
+	</div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../assets/js/bootstrap.js"></script>
+
+
+  </body>
+</html>
