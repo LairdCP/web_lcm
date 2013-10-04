@@ -1,4 +1,7 @@
 *Web SCU Change Log*
+v0.76
++Moved from bootstrap 2+ to 3
+
 v0.75
 +Profile Config TX Power now takes new mW values into account for only the 45 chipset
 +Global Config now reports TTLS Inner Method, currently disabled in GUI but configurable in CLI

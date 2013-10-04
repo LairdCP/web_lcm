@@ -1,7 +1,7 @@
 <!--
 Web Based Configuration Tool for WB40NBT/WB45NBT
 Joe Conley, joe.conley@lairdtech.com
-Version: 0.75
+Version: 0.76
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,12 +14,7 @@ Version: 0.75
 
     <!-- Le styles -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-    <link href="../assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -30,17 +25,21 @@ Version: 0.75
   <body>
 
     <div class="container">
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<a class="brand" href="http://www.lairdtech.com/" target="_blank"><img src="/assets/img/laird_logo.png" class="" width="130" height="90"></a>
-			<ul class="nav">
-				<li class="active"><a href="/status.html">Status</a></li>
-				<li><a href="/profileconfig.html">Profile Configuration</a></li>
-				<li><a href="/globalconfig.html">Global Configuration</a></li>
-				<li><a href="/about.html">About</a></li>
-			</ul>
+	<br>
+		<div class="row">
+		<div class="hidden-xs col-sm-3 col-md-4"></div>	
+		<div class="hidden-xs col-sm-4 col-md-4"><a class="brand"><img src="/assets/img/laird_logo.png"></a></div>
+		<div class="hidden-xs col-sm-4 col-md-4"></div>	
 		</div>
-	</div>
+	<br>
+	<nav class="navbar navbar-default " role="navigation">
+		<ul class="nav nav-tabs nav-justified">
+			<li class="active"><a href="/status.html">Status</a></li>
+			<li><a href="/profileconfig.html">Profile Configuration</a></li>
+			<li><a href="/globalconfig.html">Global Configuration</a></li>
+			<li><a href="/about.html">About</a></li>
+		</ul>
+	
 	<?php
 	exec('iw dev wlan0 link | grep -m 1 SSID:', $wlstatus);
 	exec('sdc_cli status', $sdcstatus);
@@ -49,76 +48,91 @@ Version: 0.75
 	echo "<title>SCU - $TitleStatus</title>";
 	$RSSI=$sdcstatus;
 	$subRSSI=substr($RSSI[3],10,3);
-	$RSSIMeter=100+$subRSSI+20;
+	$RSSIMeter=$subRSSI+120;
 	?>
 	<!-- Show status -->
-    <div class="row-fluid show-grid">
+	<div class="panel panel-default">
+    <div class="row panel-body">
 	<br>
-	<div class="span12"><h2>WB Status</h2></div>
-	<div class="span4 "><h6><?php echo $status[1]; ?></h6></div>
-	<div class="span4 offset2"><h6><?php echo $status[0]; ?></h6></div>
-	<div class="span4"><h6><?php echo $status[4]; ?></h6></div>
-	<div class="span4 offset2"><h6><?php echo $status[7]; ?></h6></div>
-	<div class="span4"><h6><?php echo $status[6]; ?></h6></div>
-	<div class="span4 offset2"><h6><?php echo $status[9]; ?></h6></div>
-	<div class="span4"><h6><?php echo $status[5]; ?></h6></div>
-	<div class="span4 offset2"><h6><?php echo $status[8]; ?></h6></div>
-	<div class="span4"><h6><?php echo $status[2]; ?></h6></div>
-	<div class="span4 offset2"><h6><?php echo $status[12]; ?></h6></div>
-	<div class="span12"><h6><?php echo $status[10]; ?></h6></div>
-	<div class="span4"><h6><?php echo $status[11]; ?></h6></div>
-	<div class="span4 offset1"><div class="progress">
+	<div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2"><h2>WB Status</h2></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[1]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[0]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[4]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[7]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[6]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[9]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[5]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[8]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[2]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[12]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[10]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[11]; ?></strong></h6></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><div class="progress">
+
 	<?php
 	if ($subRSSI == 0) //account for not connected
 	{
 	?>
-	    <div class="bar bar-danger" style='<?php echo "width: 0%;";?>'></div>
-		<!--<span>RSSI: <?php echo $subRSSI;?></span>-->
-	    </div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-danger" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
+	  </div>
+	</div>
 	<?php
 	}	
 	elseif ($subRSSI < -90) //red
 	{
 	?>
-	    <div class="bar bar-danger" style='<?php echo "width: $RSSIMeter%;";?>'>RSSI: <?php echo $subRSSI;?></div>
-		<!--<span>RSSI: <?php echo $subRSSI;?></span>-->
-	    </div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-danger" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
+	  </div>
+	</div>
 	<?php
 	}
 	elseif ($subRSSI < -70) //yellow
 	{
 	?>
-	    <div class="bar bar-warning" style='<?php echo "width: $RSSIMeter%;";?>'>RSSI: <?php echo $subRSSI;?></div>
-		<!--<span>RSSI: <?php echo $subRSSI;?></span>-->
-	    </div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-warning" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
+	  </div>
+	</div>
 	<?php
 	}
 	elseif ($subRSSI > -20)//account for signals >-20
 	{
 	?>
-	    <div class="bar bar-success" style='<?php echo "width: $RSSIMeter%;";?>'>RSSI: -20 +</div>
+	<div class="progress">
+	  <div class="progress-bar progress-bar-success" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
+	  </div>
 		<!--<span>RSSI: <?php echo $subRSSI;?></span>-->
-	    </div>
+	</div>
 	<?php
 	}
 	else //green
 	{
 	?>	
-	    <div class="bar bar-success" style='<?php echo "width: $RSSIMeter%;";?>'>RSSI: <?php echo $subRSSI;?></div>
-		<!--<span>RSSI: <?php echo $subRSSI;?></span>-->
-	    </div>
+	<div class="progress">		
+		<!--<span class=""><strong>RSSI: <?php echo $subRSSI;?></strong></span>-->
+		<div class="progress-bar progress-bar-success" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
+		</div>
+	</div>
 	<?php
 	}
 	?>
+
 	</div>
+
     </div>
+
+	</div><!-- /pannel?  -->
 	<meta http-equiv="refresh" content="5" >
+	<!--<meta http-equiv="refresh" content="5" >-->
+	</nav>
     </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/bootstrap.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
 
 
   </body>
