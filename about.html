@@ -1,7 +1,7 @@
 <!--
 Web Based Configuration Tool for WB40NBT/WB45NBT
 Joe Conley, joe.conley@lairdtech.com
-Version: 0.74
+Version: 0.75
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -46,9 +46,6 @@ Version: 0.74
 	<?php
 	exec('sdc_cli version', $sdcversion);
 	$version=$sdcversion;
-	$RSSI=$sdcstatus;
-	$subRSSI=substr($RSSI[3],10,3);
-	$RSSIMeter=100+$subRSSI+20;
 	?>
       <div class="row-fluid show-grid">
 	<div class="span12"><h2>WB About</h2></div>
@@ -58,7 +55,7 @@ Version: 0.74
 	<div class="span4"><h6><?php echo $version[3]; ?></h6></div>
 	<div class="span4"><h6><?php echo $version[4]; ?></h6></div>
 	<div class="span4"><h6><?php echo $version[5]; ?></h6></div>
-	<div class="span4"><h6>Web SCU Version: 0.74</h6></div>
+	<div class="span4"><h6>Web SCU Version: 0.75</h6></div>
 	<div class="span4"><h6>Bootstrap code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a></h6></div>
 
       </div> <!-- /row-fluid -->

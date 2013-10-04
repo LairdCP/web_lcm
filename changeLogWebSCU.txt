@@ -1,4 +1,12 @@
 *Web SCU Change Log*
+v0.75
++Profile Config TX Power now takes new mW values into account for only the 45 chipset
++Global Config now reports TTLS Inner Method, currently disabled in GUI but configurable in CLI
++Minor layout adjustment in Global Config to account for more options
++Updated About page to account for more version info
++Removed access code from About.html
++Removed FIPS mode debug from being displayed in Global Config
+
 v0.74
 +Regulatory domain is now a greyed out option
 +Aggressive scan is now a greyed out option

@@ -1,7 +1,7 @@
 <!--
 Web Based Configuration Tool for WB40NBT/WB45NBT
 Joe Conley, joe.conley@lairdtech.com
-Version: 0.74
+Version: 0.75
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -601,127 +601,23 @@ Version: 0.74
 			echo "Client Name:<br><input type='text' name='ClientName' value='$getClient'>";
 			echo "<br>";
 
-			$getTX=substr($ProfilePrint[3],13);
-			if ($getTX == "0")
+			$getTX=substr($ProfilePrint[3],14);
+			$num = -1;
+			echo "TX Power:<br><select name='TxPower'>";
+			while($num < 40)
 			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option selected>0-Auto</option>
-				<option>1</option>
-				<option>5</option>
-				<option>10</option>
-				<option>20</option>
-				<option>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
+				$num = $num + 1;
+				if ($num == $getTX)
+				{
+					echo "<option value='$num' selected>$num mW</option>";
+				}
+				else
+				{
+					echo "<option value='$num'>$num mW</option>";
+				}
 			}
-			elseif ($getTX == "1")
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option selected>1</option>
-				<option>5</option>
-				<option>10</option>
-				<option>20</option>
-				<option>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
-			}
-			elseif ($getTX == "5")
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option>1</option>
-				<option selected>5</option>
-				<option>10</option>
-				<option>20</option>
-				<option>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
-			}
-			elseif ($getTX == "10")
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option>1</option>
-				<option>5</option>
-				<option selected>10</option>
-				<option>20</option>
-				<option>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
-			}
-			elseif ($getTX == "20")
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option>1</option>
-				<option>5</option>
-				<option>10</option>
-				<option selected>20</option>
-				<option>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
-			}
-			elseif ($getTX == "30")
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option>1</option>
-				<option>5</option>
-				<option>10</option>
-				<option>20</option>
-				<option selected>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
-			}
-			elseif ($getTX == "50")
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option>1</option>
-				<option>5</option>
-				<option>10</option>
-				<option>20</option>
-				<option>30</option>
-				<option selected>50</option>
-				</select>
-				<br>
-			<?php
-			}
-			else
-			{
-			?>
-				TX Power:<br><select name='TxPower'>
-				<option>0-Auto</option>
-				<option>1</option>
-				<option>5</option>
-				<option>10</option>
-				<option>20</option>
-				<option>30</option>
-				<option>50</option>
-				</select>
-				<br>
-			<?php
-			}
+			echo "</select>";
+			echo "<br>";
 
 			$getAuth=substr($ProfilePrint[4],15);
 			if ($getAuth == "open")

@@ -1,7 +1,7 @@
 <!--
 Web Based Configuration Tool for WB40NBT/WB45NBT
 Joe Conley, joe.conley@lairdtech.com
-Version: 0.74
+Version: 0.75
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -280,12 +280,6 @@ Version: 0.74
 		echo "Regulatory domain:<br><input type='text' name='RegDom' value='$getRegDom' disabled>";
 		echo "<br>";
 
-		?>
-		</h6>
-		</div> <!-- first span  -->
-		<h6>
-		<div class="span6" style="padding-top:1%;">
-		<?php
 		$getWMM=substr($globalShow[10],9);
 		if ($getWMM == "on")
 		{
@@ -311,6 +305,13 @@ Version: 0.74
 			echo "</select>";
 			echo "<br>";
 		}
+
+		?>
+		</h6>
+		</div> <!-- first span  -->
+		<h6>
+		<div class="span6" style="padding-top:1%;">
+		<?php
 
 		$getCCX=substr($globalShow[11],18);
 		if ($getCCX == "full")
@@ -436,7 +437,11 @@ Version: 0.74
 			echo "<br>";
 		}
 
-		$getFIPS=substr($globalShow[20],15);
+		$getTTLSinner=substr($globalShow[20],23);
+		echo "TTLS Inner Method:<br><input type='text' name='TTLSinner' value='$getTTLSinner' disabled>";
+		echo "<br>";
+
+		$getFIPS=substr($globalShow[21],15);
 		if ($getFIPS == "enabled")
 		{
 			echo "FIPS mode:<br><select name='FIPS'>";
@@ -462,8 +467,6 @@ Version: 0.74
 			echo "<br>";
 		}
 
-		echo $globalShow[21];
-		echo "<br>";
 		?>
 		</div> <!-- second span  -->
 		</h6>
@@ -498,6 +501,7 @@ Version: 0.74
 			$Scan=$_POST["Scan"];
 			$DFS=$_POST["DFS"];
 			$Server=$_POST["Server"];
+			$TTLSinner=$_POST["TTLSinner"];
 			$FIPS=$_POST["FIPS"];
 
 
