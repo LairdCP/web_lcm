@@ -1,0 +1,289 @@
+<!--
+Web Based Configuration Tool for WB40NBT/WB45NBT
+Joe Conley, joe.conley@lairdtech.com
+Version: 0.71
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="refresh" content="2" >
+<link rel="shortcut icon" href="/pics/laird_logo.png" type="image/x-icon" />
+<style>
+div.wrap 
+{
+	float: left;
+	position: relative;
+	left: 50%;
+}
+div.context
+{
+	float: center;
+	position: relative;
+	left: -50%;
+}
+meter.msize
+{
+	height:25px;
+	width:100%;
+	color:blue;
+
+}
+</style>
+
+</head>
+<body>
+<div id="container" style="text-align:center;">
+<img src="/pics/laird_logo.png" alt="Laird Logo">
+<br>
+<br>
+<table  align="center">
+<tr>
+<FORM METHOD="LINK" ACTION="/index.html" >
+<td><INPUT TYPE="submit" VALUE="Status"></td>
+</FORM>
+<FORM METHOD="LINK" ACTION="/config.html" >
+<td><INPUT TYPE="submit" VALUE="Profile Configuration"></td>
+</FORM>
+<FORM METHOD="LINK" ACTION="/global.html" >
+<td><INPUT TYPE="submit" VALUE="Global Configuration"></td>
+</FORM>
+</tr>
+</table>
+<h3>WB Status</h3>
+</div>
+<div class="wrap">
+<div class="context">
+<?php
+exec('iw dev wlan0 link | grep -m 1 SSID:', $wlstatus);
+foreach ($wlstatus as $wlstatus)
+	{
+	echo "$wlstatus\n";
+	echo "<br>";
+	}
+exec('sdc_cli status', $sdcstatus);
+$status=$sdcstatus;
+foreach ($status as $status)
+	{
+    echo "$status\n";
+    echo "<br>";
+	}
+echo "<br>";
+
+$TitleStatus=ucwords(substr($sdcstatus[0],11));
+echo "<title>SCU - $TitleStatus</title>";
+
+$RSSI=$sdcstatus;
+$subRSSI=substr($RSSI[3],10,3);
+echo '<br>';
+$RSSIMeter=100+$subRSSI+20;
+if ($subRSSI == 0) //account for not connected
+{
+?>
+	<div id="progressbar">
+	<span id="percent">
+<?php 
+	echo "RSSI: $subRSSI";
+?>
+	</span>
+	<div>
+	</div>
+	</div>
+	<style>
+	#progressbar 
+	{
+	  background-color:#CCCCFF;
+	  border-radius: 13px;
+	  padding: 3px;
+	}
+
+	#progressbar div 
+	{
+	   background-color:#CCCCFF;
+
+	   height: 20px;
+	   border-radius: 10px;
+	}
+	#percent
+	{
+	 position: absolute;   
+	 left: 35%;
+	}
+	</style>
+<?php
+}
+elseif ($subRSSI < -90) //red
+{
+?>
+	<div id="progressbar">
+	<span id="percent">
+<?php 
+	echo "RSSI: $subRSSI";
+?>
+	</span>
+	<div>
+	</div>
+	</div>
+	<style>
+	#progressbar 
+	{
+	  background-color:#CCCCFF;
+	  border-radius: 13px;
+	  padding: 3px;
+	}
+
+	#progressbar div 
+	{
+	   background-color:RGB(255,0,0);
+<?php
+	   echo "width: $RSSIMeter%;";
+?>
+	   height: 20px;
+	   border-radius: 10px;
+	}
+	#percent
+	{
+	 position: absolute;   
+	 left: 35%;
+	}
+	</style>
+<?php
+}
+elseif ($subRSSI < -70) //yellow
+{
+?>
+	<div id="progressbar">
+	<span id="percent">
+<?php 
+	echo "RSSI: $subRSSI";
+?>
+	</span>
+	  <div>
+	</div>
+	</div>
+	<style>
+	#progressbar 
+	{
+	  background-color:#CCCCFF;
+	  border-radius: 13px;
+	  padding: 3px;
+	}
+
+	#progressbar div 
+	{
+	   background-color:RGB(255, 255, 0);
+<?php
+	   echo "width: $RSSIMeter%;";
+?>
+	   height: 20px;
+	   border-radius: 10px;
+	}
+	#percent
+	{
+	 position: absolute;   
+	 left: 35%;
+	}
+	</style>
+<?php
+}
+elseif ($subRSSI > -20)//account for signals >-20
+{
+	$subRSSI=-20;
+?>
+	<div id="progressbar">
+	<span id="percent">
+<?php 
+	echo "RSSI: $subRSSI+";
+?>
+	</span>
+	<div>
+	</div>
+	</div>
+	<style>
+	#progressbar 
+	{
+	  background-color:#CCCCFF;
+	  border-radius: 13px;
+	  padding: 3px;
+	}
+
+	#progressbar div 
+	{
+	   background-color:RGB(0,255,0);
+<?php
+	   echo "width: $RSSIMeter%;";
+?>
+	   height: 20px;
+	   border-radius: 10px;
+	}
+	#percent
+	{
+	 position: absolute;   
+	 left: 35%;
+	}
+	</style>
+<?php
+}
+else //green
+{
+?>
+	<div id="progressbar">
+	<span id="percent">
+<?php 
+	echo "RSSI: $subRSSI";
+?>
+	</span>
+	<div>
+	</div>
+	</div>
+	<style>
+	#progressbar 
+	{
+	  background-color:#CCCCFF;
+	  border-radius: 13px;
+	  padding: 3px;
+	}
+
+	#progressbar div 
+	{
+	   background-color:RGB(0,255,0);
+<?php
+	   echo "width: $RSSIMeter%;";
+?>
+	   height: 20px;
+	   border-radius: 10px;
+	}
+	#percent
+	{
+	 position: absolute;   
+	 left: 35%;
+	}
+	</style>
+<?php
+}
+?>
+
+<br>
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

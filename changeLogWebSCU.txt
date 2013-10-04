@@ -1,0 +1,7 @@
+*Web SCU Change Log*
+
+v0.71
+-If no profile is selected and Active, Edit, Add, Show, Remove, or Rename is press the active profile will be used.
+-Cacert was not being properly loaded under edit config
+-After a successful profile add, user will be redirected to edit config
+-https now works, http and https both point to /var/www/docs/ Can be changed to fit needs

@@ -1,0 +1,62 @@
+<!--
+Web Based Configuration Tool for WB40NBT/WB45NBT
+Joe Conley, joe.conley@lairdtech.com
+Version: 0.71
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>SCU</title>
+</head>
+<body>
+<div id="container" style="text-align:center;">
+<img src="/pics/laird_logo.png" alt="Laird Logo">
+<center>
+<br>
+<br>
+<FORM METHOD="LINK" ACTION="/global.html">
+<INPUT TYPE="submit" VALUE="Global">
+</CENTER>
+<h3>WB Debug</h3>
+</div>
+<style>
+div.wrap 
+{
+	float: left;
+	position: relative;
+	left: 50%;
+}
+div.context
+{
+	float: center;
+	position: relative;
+	left: -50%;
+}
+center.footer 
+{
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+</style>
+<div class="wrap">
+<div class="context">
+<?php
+exec('sdc_cli version', $sdcversion);
+$version=$sdcversion;
+foreach ($version as $version)
+{
+	if (substr($version,0,9) == "Firmware:")
+	{
+		$version="Firmware Version:" . substr($version,94,10);
+	}
+	echo "$version";
+	echo "<br>";
+}
+	echo "Web SCU Version: 0.71"
+?>
+</div>
+</div>
+</body>
+</html>
