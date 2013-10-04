@@ -7,11 +7,11 @@ mkdir /var/www/docs/pics
 cp -r *.html /var/www/docs/
 cp laird_logo.png /var/www/docs/pics/
 cp lighttpd.password /etc/lighttpd/
-cp php-cgi /usr/bin
-mkdir /etc/lighttpd/conf.d
-cp fastcgi.conf /etc/lighttpd/conf.d
+cp php-cgi /usr/bin/
+mkdir /etc/lighttpd/conf.d/
+cp fastcgi.conf /etc/lighttpd/conf.d/
 cp lighttpd.conf /etc/lighttpd/
 chmod +x /etc/init.d/S99lighttpd
 cd /etc/init.d
-./S99Lighttpd start
+./S99lighttpd start
 cd -

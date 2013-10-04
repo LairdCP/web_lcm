@@ -1,7 +1,7 @@
 <!--
 Web Based Configuration Tool for WB40NBT/WB45NBT
 Joe Conley, joe.conley@lairdtech.com
-Version: 0.71
+Version: 0.72
 -->
 <!DOCTYPE html>
 <html>
@@ -325,8 +325,18 @@ if (isset($_POST['formRemove']))
 		<?php	
 		echo '<meta http-equiv="refresh" content="0">';	
 	}
+	elseif ($wbprofilename == $ActivePro)
+	{
+		?>
+		<script>
+		alert("Error:\nCan not delete active profile");
+		</script>
+		<?php	
+		echo '<meta http-equiv="refresh" content="0">';	
+	}
 	else
 	{
+		echo $wbprofilename;
 		echo "Removing profile $wbprofilename";
 		exec("sdc_cli profile $wbprofilename delete");
 		echo '<meta http-equiv="refresh" content="0">';
@@ -775,7 +785,7 @@ if (isset($_POST['formEdit']))
 		echo "</select>";
 		echo "<br>";
 	}
-	elseif ($getWEP == "auto")
+	elseif ($getWEP == "wep-auto")
 	{
 		echo "WEP Type:<select name='WepType'>";
 		echo "<option value='off'>off</option>";

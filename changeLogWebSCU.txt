@@ -1,5 +1,10 @@
 *Web SCU Change Log*
 
+v0.72
+-https now uses root:summit as user:pass
+-Fixed weptype of auto showing up as off
+-Fixed attempting to remove the active profile when its selected
+
 v0.71
 -If no profile is selected and Active, Edit, Add, Show, Remove, or Rename is press the active profile will be used.
 -Cacert was not being properly loaded under edit config
