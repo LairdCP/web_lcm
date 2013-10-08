@@ -59,7 +59,7 @@ Version: 0.76
 		<form class="btn-toolbar" action = "" method = "post">
 				<br>
 				<h2>Profile Configuration</h2>
-				<select name='wbprofiles' multiple='multiple' style="width:80%">
+				<select name='wbprofiles' multiple='multiple'>
 				<?php
 				exec("sdc_cli profile list | grep ACTIVE", $ActivePro);
 				exec("sdc_cli profile list", $prolist);
@@ -102,45 +102,66 @@ Version: 0.76
 				echo "</select>";
 				?>
 				<br>
-				<br>		
-				<div class="btn-group btn-group-sm btn-group-justified" style="width:80%">
-				<a class="btn btn-primary " TYPE="submit" name="formActivate">Activate</a>
-				<a class="btn btn-primary" TYPE="submit" name="formEdit">Edit</a>
-				<a class="btn btn-primary" TYPE="submit" name="formAdd">Add</a>
-				<a class="btn btn-primary" TYPE="submit" name="formScan">Scan</a>
-				</div>
+				<br>
+				<div class="row">
+				<div class="btn-group btn-group-sm col-md-12">
+				<button class="btn btn-primary " TYPE="submit" name="formActivate">Activate</button>
+				<button class="btn btn-primary" TYPE="submit" name="formEdit">Edit</button>
+				<button class="btn btn-primary" TYPE="submit" name="formAdd">Add</button>
+				<button class="btn btn-primary" TYPE="submit" name="formScan">Scan</button>
+				</div><!-- btn-group btn-group-sm -->
 				<br>
 				<br>
-				<div class="btn-group btn-group-sm btn-group-justified" style="width:80%">
-				<a class="btn btn-primary" type="submit" name="formShow">Show</a>
-				<a class="btn btn-primary" type="submit" name="formRemove">Remove</a>
-				<a class="btn btn-primary" type="submit" name="formRename">Rename</a>
-				</div>
+				<div class="btn-group btn-group-sm col-md-12">
+				<button class="btn btn-primary" type="submit" name="formShow">&nbsp;Show&nbsp;</button>
+				<button class="btn btn-primary" type="submit" name="formRemove">&nbsp;Remove&nbsp;</button>
+				<button class="btn btn-primary" type="submit" name="formRename">Rename</button>
+				</div><!-- btn-group btn-group-sm -->
 				<br>
 				<br>
-				<div class="btn-group btn-group-sm btn-group-justified" style="width:80%">
+				<div class="btn-group btn-group-xs col-md-12">
 				<?php
 				if (strlen($TitleStatus) == 9)
 				{
-				  ?> <a class="btn btn-success" type="submit" name="formEnable">Enable Radio</a> <?php
+				  ?> <button class="btn btn-success" type="submit" name="formEnable">Enable Radio</button> <?php
 				}
 				else
 				{
-				  ?> <a class="btn btn-danger" type="submit" name="formDisable">Disable Radio</a> <?php
+				  ?> <button class="btn btn-danger" type="submit" name="formDisable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disable Radio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button> <?php
 				}
 				?>
 				</div>
+				</div> <!-- nested row -->
 		</form>	
 	</div> <!-- col-md-4 col-md-offset-2 -->
+	<!--
 	<div class="col-md-4">
 		<div class="alert alert-success">
 		  <a href="#" class="alert-link">stuff</a>
 		</div>
 	</div> <!-- col-md-4 -->
-	<div class="col-md-4">
-		<div class="alert alert-success">
-		  <a href="#" class="alert-link">more stuff</a>
-		</div>
+
+	<div class="col-md-4 col-md-offset-1">
+		<?php
+		if (isset($_POST['formShow']))
+		{
+			$wbprofilename=$_POST["wbprofiles"];
+			$wbprofilename=chop($wbprofilename, "ACTIVE");
+		?>
+				<br>				
+				<h2><?php echo "Profile $wbprofilename Show" ?></h2>
+				<?php
+				if ($wbprofilename == "")
+				{
+					$wbprofilename=chop($ActivePro, "ACTIVE");
+				}
+				exec("sdc_cli profile $wbprofilename show", $printPro);
+				foreach ($printPro as $printPro)
+				{
+					echo "<h6>$printPro</h6>";
+				}
+		}
+		?>
 	</div> <!-- col-md-4 -->
 	</div> <!-- panel panel-default -->
 	</div> <!-- row panel-body -->
