@@ -254,10 +254,11 @@ Version: 0.76
 		if (isset($_POST['formScanLoad']))
 		{
 		?>
+			<br>
 			<h2>Scanning, Please wait.</h2>
 			<br>
 			    <div class="progress progress-striped active">
-			    <div class="bar" style="width: 100%;"></div>
+			    <div class="progress-bar"  role="progressbar" style="width: 100%"></div>
 			    </div>
 			<form id=refresh action='' method = 'post'>
 			<input type = "hidden" name = "formScanAdd" value = "formScanAdd"/>
@@ -269,7 +270,8 @@ Version: 0.76
 		if (isset($_POST['formScanAdd']))
 		{
 		?>
-			<h4>Select a SSID and a new profile name:</h4>
+			<br>
+			<h2>Select a SSID and profile name:</h2>
 			<?php
 			$count=0;
 			$valueSSID=1;
