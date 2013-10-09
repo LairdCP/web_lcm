@@ -386,6 +386,46 @@ Version: 0.76
 				}
 		}
 
+		if (isset($_POST['formRemove']))
+		{
+			$wbprofilename=$_POST["wbprofiles"];
+			if ($wbprofilename == "")
+			{
+				$wbprofilename=chop($ActivePro, "ACTIVE");
+			}
+			if ($wbprofilename == chop($ActivePro, "ACTIVE"))
+			{
+				?>
+				<script>
+				alert("Error:\nCan not delete active profile");
+				</script>
+				<?php	
+				echo '<meta http-equiv="refresh" content="0">';	
+			}
+			elseif ($wbprofilename == $ActivePro)
+			{
+				?>
+				<script>
+				alert("Error:\nCan not delete active profile");
+				</script>
+				<?php	
+				echo '<meta http-equiv="refresh" content="0">';	
+			}
+			else
+			{
+				?>
+				<div class="alert alert-warning">
+				<h4>Warning!</h4>
+				<?php 
+				echo "Removed profile $wbprofilename";
+				exec("sdc_cli profile $wbprofilename delete");
+				?>
+				</div>
+				<meta http-equiv="refresh" content="1">
+				<?php
+			}
+		}
+
 		if (isset($_POST['formEnable']))
 				{
 				?>
