@@ -59,7 +59,7 @@ Version: 0.76
 		<form class="btn-toolbar" action = "" method = "post">
 				<br>
 				<h2>Profile Configuration</h2>
-				<select name='wbprofiles' multiple='multiple' style="width:198px">
+				<select name='wbprofiles' multiple class="form-control" style="width:198px">
 				<?php
 				exec("sdc_cli profile list | grep ACTIVE", $ActivePro);
 				exec("sdc_cli profile list", $prolist);
@@ -530,6 +530,1576 @@ Version: 0.76
 				  </div>
 				<?php
 				}
+
+	if (isset($_POST['formEdit']))
+			{
+				$wbprofilename=$_POST["wbprofiles"];
+				$wbprofilename=chop($wbprofilename, "ACTIVE");
+				$editprofile=$wbprofilename;
+				if ($wbprofilename == "")
+				{
+					$wbprofilename=chop($ActivePro, "ACTIVE");
+					$editprofile=$wbprofilename;
+					$_POST["wbprofiles"]=$editprofile;
+				}
+				?>
+				<br>
+				<h2><?php echo "Edit Profile $wbprofilename" ?></h2>
+				<?php
+				exec("sdc_cli profile $wbprofilename show", $ProfilePrint);
+
+				if (isset($_POST['EditSub']))
+				{
+					?>
+					<div class="alert alert-success">
+					<h4>Success!</h4>
+					<?php
+					echo "<h6>Edited profile $wbprofilename</h6>";
+					?>
+					</div>
+					<?php
+					echo "<br>";
+				}
+				else
+				{
+					echo "<h6>Edit profile $wbprofilename:<h6>";
+				}
+
+				echo "<br>";
+				echo "<form name='testEdit' action='' method='post'>";
+	
+				$getSSID=substr($ProfilePrint[1], 10);
+				?>
+				<?php
+				echo "SSID:<br><input class='form-control input-sm' type='text' name='SSID' value='$getSSID'>";
+				echo "<br>";
+	
+				$getClient=substr($ProfilePrint[2], 17);	
+				echo "Client Name:<br><input class='form-control input-sm' type='text' name='ClientName' value='$getClient'>";
+				echo "<br>";
+
+				$getTX=substr($ProfilePrint[3],14);
+				$num = -1;
+				echo "TX Power:<br><select class='form-control input-sm' name='TxPower'>";
+				while($num < 40)
+				{
+					$num = $num + 1;
+					if ($num == $getTX)
+					{
+						echo "<option value='$num' selected>$num mW</option>";
+					}
+					else
+					{
+						echo "<option value='$num'>$num mW</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";
+
+				$getAuth=substr($ProfilePrint[4],15);
+				if ($getAuth == "open")
+				{
+				?>
+					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
+					<option value='open' selected>Open</option>
+					<option value='shared'>Shared</option>
+					<option value='eap'>Network EAP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getAuth == "shared")
+				{
+				?>
+					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
+					<option value='open'>Open</option>
+					<option value='shared'  selected>Shared</option>
+					<option value='eap'>Network EAP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getAuth == "network EAP")
+				{
+					?>
+					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
+					<option value='open'>Open</option>
+					<option value='shared'>Shared</option>
+					<option value='eap' selected>Network EAP</option>
+					</select>
+					<br>
+					<?php
+					$getAuth="eap";
+				}
+				else
+				{
+				?>
+					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
+					<option value='open'>Open</option>
+					<option value='shared'>Shared</option>
+					<option value='eap'>Network EAP</option>
+					</select>
+					<br>
+				<?php
+				}
+
+				$getEAP=substr($ProfilePrint[5],14);
+				if ($getEAP == "leap")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option selected>leap</option>
+					<option>eap-fast</option>
+					<option>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option>eap-tls</option>
+					<option>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getEAP == "eap-fast")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option selected>eap-fast</option>
+					<option>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option>eap-tls</option>
+					<option>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getEAP == "peap-mschap")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option>eap-fast</option>
+					<option selected>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option>eap-tls</option>
+					<option>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getEAP == "peap-gtc")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option>eap-fast</option>
+					<option>peap-mschap</option>
+					<option selected>peap-gtc</option>
+					<option>eap-tls</option>
+					<option>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getEAP == "tls")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option>eap-fast</option>
+					<option>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option selected>eap-tls</option>
+					<option>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getEAP == "ttls")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option>eap-fast</option>
+					<option>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option>eap-tls</option>
+					<option selected>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getEAP == "peap-tls")
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option>eap-fast</option>
+					<option>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option>eap-tls</option>
+					<option>eap-ttls</option>
+					<option selected>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+				else
+				{
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					<option>none</option>
+					<option>leap</option>
+					<option>eap-fast</option>
+					<option>peap-mschap</option>
+					<option>peap-gtc</option>
+					<option>eap-tls</option>
+					<option>eap-ttls</option>
+					<option>peap-tls</option>
+					</select>
+					<br>
+				<?php
+				}
+
+				$getWEP=substr($ProfilePrint[6],14);
+				if ($getWEP == "wep-off")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off' selected>off</option>
+					<option value='on' >on</option>
+					<option value='auto' >auto</option>
+					<option value='WPA_PSK' >WPA_PSK</option>
+					<option value='WPA_TKIP' >WPA_TKIP</option>
+					<option value='WPA2_PSK' >WPA2_PSK</option>
+					<option value='WPA2_AES' >WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wep-on")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off' >off</option>
+					<option value='on' selected>on</option>
+					<option value='auto' >auto</option>
+					<option value='WPA_PSK' >WPA_PSK</option>
+					<option value='WPA_TKIP' >WPA_TKIP</option>
+					<option value='WPA2_PSK' >WPA2_PSK</option>
+					<option value='WPA2_AES' >WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wep-auto")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off' >off</option>
+					<option value='on' >on</option>
+					<option value='auto' selected>auto</option>
+					<option value='WPA_PSK' >WPA_PSK</option>
+					<option value='WPA_TKIP' >WPA_TKIP</option>
+					<option value='WPA2_PSK' >WPA2_PSK</option>
+					<option value='WPA2_AES' >WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa-psk-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK' selected>WPA_PSK</option>
+					<option value='WPA_TKIP' >WPA_TKIP</option>
+					<option value='WPA2_PSK' >WPA2_PSK</option>
+					<option value='WPA2_AES' >WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP' selected>WPA_TKIP</option>
+					<option value='WPA2_PSK' >WPA2_PSK</option>
+					<option value='WPA2_AES' >WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa2-psk-aes")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK' selected>WPA2_PSK</option>
+					<option value='WPA2_AES' >WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa2-aes")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES' selected>WPA2_AES</option>
+					<option value='CCKM_TKIP' >CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "cckm-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP' selected>CCKM_TKIP</option>
+					<option value='CCKM_AES' >CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "cckm-aes")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES' selected>CCKM_AES</option>
+					<option value='WPA_PSK_AES' >WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa-psk-aes")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES' selected>WPA_PSK_AES</option>
+					<option value='WPA_AES' >WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa-aes")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
+					<option value='WPA_AES' selected>WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' >WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa2-psk-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
+					<option value='WPA_AES'>WPA_AES</option>
+					<option value='WPA2_PSK_TKIP' selected>WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' >WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa2-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
+					<option value='WPA_AES'>WPA_AES</option>
+					<option value='WPA2_PSK_TKIP'>WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' selected>WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+				else
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
+					<option value='WPA_AES'>WPA_AES</option>
+					<option value='WPA2_PSK_TKIP'>WPA2_PSK_TKIP</option>
+					<option value='WPA2_TKIP' selected>WPA2_TKIP</option>
+					</select>
+					<br>
+				<?php
+				}
+
+				$getBIT=substr($ProfilePrint[7],13);
+				if ($getBIT == "auto")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto' selected>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "1 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option selected>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "2 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option selected>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "5.5 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option selected>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "6 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option selected>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "9 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option selected>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "11 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option selected>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "12 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option selected>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "18 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option selected>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "24 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option selected>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "36 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option selected>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "48 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option selected>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getBIT == "54 Mbps")
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option selected>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+				else
+				{
+				?>
+					Bit Rate:<br><select class='form-control input-sm' name='BitRate'>
+					<option value='auto'>Auto</option>
+					<option>1 Mbps</option>
+					<option>2 Mbps</option>
+					<option>5.5 Mbps</option>
+					<option>6 Mbps</option>
+					<option>9 Mbps</option>
+					<option>11 Mbps</option>
+					<option>12 Mbps</option>
+					<option>18 Mbps</option>
+					<option>24 Mbps</option>
+					<option>36 Mbps</option>
+					<option>48 Mbps</option>
+					<option>54 Mbps</option>
+					</select>
+					<br>
+				<?php
+				}
+	
+				$getMODE=substr($ProfilePrint[8],10);
+				if ($getMODE == "B only")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option selected>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "BG")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option selected>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "G")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option selected>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "A")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option selected>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "ABG")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option selected>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "BGA")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option selected>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "GN")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option selected>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "AN")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option selected>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "ABGN")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option selected>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "BGAN")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option selected>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getMODE == "ad-hoc")
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc" selected>ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+				else
+				{
+				?>
+					Radio Mode:<br><select class='form-control input-sm' name='Mode'>
+					<option>B only</option>
+					<option>BG</option>
+					<option>G only</option>
+					<option>A only</option>
+					<option>ABG</option>
+					<option>BGA</option>
+					<option>GN</option>
+					<option>AN</option>
+					<option>ABGN</option>
+					<option>BGAN</option>
+					<option value="adhoc">ad-hoc</option>
+					</select>
+					<br>
+				<?php
+				}
+
+				$getPower=substr($ProfilePrint[9],15);
+				if ($getPower == "off")
+				{
+				?>
+					Power Save:<br><select class='form-control input-sm' name='PowerSave'>
+					<option selected>off</option>
+					<option>max</option>
+					<option>fast</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getPower == "max")
+				{
+				?>
+					Power Save:<br><select class='form-control input-sm' name='PowerSave'>
+					<option>off</option>
+					<option selected>max</option>
+					<option>fast</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getPower == "fast")
+				{
+				?>
+					Power Save:<br><select class='form-control input-sm' name='PowerSave'>
+					<option>off</option>
+					<option>max</option>
+					<option selected>fast</option>
+					</select>
+					<br>
+				<?php
+				}
+				else
+				{
+				?>
+					Power Save:<br><select class='form-control input-sm' name='PowerSave'>
+					<option>off</option>
+					<option>max</option>
+					<option>fast</option>
+					</select>
+					<br>
+				<?php
+				}
+
+				//Figure out what creds are needed
+
+				if ($getEAP == "leap")  //leap
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getPass="********";	
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
+					echo "<br>";
+				}
+				elseif ($getEAP == "eap-fast") //eap-fast
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getPass="********";
+					$getPacFile=substr($ProfilePrint[12],18);
+					$getPacPass="********";	
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
+					echo "<br>";
+					echo "PAC Filename:<br><input class='form-control input-sm' type='text' name='PacFileName' value='$getPacFile'>";
+					echo "<br>";
+					echo "PAC Password:<br><input class='form-control input-sm' type='password' name='PacPassword' value='$getPacPass'>";
+					echo "<br>";
+				}
+				elseif ($getEAP == "peap-mschap") //peap-mschap
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getPass="********";
+					$getCAFile=substr($ProfilePrint[12],12);
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
+					echo "<br>";
+					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
+					echo "<br>";
+				}
+				elseif ($getEAP == "peap-gtc") //peap-gtc
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getPass="********";
+					$getCAFile=substr($ProfilePrint[12],12);
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
+					echo "<br>";
+					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
+					echo "<br>";
+				}
+				elseif ($getEAP == "tls") //eap-tls
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getUserCertFile=substr($ProfilePrint[11],15);
+					$getUserCertPass="********";
+					$getCAFile=substr($ProfilePrint[12],12);
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
+					echo "<br>";
+					echo "Usercert Password:<br><input class='form-control input-sm' type='password' name='UserCertPass' value='$getUserCertPass'>";
+					echo "<br>";
+					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
+					echo "<br>";
+				}
+				elseif ($getEAP == "ttls") //eap-ttls
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getPass="********";
+					$getCAFile=substr($ProfilePrint[13],13);
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
+					echo "<br>";
+					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
+					echo "<br>";	
+				}
+				elseif ($getEAP == "peap-tls") //peap-tls
+				{
+					$getUser=substr($ProfilePrint[10],14);
+					$getUserCertFile=substr($ProfilePrint[11],15);
+					$getUserCertPass="********";
+					$getCAFile=substr($ProfilePrint[12],12);
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
+					echo "<br>";
+					echo "Usercert Password:<br><input class='form-control input-sm' type='password' name='UserCertPass' value='$getUserCertPass'>";
+					echo "<br>";
+					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
+					echo "<br>";	
+				}
+				else //none
+				{
+		
+				}
+
+				// Prompt for PSK/WEP if required
+				if ($getWEP == "off") //off
+				{
+
+				}
+				elseif ($getWEP == "wep-on") //on
+				{
+					$getWEPKey1=substr($ProfilePrint[10],14);
+					$getWEPKey2=substr($ProfilePrint[11],14);
+					$getWEPKey3=substr($ProfilePrint[12],14);	
+					$getWEPKey4=substr($ProfilePrint[13],14);
+	
+					if (str_word_count($getWEPKey1) == 1)
+					{
+						$getWEPKey1=substr($getWEPKey1,3);
+						$GetActiveKey=1;
+					}
+					if (str_word_count($getWEPKey2) == 1)
+					{
+						$getWEPKey2=substr($getWEPKey2,3);
+						$GetActiveKey=2;
+					}
+					if (str_word_count($getWEPKey3) == 1)
+					{
+						$getWEPKey3=substr($getWEPKey3,3);
+						$GetActiveKey=3;
+					}
+					if (str_word_count($getWEPKey4) == 1)
+					{
+						$getWEPKey4=substr($getWEPKey4,3);
+						$GetActiveKey=4;
+					}
+
+					echo "Index 1:<br><input class='form-control input-sm' type='password' name='WepKey1' value='$getWEPKey1'>";
+					echo "<br>";
+
+					echo "Index 2:<br><input class='form-control input-sm' type='password' name='WepKey2' value='$getWEPKey2'>";
+					echo "<br>";
+
+					echo "Index 3:<br><input class='form-control input-sm' type='password' name='WepKey3' value='$getWEPKey3'>";
+					echo "<br>";
+
+					echo "Index 4:<br><input class='form-control input-sm' type='password' name='WepKey4' value='$getWEPKey4'>";
+					echo "<br>";
+
+					if ($GetActiveKey == 1)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option selected>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						</select>
+						<br>
+					<?php	
+					}
+					else if ($GetActiveKey == 2)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option>1</option>
+						<option selected>2</option>
+						<option>3</option>
+						<option>4</option>
+						</select>
+						<br>
+					<?php		
+					}
+					else if ($GetActiveKey == 3)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option>1</option>
+						<option>2</option>
+						<option selected>3</option>
+						<option>4</option>
+						</select>
+						<br>
+					<?php	
+					}	
+					else if ($GetActiveKey == 4)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option selected>4</option>
+						</select>
+						<br>
+					<?php	
+					}	
+				}
+				elseif ($getWEP == "auto") //auto
+				{
+
+				}
+				elseif ($getWEP == "wpa-psk-tkip") //wpa_psk
+				{
+					$getPSK=substr($ProfilePrint[10],9);	
+					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
+				}
+				elseif ($getWEP == "a54cc87bb5fec794c6fd1446d9f8b77a") //wpa_tkip
+				{
+
+				}
+				elseif ($getWEP == "wpa2-psk-aes") //wpa2_psk
+				{
+					$getPSK=substr($ProfilePrint[10],9);	
+					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
+				}
+				elseif ($getWEP == "wpa2-aes") //wpa2_aes
+				{
+
+				}
+				elseif ($getWEP == "cckm_tkip") //cckm_tkip
+				{
+
+				}
+				elseif ($getWEP == "cckm-aes") //cckm_aes
+				{
+
+				}
+				elseif ($getWEP == "wpa-psk-aes") //wpa_psk_aes
+				{
+					$getPSK=substr($ProfilePrint[10],9);	
+					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
+				}
+				elseif ($getWEP == "wpa-aes") //wpa_aes
+				{
+
+				}
+				elseif ($getWEP == "wpa2-psk-tkip") //wpa2_psk_tkp
+				{
+					$getPSK=substr($ProfilePrint[10],9);	
+					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
+				}
+				elseif ($getWEP == "wpa2-tkip") //wpa2_tkip
+				{
+
+				}
+				else
+				{
+
+				}
+			?>
+				<input class='form-control input-sm' type = "hidden" name = "wbprofiles" value = "<?php echo $_POST['wbprofiles']; ?>"/>
+				<input class='form-control input-sm' type = "hidden" name = "formEdit" value = "<?php echo $_POST['formEdit']; ?>"/>
+				<br>
+				<br>
+				<div class="toSubmit" style="" >
+				<button class="btn btn-primary" type='submit' name='EditSub'>Submit</button>
+				<div>
+				</form>
+			<?php
+			}
+			if (isset($_POST['EditSub']))
+			{
+
+				$editprofile=$_POST["wbprofiles"];
+				$editprofile=chop($editprofile, "ACTIVE");
+				$formeditprofile=$_POST["formEdit"];
+				$Name=$_POST["Name"];
+				$SSID=$_POST["SSID"];
+				$AuthType=$_POST["AuthType"];
+				$ClientName=$_POST["ClientName"];
+				$TxPower=$_POST["TxPower"];
+				$EapType=$_POST["EapType"];
+				$WepType=$_POST["WepType"];
+				$BitRate=$_POST["BitRate"];
+				$Mode=$_POST["Mode"];
+				$PowerSave=$_POST["PowerSave"];
+				$UserName=$_POST["UserName"];
+				$PassWord=$_POST["PassWord"];
+				$PacFileName=$_POST["PacFileName"];
+				$PacPassword=$_POST["PacPassword"];
+				$UserCert=$_POST["UserCert"];
+				$UserCertPass=$_POST["UserCertPass"];
+				$CaCert=$_POST["CaCert"];
+				$WepKey1=$_POST["WepKey1"];
+				$WepKey2=$_POST["WepKey2"];
+				$WepKey3=$_POST["WepKey3"];
+				$WepKey4=$_POST["WepKey4"];
+				$KeyIndex=$_POST["KeyIndex"];
+				$PSK=$_POST["PSK"];
+
+				if ($SSID != $getSSID)
+				{
+					exec("sdc_cli profile $editprofile set ssid $SSID", $error);
+					echo "sdc_cli profile $editprofile set ssid $SSID";
+					echo "<br>";
+					echo "$SSID . $getSSID";
+				}
+				if ($ClientName != $getClient)
+				{
+					exec("sdc_cli profile $editprofile set clientname $ClientName", $error);
+				}
+				if ($TxPower != $getTX )
+				{
+					exec("sdc_cli profile $editprofile set txpower $TxPower", $error);
+				}
+				if ($AuthType != $getAuth)
+				{
+					exec("sdc_cli profile $editprofile set authtype $AuthType", $error);
+				}
+				if ($WepType != $getWEP)
+				{
+					exec("sdc_cli profile $editprofile set weptype $WepType", $error);
+				}	
+				if ($EapType != $getEAP)
+				{
+					exec("sdc_cli profile $editprofile set eaptype $EapType", $error);
+				}
+				if ($BitRate != $getBIT)
+				{
+					exec("sdc_cli profile $editprofile set bitrate $BitRate", $error);
+				}
+				if ($Mode != $getMODE)
+				{
+					exec("sdc_cli profile $editprofile set mode $Mode", $error);
+				}
+				if ($PowerSave != $getPower)
+				{
+					exec("sdc_cli profile $editprofile set powersave $PowerSave", $error);
+				}
+				if ($UserName != $getUser)
+				{
+					exec("sdc_cli profile $editprofile set user $UserName", $error);
+				}
+				if ($PassWord != $getPass)
+				{
+					exec("sdc_cli profile $editprofile set password $PassWord", $error);
+				}
+				if ($PacFileName != $getPacFile)
+				{
+					exec("sdc_cli profile $editprofile set pacfilename $PacFileName", $error);
+				}
+				if ($PacPassword != $getPacPass)
+				{
+					exec("sdc_cli profile $editprofile set pacpassword $PacPassword", $error);
+				}
+				if ($UserCert != $getUserCertFile)
+				{
+					exec("sdc_cli profile $editprofile set usercert $UserCert", $error);
+				}	
+				if ($UserCertPass != $getUserCertPass)
+				{
+					exec("sdc_cli profile $editprofile set usercert_password $UserCertPass", $error);
+				}
+				if ($CaCert != $getCAFile)
+				{
+					exec("sdc_cli profile $editprofile set cacert $CaCert", $error);
+				}
+
+				if ($WepKey1 != $getWEPKey1)
+				{
+					if (strlen($WepKey1) == 5 || strlen($WepKey1) == 13 || strlen($WepKey1) == 10 || strlen($WepKey1) == 26)
+					{
+						exec("sdc_cli profile $editprofile set wep $WepKey1 1", $error);
+					}
+					else if (strlen($WepKey3) == 0)
+					{
+						exec("sdc_cli profile $editprofile set wep rm 1", $error);		
+					}
+					else
+					{
+						?>
+						<script>
+						alert("Error Setting Index 1:\n\nHex keys are 10 or 26 digits.\nASCII keys are 5 or 13 characters.");
+						</script>
+						<?php
+					}
+				}
+
+				if ($WepKey2 != $getWEPKey2)
+				{
+					if (strlen($WepKey2) == 5 || strlen($WepKey2) == 13 || strlen($WepKey2) == 10 || strlen($WepKey2) == 26)
+					{
+						exec("sdc_cli profile $editprofile set wep $WepKey2 2", $error);
+					}
+					else if (strlen($WepKey2) == 0)
+					{
+						exec("sdc_cli profile $editprofile set wep rm 2", $error);		
+					}
+					else
+					{
+						?>
+						<script>
+						alert("Error Setting Index 2:\n\nHex keys are 10 or 26 digits.\nASCII keys are 5 or 13 characters.");
+						</script>
+						<?php
+					}
+				}
+
+				if ($WepKey3 != $getWEPKey3)
+				{
+					if (strlen($WepKey3) == 5 || strlen($WepKey3) == 13 || strlen($WepKey3) == 10 || strlen($WepKey3) == 26)
+					{
+						exec("sdc_cli profile $editprofile set wep $WepKey3 3", $error);
+					}
+					else if (strlen($WepKey3) == 0)
+					{
+						exec("sdc_cli profile $editprofile set wep rm 3", $error);		
+					}
+					else
+					{
+						?>
+						<script>
+						alert("Error Setting Index 3:\n\nHex keys are 10 or 26 digits.\nASCII keys are 5 or 13 characters.");
+						</script>
+						<?php
+					}
+				}
+
+				if ($WepKey4 != $getWEPKey4)
+				{
+					if (strlen($WepKey4) == 5 || strlen($WepKey4) == 13 || strlen($WepKey4) == 10 || strlen($WepKey4) == 26)
+					{
+						exec("sdc_cli profile $editprofile set wep $WepKey4 4", $error);
+					}
+					else if (strlen($WepKey4) == 0)
+					{
+						exec("sdc_cli profile $editprofile set wep rm 4", $error);		
+					}
+					else
+					{
+						?>
+						<script>
+						alert("Error Setting Index 4:\n\nHex keys are 10 or 26 digits.\nASCII keys are 5 or 13 characters.");
+						</script>
+						<?php
+					}
+				}
+
+				if ($KeyIndex != $GetActiveKey)
+				{	
+					exec("sdc_cli profile $editprofile set wep tx $KeyIndex", $error);
+				}
+
+				if ($PSK != $getPSK)
+				{
+					if (strlen($PSK) >= 8 && strlen($PSK) <= 63)
+					{
+						exec("sdc_cli profile $editprofile set psk $PSK", $error);
+					}
+					else
+					{
+						?>
+						<script>
+						alert("PSK needs to be between 8 and 64 characters");
+						</script>
+						<?php
+					}
+				}
+	
+				echo "<form id=refresh action='' method = 'post'>";
+				echo "<input type = 'hidden' name = 'wbprofiles' value = '$editprofile' />";
+				echo "<input type = 'hidden' name = 'formEdit' value = '$formeditprofile' />";
+				echo "</form>";
+				echo "<script>document.getElementById('refresh').submit();</script>";
+			}
 		?>
 	</div> <!-- col-md-4 -->
 	</div> <!-- panel panel-default -->
