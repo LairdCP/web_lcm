@@ -59,7 +59,7 @@ Version: 0.76
 		<form class="btn-toolbar" action = "" method = "post">
 				<br>
 				<h2>Profile Configuration</h2>
-				<select name='wbprofiles' multiple='multiple'>
+				<select name='wbprofiles' multiple='multiple' style="width:198px">
 				<?php
 				exec("sdc_cli profile list | grep ACTIVE", $ActivePro);
 				exec("sdc_cli profile list", $prolist);
@@ -123,11 +123,11 @@ Version: 0.76
 				<?php
 				if (strlen($TitleStatus) == 9)
 				{
-				  ?> <button class="btn btn-success" type="submit" name="formEnable">Enable Radio</button> <?php
+				  ?> <button class="btn btn-success" type="submit" name="formEnable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enable Radio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button> <?php
 				}
 				else
 				{
-				  ?> <button class="btn btn-danger" type="submit" name="formDisable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disable Radio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button> <?php
+				  ?> <button class="btn btn-danger" type="submit" name="formDisable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Disable Radio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button> <?php
 				}
 				?>
 				</div>
@@ -144,6 +144,227 @@ Version: 0.76
 
 	<div class="col-md-4 col-md-offset-1">
 		<?php
+		if (isset($_POST['formActivate']))
+				{
+					$wbprofilename=$_POST["wbprofiles"];
+					$wbprofilename=chop($wbprofilename, "ACTIVE");
+					if ($wbprofilename == "")
+					{
+						$wbprofilename=chop($ActivePro, "ACTIVE");
+					}
+					?>
+					<div class="alert alert-success">
+					<h4>Success!</h4>
+					<?php
+					echo "<h6>Activating profile $wbprofilename</h6>";
+					exec("sdc_cli profile $wbprofilename activate", $ActivateOK);
+					?>
+					<meta http-equiv="refresh" content="1">
+					</div>
+					<?php
+				}
+
+		if (isset($_POST['formAdd']))
+				{
+				?>
+					<br>
+					<h2>Profile Add</h2>
+					<form name='subAdd' action='' method='post'>
+					<h6>Enter a unique name for this profile:</h6>
+					<input type='text' name='NewProfile' value=''>
+					<br>
+					<br>
+					<button class="btn btn-primary" type='submit' name='subAdded'>Submit</button>
+					</form>
+					<br>
+					</div>
+				<?php
+				}
+				if (isset($_POST['subAdded']))
+				{
+				?>
+					<input type = "hidden" name = "NewProfile" value = "<?php echo $_POST['NewProfile']; ?>"/>
+				<?php
+					$NewProfile=$_POST["NewProfile"];
+					if (strlen($NewProfile) == 0)
+					{
+						?>
+						<script>
+						alert("Failed to add profile:\nProfile name must contain\nat least one character.");
+						</script>
+						<?php
+					}
+					else
+					{
+						exec("sdc_cli profile list", $prolist);
+						$listlength=sizeof($prolist);
+						$templength=0;
+						foreach ($prolist as $prolisted)
+						{
+							$rawprofile=chop($prolisted,"ACTIVE");
+							if (strcasecmp($rawprofile,$NewProfile) != 0)
+							{
+								$templength++;	
+							}
+						}
+						if ($listlength == $templength)
+						{
+							exec("sdc_cli profile $NewProfile add");
+							?>
+							<div class="alert alert-success">
+							<h4>Success!</h4>
+							<?php
+							echo "<h6>Added profile $NewProfile</h6>";
+							?>
+							</div>
+							<?php
+							$editprofile=$NewProfile;
+							echo "<form id=refresh action='' method = 'post'>";
+							echo "<input type = 'hidden' name = 'wbprofiles' value = '$editprofile' />";
+							echo "<input type = 'hidden' name = 'formEdit' value = '$formeditprofile' />";
+							echo "</form>";
+							echo "<script>document.getElementById('refresh').submit();</script>";
+						}
+						else
+						{
+							?>
+							<script>
+							alert("Failed to add profile:\nProfile name not unique");
+							</script>
+							<?php
+						}
+					}
+					echo "<form id=refresh action='' method = 'post'>";
+					echo "</form>";
+					echo "<script>document.getElementById('refresh').submit();</script>";
+				}
+
+
+		if (isset($_POST['formScan']))
+		{
+		?>
+			<?php
+			exec("sdc_cli scan > sdccliscan &", $printScan);
+			echo "<form id=refresh action='' method = 'post'>";
+			?>
+			<input type = "hidden" name = "formScanLoad" value = "formScanLoad"/>
+			<script>document.getElementById('refresh').submit();</script>
+		<?php
+		}
+		if (isset($_POST['formScanLoad']))
+		{
+		?>
+			<h2>Scanning, Please wait.</h2>
+			<br>
+			    <div class="progress progress-striped active">
+			    <div class="bar" style="width: 100%;"></div>
+			    </div>
+			<form id=refresh action='' method = 'post'>
+			<input type = "hidden" name = "formScanAdd" value = "formScanAdd"/>
+			<script>
+			 setTimeout(function(){document.getElementById('refresh').submit()},8000);
+			</script>
+			<?php
+		}
+		if (isset($_POST['formScanAdd']))
+		{
+		?>
+			<h4>Select a SSID and a new profile name:</h4>
+			<?php
+			$count=0;
+			$valueSSID=1;
+			$valueRSSI=5;
+			$printScan=file("sdccliscan");
+			echo "<br>";
+			echo "<form name='ScanADD' action='' method='post'>";
+			echo "<select name='ScanList' multiple>";
+			while ($count < count($printScan)/8)
+			{
+				if (substr($printScan[$valueSSID],0,6) == "SSID: " && substr($printScan[$valueRSSI],0,6) == "RSSI: ")
+				{
+					$realSSID=substr($printScan[$valueSSID],6);
+					$realRSSI=substr($printScan[$valueRSSI],6);
+					echo "<option value='$realSSID'>$realSSID @ $realRSSI</option>";
+				}	
+				$valueSSID = $valueSSID + 8;
+				$valueRSSI = $valueRSSI + 8;
+			$count=$count + 1;
+			}
+			exec("rm sdccliscan");
+			?>
+			</select>
+			<br>
+			<br>
+			<h6>Enter a unique name for this profile:</h6> 
+			<input type='text' name='NewProfile'>
+			<br>
+			<br>
+			<button class="btn btn-primary" type='submit' name='ScanSub'>Submit</button>
+			</form>
+			<?php
+		}
+		if (isset($_POST['ScanSub']))
+		{
+		?>
+			<input type = "hidden" name = "ScanList" value = "<?php echo $_POST['ScanList']; ?>"/>
+			<input type = "hidden" name = "NewProfile" value = "<?php echo $_POST['NewProfile']; ?>"/>
+			<?php
+			$ScanList=$_POST['ScanList'];
+			$NewProfile=$_POST["NewProfile"];
+			echo "<br>";
+			if (strlen($NewProfile) == 0)
+			{
+				?>
+				<script>
+				alert("Failed to add profile:\nProfile name must contain\nat least one character.");
+				</script>
+				<?php
+			}
+			else
+			{
+				exec("sdc_cli profile list", $prolist);
+				$listlength=sizeof($prolist);
+				$templength=0;
+				foreach ($prolist as $prolisted)
+				{
+					$rawprofile=chop($prolisted,"ACTIVE");
+					if (strcasecmp($rawprofile,$NewProfile) != 0)
+					{
+						$templength++;	
+					}
+				}
+				if ($listlength == $templength)
+				{
+					?>
+					<div class="alert alert-success">
+					<h4>Success!</h4>
+					<?php
+					exec("sdc_cli profile $NewProfile add");
+					exec("sdc_cli profile $NewProfile set ssid $ScanList");
+					echo "<h6>Added profile $NewProfile</h6>";
+					?>
+					<meta http-equiv="refresh" content="1">
+					</div>
+					<?php
+					$editprofile=$NewProfile;
+					echo "<form id=refresh action='' method = 'post'>";
+					echo "<input type = 'hidden' name = 'wbprofiles' value = '$editprofile' />";
+					echo "<input type = 'hidden' name = 'formEdit' value = '$formeditprofile' />";
+					echo "</form>";
+					echo "<script>document.getElementById('refresh').submit();</script>";
+				}
+				else
+				{
+					?>
+					<script>
+					alert("Failed to add profile:\nProfile name not unique");
+					</script>
+					<?php
+				}
+			}
+		}
+
+
 		if (isset($_POST['formShow']))
 		{
 			$wbprofilename=$_POST["wbprofiles"];
@@ -162,6 +383,29 @@ Version: 0.76
 					echo "<h6>$printPro</h6>";
 				}
 		}
+
+		if (isset($_POST['formEnable']))
+				{
+				?>
+				    <div class="alert alert-warning">
+				      <h4>Warning!</h4>
+				      Enabling Radio
+				      <?php exec("sdc_cli enable"); ?>
+				      <meta http-equiv="refresh" content="1">
+				  </div>
+				<?php
+				}
+		if (isset($_POST['formDisable']))
+				{
+				  ?>
+				    <div class="alert alert-warning">
+				      <h4>Warning!</h4>
+				      Disabling Radio
+				      <?php exec("sdc_cli disable"); ?>
+				      <meta http-equiv="refresh" content="1">
+				  </div>
+				<?php
+				}
 		?>
 	</div> <!-- col-md-4 -->
 	</div> <!-- panel panel-default -->
