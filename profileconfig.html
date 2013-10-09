@@ -426,6 +426,89 @@ Version: 0.76
 			}
 		}
 
+		if (isset($_POST['formRename']))
+				{
+					$wbprofilename=$_POST["wbprofiles"];
+					$wbprofilename=chop($wbprofilename, "ACTIVE");
+					$editprofile=$wbprofilename;
+					?>
+						<br>
+						<h2><?php echo "Rename Profile $wbprofilename" ?></h2>
+						<?php
+						if ($editprofile == "")
+						{
+							$editprofile=chop($ActivePro, "ACTIVE");
+						}
+						echo "<h6>What would you like to rename $editprofile to?</h6>";
+						?>
+						<form name='testEdit' action='' method='post'>
+						<?php
+						echo "<input type='text' name='renamed' value='$editprofile'>";
+						?>
+						<input type = "hidden" name = "wbprofiles" value = "<?php echo $_POST['wbprofiles']; ?>"/>
+						<br>
+						<br>
+						<button class="btn btn-primary" type='submit' name='EditRename'>Submit</button>
+						</form>
+					<?php
+				}
+				if (isset($_POST['EditRename']))
+				{
+					$editprofile=$_POST["wbprofiles"];
+					$editprofile=chop($editprofile, "ACTIVE");
+					$renamed=$_POST["renamed"];
+					?>
+						<br>
+						<h2><?php echo "Rename Profile $wbprofilename" ?></h2>
+						<?php	
+						if( $editprofile != $renamed)
+						{
+							if( strlen($renamed) != 0 )
+							{
+								if ($renamed != "")	
+								{	
+									?>
+									<div class="alert alert-success">
+									<h4>Warning!</h4>
+									<?php
+									exec("sdc_cli profile $editprofile rename $renamed");
+									echo "$editprofile has been renamed to $renamed";
+									?>
+									</div>
+									<meta http-equiv="refresh" content="1">
+									<?php
+								}
+								else
+								{
+									?>
+									<script>
+									alert("Profile name cannot be blank");
+									</script>
+									<?php
+								}
+							}
+							else
+							{
+								?>
+								<script>
+								alert("Profile name cannot be blank");
+								</script>
+								<?php
+							}
+						}
+						else
+						{
+							?>
+							<script>
+							alert("Cannot rename to same name");
+							</script>
+							<?php	
+						}
+
+						echo '<meta http-equiv="refresh" content="1">';
+						echo "<br>";
+				}
+
 		if (isset($_POST['formEnable']))
 				{
 				?>
