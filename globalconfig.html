@@ -302,10 +302,7 @@ Version: 0.76
 			echo "</select>";
 			echo "<br>";
 		}
-		?>
-	</div><!-- left side -->
-	<div class="col-md-4 col-md-offset-1">
-		<?php
+		
 $getCCX=substr($globalShow[11],18);
 		if ($getCCX == "full")
 		{
@@ -331,6 +328,11 @@ $getCCX=substr($globalShow[11],18);
 			echo "</select>";
 			echo "<br>";
 		}
+		
+		?>
+	</div><!-- left side -->
+	<div class="col-md-4 col-md-offset-1">
+		<?php
 
 		$getCert=substr($globalShow[12],23);
 		echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
