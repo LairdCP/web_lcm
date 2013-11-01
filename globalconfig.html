@@ -44,7 +44,7 @@ Version: 0.76
 	<div class="row panel-body">
 	<form name='globalEdit' action='' method='post'>
 		<br>
-		<div class="col-md-12 col-md-offset-2">
+		<div class="col-md-8 col-md-offset-2">
 		<h2>Global Configuration</h2>
 		<?php
 		if (isset($_POST['globalSub']))
@@ -304,7 +304,7 @@ Version: 0.76
 		}
 		?>
 	</div><!-- left side -->
-	<div class="col-md-4 col-md-offset-2">
+	<div class="col-md-4 col-md-offset-1">
 		<?php
 $getCCX=substr($globalShow[11],18);
 		if ($getCCX == "full")
@@ -431,9 +431,79 @@ $getCCX=substr($globalShow[11],18);
 		}
 
 		$getTTLSinner=substr($globalShow[20],23);
-		echo "TTLS Inner Method:<br><input class='form-control input-sm' type='text' name='TTLSinner' value='$getTTLSinner' disabled>";
-		echo "<br>";
-
+		if ($getTTLSinner == "0")
+		{
+			echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
+			echo "<option value='0' selected>Auto</option>";
+			echo "<option value='1'>MSCHAP v2</option>";
+			echo "<option value='2'>MSCHAP</option>";
+			echo "<option value='3'>PAP</option>";
+			echo "<option value='4'>CHAP</option>";
+			echo "<option value='5'>EAP-MSCHAP v2</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTTLSinner == "1")
+		{
+			echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
+			echo "<option value='0'>Auto</option>";
+			echo "<option value='1' selected>MSCHAP v2</option>";
+			echo "<option value='2'>MSCHAP</option>";
+			echo "<option value='3'>PAP</option>";
+			echo "<option value='4'>CHAP</option>";
+			echo "<option value='5'>EAP-MSCHAP v2</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTTLSinner == "2")
+		{
+			echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
+			echo "<option value='0'>Auto</option>";
+			echo "<option value='1'>MSCHAP v2</option>";
+			echo "<option value='2' selected>MSCHAP</option>";
+			echo "<option value='3'>PAP</option>";
+			echo "<option value='4'>CHAP</option>";
+			echo "<option value='5'>EAP-MSCHAP v2</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTTLSinner == "3")
+		{
+			echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
+			echo "<option value='0'>Auto</option>";
+			echo "<option value='1'>MSCHAP v2</option>";
+			echo "<option value='2'>MSCHAP</option>";
+			echo "<option value='3' selected>PAP</option>";
+			echo "<option value='4'>CHAP</option>";
+			echo "<option value='5'>EAP-MSCHAP v2</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTTLSinner == "4")
+		{
+			echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
+			echo "<option value='0'>Auto</option>";
+			echo "<option value='1'>MSCHAP v2</option>";
+			echo "<option value='2'>MSCHAP</option>";
+			echo "<option value='3'>PAP</option>";
+			echo "<option value='4' selected>CHAP</option>";
+			echo "<option value='5'>EAP-MSCHAP v2</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getTTLSinner == "5")
+		{
+			echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
+			echo "<option value='0'>Auto</option>";
+			echo "<option value='1'>MSCHAP v2</option>";
+			echo "<option value='2'>MSCHAP</option>";
+			echo "<option value='3'>PAP</option>";
+			echo "<option value='4'>CHAP</option>";
+			echo "<option value='5' selected>EAP-MSCHAP v2</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		
 		$getFIPS=substr($globalShow[21],15);
 		if ($getFIPS == "enabled")
 		{
@@ -471,6 +541,124 @@ $getCCX=substr($globalShow[11],18);
 	</div>
 	</div> <!-- submit span  -->
 	</form>
+	<?php
+	if (isset($_POST['globalEdit']))
+		{
+			$globalEdit=$_POST["globalEdit"];
+			$Frag=$_POST["Frag"];
+			$RTS=$_POST["RTS"];
+			$RXdiv=$_POST["RXdiv"];
+			$TXdiv=$_POST["TXdiv"];
+			$Trigger=$_POST["Trigger"];
+			$Delta=$_POST["Delta"];
+			$Period=$_POST["Period"];
+			$Coexist=$_POST["Coexist"];
+			$TXMax=$_POST["TXMax"];
+			$WMM=$_POST["WMM"];
+			$CCX=$_POST["CCX"];
+			$Cert=$_POST["Cert"];
+			$BGChan=$_POST["BGChan"];
+			$PMK=$_POST["PMK"];
+			$Adhoc=$_POST["Adhoc"];
+			$Scan=$_POST["Scan"];
+			$DFS=$_POST["DFS"];
+			$Server=$_POST["Server"];
+			$TTLSinner=$_POST["TTLSinner"];
+			$FIPS=$_POST["FIPS"];
+
+
+			if ($Frag != $getFrag)
+			{
+				exec("sdc_cli global set frag $Frag");
+			}
+			if ($RTS != $getRTS)
+			{
+				exec("sdc_cli global set rts $RTS");
+			}
+			if ($RXdiv != $getRXDiv)
+			{
+				exec("sdc_cli global set rx-diversity $RXdiv");
+			}
+			if ($TXdiv != $getTXDiv)
+			{
+				exec("sdc_cli global set tx-diversity $TXdiv");
+			}
+			if ($Trigger != $getTrigger)
+			{
+				exec("sdc_cli global set roam-trigger $Trigger");
+			}
+			if ($Delta != $getDelta)
+			{
+				exec("sdc_cli global set roam-delta $Delta");
+			}
+			if ($Period != $getPeriod)
+			{
+				exec("sdc_cli global set roam-period $Period");
+			}
+			if ($Coexist != $getCoexist)
+			{
+				exec("sdc_cli global set bt-coexist $Coexist");
+			}
+			if ($TXMax != $getTXMax)
+			{
+				exec("sdc_cli global set tx-max $TXMax");
+			}
+			if ($WMM != $getWMM)
+			{
+				exec("sdc_cli global set wmm $WMM");
+			}
+			if ($CCX != $getCCX)
+			{
+				exec("sdc_cli global set ccx-features $CCX");
+				?>
+				<script>
+				alert("CCX Features:\nThe radio must be re-enabled\nfor the changes to take\neffect.");
+				</script>
+				<?php
+			}
+			if ($Cert != $getCert)
+			{
+				exec("sdc_cli global set certpath $Cert");
+			}
+			if ($BGChan != $getBGChan)
+			{
+				exec("sdc_cli global set bg-channel-set $BGChan");
+			}
+			if ($PMK != $getPMK)
+			{
+				exec("sdc_cli global set pmk-caching $PMK");
+			}
+			if ($Adhoc != $getAdhoc)
+			{
+				exec("sdc_cli global set def-adhoc-channel $Adhoc");
+			}
+			if ($Scan != $getScan)
+			{
+				exec("sdc_cli global set scan-dfs-time $Scan");
+			}
+			if ($DFS != $getDFS)
+			{
+				exec("sdc_cli global set dfs-channels $DFS");
+			}
+			if ($Server != $getServer)
+			{
+				exec("sdc_cli global set auth-server-type $Server");
+			}
+			if ($TTLSinner != $getTTLSinner)
+			{
+				exec("sdc_cli global set ttls-inner-method $TTLSinner");
+			}
+			if ($FIPS != $getFIPS)
+			{
+				exec("sdc_cli global set fips-mode $FIPS");
+			}
+
+			echo "<form id=refresh action='' method = 'post'>";
+			echo "</form>";
+			echo "<script>document.getElementById('refresh').submit();</script>";
+
+		}
+		?>
    	</div><!-- panel -->
 	</div><!-- pannelpanel-default -->
 	</nav><!-- navbar navbar-default  -->
