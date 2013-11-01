@@ -57,10 +57,20 @@ Version: 0.76
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $version[6]; ?></strong></h6></div>
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong>Web SCU Version: 0.75</strong></h6></div>
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong>Bootstrap code licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License v2.0</a></strong></h6></div>
-
-   	</div>
-
-	</div><!-- /pannel?  -->
+	
+	<div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2"></div>
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong>Logread Debug:</strong></h6></div>
+	<div class="col-xs-10 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
+	<textarea class="form-control" rows="10">
+	<?php
+	$output = shell_exec('logread');
+	echo "$output";
+	?>
+	</textarea>
+	</div>
+	
+   	</div><!-- /row panel-body  -->
+	</div><!-- /pannel panel-default  -->
 	</nav>
     </div> <!-- /container -->
 
