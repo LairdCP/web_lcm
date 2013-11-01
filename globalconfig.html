@@ -331,7 +331,7 @@ $getCCX=substr($globalShow[11],18);
 		
 		?>
 	</div><!-- left side -->
-	<div class="col-md-4 col-md-offset-1">
+	<div class="col-md-4">
 		<?php
 
 		$getCert=substr($globalShow[12],23);
@@ -549,7 +549,24 @@ $getCCX=substr($globalShow[11],18);
 		}
 		echo "</select>";
 		echo "<br>";
-		
+
+		$getIgnoreNull=substr($globalShow[23],20);
+		if ($getIgnoreNull == "enabled")
+		{
+			echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
+			echo "<option value='enable' selected>Enabled</option>";
+			echo "<option value='disable'>Disabled</option>";
+			echo "</select>";
+			echo "<br>";
+		}
+		elseif ($getIgnoreNull == "disabled")
+		{
+			echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
+			echo "<option value='enable'>Enabled</option>";
+			echo "<option value='disable' selected>Disabled</option>";
+			echo "</select>";
+			echo "<br>";
+		}
 		?>
 	</div><!-- right side -->
 
@@ -586,6 +603,8 @@ $getCCX=substr($globalShow[11],18);
 			$TTLSinner=$_POST["TTLSinner"];
 			$FIPS=$_POST["FIPS"];
 			$Probedelay=$_POST["Probedelay"];
+			$IgnoreNull=$_POST["IgnoreNull"];
+
 
 
 			if ($Frag != $getFrag)
@@ -676,6 +695,10 @@ $getCCX=substr($globalShow[11],18);
 			if ($Probedelay != $getProbedelay)
 			{
 				exec("sdc_cli global set probe-delay $Probedelay");
+			}
+			if ($IgnoreNull != $getIgnoreNull)
+			{
+				exec("sdc_cli global set ignore-null-ssid $IgnoreNull");
 			}
 
 			echo "<form id=refresh action='' method = 'post'>";
