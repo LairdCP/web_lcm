@@ -532,6 +532,24 @@ $getCCX=substr($globalShow[11],18);
 			echo "<br>";
 		}
 
+		$getProbedelay=substr($globalShow[22],17);
+		$num = 1;
+		echo "Probe Delay:<br><select class='form-control input-sm' name='Probedelay'>";
+		while($num < 120)
+		{
+			$num = $num + 1;
+			if ($num == $getProbedelay)
+			{
+				echo "<option value='$num' selected>$num seconds</option>";
+			}
+			else
+			{
+				echo "<option value='$num'>$num seconds</option>";
+			}
+		}
+		echo "</select>";
+		echo "<br>";
+		
 		?>
 	</div><!-- right side -->
 
@@ -567,6 +585,7 @@ $getCCX=substr($globalShow[11],18);
 			$Server=$_POST["Server"];
 			$TTLSinner=$_POST["TTLSinner"];
 			$FIPS=$_POST["FIPS"];
+			$Probedelay=$_POST["Probedelay"];
 
 
 			if ($Frag != $getFrag)
@@ -653,6 +672,10 @@ $getCCX=substr($globalShow[11],18);
 			if ($FIPS != $getFIPS)
 			{
 				exec("sdc_cli global set fips-mode $FIPS");
+			}
+			if ($Probedelay != $getProbedelay)
+			{
+				exec("sdc_cli global set probe-delay $Probedelay");
 			}
 
 			echo "<form id=refresh action='' method = 'post'>";
