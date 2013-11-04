@@ -606,7 +606,7 @@ $getCCX=substr($globalShow[11],18);
 
 
 
-			if ($Frag != $getFrag)
+			if ($Frag != $getFrag && strlen($Frag) > 0)
 			{
 				exec("sdc_cli global set frag $Frag");
 			}
@@ -614,11 +614,11 @@ $getCCX=substr($globalShow[11],18);
 			{
 				exec("sdc_cli global set rts $RTS");
 			}
-			if ($RXdiv != $getRXDiv)
+			if ($RXdiv != $getRXDiv && strlen($RXdiv) > 0)
 			{
 				exec("sdc_cli global set rx-diversity $RXdiv");
 			}
-			if ($TXdiv != $getTXDiv)
+			if ($TXdiv != $getTXDiv && strlen($TXdiv) > 0)
 			{
 				exec("sdc_cli global set tx-diversity $TXdiv");
 			}
