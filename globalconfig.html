@@ -206,7 +206,8 @@ Joe Conley, joe.conley@lairdtech.com
 		echo "</select>";
 		echo "<br>";
 
-		$getDelta=substr($globalShow[5],16,3);
+		$getDelta=substr($globalShow[5],16,2);
+		$getDelta=trim($getDelta);
 		$num1 = 40; 
 		echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
 		while($num1 > 5)
@@ -224,7 +225,9 @@ Joe Conley, joe.conley@lairdtech.com
 		echo "</select>";
 		echo "<br>";
 
-		$getPeriod=substr($globalShow[6],17,3);
+
+		$getPeriod=substr($globalShow[6],17,2);
+		$getPeriod=trim($getPeriod);
 		$num2 = 65; 
 		echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
 		while($num2 > 5)
@@ -382,6 +385,7 @@ $getCCX=substr($globalShow[11],18);
 		$getDFS=substr($globalShow[18],18);
 		if ($getDFS == "full")
 		{
+			$getDFS="on";
 			echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
 			echo "<option value='on' selected>Full</option>";
 			echo "<option value='off'>Off</option>";
@@ -390,6 +394,7 @@ $getCCX=substr($globalShow[11],18);
 		}
 		elseif ($getDFS == "off")
 		{
+			$getDFS="off";
 			echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
 			echo "<option value='on'>Full</option>";
 			echo "<option value='off' selected>Off</option>";
@@ -398,16 +403,13 @@ $getCCX=substr($globalShow[11],18);
 		}
 		else
 		{
-			echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
-			echo "<option value='on'>Full</option>";
-			echo "<option value='off'>Off</option>";
-			echo "</select>";
-			echo "<br>";
+			echo "DFS Channels Get Error";
 		}
 
 		$getServer=substr($globalShow[19],22);
 		if ($getServer == "acs")
 		{
+			$getServer=1;
 			echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
 			echo "<option value='1' selected>ACS</option>";
 			echo "<option value='2'>SBR</option>";
@@ -416,6 +418,7 @@ $getCCX=substr($globalShow[11],18);
 		}
 		elseif ($getServer == "sbr")
 		{
+			$getServer=2;
 			echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
 			echo "<option value='1'>ACS</option>";
 			echo "<option value='2' selected>SBR</option>";
@@ -424,11 +427,7 @@ $getCCX=substr($globalShow[11],18);
 		}
 		else
 		{
-			echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-			echo "<option value='1'>ACS</option>";
-			echo "<option value='2'>SBR</option>";
-			echo "</select>";
-			echo "<br>";
+			echo "Auth Server Type Get Error";
 		}
 
 		$getTTLSinner=substr($globalShow[20],23);
@@ -552,6 +551,7 @@ $getCCX=substr($globalShow[11],18);
 		$getIgnoreNull=substr($globalShow[23],20);
 		if ($getIgnoreNull == "enabled")
 		{
+			$getIgnoreNull="enable";
 			echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
 			echo "<option value='enable' selected>Enabled</option>";
 			echo "<option value='disable'>Disabled</option>";
@@ -560,6 +560,7 @@ $getCCX=substr($globalShow[11],18);
 		}
 		elseif ($getIgnoreNull == "disabled")
 		{
+			$getIgnoreNull="disable";
 			echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
 			echo "<option value='enable'>Enabled</option>";
 			echo "<option value='disable' selected>Disabled</option>";
@@ -604,8 +605,7 @@ $getCCX=substr($globalShow[11],18);
 			$Probedelay=$_POST["Probedelay"];
 			$IgnoreNull=$_POST["IgnoreNull"];
 
-
-
+	
 			if ($Frag != $getFrag && strlen($Frag) > 0)
 			{
 				exec("sdc_cli global set frag $Frag");
