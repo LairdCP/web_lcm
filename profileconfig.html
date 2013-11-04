@@ -798,6 +798,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wep-on")
 				{
+					$getWEP="on";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off' >off</option>
@@ -1744,7 +1745,7 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 
 				}
-				elseif ($getWEP == "wep-on") //on
+				elseif ($getWEP == "on") //on
 				{
 					$getWEPKey1=substr($ProfilePrint[10],14);
 					$getWEPKey2=substr($ProfilePrint[11],14);
