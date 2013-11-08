@@ -646,6 +646,7 @@ Joe Conley, joe.conley@lairdtech.com
 				$getEAP=substr($ProfilePrint[5],14);
 				if ($getEAP == "leap")
 				{
+					$getEAP="leap";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -662,6 +663,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getEAP == "eap-fast")
 				{
+					$getEAP="eap-fast";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -678,6 +680,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getEAP == "peap-mschap")
 				{
+					$getEAP="peap-mschap";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -694,6 +697,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getEAP == "peap-gtc")
 				{
+					$getEAP="peap-gtc";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -710,6 +714,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getEAP == "tls")
 				{
+					$getEAP="eap-tls";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -726,6 +731,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getEAP == "ttls")
 				{
+					$getEAP="eap-ttls";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -742,6 +748,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getEAP == "peap-tls")
 				{
+					$getEAP="peap-tls";
 				?>
 					EAP Type:<br><select class='form-control input-sm' name='EapType'>
 					<option>none</option>
@@ -820,6 +827,8 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wep-auto")
 				{
+					$getWEP="auto";
+
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off' >off</option>
@@ -841,6 +850,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa-psk-tkip")
 				{
+					$getWEP="WPA_PSK";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -862,6 +872,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa-tkip")
 				{
+					$getWEP="WPA_TKIP";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -883,6 +894,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa2-psk-aes")
 				{
+					$getWEP="WPA2_PSK";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -904,6 +916,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa2-aes")
 				{
+					$getWEP="WPA2_AES";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -925,6 +938,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "cckm-tkip")
 				{
+					$getWEP="CCKM_TKIP";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -946,6 +960,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "cckm-aes")
 				{
+					$getWEP="CCKM_AES";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -967,6 +982,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa-psk-aes")
 				{
+					$getWEP="WPA_PSK_AES";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -988,6 +1004,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa-aes")
 				{
+					$getWEP="WPA_AES";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -1009,6 +1026,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa2-psk-tkip")
 				{
+					$getWEP="WPA2_PSK_TKIP";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -1030,6 +1048,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getWEP == "wpa2-tkip")
 				{
+					$getWEP="WPA2_TKIP";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
 					<option value='off'>off</option>
@@ -1052,22 +1071,7 @@ Joe Conley, joe.conley@lairdtech.com
 				else
 				{
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>off</option>
-					<option value='on'>on</option>
-					<option value='auto'>auto</option>
-					<option value='WPA_PSK'>WPA_PSK</option>
-					<option value='WPA_TKIP'>WPA_TKIP</option>
-					<option value='WPA2_PSK'>WPA2_PSK</option>
-					<option value='WPA2_AES'>WPA2_AES</option>
-					<option value='CCKM_TKIP'>CCKM_TKIP</option>
-					<option value='CCKM_AES'>CCKM_AES</option>
-					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
-					<option value='WPA_AES'>WPA_AES</option>
-					<option value='WPA2_PSK_TKIP'>WPA2_PSK_TKIP</option>
-					<option value='WPA2_TKIP' selected>WPA2_TKIP</option>
-					</select>
-					<br>
+					echo "WEP Type Get Error";
 				<?php
 				}
 
@@ -1693,7 +1697,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
 					echo "<br>";
 				}
-				elseif ($getEAP == "tls") //eap-tls
+				elseif ($getEAP == "eap-tls") //eap-tls
 				{
 					$getUser=substr($ProfilePrint[10],14);
 					$getUserCertFile=substr($ProfilePrint[11],15);
@@ -1708,7 +1712,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
 					echo "<br>";
 				}
-				elseif ($getEAP == "ttls") //eap-ttls
+				elseif ($getEAP == "eap-ttls") //eap-ttls
 				{
 					$getUser=substr($ProfilePrint[10],14);
 					$getPass="********";
@@ -1834,57 +1838,29 @@ Joe Conley, joe.conley@lairdtech.com
 					<?php	
 					}	
 				}
-				elseif ($getWEP == "auto") //auto
-				{
-
-				}
-				elseif ($getWEP == "wpa-psk-tkip") //wpa_psk
+				elseif ($getWEP == "wpa_psk") //wpa_psk
 				{
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
-				elseif ($getWEP == "a54cc87bb5fec794c6fd1446d9f8b77a") //wpa_tkip
-				{
-
-				}
-				elseif ($getWEP == "wpa2-psk-aes") //wpa2_psk
+				elseif ($getWEP == "wpa2_psk") //wpa2_psk
 				{
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
-				elseif ($getWEP == "wpa2-aes") //wpa2_aes
-				{
-
-				}
-				elseif ($getWEP == "cckm_tkip") //cckm_tkip
-				{
-
-				}
-				elseif ($getWEP == "cckm-aes") //cckm_aes
-				{
-
-				}
-				elseif ($getWEP == "wpa-psk-aes") //wpa_psk_aes
+				elseif ($getWEP == "WPA_PSK_AES") //wpa_psk_aes
 				{
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
-				elseif ($getWEP == "wpa-aes") //wpa_aes
-				{
-
-				}
-				elseif ($getWEP == "wpa2-psk-tkip") //wpa2_psk_tkp
+				elseif ($getWEP == "WPA2_PSK_TKIP") //wpa2_psk_tkp
 				{
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
-				}
-				elseif ($getWEP == "wpa2-tkip") //wpa2_tkip
-				{
-
 				}
 				else
 				{
-
+					echo "WEP on/Preshared key error";
 				}
 			?>
 				<input class='form-control input-sm' type = "hidden" name = "wbprofiles" value = "<?php echo $_POST['wbprofiles']; ?>"/>
