@@ -19,7 +19,7 @@ Joe Conley, joe.conley@lairdtech.com
     <!--[if lt IE 9]>
       <script src="../assets/js/html5shiv.js"></script>
     <![endif]-->
-<title>SCU - About</title>
+<title>SCU - Global Configuration</title>
   </head>
 
   <body>
@@ -74,17 +74,25 @@ Joe Conley, joe.conley@lairdtech.com
 		}
 		exec('sdc_cli global show', $globalShow);
 		echo "";
-		$getFrag=substr($globalShow[0],29);
-		if ($getFrag == "<unsupported>")
+		foreach ($globalShow as $forshow)
 		{
-			echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag' disabled>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag'>";
-			echo "<br>";
-		}
+			$forshow=trim($forshow);
+			if (substr($forshow,0,24) == "Fragmentation threshold:")
+			{
+				$getFrag=substr($globalShow[0],29);
+				if ($getFrag == "<unsupported>")
+				{
+					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag' disabled>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag'>";
+					echo "<br>";
+				}
+			} // this ends if statement for frag thresh
+		} // this ends foreach loop to match names
+
 		$getRTS=substr($globalShow[1],19);
 		echo "RTS Threshold:<br><input class='form-control input-sm' type='text' name='RTS' value='$getRTS'>";
 		echo "<br>";
