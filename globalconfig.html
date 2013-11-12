@@ -263,36 +263,38 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</select>";
 				echo "<br>";			
 			} // roam period
+
+			if (substr($forshow,0,11) == "BT Coexist:")
+			{
+				$getCoexist=substr($forshow,12);
+				if ($getCoexist == "on")
+				{
+					echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
+					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getCoexist == "off")
+				{
+					echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "BT Coexist get error";
+					echo "<br>";
+				}			
+			} // bt coexist
 		} // this ends foreach loop to match names
 
 
 
 
-		$getCoexist=substr($globalShow[7],16);
-		if ($getCoexist == "on")
-		{
-			echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
-			echo "<option value='on' selected>On</option>";
-			echo "<option value='off'>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getCoexist == "off")
-		{
-			echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
-			echo "<option value='on'>On</option>";
-			echo "<option value='off' selected>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
-			echo "<option value='on'>On</option>";
-			echo "<option value='off' selected>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
+
 
 		$getTXMax=substr($globalShow[8],12);
 		echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
