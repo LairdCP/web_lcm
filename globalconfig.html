@@ -361,6 +361,20 @@ Joe Conley, joe.conley@lairdtech.com
 				<div class="col-md-4">
 				<?php			
 			} // if statement to split the page
+			
+			if (substr($forshow,0,18) == "Certificate store:")
+			{
+				$getCert=substr($forshow,19);
+				echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
+				echo "<br>";			
+			}
+
+			if (substr($forshow,0,15) == "BG Channel Set:")
+			{
+				$getBGChan=substr($forshow,16);
+				echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
+				echo "<br>";			
+			}
 		} // this ends foreach loop to match names
 
 
@@ -369,13 +383,8 @@ Joe Conley, joe.conley@lairdtech.com
 		
 
 
-		$getCert=substr($globalShow[12],23);
-		echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
-		echo "<br>";
 
-		$getBGChan=substr($globalShow[13],20);
-		echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
-		echo "<br>";
+
 
 		$getAggScan=substr($globalShow[14],21);
 		echo "Aggressive scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
