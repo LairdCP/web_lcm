@@ -200,31 +200,32 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<br>";
 				}
 			} //tx diversity 
+			
+			if (substr($forshow,0,13) == "Roam Trigger:")
+			{
+				$getTrigger=substr($forshow,14,3);
+				$num = -95; 
+				echo "Roam Trigger:<br><select class='form-control input-sm' name='Trigger'>";
+				while($num < -50)
+				{
+					$num = $num + 5;
+					if ($num == $getTrigger)
+					{
+						echo "<option value='$num' selected>$num dBm</option>";
+					}
+					else
+					{
+						echo "<option value='$num'>$num dBm</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";
+			}// roam trigger
+			
 		} // this ends foreach loop to match names
 
 
 
-
-
-
-
-		$getTrigger=substr($globalShow[4],18,3);
-		$num = -95; 
-		echo "Roam Trigger:<br><select class='form-control input-sm' name='Trigger'>";
-		while($num < -50)
-		{
-			$num = $num + 5;
-			if ($num == $getTrigger)
-			{
-				echo "<option value='$num' selected>$num dBm</option>";
-			}
-			else
-			{
-				echo "<option value='$num'>$num dBm</option>";
-			}
-		}
-		echo "</select>";
-		echo "<br>";
 
 		$getDelta=substr($globalShow[5],16,2);
 		$getDelta=trim($getDelta);
