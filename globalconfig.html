@@ -242,32 +242,31 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</select>";
 				echo "<br>";			
 			} // roam delta
+
+			if (substr($forshow,0,12) == "Roam Period:")
+			{
+				$getPeriod=substr($forshow,13,2);
+				$num2 = 65; 
+				echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
+				while($num2 > 5)
+				{
+					$num2 = $num2 - 5;
+					if ($num2 == $getPeriod)
+					{
+						echo "<option value='$num2' selected>$num2 Sec</option>";
+					}
+					else
+					{
+						echo "<option value='$num2'>$num2 Sec</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";			
+			} // roam period
 		} // this ends foreach loop to match names
 
 
 
-
-
-
-
-		$getPeriod=substr($globalShow[6],17,2);
-		$getPeriod=trim($getPeriod);
-		$num2 = 65; 
-		echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
-		while($num2 > 5)
-		{
-			$num2 = $num2 - 5;
-			if ($num2 == $getPeriod)
-			{
-				echo "<option value='$num2' selected>$num2 Sec</option>";
-			}
-			else
-			{
-				echo "<option value='$num2'>$num2 Sec</option>";
-			}
-		}
-		echo "</select>";
-		echo "<br>";
 
 		$getCoexist=substr($globalShow[7],16);
 		if ($getCoexist == "on")
