@@ -222,29 +222,32 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 			}// roam trigger
 			
+			if (substr($forshow,0,11) == "Roam Delta:")
+			{
+				$getDelta=substr($forshow,12,2);
+				$num1 = 40; 
+				echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
+				while($num1 > 5)
+				{
+					$num1 = $num1 - 5;
+					if ($num1 == $getDelta)
+					{
+						echo "<option value='$num1' selected>$num1 dBm</option>";
+					}
+					else
+					{
+						echo "<option value='$num1'>$num1 dBm</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";			
+			} // roam delta
 		} // this ends foreach loop to match names
 
 
 
 
-		$getDelta=substr($globalShow[5],16,2);
-		$getDelta=trim($getDelta);
-		$num1 = 40; 
-		echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
-		while($num1 > 5)
-		{
-			$num1 = $num1 - 5;
-			if ($num1 == $getDelta)
-			{
-				echo "<option value='$num1' selected>$num1 dBm</option>";
-			}
-			else
-			{
-				echo "<option value='$num1'>$num1 dBm</option>";
-			}
-		}
-		echo "</select>";
-		echo "<br>";
+
 
 
 		$getPeriod=substr($globalShow[6],17,2);
