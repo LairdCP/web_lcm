@@ -289,46 +289,50 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<br>";
 				}			
 			} // bt coexist
+			
+			if (substr($forshow,0,7) == "TX Max:")
+			{
+				$getTXMax=substr($forshow,8);
+				echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
+				echo "<br>";			
+			} // tx max
+
+			if (substr($forshow,0,18) == "Regulatory domain:")
+			{
+				$getRegDom=substr($forshow,19);
+				echo "Regulatory domain:<br><input class='form-control input-sm' type='text' name='RegDom' value='$getRegDom' disabled>";
+				echo "<br>";			
+			} // regulatory domain
+
+			if (substr($forshow,0,4) == "WMM:")
+			{
+				$getWMM=substr($forshow,5);
+				if ($getWMM == "on")
+				{
+					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
+					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getWMM == "off")
+				{
+					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "WMM get error";
+					echo "<br>";
+				}			
+			} // WMM
 		} // this ends foreach loop to match names
 
 
 
-
-
-
-		$getTXMax=substr($globalShow[8],12);
-		echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
-		echo "<br>";
-
-		$getRegDom=substr($globalShow[9],23);
-		echo "Regulatory domain:<br><input class='form-control input-sm' type='text' name='RegDom' value='$getRegDom' disabled>";
-		echo "<br>";
-
-		$getWMM=substr($globalShow[10],9);
-		if ($getWMM == "on")
-		{
-			echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
-			echo "<option value='on' selected>On</option>";
-			echo "<option value='off'>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getWMM == "off")
-		{
-			echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
-			echo "<option value='on'>On</option>";
-			echo "<option value='off' selected>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
-			echo "<option value='on'>On</option>";
-			echo "<option value='off'>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
 		
 $getCCX=substr($globalShow[11],18);
 		if ($getCCX == "full")
