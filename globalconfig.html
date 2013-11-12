@@ -78,9 +78,9 @@ Joe Conley, joe.conley@lairdtech.com
 		foreach ($globalShow as $forshow)
 		{
 			$forshow=trim($forshow);
-			echo $forcount;
-			$forcount=$forcount + 1;
-			echo "<br>";
+			//echo $forcount;
+			//$forcount=$forcount + 1;
+			//echo "<br>";
 			
 			if (substr($forshow,0,24) == "Fragmentation threshold:")
 			{
@@ -158,54 +158,55 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<br>";
 				}
 			} // rx diversity 
+			
+			if (substr($forshow,0,13) == "TX Diversity:")
+			{
+				$getTXDiv=substr($forshow,14);
+				if ($getTXDiv == "<unsupported>")
+				{
+					echo "TX Diversity:<br><input class='form-control input-sm' type='text' name='TXdiv' value='$getTXDiv' disabled>";
+					echo "<br>";
+				}
+				elseif ($getTXDiv == "main")
+				{
+					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
+					echo "<option value='main' selected>Main Only</option>";
+					echo "<option value='aux'>AUX Only</option>";
+					echo "<option value='on'>On</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getTXDiv == "aux")
+				{
+					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
+					echo "<option value='main'>Main Only</option>";
+					echo "<option value='aux' selected>AUX Only</option>";
+					echo "<option value='on'>On</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getTXDiv == "on")
+				{
+					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
+					echo "<option value='main'>Main Only</option>";
+					echo "<option value='aux'>AUX Only</option>";
+					echo "<option value='on' selected>On</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "TX Diversity get error";
+					echo "<br>";
+				}
+			} //tx diversity 
 		} // this ends foreach loop to match names
 
 
 
 
 
-		$getTXDiv=substr($globalShow[3],18);
-		if ($getTXDiv == "<unsupported>")
-		{
-			echo "TX Diversity:<br><input class='form-control input-sm' type='text' name='TXdiv' value='$getTXDiv' disabled>";
-			echo "<br>";
-		}
-		elseif ($getTXDiv == "main")
-		{
-			echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-			echo "<option value='main' selected>Main Only</option>";
-			echo "<option value='aux'>AUX Only</option>";
-			echo "<option value='on'>On</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getTXDiv == "aux")
-		{
-			echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-			echo "<option value='main'>Main Only</option>";
-			echo "<option value='aux' selected>AUX Only</option>";
-			echo "<option value='on'>On</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getTXDiv == "on")
-		{
-			echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-			echo "<option value='main'>Main Only</option>";
-			echo "<option value='aux'>AUX Only</option>";
-			echo "<option value='on' selected>On</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-			echo "<option value='main'>Main Only</option>";
-			echo "<option value='aux'>AUX Only</option>";
-			echo "<option value='on'>On</option>";
-			echo "</select>";
-			echo "<br>";
-		}
+
 
 		$getTrigger=substr($globalShow[4],18,3);
 		$num = -95; 
