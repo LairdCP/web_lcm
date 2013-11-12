@@ -367,13 +367,116 @@ Joe Conley, joe.conley@lairdtech.com
 				$getCert=substr($forshow,19);
 				echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
 				echo "<br>";			
-			}
+			} // certificate store
 
 			if (substr($forshow,0,15) == "BG Channel Set:")
 			{
 				$getBGChan=substr($forshow,16);
 				echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
 				echo "<br>";			
+			} // bg channel set
+			
+			if (substr($forshow,0,16) == "Aggressive scan:")
+			{
+				$getAggScan=substr($forshow,17);
+				echo "Aggressive scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
+				echo "<br>";
+			} // aggressive scan
+			
+			if (substr($forshow,0,12) == "PMK Caching:")
+			{
+				$getPMK=substr($forshow,21);
+				if ($getPMK == "0")
+				{
+					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
+					echo "<option value='0' selected>Standard</option>";
+					echo "<option value='1'>OPMK</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getPMK == "1")
+				{
+					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
+					echo "<option value='0'>Standard</option>";
+					echo "<option value='1' selected>OPMK</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "PMK Caching get error";
+					echo "<br>";
+				}			
+			} // pmk caching
+			
+			if (substr($forshow,0,22) == "Default Adhoc Channel:")
+			{
+				$getAdhoc=substr($forshow,23);
+				echo "Default Adhoc Channel:<br><input class='form-control input-sm' type='text' name='Adhoc' value='$getAdhoc'>";
+				echo "<br>";			
+			} // default adhoc channel
+			
+			if (substr($forshow,0,14) == "Scan DFS time:")
+			{
+				$getScan=substr($forshow,15);
+				echo "Scan DFS time:<br><input class='form-control input-sm' type='text' name='Scan' value='$getScan'>";
+				echo "<br>";			
+			} // scan dfs time
+			
+			if (substr($forshow,0,13) == "DFS Channels:")
+			{
+				$getDFS=substr($forshow,14);
+				if ($getDFS == "full")
+				{
+					$getDFS="on";
+					echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
+					echo "<option value='on' selected>Full</option>";
+					echo "<option value='off'>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getDFS == "off")
+				{
+					$getDFS="off";
+					echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
+					echo "<option value='on'>Full</option>";
+					echo "<option value='off' selected>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "DFS Channels Get Error";
+					echo "<br>";
+				}			
+			} // dfs channels
+			
+			if (substr($forshow,0,17) == "Auth Server Type:")
+			{
+				$getServer=substr($forshow,18);
+				if ($getServer == "acs")
+				{
+					$getServer=1;
+					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
+					echo "<option value='1' selected>ACS</option>";
+					echo "<option value='2'>SBR</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getServer == "sbr")
+				{
+					$getServer=2;
+					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
+					echo "<option value='1'>ACS</option>";
+					echo "<option value='2' selected>SBR</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+					echo "Auth Server Type Get Error";
+					echo "<br>";
+				}			
 			}
 		} // this ends foreach loop to match names
 
@@ -386,93 +489,16 @@ Joe Conley, joe.conley@lairdtech.com
 
 
 
-		$getAggScan=substr($globalShow[14],21);
-		echo "Aggressive scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
-		echo "<br>";
 
-		$getPMK=substr($globalShow[15],17);
-		if ($getPMK == "0")
-		{
-			echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
-			echo "<option value='0' selected>Standard</option>";
-			echo "<option value='1'>OPMK</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getPMK == "1")
-		{
-			echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
-			echo "<option value='0'>Standard</option>";
-			echo "<option value='1' selected>OPMK</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
-			echo "<option value='0'>Standard</option>";
-			echo "<option value='1'>OPMK</option>";
-			echo "</select>";
-			echo "<br>";
-		}
 
-		$getAdhoc=substr($globalShow[16],27);
-		echo "Default Adhoc Channel:<br><input class='form-control input-sm' type='text' name='Adhoc' value='$getAdhoc'>";
-		echo "<br>";
 
-		$getScan=substr($globalShow[17],19);
-		echo "Scan DFS time:<br><input class='form-control input-sm' type='text' name='Scan' value='$getScan'>";
-		echo "<br>";
 
-		$getDFS=substr($globalShow[18],18);
-		if ($getDFS == "full")
-		{
-			$getDFS="on";
-			echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
-			echo "<option value='on' selected>Full</option>";
-			echo "<option value='off'>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getDFS == "off")
-		{
-			$getDFS="off";
-			echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
-			echo "<option value='on'>Full</option>";
-			echo "<option value='off' selected>Off</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "DFS Channels Get Error";
-			echo "<br>";
-		}
 
-		$getServer=substr($globalShow[19],22);
-		if ($getServer == "acs")
-		{
-			$getServer=1;
-			echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-			echo "<option value='1' selected>ACS</option>";
-			echo "<option value='2'>SBR</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		elseif ($getServer == "sbr")
-		{
-			$getServer=2;
-			echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-			echo "<option value='1'>ACS</option>";
-			echo "<option value='2' selected>SBR</option>";
-			echo "</select>";
-			echo "<br>";
-		}
-		else
-		{
-			echo "Auth Server Type Get Error";
-			echo "<br>";
-		}
+
+
+		
+
+
 
 		$getTTLSinner=substr($globalShow[20],23);
 		if ($getTTLSinner == "0")
