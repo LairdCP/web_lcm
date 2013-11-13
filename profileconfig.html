@@ -1838,12 +1838,12 @@ Joe Conley, joe.conley@lairdtech.com
 					<?php	
 					}	
 				}
-				elseif ($getWEP == "wpa_psk") //wpa_psk
+				elseif ($getWEP == "WPA_PSK") //wpa_psk
 				{
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
-				elseif ($getWEP == "wpa2_psk") //wpa2_psk
+				elseif ($getWEP == "WPA2_PSK") //wpa2_psk
 				{
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
