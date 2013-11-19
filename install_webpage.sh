@@ -78,20 +78,20 @@ else
 	echo "globalconfig.html file not found, cant install correctly"
 fi
 
+[ -e advanced.html ] && Advancedhtml=0 || Advancedhtml=1
+if [ $Advancedhtml == 0 ];
+then
+	cp advancedconfig.html /var/www/docs/
+else
+	echo "advancedconfig.html file not found, cant install correctly"
+fi
+
 [ -e about.html ] && Abouthtml=0 || Abouthtml=1
 if [ $Abouthtml == 0 ];
 then
 	cp about.html /var/www/docs/
 else
 	echo "about.html file not found, cant install correctly"
-fi
-
-[ -e fastcgi.conf ] && Fastcgi=0 || Fastcgi=1
-if [ $Fastcgi == 0 ];
-then
-	cp fastcgi.conf /etc/lighttpd/conf.d/
-else
-	echo "fastcgi.conf not found, cant install correctly"
 fi
 
 [ -e lighttpd.conf ] && Lightconf=0 || Lightconf=1
@@ -110,7 +110,7 @@ else
 	/etc/init.d/S99lighttpd start
 fi
 
-if [ $PHPCGI == 1 ] || [ $Statushtml == 1 ] || [ $Profilehtml == 1 ] || [ $Globalhtml == 1 ] || [ $Abouthtml == 1 ] || [ $Assets == 1 ] || [ $LightPass == 1 ] || [ $Fastcgi == 1 ] || [ $Lightconf == 1 ];
+if [ $PHPCGI == 1 ] || [ $Statushtml == 1 ] || [ $Profilehtml == 1 ] || [ $Globalhtml == 1 ] || [ $Abouthtml == 1 ] || [ $Assets == 1 ] || [ $LightPass == 1 ] || [ $Advancedhtml == 1 ] || [ $Lightconf == 1 ];
 then
 	echo "Web LCU will not function as intended, file(s) missing!"
 else
