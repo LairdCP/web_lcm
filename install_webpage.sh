@@ -78,7 +78,7 @@ else
 	echo "globalconfig.html file not found, cant install correctly"
 fi
 
-[ -e advanced.html ] && Advancedhtml=0 || Advancedhtml=1
+[ -e advancedconfig.html ] && Advancedhtml=0 || Advancedhtml=1
 if [ $Advancedhtml == 0 ];
 then
 	cp advancedconfig.html /var/www/docs/
