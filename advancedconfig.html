@@ -48,44 +48,76 @@ Joe Conley, joe.conley@lairdtech.com
 	<br>
 	<br>
 	<br>
-	<form name="AdvancedEdit" class="form-horizontal col-md-offset-2" role="form" action='' method='post'>
-	  <div class="form-group">
-		<label for="inputCurrentPass" class="col-md-3 control-label">Current Admin Password:</label>
-		<div class="col-md-5">
-		<?php 
-		  echo "<input type='password' name='CurrentPass' class='form-control input-sm' id='inputCurrentPass' value='$getCurrentPass'>";
-		?>
-		</div>
-	  </div>
-	  <div class="form-group">
-		<label for="inputPassword1" class="col-md-3 control-label">New Admin Password:</label>
-		<div class="col-md-5">
-		<?php
-		  echo "<input type='password' name='NewPass' class='form-control input-sm' id='inputPassword1' value='$getNewPass'>";
-		?>
-		</div>
-	  </div>
-	  <div class="form-group">
-		<label for="inputPassword2" class="col-md-3 control-label">Confirm Admin Password:</label>
-		<div class="col-md-5">
-		<?php
-		  echo "<input type='password' name='NewPass2' class='form-control input-sm' id='inputPassword2' value='$getNewPass2'>";
-		?>
-		</div>
-	  </div>
-	  <div class="form-group">
-		<div class="col-md-offset-2 col-md-8">
-		  <button type="submit" class="btn btn-primary">Submit</button>
-		  <input type = "hidden" name = "AdvancedEdit" value = "<?php echo $_POST['AdvancedEdit']; ?>"/>
-		</div>
-	  </div>
-	</form>
+		<form name="PasswordChange" class="form-horizontal col-md-offset-2" role="form" action='' method='post'>
+		  <div class="form-group">
+			<label for="inputCurrentPass" class="col-md-3 control-label">Current Admin Password:</label>
+			<div class="col-md-5">
+			<?php 
+			  echo "<input type='password' name='CurrentPass' class='form-control input-sm' id='inputCurrentPass' value='$getCurrentPass'>";
+			?>
+			</div>
+		  </div>
+		  <div class="form-group">
+			<label for="inputPassword1" class="col-md-3 control-label">New Admin Password:</label>
+			<div class="col-md-5">
+			<?php
+			  echo "<input type='password' name='NewPass' class='form-control input-sm' id='inputPassword1' value='$getNewPass'>";
+			?>
+			</div>
+		  </div>
+		  <div class="form-group">
+			<label for="inputPassword2" class="col-md-3 control-label">Confirm Admin Password:</label>
+			<div class="col-md-5">
+			<?php
+			  echo "<input type='password' name='NewPass2' class='form-control input-sm' id='inputPassword2' value='$getNewPass2'>";
+			?>
+			</div>
+		  </div>
+		  <div class="form-group">
+			<div class="col-md-offset-3 col-md-8">
+			  <button type="submit" class="btn btn-primary">Submit Password Change</button>
+			  <input type = "hidden" name = "PasswordChange" value = "<?php echo $_POST['PasswordChange']; ?>"/>
+			</div>
+		  </div>
+		</form>
+		<br>
+		<br>
+		<form name="RemoteUpdate" class="form-horizontal col-md-offset-2" role="form" action='' method='post'>
+		  <div class="form-group">
+			<label for="RemotePath1" class="col-md-3 control-label">Remote Directory Path</label>
+			<div class="col-md-5">
+				<?php
+				  echo "<input type='text' name='RemotePath' class='form-control input-sm' id='RemotePath1' placeholder='//<server/path/to/images>/fw.txt' value='$getRemotePath'>";
+				?>	
+			</div>
+				<div class="col-md-offset-3 col-md-3 ">
+					  <label class="radio radio-inline">
+						<?php
+						  echo "<input type='radio' name='optionsRadios' id='optionsRadios1' value='http:' checked>";
+						?>	
+						HTTP
+					  </label>
+					  <label class="radio radio-inline">
+						<?php
+						  echo "<input type='radio' name='optionsRadios' id='optionsRadios2' value='ftp:'>";
+						?>	
+						FTP
+					  </label>
+				</div>
+			  </div>
+		  <div class="form-group">
+			<div class="col-md-offset-3 col-md-8">
+			  <button type="submit" class="btn btn-primary">Start Remote Update</button>
+  			  <input type = "hidden" name = "RemoteUpdate" value = "<?php echo $_POST['RemoteUpdate']; ?>"/>
+			</div>
+		  </div>
+		</form>
 	</div><!-- /row panel-body  -->
 	
 		<?php
-	if (isset($_POST['AdvancedEdit']))
+	if (isset($_POST['PasswordChange']))
 		{
-			$AdvancedEdit=$_POST["AdvancedEdit"];
+			$PasswordChange=$_POST["PasswordChange"];
 			$CurrentPass=$_POST["CurrentPass"];
 			$NewPass=$_POST["NewPass"];
 			$NewPass2=$_POST["NewPass2"];
@@ -143,6 +175,22 @@ Joe Conley, joe.conley@lairdtech.com
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
 			// echo "<script>document.getElementById('refresh').submit();</script>";
+		}
+		if (isset($_POST['RemoteUpdate']))
+		{
+			$RemoteUpdate=$_POST["RemoteUpdate"];
+			$RemotePath=$_POST["RemotePath"];
+			$optionsRadios=$_POST["optionsRadios"];
+			
+			if (strlen($RemotePath) > 0)
+			{
+				echo "Future feature, does not work yet.";
+				echo "<br>";
+				echo "Path entered: " . $optionsRadios . $RemotePath;
+			}
+			
+			echo "<form id=refresh action='' method = 'post'>";
+			echo "</form>";
 		}
 		?>
 	</div><!-- /pannel panel-default  -->
