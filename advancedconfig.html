@@ -112,7 +112,6 @@ Joe Conley, joe.conley@lairdtech.com
 			</div>
 		  </div>
 		</form>
-	</div><!-- /row panel-body  -->
 	
 		<?php
 	if (isset($_POST['PasswordChange']))
@@ -184,15 +183,18 @@ Joe Conley, joe.conley@lairdtech.com
 			
 			if (strlen($RemotePath) > 0)
 			{
-				echo "Future feature, does not work yet.";
-				echo "<br>";
-				echo "Path entered: " . $optionsRadios . $RemotePath;
+				?>
+				<div class="alert alert-danger col-md-offset-2 col-md-8">
+					<strong>Future feature!</strong> Update path: <?php echo $optionsRadios . $RemotePath; ?>
+				</div>
+				<?php
 			}
 			
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
 		}
 		?>
+		</div><!-- /row panel-body  -->
 	</div><!-- /pannel panel-default  -->
 	</nav>
     </div> <!-- /container -->
