@@ -1859,6 +1859,9 @@ Joe Conley, joe.conley@lairdtech.com
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
+				elseif ($getWEP == "WPA2_TKIP" || $getWEP == "WPA_TKIP" || $getWEP == "WPA_AES" || $getWEP == "WPA2_AES")
+				{
+				}
 				else
 				{
 					echo "WEP on/Preshared key error";
