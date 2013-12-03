@@ -55,26 +55,24 @@ Joe Conley, joe.conley@lairdtech.com
 		<form class="btn-toolbar" action = "" method = "post">
 				<br>
 				<h2>Profile Configuration</h2>
-				<select name='wbprofiles' multiple class="form-control" style="width:198px">
 				<?php
 				exec("sdc_cli profile list | grep ACTIVE", $ActivePro);
 				exec("sdc_cli profile list", $prolist);
 				$listLen=count($prolist);
 				$editprofile=$_POST["wbprofiles"];
 				$editprofile=chop($editprofile,"ACTIVE");
+				?>
+				<select name='wbprofiles' size="4" class="form-control" style="width:198px">
+				<?php
 				foreach ($ActivePro as $ActivePro)
 					{
 						if  (chop($ActivePro,"ACTIVE") == $editprofile)
 							{
-								echo "<option selected>";
-								echo "$ActivePro";
-								echo "</option>";
+								echo "<option selected>" . "$ActivePro" . "</option>";
 							}
 						else
 							{
-								echo "<option>";
-								echo "$ActivePro";
-								echo "</option>";
+								echo "<option>" . "$ActivePro" . "</option>";
 							}
 					}
 				foreach ($prolist as $prolist)
@@ -83,20 +81,17 @@ Joe Conley, joe.conley@lairdtech.com
 					{
 						if ($prolist == $editprofile)
 							{
-								echo "<option selected>";
-								echo "$prolist";
-								echo "</option>";
+								echo "<option selected>" . "$prolist" . "</option>";
 							}
 						else
 							{
-								echo "<option>";
-								echo "$prolist";
-								echo "</option>";
+								echo "<option>" . "$prolist" . "</option>";
 							}
 					}
 				}
-				echo "</select>";
 				?>
+				</select>
+				
 				<br>
 				<br>
 				<div class="row">
@@ -410,6 +405,7 @@ Joe Conley, joe.conley@lairdtech.com
 			else
 			{
 				?>
+				<br>
 				<div class="alert alert-warning">
 				<h4>Warning!</h4>
 				<?php 

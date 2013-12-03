@@ -78,7 +78,7 @@ Joe Conley, joe.conley@lairdtech.com
 		<br>
 		<form name="RemoteUpdate" class="form-horizontal col-md-offset-2" role="form" action='' method='post'>
 		  <div class="form-group">
-			<label for="RemotePath1" class="col-md-3 control-label">Remote Directory Path</label>
+			<label for="RemotePath1" class="col-md-3 control-label">Remote Update Path</label>
 			<div class="col-md-5">
 				<?php
 				  echo "<input type='text' name='RemotePath' class='form-control input-sm' id='RemotePath1' placeholder='//<server/path/to/images>/fw.txt' value='$getRemotePath'>";
@@ -216,7 +216,11 @@ Joe Conley, joe.conley@lairdtech.com
 			 
 				if ($myFile["error"] !== UPLOAD_ERR_OK) 
 				{
-					echo "<p>An error occurred.</p>";
+					?>
+					<div class="alert alert-danger col-md-offset-2 col-md-8">
+						<strong>Error Occurred Uploading Cert</strong>
+					</div>
+					<?php
 					exit;
 				}
 				if (($_FILES["myFile"]["type"] == "application/pkix-cert") 
