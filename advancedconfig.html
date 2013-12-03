@@ -246,7 +246,11 @@ Joe Conley, joe.conley@lairdtech.com
 						UPLOAD_DIR . $name);
 					if (!$success) 
 					{ 
-						echo "<p>Unable to save file.</p>";
+						?>
+						<div class="alert alert-danger col-md-offset-2 col-md-8">
+							<strong>Unable to save file.</strong>
+						</div>
+						<?php
 						exit;
 					}
 					else
@@ -269,7 +273,11 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				else
 				{
-					echo "Not a valid cert type";
+					?>
+					<div class="alert alert-danger col-md-offset-2 col-md-8">
+						<strong>Not a valid cert type</strong>
+					</div>
+					<?php
 				}
 			}
 		}
