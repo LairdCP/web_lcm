@@ -15,11 +15,7 @@ Joe Conley, joe.conley@lairdtech.com
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="../assets/js/html5shiv.js"></script>
-    <![endif]-->
-<title>SCU - About</title>
+<title>SCU - Advanced Configuration</title>
   </head>
 
   <body>
@@ -110,6 +106,23 @@ Joe Conley, joe.conley@lairdtech.com
 			</div>
 		  </div>
 		</form>
+		
+		<br>
+		<br>
+
+		
+		<form name="UploadCert" class="form-horizontal col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
+			<label for="myFile" class="col-md-3 control-label">Upload Certificate</label>
+			<input type="file" class="col-md-9" name="myFile">
+			<br>
+			<br>
+			<div class="form-group">
+				<div class="col-md-offset-3 col-md-8">
+					<button type="submit" class="btn btn-primary">Upload</button>
+					<input type = "hidden" name="UploadCert" value="<?php echo $_POST['UploadCert']; ?>"/>
+				</div>
+			</div>
+		</form>
 	
 		<?php
 	if (isset($_POST['PasswordChange']))
@@ -173,7 +186,7 @@ Joe Conley, joe.conley@lairdtech.com
 			echo "</form>";
 			// echo "<script>document.getElementById('refresh').submit();</script>";
 		}
-		if (isset($_POST['RemoteUpdate']))
+	if (isset($_POST['RemoteUpdate']))
 		{
 			$RemoteUpdate=$_POST["RemoteUpdate"];
 			$RemotePath=$_POST["RemotePath"];
@@ -190,6 +203,71 @@ Joe Conley, joe.conley@lairdtech.com
 			
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
+		}
+	if (isset($_POST['UploadCert']))
+		{
+			$UploadCert=$_POST["UploadCert"];
+						
+			define("UPLOAD_DIR", "/etc/ssl/");
+ 
+			if (!empty($_FILES["myFile"]))
+			{
+				$myFile = $_FILES["myFile"];
+			 
+				if ($myFile["error"] !== UPLOAD_ERR_OK) 
+				{
+					echo "<p>An error occurred.</p>";
+					exit;
+				}
+				if (($_FILES["myFile"]["type"] == "application/pkix-cert") 
+					|| ($_FILES["myFile"]["type"] == "application/x-pkcs7-certificates") 
+					|| ($_FILES["myFile"]["type"] == "application/octet-stream") 
+					|| ($_FILES["myFile"]["type"] == "application/x-pkcs12") 
+					|| ($_FILES["myFile"]["type"] == "application/x-x509-ca-cert"))
+				{
+					// ensure a safe filename
+					$name = preg_replace("/[^A-Z0-9._-]/i", "_", $myFile["name"]);
+				 
+					//don't overwrite an existing file
+					$i = 0;
+					$parts = pathinfo($name);
+					while (file_exists(UPLOAD_DIR . $name)) 
+					{
+						$i++;
+						$name = $parts["filename"] . "-" . $i . "." . $parts["extension"];
+					}
+				 
+					// preserve file from temporary directory
+					$success = move_uploaded_file($myFile["tmp_name"],
+						UPLOAD_DIR . $name);
+					if (!$success) 
+					{ 
+						echo "<p>Unable to save file.</p>";
+						exit;
+					}
+					else
+					{
+						?>
+						<div class="alert alert-success col-md-offset-2 col-md-8">
+							<strong>Cert has been uploaded!</strong>
+							<br>
+							<?php
+							echo "Upload: " . $_FILES["myFile"]["name"] . "<br>";
+							echo "Type: " . $_FILES["myFile"]["type"] . "<br>";
+							echo "Size: " . ($_FILES["myFile"]["size"] / 1024) . " kB<br>";
+							?>
+						</div>
+						<?php
+					}
+				 
+					// set proper permissions on the new file
+					chmod(UPLOAD_DIR . $name, 0644);
+				}
+				else
+				{
+					echo "Not a valid cert type";
+				}
+			}
 		}
 		?>
 		</div><!-- /row panel-body  -->
