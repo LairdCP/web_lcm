@@ -39,7 +39,7 @@ Joe Conley, joe.conley@lairdtech.com
 	<div class="row panel-body">
 	<form name='globalEdit' action='' method='post'>
 		<br>
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">
 		<h2>Global Configuration</h2>
 		<?php
 		if (isset($_POST['globalSub']))
@@ -56,7 +56,7 @@ Joe Conley, joe.conley@lairdtech.com
 		}
 		?>
 		</div> <!-- /div for h2 and some php code -->
-		<div class="col-md-4 col-md-offset-2">
+		<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-2">
 		<?php
 		exec('sdc_cli status', $sdcstatus);
 		$TitleStatus=ucwords(substr($sdcstatus[0],11));
@@ -354,7 +354,7 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				?>
 				</div><!-- left side -->
-				<div class="col-md-4">
+				<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
 				<?php			
 			} // if statement to split the page
 			
@@ -634,7 +634,7 @@ Joe Conley, joe.conley@lairdtech.com
 		?>
 	</div><!-- right side -->
 
-	<div class="col-md-7 col-md-offset-5">
+	<div class="col-sm-8 col-sm-offset-2 col-md-7 col-md-offset-5">
 	<input type = "hidden" name = "globalEdit" value = "<?php echo $_POST['globalEdit']; ?>"/>
 	<br>
 	<div class="toSubmit">

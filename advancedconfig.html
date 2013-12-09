@@ -41,33 +41,33 @@ Joe Conley, joe.conley@lairdtech.com
 	<div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2"><h2>Advanced Configuration</h2></div>
 
 	<br>
-		<form name="PasswordChange" class="form-horizontal col-md-offset-2" role="form" action='' method='post'>
+		<form name="PasswordChange" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action='' method='post'>
 		  <div class="form-group">
-			<label for="inputCurrentPass" class="col-md-3 control-label">Current Admin Password:</label>
-			<div class="col-md-5">
+			<label for="inputCurrentPass" class="col-md-4 control-label">Current Admin Password:</label>
+			<div class="col-md-6">
 			<?php 
 			  echo "<input type='password' name='CurrentPass' class='form-control input-sm' id='inputCurrentPass' value='$getCurrentPass'>";
 			?>
 			</div>
 		  </div>
 		  <div class="form-group">
-			<label for="inputPassword1" class="col-md-3 control-label">New Admin Password:</label>
-			<div class="col-md-5">
+			<label for="inputPassword1" class="col-md-4 control-label">New Admin Password:</label>
+			<div class="col-md-6">
 			<?php
 			  echo "<input type='password' name='NewPass' class='form-control input-sm' id='inputPassword1' value='$getNewPass'>";
 			?>
 			</div>
 		  </div>
 		  <div class="form-group">
-			<label for="inputPassword2" class="col-md-3 control-label">Confirm Admin Password:</label>
-			<div class="col-md-5">
+			<label for="inputPassword2" class="col-md-4 control-label">Confirm Admin Password:</label>
+			<div class="col-md-6">
 			<?php
 			  echo "<input type='password' name='NewPass2' class='form-control input-sm' id='inputPassword2' value='$getNewPass2'>";
 			?>
 			</div>
 		  </div>
 		  <div class="form-group">
-			<div class="col-md-offset-3 col-md-8">
+			<div class="col-md-offset-4 col-md-8">
 			  <button type="submit" class="btn btn-primary">Submit Password Change</button>
 			  <input type = "hidden" name = "PasswordChange" value = "<?php echo $_POST['PasswordChange']; ?>"/>
 			</div>
@@ -75,15 +75,15 @@ Joe Conley, joe.conley@lairdtech.com
 		</form>
 		<br>
 		<br>
-		<form name="RemoteUpdate" class="form-horizontal col-md-offset-2" role="form" action='' method='post'>
+		<form name="RemoteUpdate" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action='' method='post'>
 		  <div class="form-group">
-			<label for="RemotePath1" class="col-md-3 control-label">Remote Update Path</label>
-			<div class="col-md-5">
+			<label for="RemotePath1" class="col-md-4 control-label">Remote Update Path</label>
+			<div class="col-md-6">
 				<?php
 				  echo "<input type='text' name='RemotePath' class='form-control input-sm' id='RemotePath1' placeholder='//<server/path/to/images>/fw.txt' value='$getRemotePath'>";
 				?>	
 			</div>
-				<div class="col-md-offset-3 col-md-3 ">
+				<div class="col-md-offset-4 col-md-3 ">
 					  <label class="radio radio-inline">
 						<?php
 						  echo "<input type='radio' name='optionsRadios' id='optionsRadios1' value='http:' checked>";
@@ -99,7 +99,7 @@ Joe Conley, joe.conley@lairdtech.com
 				</div>
 			  </div>
 		  <div class="form-group">
-			<div class="col-md-offset-3 col-md-8">
+			<div class="col-md-offset-4 col-md-8">
 			  <button type="submit" class="btn btn-primary">Start Remote Update</button>
   			  <input type = "hidden" name = "RemoteUpdate" value = "<?php echo $_POST['RemoteUpdate']; ?>"/>
 			</div>
@@ -110,13 +110,13 @@ Joe Conley, joe.conley@lairdtech.com
 		<br>
 
 		
-		<form name="UploadCert" class="form-horizontal col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
-			<label for="myFile" class="col-md-3 control-label">Upload Certificate</label>
-			<input type="file" class="col-md-9" name="myFile">
+		<form name="UploadCert" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
+			<label for="myFile" class="col-md-4 control-label">Upload Certificate</label>
+			<input type="file" class="col-md-6" name="myFile">
 			<br>
 			<br>
 			<div class="form-group">
-				<div class="col-md-offset-3 col-md-8">
+				<div class="col-md-offset-4 col-md-8">
 					<button type="submit" class="btn btn-primary">Upload</button>
 					<input type = "hidden" name="UploadCert" value="<?php echo $_POST['UploadCert']; ?>"/>
 				</div>
