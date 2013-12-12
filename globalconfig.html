@@ -56,7 +56,7 @@ Joe Conley, joe.conley@lairdtech.com
 		}
 		?>
 		</div> <!-- /div for h2 and some php code -->
-		<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-2">
+		<div class="">
 		<?php
 		exec('sdc_cli status', $sdcstatus);
 		$TitleStatus=ucwords(substr($sdcstatus[0],11));
@@ -78,6 +78,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$forCount = $forCount + 1;
 			if (substr($forshow,0,24) == "Fragmentation threshold:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getFrag=substr($forshow,25);
 				if ($getFrag == "<unsupported>")
 				{
@@ -89,17 +90,21 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag'>";
 					echo "<br>";
 				}
+				echo "</div>";
 			} // frag thresh
 			
 			if (substr($forshow,0,14) == "RTS Threshold:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRTS=substr($forshow,15);
 				echo "RTS Threshold:<br><input class='form-control input-sm' type='text' name='RTS' value='$getRTS'>";
 				echo "<br>";
+				echo "</div>";
 			} // rts thresh
 			
 			if (substr($forshow,0,13) == "RX Diversity:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRXDiv=substr($forshow,14);
 				if ($getRXDiv == "<unsupported>")
 				{
@@ -151,10 +156,12 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "RX Diversity get error";
 					echo "<br>";
 				}
+				echo "</div>";
 			} // rx diversity 
 			
 			if (substr($forshow,0,13) == "TX Diversity:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTXDiv=substr($forshow,14);
 				if ($getTXDiv == "<unsupported>")
 				{
@@ -193,10 +200,12 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "TX Diversity get error";
 					echo "<br>";
 				}
+				echo "</div>";
 			} //tx diversity 
 			
 			if (substr($forshow,0,13) == "Roam Trigger:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTrigger=substr($forshow,14,3);
 				$num = -95; 
 				echo "Roam Trigger:<br><select class='form-control input-sm' name='Trigger'>";
@@ -214,10 +223,12 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</select>";
 				echo "<br>";
+				echo "</div>";
 			}// roam trigger
 			
 			if (substr($forshow,0,11) == "Roam Delta:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getDelta=substr($forshow,12,2);
 				$num1 = 40; 
 				echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
@@ -234,11 +245,13 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 				}
 				echo "</select>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // roam delta
 
 			if (substr($forshow,0,12) == "Roam Period:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getPeriod=substr($forshow,13,2);
 				$num2 = 65; 
 				echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
@@ -255,11 +268,13 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 				}
 				echo "</select>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // roam period
 
 			if (substr($forshow,0,11) == "BT Coexist:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getCoexist=substr($forshow,12);
 				if ($getCoexist == "on")
 				{
@@ -281,25 +296,31 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "BT Coexist get error";
 					echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // bt coexist
 			
 			if (substr($forshow,0,7) == "TX Max:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTXMax=substr($forshow,8);
 				echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // tx max
 
 			if (substr($forshow,0,18) == "Regulatory domain:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRegDom=substr($forshow,19);
 				echo "Regulatory domain:<br><input class='form-control input-sm' type='text' name='RegDom' value='$getRegDom' disabled>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // regulatory domain
 
 			if (substr($forshow,0,4) == "WMM:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getWMM=substr($forshow,5);
 				if ($getWMM == "on")
 				{
@@ -321,11 +342,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "WMM get error";
 					echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // WMM
 		
 			if (substr($forshow,0,13) == "CCX Features:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getCCX=substr($forshow,14);
 				if ($getCCX == "full")
 				{
@@ -347,40 +370,49 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 						echo "CCX features get error";
 						echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // ccx features
-			
-			if ($forCount == $pageDiv)
-			{
-				?>
-				</div><!-- left side -->
-				<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
-				<?php			
-			} // if statement to split the page
-			
+						
 			if (substr($forshow,0,18) == "Certificate store:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getCert=substr($forshow,19);
 				echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
-				echo "<br>";			
+				echo "<br>";	
+				echo "</div>";
 			} // certificate store
 
 			if (substr($forshow,0,15) == "BG Channel Set:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getBGChan=substr($forshow,16);
 				echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";				
 			} // bg channel set
+			
+			if (substr($forshow,0,14) == "A Channel Set:")
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getAChan=substr($forshow,15);
+				echo "A Channel Set:<br><input class='form-control input-sm' type='text' name='AChan' value='$getAChan'>";
+				echo "<br>";
+				echo "</div>";				
+			} // a channel set
 			
 			if (substr($forshow,0,16) == "Aggressive scan:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAggScan=substr($forshow,17);
 				echo "Aggressive scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
 				echo "<br>";
+				echo "</div>";
 			} // aggressive scan
 			
 			if (substr($forshow,0,12) == "PMK Caching:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getPMK=substr($forshow,21);
 				if ($getPMK == "0")
 				{
@@ -402,25 +434,31 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "PMK Caching get error";
 					echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // pmk caching
 			
 			if (substr($forshow,0,22) == "Default Adhoc Channel:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAdhoc=substr($forshow,23);
 				echo "Default Adhoc Channel:<br><input class='form-control input-sm' type='text' name='Adhoc' value='$getAdhoc'>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // default adhoc channel
 			
 			if (substr($forshow,0,14) == "Scan DFS time:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getScan=substr($forshow,15);
 				echo "Scan DFS time:<br><input class='form-control input-sm' type='text' name='Scan' value='$getScan'>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // scan dfs time
 			
 			if (substr($forshow,0,13) == "DFS Channels:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getDFS=substr($forshow,14);
 				if ($getDFS == "full")
 				{
@@ -444,11 +482,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "DFS Channels Get Error";
 					echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // dfs channels
 			
 			if (substr($forshow,0,17) == "Auth Server Type:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getServer=substr($forshow,18);
 				if ($getServer == "acs")
 				{
@@ -472,11 +512,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "Auth Server Type Get Error";
 					echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // auth server type
 			
 			if (substr($forshow,0,18) == "TTLS Inner Method:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTTLSinner=substr($forshow,19);
 				if ($getTTLSinner == "0")
 				{
@@ -554,11 +596,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "TTLS Inner Method Get Error";
 					echo "<br>";
-				}				
+				}
+				echo "</div>";
 			} // ttls inner method
 
 			if (substr($forshow,0,10) == "FIPS mode:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getFIPS=substr($forshow,11);
 				if ($getFIPS == "enabled")
 				{
@@ -580,11 +624,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "FIPS Mode Get Error";
 					echo "<br>";
-				}			
+				}
+				echo "</div>";
 			} // fips mode
 			
 			if (substr($forshow,0,12) == "Probe Delay:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getProbedelay=substr($forshow,13);
 				$num = 1;
 				echo "Probe Delay:<br><select class='form-control input-sm' name='Probedelay'>";
@@ -601,10 +647,12 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 				}
 				echo "</select>";
-				echo "<br>";			
+				echo "<br>";
+				echo "</div>";
 			} // probe delay
 			if (substr($forshow,0,15) == "IgnoreNullSsid:")
 			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getIgnoreNull=substr($forshow,16);
 				if ($getIgnoreNull == "enabled")
 				{
@@ -628,7 +676,8 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "Ignore Null SSID Get Error";
 					echo "<br>";
-				}				
+				}
+				echo "</div>";
 			} // ignore null ssid
 		} // this ends foreach loop to match names
 		?>
@@ -659,6 +708,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$CCX=$_POST["CCX"];
 			$Cert=$_POST["Cert"];
 			$BGChan=$_POST["BGChan"];
+			$AChan=$_POST["AChan"];
 			$PMK=$_POST["PMK"];
 			$Adhoc=$_POST["Adhoc"];
 			$Scan=$_POST["Scan"];
@@ -726,6 +776,10 @@ Joe Conley, joe.conley@lairdtech.com
 			if ($BGChan != $getBGChan)
 			{
 				exec("sdc_cli global set bg-channel-set $BGChan");
+			}
+			if ($AChan != $getAChan)
+			{
+				exec("sdc_cli global set a-channel-set $AChan");
 			}
 			if ($PMK != $getPMK)
 			{
