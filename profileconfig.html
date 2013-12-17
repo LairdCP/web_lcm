@@ -584,10 +584,18 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "Client Name:<br><input class='form-control input-sm' type='text' name='ClientName' value='$getClient'>";
 				echo "<br>";
 
-				$getTX=substr($ProfilePrint[3],14,2);
+				$getTX=substr($ProfilePrint[3],14,4);
 				$getTX=trim($getTX);
-				$num = -1;
+				$num = 0;
 				echo "TX Power:<br><select class='form-control input-sm' name='TxPower'>";
+				if ($getTX == "auto")
+				{
+					echo "<option value='auto' selected>Auto</option>";
+				}
+				else
+				{
+					echo "<option value='auto'>Auto</option>";
+				}				
 				while($num < 40)
 				{
 					$num = $num + 1;

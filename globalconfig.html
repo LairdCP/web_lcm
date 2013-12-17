@@ -520,75 +520,75 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTTLSinner=substr($forshow,19);
-				if ($getTTLSinner == "0")
+				if ($getTTLSinner == "auto")
 				{
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
-					echo "<option value='0' selected>Auto</option>";
-					echo "<option value='1'>MSCHAP v2</option>";
-					echo "<option value='2'>MSCHAP</option>";
-					echo "<option value='3'>PAP</option>";
-					echo "<option value='4'>CHAP</option>";
-					echo "<option value='5'>EAP-MSCHAP v2</option>";
+					echo "<option value='auto' selected>Auto</option>";
+					echo "<option value='mschapv2'>MSCHAP v2</option>";
+					echo "<option value='mschap'>MSCHAP</option>";
+					echo "<option value='pap'>PAP</option>";
+					echo "<option value='chap'>CHAP</option>";
+					echo "<option value='eap_mschapv2'>EAP-MSCHAP v2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "1")
+				elseif ($getTTLSinner == "mschapv2")
 				{
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
-					echo "<option value='0'>Auto</option>";
-					echo "<option value='1' selected>MSCHAP v2</option>";
-					echo "<option value='2'>MSCHAP</option>";
-					echo "<option value='3'>PAP</option>";
-					echo "<option value='4'>CHAP</option>";
-					echo "<option value='5'>EAP-MSCHAP v2</option>";
+					echo "<option value='auto'>Auto</option>";
+					echo "<option value='mschapv2' selected>MSCHAP v2</option>";
+					echo "<option value='mschap'>MSCHAP</option>";
+					echo "<option value='pap'>PAP</option>";
+					echo "<option value='chap'>CHAP</option>";
+					echo "<option value='eap_mschapv2'>EAP-MSCHAP v2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "2")
+				elseif ($getTTLSinner == "mschap")
 				{
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
-					echo "<option value='0'>Auto</option>";
-					echo "<option value='1'>MSCHAP v2</option>";
-					echo "<option value='2' selected>MSCHAP</option>";
-					echo "<option value='3'>PAP</option>";
-					echo "<option value='4'>CHAP</option>";
-					echo "<option value='5'>EAP-MSCHAP v2</option>";
+					echo "<option value='auto'>Auto</option>";
+					echo "<option value='mschapv2'>MSCHAP v2</option>";
+					echo "<option value='mschap' selected>MSCHAP</option>";
+					echo "<option value='pap'>PAP</option>";
+					echo "<option value='chap'>CHAP</option>";
+					echo "<option value='eap_mschapv2'>EAP-MSCHAP v2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "3")
+				elseif ($getTTLSinner == "pap")
 				{
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
-					echo "<option value='0'>Auto</option>";
-					echo "<option value='1'>MSCHAP v2</option>";
-					echo "<option value='2'>MSCHAP</option>";
-					echo "<option value='3' selected>PAP</option>";
-					echo "<option value='4'>CHAP</option>";
-					echo "<option value='5'>EAP-MSCHAP v2</option>";
+					echo "<option value='auto'>Auto</option>";
+					echo "<option value='mschapv2'>MSCHAP v2</option>";
+					echo "<option value='mschap'>MSCHAP</option>";
+					echo "<option value='pap' selected>PAP</option>";
+					echo "<option value='chap'>CHAP</option>";
+					echo "<option value='eap_mschapv2'>EAP-MSCHAP v2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "4")
+				elseif ($getTTLSinner == "chap")
 				{
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
-					echo "<option value='0'>Auto</option>";
-					echo "<option value='1'>MSCHAP v2</option>";
-					echo "<option value='2'>MSCHAP</option>";
-					echo "<option value='3'>PAP</option>";
-					echo "<option value='4' selected>CHAP</option>";
-					echo "<option value='5'>EAP-MSCHAP v2</option>";
+					echo "<option value='auto'>Auto</option>";
+					echo "<option value='mschapv2'>MSCHAP v2</option>";
+					echo "<option value='mschap'>MSCHAP</option>";
+					echo "<option value='pap'>PAP</option>";
+					echo "<option value='chap' selected>CHAP</option>";
+					echo "<option value='eap_mschapv2'>EAP-MSCHAP v2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "5")
+				elseif ($getTTLSinner == "eap_mschapv2")
 				{
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
-					echo "<option value='0'>Auto</option>";
-					echo "<option value='1'>MSCHAP v2</option>";
-					echo "<option value='2'>MSCHAP</option>";
-					echo "<option value='3'>PAP</option>";
-					echo "<option value='4'>CHAP</option>";
-					echo "<option value='5' selected>EAP-MSCHAP v2</option>";
+					echo "<option value='auto'>Auto</option>";
+					echo "<option value='mschapv2'>MSCHAP v2</option>";
+					echo "<option value='mschap'>MSCHAP</option>";
+					echo "<option value='pap'>PAP</option>";
+					echo "<option value='chap'>CHAP</option>";
+					echo "<option value='eap_mschapv2' selected>EAP-MSCHAP v2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -650,10 +650,10 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // probe delay
-			if (substr($forshow,0,15) == "IgnoreNullSsid:")
+			if (substr($forshow,0,17) == "Ignore Null Ssid:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getIgnoreNull=substr($forshow,16);
+				$getIgnoreNull=substr($forshow,18);
 				if ($getIgnoreNull == "enabled")
 				{
 					$getIgnoreNull="enable";
@@ -679,6 +679,35 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // ignore null ssid
+			if (substr($forshow,0,11) == "Date Check:")
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getDateCheck=substr($forshow,12);
+				if ($getDateCheck == "enabled")
+				{
+					$getDateCheck="enable";
+					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
+					echo "<option value='enable' selected>Enabled</option>";
+					echo "<option value='disable'>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getDateCheck == "disabled")
+				{
+					$getDateCheck="disable";
+					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
+					echo "<option value='enable'>Enabled</option>";
+					echo "<option value='disable' selected>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}	
+				else
+				{
+					echo "Date Check Get Error";
+					echo "<br>";
+				}
+				echo "</div>";
+			} // date check
 		} // this ends foreach loop to match names
 		?>
 	</div><!-- right side -->
@@ -718,6 +747,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$FIPS=$_POST["FIPS"];
 			$Probedelay=$_POST["Probedelay"];
 			$IgnoreNull=$_POST["IgnoreNull"];
+			$DateCheck=$_POST["DateCheck"];
 
 	
 			if ($Frag != $getFrag && strlen($Frag) > 0)
@@ -817,7 +847,11 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				exec("sdc_cli global set ignore-null-ssid $IgnoreNull");
 			}
-
+			if ($DateCheck != $getDateCheck)
+			{
+				exec("sdc_cli global set date-check $DateCheck");
+			}
+			
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
 			echo "<script>document.getElementById('refresh').submit();</script>";
