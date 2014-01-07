@@ -401,11 +401,11 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";				
 			} // a channel set
 			
-			if (substr($forshow,0,16) == "Aggressive scan:")
+			if (substr($forshow,0,16) == "Aggressive Scan:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAggScan=substr($forshow,17);
-				echo "Aggressive scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
+				echo "Aggressive Scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
 				echo "<br>";
 				echo "</div>";
 			} // aggressive scan
@@ -447,7 +447,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			} // default adhoc channel
 			
-			if (substr($forshow,0,14) == "Scan DFS time:")
+			if (substr($forshow,0,14) == "Scan DFS Time:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getScan=substr($forshow,15);
@@ -600,13 +600,13 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			} // ttls inner method
 
-			if (substr($forshow,0,10) == "FIPS mode:")
+			if (substr($forshow,0,10) == "FIPS Mode:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getFIPS=substr($forshow,11);
 				if ($getFIPS == "enabled")
 				{
-					echo "FIPS mode:<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS Mode:<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled' selected>Enabled</option>";
 					echo "<option value='disabled'>Disabled</option>";
 					echo "</select>";
@@ -614,7 +614,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getFIPS == "disabled")
 				{
-					echo "FIPS mode:<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS Mode:<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
@@ -650,7 +650,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // probe delay
-			if (substr($forshow,0,17) == "Ignore Null Ssid:")
+			if (substr($forshow,0,17) == "Ignore Null SSID:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getIgnoreNull=substr($forshow,18);
