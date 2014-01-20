@@ -604,17 +604,41 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getFIPS=substr($forshow,11);
-				if ($getFIPS == "enabled")
+				if ($getFIPS == "Disabled and Inactive")
 				{
-					echo "FIPS Mode:<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS:Disabled and Inactive<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled'>Enabled</option>";
+					echo "<option value='disabled' selected>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getFIPS == "Inactive - Enabled on next start")
+				{
+					echo "FIPS:Inactive - Enabled on next start<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled' selected>Enabled</option>";
 					echo "<option value='disabled'>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getFIPS == "disabled")
+				elseif ($getFIPS == "Active - Disabled on next start")
 				{
-					echo "FIPS Mode:<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS:Active - Disabled on next start<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled'>Enabled</option>";
+					echo "<option value='disabled' selected>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getFIPS == "Enabled and Active")
+				{
+					echo "FIPS:Enabled and Active<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled' selected>Enabled</option>";
+					echo "<option value='disabled'>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getFIPS == "Unable to determine")
+				{
+					echo "FIPS:Unable to determine<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
