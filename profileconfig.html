@@ -291,7 +291,7 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				if (substr($printScan[$valueSSID],0,6) == "SSID: " && substr($printScan[$valueRSSI],0,6) == "RSSI: ")
 				{
-					if (substr($printScan[$valueSSID],7) == "")
+					if (substr($printScan[$valueSSID],7) == '""')
 						{
 							++$valueSSID;
 						}
