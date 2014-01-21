@@ -99,17 +99,45 @@ Joe Conley, joe.conley@lairdtech.com
               </h6>
             </div>
             <div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2"></div>
-            <div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2">
-              <h6>
-                <strong>Logread Debug:</strong>
-              </h6>
-            </div>
             <div class="col-xs-12 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
-              <textarea class="form-control" rows="10"><?php
-                      $output = shell_exec('logread');
-                      echo "$output";
-                      ?>
-                     </textarea>
+				<div class="panel-group" id="accordion">
+				  <div class="panel panel-default">
+					<div class="panel-heading">
+					  <h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+						Logread:
+						</a>
+					  </h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body">
+							  <textarea class="form-control" rows="10"><?php
+									  $output = shell_exec('logread');
+									  echo "$output";
+									  ?>
+									 </textarea>
+						</div>     
+					</div>
+				  </div>
+				  <div class="panel panel-default">
+					<div class="panel-heading">
+					  <h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+						 Dmesg:
+						</a>
+					  </h4>
+					</div>
+					<div id="collapseTwo" class="panel-collapse collapse">
+						<div class="panel-body">
+							  <textarea class="form-control" rows="10"><?php
+									  $output = shell_exec('dmesg');
+									  echo "$output";
+									  ?>
+									 </textarea>
+						</div>     
+					</div>
+				  </div>
+				</div>
             </div>
           </div>
           <!-- /row panel-body  -->
