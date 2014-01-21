@@ -31,7 +31,7 @@ Joe Conley, joe.conley@lairdtech.com
 			<li class="active"><a href="/status.html">Status</a></li>
 			<li><a href="/profileconfig.html">Profile Configuration</a></li>
 			<li><a href="/globalconfig.html">Global Configuration</a></li>
-			<li><a href="/advancedconfig.html">Advanced Configuration</a></li>
+			<li><a href="/advancedconfig.html">Advanced</a></li>
 			<li><a href="/about.html">About</a></li>
 		</ul>
 	<?php
@@ -41,7 +41,7 @@ Joe Conley, joe.conley@lairdtech.com
 	$TitleStatus=ucwords(substr($sdcstatus[0],11));
 	echo "<title>SCU - $TitleStatus</title>";
 	$RSSI=$sdcstatus;
-	$subRSSI=substr($RSSI[3],10,3);
+	$subRSSI=substr($RSSI[4],10,3);
 	$RSSIMeter=$subRSSI+120;
 	?>
 	<!-- Show status -->
@@ -64,7 +64,7 @@ Joe Conley, joe.conley@lairdtech.com
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[11]; ?></strong></h6></div> <!-- /Bit Rate -->
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[12]; ?></strong></h6></div> <!-- /TX Power -->
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[4]; ?></strong></h6></div> <!-- /RSSI -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><div class="progress">
+	<div class="col-xs-10 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2"><div class="progress">
 
 	<?php
 	if ($subRSSI == 0) //account for not connected
@@ -116,7 +116,6 @@ Joe Conley, joe.conley@lairdtech.com
 	</div>
     </div>
 	</div><!-- /row panel-body -->
-	<meta http-equiv="refresh" content="5" >
 	<!--<meta http-equiv="refresh" content="5" >-->
 	</nav>
     </div> <!-- /container -->
