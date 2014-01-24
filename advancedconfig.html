@@ -18,8 +18,7 @@ Joe Conley, joe.conley@lairdtech.com
   </head>
 
   <body>
-
-    <div class="container">
+   <div class="container">
 	<br>
 		<div class="row">
 		<div class="hidden-xs col-sm-3 col-md-4"></div>	
@@ -195,7 +194,15 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				?>
 				<div class="alert alert-danger col-md-offset-2 col-md-8">
-					<strong>Future feature!</strong> Update path: <?php echo $optionsRadios . $RemotePath; ?>
+					<strong>Remote Update Output:</strong>
+					<br>
+					<?php
+					exec('fw_update -x --url ' . $optionsRadios . $RemotePath . ' &> fw_update_log.txt', &$fw_updateInfo);
+					echo implode($fw_updateInfo);
+					echo implode(file("fw_update_log.txt"));
+					echo "<form id=refresh action='' method = 'post'>";
+					echo "</form>";
+					?>
 				</div>
 				<?php
 			}
@@ -291,7 +298,5 @@ Joe Conley, joe.conley@lairdtech.com
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/js/bootstrap.min.js"></script>
-
-
   </body>
 </html>
