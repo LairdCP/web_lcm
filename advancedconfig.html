@@ -74,6 +74,21 @@ Joe Conley, joe.conley@lairdtech.com
 		</form>
 		<br>
 		<br>
+		<form name="UploadCert" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
+			<label for="myFile" class="col-md-4 control-label">Upload Certificate</label>
+			<input type="file" class="col-md-6" name="myFile">
+			<br>
+			<br>
+			<div class="form-group">
+				<div class="col-md-offset-4 col-md-8">
+					<button type="submit" class="btn btn-primary">Upload</button>
+					<input type = "hidden" name="UploadCert" value="<?php echo $_POST['UploadCert']; ?>"/>
+				</div>
+			</div>
+		</form>		
+		<br>
+		<br>		
+		
 		<form name="RemoteUpdate" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action='' method='post'>
 		  <div class="form-group">
 			<label for="RemotePath1" class="col-md-4 control-label">Remote Update Path</label>
@@ -100,28 +115,41 @@ Joe Conley, joe.conley@lairdtech.com
 		  <div class="form-group">
 			<div class="col-md-offset-4 col-md-8">
 			  <button type="submit" class="btn btn-primary">Start Remote Update</button>
-  			  <input type = "hidden" name = "RemoteUpdate" value = "<?php echo $_POST['RemoteUpdate']; ?>"/>
+			  <input type = "hidden" name = "RemoteUpdate" value = "<?php echo $_POST['RemoteUpdate']; ?>"/>
 			</div>
 		  </div>
 		</form>
-		
 		<br>
-		<br>
-
-		
-		<form name="UploadCert" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
-			<label for="myFile" class="col-md-4 control-label">Upload Certificate</label>
-			<input type="file" class="col-md-6" name="myFile">
-			<br>
-			<br>
-			<div class="form-group">
-				<div class="col-md-offset-4 col-md-8">
-					<button type="submit" class="btn btn-primary">Upload</button>
-					<input type = "hidden" name="UploadCert" value="<?php echo $_POST['UploadCert']; ?>"/>
+		<?php
+		$FWupdateLog='fw_update_log.txt';
+		if (file_exists($FWupdateLog))
+		{
+		?>
+        <div class="col-xs-12 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
+			<div class="panel-group" id="accordion">
+			  <div class="panel panel-default">
+				<div class="panel-heading">
+				  <h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+					Remote Update Log:
+					</a>
+				  </h4>
 				</div>
+				<div id="collapseOne" class="panel-collapse collapse">
+					<div class="panel-body">
+						  <textarea class="form-control" rows="10"><?php
+									echo implode(file("fw_update_log.txt"));
+								  ?>
+								 </textarea>
+					</div>     
+				</div>
+			  </div>
 			</div>
-		</form>
-	
+		</div>
+		<?php
+		}
+		?>
+		<br>
 		<?php
 	if (isset($_POST['PasswordChange']))
 		{
@@ -193,16 +221,18 @@ Joe Conley, joe.conley@lairdtech.com
 			if (strlen($RemotePath) > 0)
 			{
 				?>
+				<br>
+				<br>
 				<div class="alert alert-danger col-md-offset-2 col-md-8">
-					<strong>Remote Update Output:</strong>
+					<strong>Remote Update Started:</strong>
+					Please check log for results. This page will refresh in 5 seconds and the log will be viewable. 
 					<br>
 					<?php
-					exec('fw_update -x --url ' . $optionsRadios . $RemotePath . ' &> fw_update_log.txt', &$fw_updateInfo);
-					echo implode($fw_updateInfo);
-					echo implode(file("fw_update_log.txt"));
+					exec('fw_update -x --url ' . $optionsRadios . $RemotePath . ' &> fw_update_log.txt &');
 					echo "<form id=refresh action='' method = 'post'>";
 					echo "</form>";
 					?>
+				<meta http-equiv="refresh" content="5" >
 				</div>
 				<?php
 			}
