@@ -285,27 +285,40 @@ Joe Conley, joe.conley@lairdtech.com
 			<h2>Select a SSID and profile name:</h2>
 			<?php
 			$count=0;
-			$valueSSID=1;
-			$valueRSSI=6;
 			$printScan=file("sdccliscan");
-			echo "<br>";
 			echo "<form name='ScanADD' action='' method='post'>";
 			echo "<select name='ScanList' size='4' class='form-control'>";
-			while ($count < count($printScan)/8)
+			while ($count < count($printScan))
 			{
-				if (substr($printScan[$valueSSID],0,6) == "SSID: " && substr($printScan[$valueRSSI],0,6) == "RSSI: ")
+				if (substr($printScan[$count],0,6) == "SSID: ")
 				{
-					if (substr($printScan[$valueSSID],7) == '""')
-						{
-							++$valueSSID;
-						}
-					$realSSID=substr($printScan[$valueSSID],6);
-					$realRSSI=substr($printScan[$valueRSSI],6);
-					echo "<option value='$realSSID'>$realSSID @ $realRSSI</option>";
-				}	
-				$valueSSID = $valueSSID + 8;
-				$valueRSSI = $valueRSSI + 8;
-			$count=$count + 1;
+					$scanSSID=substr($printScan[$count],6);
+				}
+				if (substr($printScan[$count],0,7) == "BSSID: ")
+				{
+					$scanBSSID=substr($printScan[$count],7);
+				}
+				if (substr($printScan[$count],0,9) == "Channel: ")
+				{
+					$scanChannel=substr($printScan[$count],9);
+				}
+				if (substr($printScan[$count],0,6) == "RSSI: ")
+				{
+					$scanRSSI=substr($printScan[$count],6);
+				}
+				if (substr($printScan[$count],0,10) == "Security: ")
+				{
+					$scanSecurity=substr($printScan[$count],10);
+				}
+					if (strlen($scanSSID) == 0 || strlen($scanBSSID) == 0 || strlen($scanChannel) == 0 || strlen($scanRSSI) == 0 || strlen($scanSecurity) == 0 || $LastSSID == $scanSSID)
+				{
+				}
+				else
+				{
+					echo "<option value='$scanSSID'>$scanSSID @ $scanRSSI</option>";
+				}
+				$LastSSID=$scanSSID;
+			++$count;
 			}
 			exec("rm sdccliscan");
 			?>
