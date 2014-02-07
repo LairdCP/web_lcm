@@ -462,10 +462,9 @@ Joe Conley, joe.conley@lairdtech.com
 						?>
 						<form name='testEdit' action='' method='post'>
 						<?php
-						echo "<input type='text' name='renamed' value='$editprofile'>";
+						echo "<input class='form-control input-sm' type='text' name='renamed' value='$editprofile'>";
 						?>
 						<input type = "hidden" name = "wbprofiles" value = "<?php echo $_POST['wbprofiles']; ?>"/>
-						<br>
 						<br>
 						<button class="btn btn-primary" type='submit' name='EditRename'>Submit</button>
 						</form>
@@ -478,9 +477,8 @@ Joe Conley, joe.conley@lairdtech.com
 					$renamed=$_POST["renamed"];
 					?>
 						<br>
-						<h2><?php echo "Rename Profile $wbprofilename" ?></h2>
 						<?php	
-						if( $editprofile != $renamed)
+						if( trim($editprofile) != trim($renamed))
 						{
 							if( strlen($renamed) != 0 )
 							{
