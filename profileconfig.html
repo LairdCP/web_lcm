@@ -200,7 +200,7 @@ Joe Conley, joe.conley@lairdtech.com
 						foreach ($prolist as $prolisted)
 						{
 							$rawprofile=chop($prolisted,"ACTIVE");
-							if (strcasecmp($rawprofile,$NewProfile) != 0)
+							if (strcasecmp(trim($rawprofile),trim($NewProfile)) != 0)
 							{
 								$templength++;	
 							}
