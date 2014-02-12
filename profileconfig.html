@@ -284,41 +284,23 @@ Joe Conley, joe.conley@lairdtech.com
 			<br>
 			<h2>Select a SSID and profile name:</h2>
 			<?php
-			$count=0;
 			$printScan=file("sdccliscan");
+			$ScanCount=1;
+			$RSSICount=4;
+			$SecurityCount=6;
+
 			echo "<form name='ScanADD' action='' method='post'>";
 			echo "<select name='ScanList' size='4' class='form-control'>";
-			while ($count < count($printScan))
+			for ($i = 0; $i <= count($printScan); $i += 8)
 			{
-				if (substr($printScan[$count],0,6) == "SSID: ")
-				{
-					$scanSSID=substr($printScan[$count],6);
-				}
-				if (substr($printScan[$count],0,7) == "BSSID: ")
-				{
-					$scanBSSID=substr($printScan[$count],7);
-				}
-				if (substr($printScan[$count],0,9) == "Channel: ")
-				{
-					$scanChannel=substr($printScan[$count],9);
-				}
-				if (substr($printScan[$count],0,6) == "RSSI: ")
-				{
-					$scanRSSI=substr($printScan[$count],6);
-				}
-				if (substr($printScan[$count],0,10) == "Security: ")
-				{
-					$scanSecurity=substr($printScan[$count],10);
-				}
-					if (strlen($scanSSID) == 0 || strlen($scanBSSID) == 0 || strlen($scanChannel) == 0 || strlen($scanRSSI) == 0 || strlen($scanSecurity) == 0 || $LastSSID == $scanSSID)
-				{
-				}
-				else
-				{
-					echo "<option value='$scanSSID'>$scanSSID @ $scanRSSI</option>";
-				}
-				$LastSSID=$scanSSID;
-			++$count;
+			$scanSSID=trim(substr($printScan[$ScanCount],6));
+			$scanRSSI=substr($printScan[$RSSICount],6);
+			$scanSecurity=substr($printScan[$SecurityCount],10);
+			$scanSecurity=explode(" ",$scanSecurity);
+			echo "<option value='$scanSSID,$scanSecurity[0]'>$scanSSID @ $scanRSSI using $scanSecurity[0]</option>";			
+			$ScanCount += 8;
+			$RSSICount += 8;
+			$SecurityCount += 8;
 			}
 			exec("rm sdccliscan");
 			?>
@@ -350,8 +332,20 @@ Joe Conley, joe.conley@lairdtech.com
 			<input type = "hidden" name = "ScanList" value = "<?php echo $_POST['ScanList']; ?>"/>
 			<input type = "hidden" name = "NewProfile" value = "<?php echo $_POST['NewProfile']; ?>"/>
 			<?php
-			$ScanList=$_POST['ScanList'];
 			$NewProfile=$_POST["NewProfile"];
+			$ScanList=$_POST['ScanList'];
+			$ScanList=explode(",",$ScanList);
+			$ScanListSSID=$ScanList[0];
+			$ScanListSecurity=trim($ScanList[1]);
+			if ($ScanListSecurity == "wpa2-tkip")
+			{
+				$ScanListSecurity="wpa-tkip";
+			}
+			elseif ($ScanListSecurity == "wpa2-psk-tkip")
+			{
+				$ScanListSecurity="psk";
+			}
+
 			echo "<br>";
 			if (strlen($NewProfile) == 0)
 			{
@@ -381,7 +375,8 @@ Joe Conley, joe.conley@lairdtech.com
 					<h4>Success!</h4>
 					<?php
 					exec("sdc_cli profile $NewProfile add");
-					exec("sdc_cli profile $NewProfile set ssid $ScanList");
+					exec("sdc_cli profile $NewProfile set ssid $ScanListSSID");
+					exec("sdc_cli profile $NewProfile set weptype $ScanListSecurity");
 					echo "<h6>Added profile $NewProfile</h6>";
 					?>
 					<meta http-equiv="refresh" content="1">
