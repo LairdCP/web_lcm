@@ -1,5 +1,5 @@
 <!--
-Web Based Configuration Tool for WB40NBT/WB45NBT
+Web Based Configuration Tool for WB Products
 Joe Conley, joe.conley@lairdtech.com
 -->
 <!DOCTYPE html>
@@ -297,7 +297,10 @@ Joe Conley, joe.conley@lairdtech.com
 			$scanRSSI=substr($printScan[$RSSICount],6);
 			$scanSecurity=substr($printScan[$SecurityCount],10);
 			$scanSecurity=explode(" ",$scanSecurity);
-			echo "<option value='$scanSSID,$scanSecurity[0]'>$scanSSID @ $scanRSSI using $scanSecurity[0]</option>";			
+			if (strlen($scanSSID) != 0 && strlen($scanSSID) != 0)
+			{
+				echo "<option value='$scanSSID,$scanSecurity[0]'>$scanSSID @ $scanRSSI using $scanSecurity[0]</option>";			
+			}
 			$ScanCount += 8;
 			$RSSICount += 8;
 			$SecurityCount += 8;
