@@ -274,7 +274,7 @@ Joe Conley, joe.conley@lairdtech.com
 			<form id=refresh action='' method = 'post'>
 			<input type = "hidden" name = "formScanAdd" value = "formScanAdd"/>
 			<script>
-			 setTimeout(function(){document.getElementById('refresh').submit()},2000);
+			setTimeout(function(){document.getElementById('refresh').submit()},2000);
 			</script>
 			<?php
 		}
@@ -310,16 +310,19 @@ Joe Conley, joe.conley@lairdtech.com
 			$scanSecurity=explode(" ",$scanSecurity);
 			if (strlen($scanSSID) != 0 && strlen($scanRSSI) != 0)
 			{
-				$TrimmedSSID=$scanSSID;
+				echo "<tr>";
+				echo "<td><input type='radio' name='ScanList' value='$scanSSID,$scanSecurity[0]'/></td>";
 				if (strlen($scanSSID) > 10)
 				{
-					$TrimmedSSID=substr($scanSSID,0,10) . "...";
+					$TrimSSID=substr($scanSSID,0,10) . "...";
+					echo "<td><p data-toggle='tooltip' data-placement='bottom' data-trigger='hover focus click' title='$scanSSID'>$TrimSSID</p></td>";
 				}
-				echo "<tr>";
-					echo "<td><input type='radio' name='ScanList' value='$scanSSID,$scanSecurity[0]'/></td>";
-					echo "<td>$TrimmedSSID</td>";
-					echo "<td>$scanRSSI</td>";
-					echo "<td>$scanSecurity[0]</td>";
+				else
+				{
+					echo "<td>$scanSSID</td>";
+				}
+				echo "<td>$scanRSSI</td>";
+				echo "<td>$scanSecurity[0]</td>";
 				echo "</tr>";				
 			}
 			$ScanCount += 8;
