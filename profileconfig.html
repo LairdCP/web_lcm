@@ -440,7 +440,14 @@ Joe Conley, joe.conley@lairdtech.com
 				exec("sdc_cli profile $wbprofilename show", $printPro);
 				foreach ($printPro as $printPro)
 				{
-					echo "<h6>$printPro</h6>";
+					if (substr($printPro,14) == "wpa2-tkip" || substr($printPro,14) == "wpa2-psk-tkip")
+					{
+						echo "<h6>WEP Type: unsupported<h6>";
+					}
+					else
+					{
+					echo "<h6>$printPro<h6>";
+					}
 				}
 		}
 
@@ -1036,6 +1043,44 @@ Joe Conley, joe.conley@lairdtech.com
 					<option value='CCKM_AES'>CCKM_AES</option>
 					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
 					<option value='WPA_AES' selected>WPA_AES</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa2-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='' selected>Unsupported WEP Type</option>
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
+					</select>
+					<br>
+				<?php
+				}
+				elseif ($getWEP == "wpa2-psk-tkip")
+				{
+				?>
+					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					<option value='' selected>Unsupported WEP Type</option>					
+					<option value='off'>off</option>
+					<option value='on'>on</option>
+					<option value='auto'>auto</option>
+					<option value='WPA_PSK'>WPA_PSK</option>
+					<option value='WPA_TKIP'>WPA_TKIP</option>
+					<option value='WPA2_PSK'>WPA2_PSK</option>
+					<option value='WPA2_AES'>WPA2_AES</option>
+					<option value='CCKM_TKIP'>CCKM_TKIP</option>
+					<option value='CCKM_AES'>CCKM_AES</option>
+					<option value='WPA_PSK_AES'>WPA_PSK_AES</option>
 					</select>
 					<br>
 				<?php
@@ -1825,7 +1870,7 @@ Joe Conley, joe.conley@lairdtech.com
 					$getPSK=substr($ProfilePrint[10],9);	
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
-				elseif ($getWEP == "WPA_TKIP" || $getWEP == "WPA_AES" || $getWEP == "WPA2_AES" || $getWEP == "CCKM_TKIP" || $getWEP == "CCKM_AES")
+				elseif ($getWEP == "WPA_TKIP" || $getWEP == "WPA_AES" || $getWEP == "WPA2_AES" || $getWEP == "CCKM_TKIP" || $getWEP == "CCKM_AES" || $getWEP == "wpa2-psk-tkip" || $getWEP == "wpa2-tkip")
 				{
 				}
 				else
