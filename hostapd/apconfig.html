@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+		<title>AP Mode DEV</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<style>
+		.sidebar {
+		  display: none;
+		}
+		@media (min-width: 768px) {
+		  .sidebar {
+			position: fixed;
+			top: 0px;
+			bottom: 0;
+			left: 0;
+			z-index: 1000;
+			display: block;
+			padding: 20px;
+			overflow-x: hidden;
+			overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+			background-color: #f5f5f5;
+			border-right: 1px solid #eee;
+		  }
+		}
+		.nav-sidebar {
+		  margin-right: -21px; /* 20px padding + 1px border */
+		  margin-bottom: 20px;
+		  margin-left: -20px;
+		}
+		.nav-sidebar > li > a {
+		  padding-right: 20px;
+		  padding-left: 20px;
+		}
+		.nav-sidebar > .active > a {
+		  color: #fff;
+		  background-color: #428bca;
+		}
+		.main {
+		  padding: 20px;
+		}
+		@media (min-width: 768px) {
+		  .main {
+			padding-right: 40px;
+			padding-left: 40px;
+		  }
+		}
+		.main .page-header {
+		  margin-top: 0;
+		}
+		</style>
+	</head>
+
+	<body>
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+			    <ul class="nav nav-sidebar">
+					<li class="sidebar-brand"><a>WB AP Mode</a>
+					</li>
+					<li><a href="/apstatus.html">Status</a>
+					</li>
+					<li class="active"><a href="/apconfig.html">Configuration</a>
+					</li>
+					<li><a href="">Logging</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<h1 class="page-header">AP Config</h1>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<form name='EditAP' action='' method='post'>
+				<div class="col-xs-4">
+				<?php
+				$contents_file_hostapd=file_get_contents("/etc/hostapd/hostapd.conf");
+				$contents_pieces=explode("\n", $contents_file_hostapd);
+				foreach ($contents_pieces as $for_contents_pieces)
+				{
+					if (substr($for_contents_pieces,0,10) == "interface=")
+					{
+						$getInterface=substr($for_contents_pieces,10);
+						echo "Interface:<br><input class='form-control input-sm' type='text' name='Interface' value='$getInterface'>";
+						echo "<br>";							
+					}
+					if (substr($for_contents_pieces,0,5) == "ssid=")
+					{
+						$getSSID=substr($for_contents_pieces,5);
+						echo "SSID:<br><input class='form-control input-sm' type='text' name='SSID' value='$getSSID'>";
+						echo "<br>";							
+					}
+					if (substr($for_contents_pieces,0,8) == "channel=")
+					{
+						$getChannel=substr($for_contents_pieces,8);
+						echo "Channel:<br><input class='form-control input-sm' type='text' name='Channel' value='$getChannel'>";
+						echo "<br>";								
+					}
+					if (substr($for_contents_pieces,0,8) == "hw_mode=")
+					{
+						$getHW_Mode=substr($for_contents_pieces,8);
+						echo "Radio Mode:<br><input class='form-control input-sm' type='text' name='HW_Mode' value='$getHW_Mode'>";
+						echo "<br>";								
+					}
+				}
+				?>
+				<input type = "hidden" name = "APsubEdited" value = "<?php echo $_POST['APsubEdited']; ?>"/>
+				<button class="btn btn-primary" type='submit' name='EditAPSub'>Submit</button>
+				</div>
+				</form>
+				<?php
+				if (isset($_POST['APsubEdited']))
+				{
+					$Interface=$_POST['Interface'];
+					$SSID=$_POST['SSID'];
+					$Channel=$_POST['Channel'];
+					$HW_Mode=$_POST['HW_Mode'];
+					
+					$string_to_commit="";
+					//constants for now.
+					$string_to_commit=$string_to_commit . "dump_file=/tmp/hostapd.dump" . "\n";
+					$string_to_commit=$string_to_commit . "ctrl_interface=/var/run/hostapd" . "\n";
+					$string_to_commit=$string_to_commit . "ctrl_interface_group=0" . "\n";
+					$string_to_commit=$string_to_commit . "logger_syslog=-1" . "\n";
+					$string_to_commit=$string_to_commit . "logger_syslog_level=0" . "\n";
+					
+					if (strlen($Interface) > 0)
+					{
+						$string_to_commit=$string_to_commit . "interface=" . trim($Interface) . "\n";
+					}
+					if (strlen($SSID) > 0)
+					{
+						$string_to_commit=$string_to_commit . "ssid=" . trim($SSID) . "\n";
+					}
+					if (strlen($HW_Mode) > 0)
+					{
+						$string_to_commit=$string_to_commit . "hw_mode=" . trim($HW_Mode) . "\n";
+					}
+					if (strlen($Channel) > 0)
+					{
+						$string_to_commit=$string_to_commit . "channel=" . trim($Channel) . "\n";
+					}
+					file_put_contents("/etc/hostapd/hostapd.conf","$string_to_commit");
+					exec('killall hostapd');
+					exec('hostapd -B -K -t /etc/hostapd/hostapd.conf');
+					?>
+					<meta http-equiv="refresh" content="1">
+					<?php
+				}
+				?>
+			</div>
+		</div>
+	</div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+  </body>
+</html>
