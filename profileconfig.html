@@ -286,6 +286,7 @@ Joe Conley, joe.conley@lairdtech.com
 			<?php
 			$printScan=file("sdccliscan");
 			$ScanCount=1;
+			$ChanCount=3;
 			$RSSICount=4;
 			$SecurityCount=6;
 
@@ -296,6 +297,7 @@ Joe Conley, joe.conley@lairdtech.com
 				  <tr>
 					<th></th>
 					<th>SSID</th>
+					<th>Channel</th>
 					<th>RSSI</th>
 					<th>Security</th>
 				  </tr>
@@ -305,6 +307,7 @@ Joe Conley, joe.conley@lairdtech.com
 			for ($i = 0; $i <= count($printScan); $i += 8)
 			{
 			$scanSSID=trim(substr($printScan[$ScanCount],6));
+			$scanChan=substr($printScan[$ChanCount],9);
 			$scanRSSI=substr($printScan[$RSSICount],6);
 			$scanSecurity=substr($printScan[$SecurityCount],10);
 			$scanSecurity=explode(" ",$scanSecurity);
@@ -321,11 +324,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "<td>$scanSSID</td>";
 				}
+				echo "<td>$scanChan</td>";
 				echo "<td>$scanRSSI</td>";
 				echo "<td>$scanSecurity[0]</td>";
 				echo "</tr>";				
 			}
 			$ScanCount += 8;
+			$ChanCount +=8;
 			$RSSICount += 8;
 			$SecurityCount += 8;
 			}
