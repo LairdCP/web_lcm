@@ -112,6 +112,36 @@
 						echo "Radio Mode:<br><input class='form-control input-sm' type='text' name='HW_Mode' value='$getHW_Mode'>";
 						echo "<br>";								
 					}
+					if (substr($for_contents_pieces,0,5) == "wpa=1")
+					{
+						$getSecurity=substr($for_contents_pieces,5);	
+						echo "Security:<br><select class='form-control input-sm' name='Security'>";
+						echo "<option value='None'>None</option>";
+						echo "<option selected value='WPA-PSK'>WPA-PSK</option>";
+						echo "</select>";
+						echo "<br>";
+					}
+					elseif (substr($for_contents_pieces,0,5) == "#wpa=")
+					{
+						echo "Security:<br><select class='form-control input-sm' name='Security'>";
+						echo "<option selected value='None'>None</option>";
+						echo "<option value='WPA-PSK'>WPA-PSK</option>";
+						echo "</select>";
+						echo "<br>";
+					}
+					if (substr($for_contents_pieces,0,5) == "wpa=1")
+					{
+						//echo "got it";
+						foreach ($contents_pieces as $for_again_contents_pieces)
+						{
+							if (substr($for_again_contents_pieces,0,15) == "wpa_passphrase=")
+							{
+								$getWPAPHRASE=substr($for_again_contents_pieces,15);
+								echo "WPA PSK:<br><input class='form-control input-sm' type='text' name='WPAPHRASE' value='$getWPAPHRASE'>";
+								echo "<br>";
+							}
+						}
+					}
 				}
 				?>
 				<input type = "hidden" name = "APsubEdited" value = "<?php echo $_POST['APsubEdited']; ?>"/>
@@ -125,6 +155,8 @@
 					$SSID=$_POST['SSID'];
 					$Channel=$_POST['Channel'];
 					$HW_Mode=$_POST['HW_Mode'];
+					$Security=$_POST['Security'];
+					$WPAPHRASE=$_POST['WPAPHRASE'];
 					
 					$string_to_commit="";
 					//constants for now.
@@ -149,6 +181,23 @@
 					if (strlen($Channel) > 0)
 					{
 						$string_to_commit=$string_to_commit . "channel=" . trim($Channel) . "\n";
+					}
+					if ($Security == "None")
+					{
+						$string_to_commit=$string_to_commit . "#wpa=" . "\n";
+					}
+					elseif ($Security == "WPA-PSK")
+					{
+						$string_to_commit=$string_to_commit . "wpa=1" . "\n";
+						$string_to_commit=$string_to_commit . "wpa_pairwise=TKIP" . "\n";
+						if (strlen($WPAPHRASE) == 0)
+						{
+							$string_to_commit=$string_to_commit . "wpa_passphrase=" . "\n";
+						}
+					}
+					if (strlen($WPAPHRASE) > 0 && $Security != "None")
+					{
+						$string_to_commit=$string_to_commit . "wpa_passphrase=" . trim($WPAPHRASE) . "\n";
 					}
 					file_put_contents("/etc/hostapd/hostapd.conf","$string_to_commit");
 					exec('killall hostapd');
