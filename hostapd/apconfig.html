@@ -118,6 +118,16 @@
 						echo "Security:<br><select class='form-control input-sm' name='Security'>";
 						echo "<option value='None'>None</option>";
 						echo "<option selected value='WPA-PSK'>WPA-PSK</option>";
+						echo "<option value='WPA2-PSK'>WPA2-PSK</option>";
+						echo "</select>";
+						echo "<br>";
+					}
+					elseif (substr($for_contents_pieces,0,5) == "wpa=2")
+					{
+						echo "Security:<br><select class='form-control input-sm' name='Security'>";
+						echo "<option value='None'>None</option>";
+						echo "<option value='WPA-PSK'>WPA-PSK</option>";
+						echo "<option selected value='WPA2-PSK'>WPA2-PSK</option>";
 						echo "</select>";
 						echo "<br>";
 					}
@@ -126,10 +136,11 @@
 						echo "Security:<br><select class='form-control input-sm' name='Security'>";
 						echo "<option selected value='None'>None</option>";
 						echo "<option value='WPA-PSK'>WPA-PSK</option>";
+						echo "<option value='WPA2-PSK'>WPA2-PSK</option>";
 						echo "</select>";
 						echo "<br>";
 					}
-					if (substr($for_contents_pieces,0,5) == "wpa=1")
+					if (substr($for_contents_pieces,0,4) == "wpa=")
 					{
 						//echo "got it";
 						foreach ($contents_pieces as $for_again_contents_pieces)
@@ -190,6 +201,15 @@
 					{
 						$string_to_commit=$string_to_commit . "wpa=1" . "\n";
 						$string_to_commit=$string_to_commit . "wpa_pairwise=TKIP" . "\n";
+						if (strlen($WPAPHRASE) == 0)
+						{
+							$string_to_commit=$string_to_commit . "wpa_passphrase=" . "\n";
+						}
+					}
+					elseif ($Security == "WPA2-PSK")
+					{
+						$string_to_commit=$string_to_commit . "wpa=2" . "\n";
+						$string_to_commit=$string_to_commit . "rsn_pairwise=CCMP" . "\n";
 						if (strlen($WPAPHRASE) == 0)
 						{
 							$string_to_commit=$string_to_commit . "wpa_passphrase=" . "\n";
