@@ -94,6 +94,7 @@ Joe Conley, joe.conley@lairdtech.com
 			echo "<form name='Editiface' action='' method='post'>";
 			$ifacelist=$_POST["ifacelist"];
 			echo "<br>";
+			//var_dump($ifacelist);
 			//var_dump($ifaceShow);
 			for ($i = 0; $i <= $listLen; $i++)
 			{
@@ -113,6 +114,21 @@ Joe Conley, joe.conley@lairdtech.com
 					</script>
 					<?php
 					}
+					echo "<br>";
+					$ifaceDHCPstatus=explode(" ",$ifaceShow[$i]);
+					$ifaceDHCPstatus=$ifaceDHCPstatus[3];
+					echo "Address Aquisition:<br><select class='form-control input-sm' name='DHCPstatus'>";
+					if ($ifaceDHCPstatus == "dhcp")
+					{
+						echo "<option value='on' selected>dhcp</option>";
+						echo "<option value='off' >static</option>";
+					}
+					else
+					{
+						echo "<option value='on'>dhcp</option>";
+						echo "<option value='off' selected>static</option>";
+					}
+					echo "</select>";
 					echo "<br>";
 					for ($j = 0; $j <= 5; $j++)
 					{
@@ -206,7 +222,11 @@ Joe Conley, joe.conley@lairdtech.com
 			$IPNetmask=$_POST['IPNetmask'];
 			$BridgeOne=$_POST['BridgeOne'];
 			$BridgeTwo=$_POST['BridgeTwo'];
+			$DHCPstatus=$_POST['DHCPstatus'];
 			
+			//Set DHCP status
+			exec("sdc_cli iface set dhcp $ifacelist $DHCPstatus");
+
 			//Update IP address
 			if (strlen($IPAddress) != 0)
 			{
