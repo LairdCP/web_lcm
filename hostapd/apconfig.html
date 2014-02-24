@@ -63,11 +63,14 @@
 	</head>
 
 	<body>
+	<?php
+	exec('tmp102_read.sh', $getTemp);
+	?>
     <div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 			    <ul class="nav nav-sidebar">
-					<li class="sidebar-brand"><a>WB AP Mode</a>
+					<li class="sidebar-brand"><a><?php echo $getTemp[0];?> C&deg;</a>
 					</li>
 					<li><a href="/apstatus.html">Status</a>
 					</li>

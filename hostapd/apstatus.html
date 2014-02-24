@@ -63,11 +63,17 @@
 	</head>
 
 	<body>
+	<?php
+	exec('hostapd_cli -i wlan0 get_config', $cli_get_config);
+	exec('hostapd_cli -i wlan0 all_sta', $cli_all_sta);
+	exec('pidof hostapd', $pidof_hostapd, $pidof_hostapd_int);
+	exec('tmp102_read.sh', $getTemp);
+	?>
     <div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-md-2 sidebar">
 			    <ul class="nav nav-sidebar">
-					<li class="sidebar-brand"><a>WB AP Mode</a>
+					<li class="sidebar-brand"><a><?php echo $getTemp[0];?> C&deg;</a>
 					</li>
 					<li class="active"><a href="/apstatus.html">Status</a>
 					</li>
@@ -78,13 +84,10 @@
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-			<h1 class="page-header">AP Status</h1>
+				<h1 class="page-header">AP Status <h2>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 				<?php
-				exec('hostapd_cli -i wlan0 get_config', $cli_get_config);
-				exec('hostapd_cli -i wlan0 all_sta', $cli_all_sta);
-				exec('pidof hostapd', $pidof_hostapd, $pidof_hostapd_int);
 				if ($pidof_hostapd_int == 0)
 				{
 					for ($i = 0; $i <= count($cli_get_config); $i ++)
