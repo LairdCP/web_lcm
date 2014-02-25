@@ -128,8 +128,10 @@ Joe Conley, joe.conley@lairdtech.com
 						echo "<option value='on'>dhcp</option>";
 						echo "<option value='off' selected>static</option>";
 					}
-					echo "</select>";
-					echo "<br>";
+					?>
+					</select>
+					<br>
+					<?php
 					for ($j = 0; $j <= 5; $j++)
 					{
 						if ($ifacelist == "br0" && substr(trim($ifaceShow[$i + $j]),0,12) == "bridge_ports")
@@ -145,6 +147,10 @@ Joe Conley, joe.conley@lairdtech.com
 							{
 								$GetBridgeTwo="wl";
 							}
+							?>
+							<div class="row">
+							<div class="col-xs-6">
+							<?php
 							echo "Bridge:<br><select class='form-control input-sm' name='BridgeOne'>";
 							for ($k = 0; $k <= $listLen; $k++)
 							{
@@ -161,8 +167,11 @@ Joe Conley, joe.conley@lairdtech.com
 										}
 								}
 							}
-							echo "</select>";
-							echo "<br>";
+							?>
+							</select>
+							</div>
+							<div class="col-xs-6">
+							<?php
 							echo "With:<br><select class='form-control input-sm' name='BridgeTwo'>";
 							for ($l = 0; $l <= $listLen; $l++)
 							{
@@ -179,8 +188,12 @@ Joe Conley, joe.conley@lairdtech.com
 										}
 								}
 							}
-							echo "</select>";
-							echo "<br>";
+							?>
+							</select>
+							</div>
+							</div>
+							<br>
+							<?php
 						}
 						
 						if (substr(trim($ifaceShow[$i + $j]),0,7) == "address")
