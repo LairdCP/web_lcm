@@ -98,21 +98,28 @@ Joe Conley, joe.conley@lairdtech.com
 			//var_dump($ifaceShow);
 			for ($i = 0; $i <= $listLen; $i++)
 			{
+				if (substr($ifaceShow[$i],0,4) == "auto")
+				{
+					if (trim($ifaceShow[$i]) == "auto " . $ifacelist)
+					{
+						$getAutoState=1;
+					}
+				}
 				if (substr($ifaceShow[$i],6,strlen($ifacelist)) == "$ifacelist")
 				{
 					echo "<h2>Edit Interface $ifacelist</h2>";
 					if (isset($_POST['EditIfaceSub']))
 					{
-					?>
-					<div class="alert alert-success" id="hideSuccess">
-					<h4>Success!</h4>
-					</div>
-					<script>
-					setTimeout(function() {
-					$('#hideSuccess').hide();
-					}, 1000);
-					</script>
-					<?php
+						?>
+						<div class="alert alert-success" id="hideSuccess">
+							<h4>Success!</h4>
+						</div>
+						<script>
+							setTimeout(function() {
+							$('#hideSuccess').hide();
+							}, 1000);
+						</script>
+						<?php
 					}
 					echo "<br>";
 					$ifaceDHCPstatus=explode(" ",$ifaceShow[$i]);
@@ -217,6 +224,16 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<br>";
 				}
 			}
+			if ($getAutoState == 1)
+			{
+				echo "<input type='checkbox' name='AutoState' value='on' checked> Start interface $ifacelist on boot";
+				echo "<br>";
+			}
+			if ($getAutoState != 1)
+			{
+				echo "<input type='checkbox' name='AutoState' value='on'> Start interface $ifacelist on boot";
+				echo "<br>";			
+			}
 			?>
 			<input class='form-control input-sm' type = "hidden" name = "ifacelist" value = "<?php echo $_POST['ifacelist']; ?>"/>
 			<input class='form-control input-sm' type = "hidden" name = "ifaceEdited" value = "<?php echo $_POST['ifaceEdited']; ?>"/>
@@ -236,6 +253,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$BridgeOne=$_POST['BridgeOne'];
 			$BridgeTwo=$_POST['BridgeTwo'];
 			$DHCPstatus=$_POST['DHCPstatus'];
+			$AutoState=$_POST['AutoState'];
 			
 			//Set DHCP status
 			exec("sdc_cli iface set dhcp $ifacelist $DHCPstatus");
@@ -254,6 +272,16 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				exec("sdc_cli iface set bridge_ports br0 $BridgeOne $BridgeTwo");
 			}
+			//Set interface auto/noauto
+			if ($AutoState != "on")
+			{
+				exec("sdc_cli iface set auto $ifacelist off");
+			}
+			else
+			{
+				exec("sdc_cli iface set auto $ifacelist on");
+			}
+		
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "<input type = 'hidden' name = 'formEdit' value = '$ifaceEdited' />";
 			echo "<input type = 'hidden' name = 'ifacelist' value = '$ifacelist' />";
