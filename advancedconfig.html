@@ -21,9 +21,20 @@ Joe Conley, joe.conley@lairdtech.com
    <div class="container">
 	<br>
 		<div class="row">
-		<div class="hidden-xs col-sm-3 col-md-4"></div>	
-		<div class="hidden-xs col-sm-4 col-md-4"><a class="brand"><img src="/assets/img/laird_logo.png" width="320" height="87"></a></div>
-		<div class="hidden-xs col-sm-4 col-md-4"></div>	
+		<?php
+		if (file_exists("/var/www/docs/assets/img/DakLogo.png"))
+		{
+		?>
+		<img class="brand-logo" src="/assets/img/DakLogo.png"></img>
+		<?php
+		}
+		else
+		{
+		?>
+		<img class="brand-logo" src="/assets/img/laird_logo.png" width="320" height="87"></img>
+		<?php
+		}
+		?>
 		</div>
 	<br>
 	<nav class="navbar navbar-default " role="navigation">
