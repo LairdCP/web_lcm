@@ -226,12 +226,24 @@ Joe Conley, joe.conley@lairdtech.com
 						{
 							$getIPNetmask=substr(trim($ifaceShow[$i + $j]),8);	
 						}
+						if (substr(trim($ifaceShow[$i + $j]),0,7) == "gateway")
+						{
+							$getIPGateway=substr(trim($ifaceShow[$i + $j]),8);	
+						}
+						if (substr(trim($ifaceShow[$i + $j]),0,10) == "nameserver")
+						{
+							$getIPNameserver=substr(trim($ifaceShow[$i + $j]),11);	
+						}
 					}
 					echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
 					echo "<br>";
 					echo "Broadcast:<br><input disabled class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
 					echo "<br>";
 					echo "Netmask:<br><input class='form-control input-sm' type='text' name='IPNetmask' value='$getIPNetmask'>";
+					echo "<br>";
+					echo "Gateway:<br><input class='form-control input-sm' type='text' name='IPGateway' value='$getIPGateway'>";
+					echo "<br>";
+					echo "NameServer:<br><input class='form-control input-sm' type='text' name='IPNameserver' value='$getIPNameserver'>";
 					echo "<br>";
 				}
 			}
@@ -261,6 +273,8 @@ Joe Conley, joe.conley@lairdtech.com
 			$IPAddress=$_POST['IPAddress'];
 			$IPBroadcast=$_POST['IPBroadcast'];
 			$IPNetmask=$_POST['IPNetmask'];
+			$IPGateway=$_POST['IPGateway'];
+			$IPNameserver=$_POST['IPNameserver'];
 			$BridgeOne=$_POST['BridgeOne'];
 			$BridgeTwo=$_POST['BridgeTwo'];
 			$DHCPstatus=$_POST['DHCPstatus'];
@@ -277,6 +291,14 @@ Joe Conley, joe.conley@lairdtech.com
 			if (strlen($IPNetmask) != 0)
 			{
 				exec("sdc_cli iface set netmask $ifacelist $IPNetmask");
+			}
+			if (strlen($IPGateway) != 0)
+			{
+				exec("sdc_cli iface set gateway $ifacelist $IPGateway");
+			}
+			if (strlen($IPGateway) != 0)
+			{
+				exec("sdc_cli iface set nameserver $ifacelist $IPNameserver");
 			}
 			//Update bridge config
 			if ( $BridgeOne != $GetBridgeOne || $BridgeTwo != $GetBridgeTwo)
