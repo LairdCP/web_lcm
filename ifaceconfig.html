@@ -96,232 +96,250 @@ Joe Conley, joe.conley@lairdtech.com
 		</select>
 		<br>
 		<button class="btn btn-primary" type="submit" id="formEdit" name="formEdit">Edit</button>
+		<button class="btn btn-primary" type="submit" id="formRestart" name="formRestart">Restart</button>
 	</form>
 	</div> <!-- col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-2 -->
 	<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
 	<?php
+	if (isset($_POST['formRestart']))
+	{
+		$ifacelist=$_POST["ifacelist"];
+		exec("ifrc $ifacelist restart &");
+		?>
+		<br>
+		<br>
+		<br>
+		<div class="alert alert-success" id="hideSuccess">
+			<h4>Success!</h4>Interface <?php echo $ifacelist; ?> restarted.
+		</div>
+		<form id=refresh action='' method = 'post'>
+		<input type = 'hidden' name = 'ifacelist' value = '<?php echo $ifacelist; ?>' />
+		</form>
+		<script>document.getElementById('refresh').submit();</script>
+		<?php
+	}
 	if (isset($_POST['formEdit']))
+	{
+		echo "<form name='Editiface' action='' method='post'>";
+		$ifacelist=$_POST["ifacelist"];
+		echo "<br>";
+		//var_dump($ifacelist);
+		//var_dump($ifaceShow);
+		for ($i = 0; $i <= $listLen; $i++)
 		{
-			echo "<form name='Editiface' action='' method='post'>";
-			$ifacelist=$_POST["ifacelist"];
-			echo "<br>";
-			//var_dump($ifacelist);
-			//var_dump($ifaceShow);
-			for ($i = 0; $i <= $listLen; $i++)
+			if (substr($ifaceShow[$i],0,4) == "auto")
 			{
-				if (substr($ifaceShow[$i],0,4) == "auto")
+				if (trim($ifaceShow[$i]) == "auto " . $ifacelist)
 				{
-					if (trim($ifaceShow[$i]) == "auto " . $ifacelist)
-					{
-						$getAutoState=1;
-					}
+					$getAutoState=1;
 				}
-				if (substr($ifaceShow[$i],6,strlen($ifacelist)) == "$ifacelist")
+			}
+			if (substr($ifaceShow[$i],6,strlen($ifacelist)) == "$ifacelist")
+			{
+				echo "<h2>Edit Interface $ifacelist</h2>";
+				if (isset($_POST['EditIfaceSub']))
 				{
-					echo "<h2>Edit Interface $ifacelist</h2>";
-					if (isset($_POST['EditIfaceSub']))
+					?>
+					<div class="alert alert-success" id="hideSuccess">
+						<h4>Success!</h4>
+					</div>
+					<script>
+						setTimeout(function() {
+						$('#hideSuccess').hide();
+						}, 1000);
+					</script>
+					<?php
+				}
+				echo "<br>";
+				$ifaceDHCPstatus=explode(" ",$ifaceShow[$i]);
+				$ifaceDHCPstatus=$ifaceDHCPstatus[3];
+				echo "Address Aquisition:<br><select class='form-control input-sm' name='DHCPstatus'>";
+				if ($ifaceDHCPstatus == "dhcp")
+				{
+					echo "<option value='on' selected>dhcp</option>";
+					echo "<option value='off' >static</option>";
+				}
+				else
+				{
+					echo "<option value='on'>dhcp</option>";
+					echo "<option value='off' selected>static</option>";
+				}
+				?>
+				</select>
+				<br>
+				<?php
+				for ($j = 0; $j <= 5; $j++)
+				{
+					if ($ifacelist == "br0" && substr(trim($ifaceShow[$i + $j]),0,12) == "bridge_ports")
 					{
+						$bridge_port_choice=explode(" ", substr(trim($ifaceShow[$i + $j]),13));
+						$GetBridgeOne=$bridge_port_choice[0];
+						$GetBridgeTwo=$bridge_port_choice[1];
+						if ($GetBridgeOne == "wlan0")
+						{
+							$GetBridgeOne="wl";
+						}
+						if ($GetBridgeTwo == "wlan0")
+						{
+							$GetBridgeTwo="wl";
+						}
 						?>
-						<div class="alert alert-success" id="hideSuccess">
-							<h4>Success!</h4>
+						<div class="row">
+						<div class="col-xs-6">
+						<?php
+						echo "Bridge:<br><select class='form-control input-sm' name='BridgeOne'>";
+						for ($k = 0; $k <= $listLen; $k++)
+						{
+							if (substr($ifaceShow[$k],0,5) == "iface")
+							{
+								$ifaceItem=explode(" ",$ifaceShow[$k]);
+									if ($GetBridgeOne == $ifaceItem[1])
+									{
+										echo "<option selected>" . "$ifaceItem[1]" . "</option>";
+									}
+									else
+									{
+										echo "<option>" . "$ifaceItem[1]" . "</option>";
+									}
+							}
+						}
+						?>
+						</select>
 						</div>
-						<script>
-							setTimeout(function() {
-							$('#hideSuccess').hide();
-							}, 1000);
-						</script>
+						<div class="col-xs-6">
+						<?php
+						echo "With:<br><select class='form-control input-sm' name='BridgeTwo'>";
+						for ($l = 0; $l <= $listLen; $l++)
+						{
+							if (substr($ifaceShow[$l],0,5) == "iface")
+							{
+								$ifaceItem=explode(" ",$ifaceShow[$l]);
+									if ($GetBridgeTwo == $ifaceItem[1])
+									{
+										echo "<option selected>" . "$ifaceItem[1]" . "</option>";
+									}
+									else
+									{
+										echo "<option>" . "$ifaceItem[1]" . "</option>";
+									}
+							}
+						}
+						?>
+						</select>
+						</div>
+						</div>
+						<br>
 						<?php
 					}
-					echo "<br>";
-					$ifaceDHCPstatus=explode(" ",$ifaceShow[$i]);
-					$ifaceDHCPstatus=$ifaceDHCPstatus[3];
-					echo "Address Aquisition:<br><select class='form-control input-sm' name='DHCPstatus'>";
-					if ($ifaceDHCPstatus == "dhcp")
+					
+					if (substr(trim($ifaceShow[$i + $j]),0,7) == "address")
 					{
-						echo "<option value='on' selected>dhcp</option>";
-						echo "<option value='off' >static</option>";
+						$getIPAddress=substr(trim($ifaceShow[$i + $j]),8);	
 					}
-					else
+					if (substr(trim($ifaceShow[$i + $j]),0,9) == "broadcast")
 					{
-						echo "<option value='on'>dhcp</option>";
-						echo "<option value='off' selected>static</option>";
+						$getIPBroadcast=substr(trim($ifaceShow[$i + $j]),10);	
 					}
-					?>
-					</select>
-					<br>
-					<?php
-					for ($j = 0; $j <= 5; $j++)
+					if (substr(trim($ifaceShow[$i + $j]),0,7) == "netmask")
 					{
-						if ($ifacelist == "br0" && substr(trim($ifaceShow[$i + $j]),0,12) == "bridge_ports")
-						{
-							$bridge_port_choice=explode(" ", substr(trim($ifaceShow[$i + $j]),13));
-							$GetBridgeOne=$bridge_port_choice[0];
-							$GetBridgeTwo=$bridge_port_choice[1];
-							if ($GetBridgeOne == "wlan0")
-							{
-								$GetBridgeOne="wl";
-							}
-							if ($GetBridgeTwo == "wlan0")
-							{
-								$GetBridgeTwo="wl";
-							}
-							?>
-							<div class="row">
-							<div class="col-xs-6">
-							<?php
-							echo "Bridge:<br><select class='form-control input-sm' name='BridgeOne'>";
-							for ($k = 0; $k <= $listLen; $k++)
-							{
-								if (substr($ifaceShow[$k],0,5) == "iface")
-								{
-									$ifaceItem=explode(" ",$ifaceShow[$k]);
-										if ($GetBridgeOne == $ifaceItem[1])
-										{
-											echo "<option selected>" . "$ifaceItem[1]" . "</option>";
-										}
-										else
-										{
-											echo "<option>" . "$ifaceItem[1]" . "</option>";
-										}
-								}
-							}
-							?>
-							</select>
-							</div>
-							<div class="col-xs-6">
-							<?php
-							echo "With:<br><select class='form-control input-sm' name='BridgeTwo'>";
-							for ($l = 0; $l <= $listLen; $l++)
-							{
-								if (substr($ifaceShow[$l],0,5) == "iface")
-								{
-									$ifaceItem=explode(" ",$ifaceShow[$l]);
-										if ($GetBridgeTwo == $ifaceItem[1])
-										{
-											echo "<option selected>" . "$ifaceItem[1]" . "</option>";
-										}
-										else
-										{
-											echo "<option>" . "$ifaceItem[1]" . "</option>";
-										}
-								}
-							}
-							?>
-							</select>
-							</div>
-							</div>
-							<br>
-							<?php
-						}
-						
-						if (substr(trim($ifaceShow[$i + $j]),0,7) == "address")
-						{
-							$getIPAddress=substr(trim($ifaceShow[$i + $j]),8);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,9) == "broadcast")
-						{
-							$getIPBroadcast=substr(trim($ifaceShow[$i + $j]),10);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,7) == "netmask")
-						{
-							$getIPNetmask=substr(trim($ifaceShow[$i + $j]),8);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,7) == "gateway")
-						{
-							$getIPGateway=substr(trim($ifaceShow[$i + $j]),8);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,10) == "nameserver")
-						{
-							$getIPNameserver=substr(trim($ifaceShow[$i + $j]),11);	
-						}
+						$getIPNetmask=substr(trim($ifaceShow[$i + $j]),8);	
 					}
-					echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
-					echo "<br>";
-					echo "Broadcast:<br><input disabled class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
-					echo "<br>";
-					echo "Netmask:<br><input class='form-control input-sm' type='text' name='IPNetmask' value='$getIPNetmask'>";
-					echo "<br>";
-					echo "Gateway:<br><input class='form-control input-sm' type='text' name='IPGateway' value='$getIPGateway'>";
-					echo "<br>";
-					echo "NameServer:<br><input class='form-control input-sm' type='text' name='IPNameserver' value='$getIPNameserver'>";
-					echo "<br>";
+					if (substr(trim($ifaceShow[$i + $j]),0,7) == "gateway")
+					{
+						$getIPGateway=substr(trim($ifaceShow[$i + $j]),8);	
+					}
+					if (substr(trim($ifaceShow[$i + $j]),0,10) == "nameserver")
+					{
+						$getIPNameserver=substr(trim($ifaceShow[$i + $j]),11);	
+					}
 				}
-			}
-			if ($getAutoState == 1)
-			{
-				echo "<input type='checkbox' name='AutoState' value='on' checked> Start interface $ifacelist on boot";
+				echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
+				echo "<br>";
+				echo "Broadcast:<br><input disabled class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
+				echo "<br>";
+				echo "Netmask:<br><input class='form-control input-sm' type='text' name='IPNetmask' value='$getIPNetmask'>";
+				echo "<br>";
+				echo "Gateway:<br><input class='form-control input-sm' type='text' name='IPGateway' value='$getIPGateway'>";
+				echo "<br>";
+				echo "NameServer:<br><input class='form-control input-sm' type='text' name='IPNameserver' value='$getIPNameserver'>";
 				echo "<br>";
 			}
-			if ($getAutoState != 1)
-			{
-				echo "<input type='checkbox' name='AutoState' value='on'> Start interface $ifacelist on boot";
-				echo "<br>";			
-			}
-			?>
-			<input class='form-control input-sm' type = "hidden" name = "ifacelist" value = "<?php echo $_POST['ifacelist']; ?>"/>
-			<input class='form-control input-sm' type = "hidden" name = "ifaceEdited" value = "<?php echo $_POST['ifaceEdited']; ?>"/>
-			<br>
-			<button class="btn btn-primary" type='submit' name='EditIfaceSub'>Submit</button>
-			</form>
-			<?php
 		}
-	if (isset($_POST['ifaceEdited']))
+		if ($getAutoState == 1)
 		{
-			$Editiface=$_POST['Editiface'];
-			$ifacelist=$_POST['ifacelist'];
-			$ifaceEdited=$_POST['ifaceEdited'];
-			$IPAddress=$_POST['IPAddress'];
-			$IPBroadcast=$_POST['IPBroadcast'];
-			$IPNetmask=$_POST['IPNetmask'];
-			$IPGateway=$_POST['IPGateway'];
-			$IPNameserver=$_POST['IPNameserver'];
-			$BridgeOne=$_POST['BridgeOne'];
-			$BridgeTwo=$_POST['BridgeTwo'];
-			$DHCPstatus=$_POST['DHCPstatus'];
-			$AutoState=$_POST['AutoState'];
-			
-			//Set DHCP status
-			exec("sdc_cli iface set dhcp $ifacelist $DHCPstatus");
-
-			//Update IP address
-			if (strlen($IPAddress) != 0)
-			{
-				exec("sdc_cli iface set address $ifacelist $IPAddress");
-			}
-			if (strlen($IPNetmask) != 0)
-			{
-				exec("sdc_cli iface set netmask $ifacelist $IPNetmask");
-			}
-			if (strlen($IPGateway) != 0)
-			{
-				exec("sdc_cli iface set gateway $ifacelist $IPGateway");
-			}
-			if (strlen($IPGateway) != 0)
-			{
-				exec("sdc_cli iface set nameserver $ifacelist $IPNameserver");
-			}
-			//Update bridge config
-			if ( $BridgeOne != $GetBridgeOne || $BridgeTwo != $GetBridgeTwo)
-			{
-				exec("sdc_cli iface set bridge_ports br0 $BridgeOne $BridgeTwo");
-			}
-			//Set interface auto/noauto
-			if ($AutoState != "on")
-			{
-				exec("sdc_cli iface set auto $ifacelist off");
-			}
-			else
-			{
-				exec("sdc_cli iface set auto $ifacelist on");
-			}
-		
-			echo "<form id=refresh action='' method = 'post'>";
-			echo "<input type = 'hidden' name = 'formEdit' value = '$ifaceEdited' />";
-			echo "<input type = 'hidden' name = 'ifacelist' value = '$ifacelist' />";
-			echo "<input type = 'hidden' name = 'EditIfaceSub' value = '$EditIfaceSub' />";
-			echo "</form>";
-			echo "<script>document.getElementById('refresh').submit();</script>";
+			echo "<input type='checkbox' name='AutoState' value='on' checked> Start interface $ifacelist on boot";
+			echo "<br>";
 		}
+		if ($getAutoState != 1)
+		{
+			echo "<input type='checkbox' name='AutoState' value='on'> Start interface $ifacelist on boot";
+			echo "<br>";			
+		}
+		?>
+		<input class='form-control input-sm' type = "hidden" name = "ifacelist" value = "<?php echo $_POST['ifacelist']; ?>"/>
+		<input class='form-control input-sm' type = "hidden" name = "ifaceEdited" value = "<?php echo $_POST['ifaceEdited']; ?>"/>
+		<br>
+		<button class="btn btn-primary" type='submit' name='EditIfaceSub'>Submit</button>
+		</form>
+		<?php
+	}
+	if (isset($_POST['ifaceEdited']))
+	{
+		$Editiface=$_POST['Editiface'];
+		$ifacelist=$_POST['ifacelist'];
+		$ifaceEdited=$_POST['ifaceEdited'];
+		$IPAddress=$_POST['IPAddress'];
+		$IPBroadcast=$_POST['IPBroadcast'];
+		$IPNetmask=$_POST['IPNetmask'];
+		$IPGateway=$_POST['IPGateway'];
+		$IPNameserver=$_POST['IPNameserver'];
+		$BridgeOne=$_POST['BridgeOne'];
+		$BridgeTwo=$_POST['BridgeTwo'];
+		$DHCPstatus=$_POST['DHCPstatus'];
+		$AutoState=$_POST['AutoState'];
+		
+		//Set DHCP status
+		exec("sdc_cli iface set dhcp $ifacelist $DHCPstatus");
+
+		//Update IP address
+		if (strlen($IPAddress) != 0)
+		{
+			exec("sdc_cli iface set address $ifacelist $IPAddress");
+		}
+		if (strlen($IPNetmask) != 0)
+		{
+			exec("sdc_cli iface set netmask $ifacelist $IPNetmask");
+		}
+		if (strlen($IPGateway) != 0)
+		{
+			exec("sdc_cli iface set gateway $ifacelist $IPGateway");
+		}
+		if (strlen($IPGateway) != 0)
+		{
+			exec("sdc_cli iface set nameserver $ifacelist $IPNameserver");
+		}
+		//Update bridge config
+		if ( $BridgeOne != $GetBridgeOne || $BridgeTwo != $GetBridgeTwo)
+		{
+			exec("sdc_cli iface set bridge_ports br0 $BridgeOne $BridgeTwo");
+		}
+		//Set interface auto/noauto
+		if ($AutoState != "on")
+		{
+			exec("sdc_cli iface set auto $ifacelist off");
+		}
+		else
+		{
+			exec("sdc_cli iface set auto $ifacelist on");
+		}
+	
+		echo "<form id=refresh action='' method = 'post'>";
+		echo "<input type = 'hidden' name = 'formEdit' value = '$ifaceEdited' />";
+		echo "<input type = 'hidden' name = 'ifacelist' value = '$ifacelist' />";
+		echo "<input type = 'hidden' name = 'EditIfaceSub' value = '$EditIfaceSub' />";
+		echo "</form>";
+		echo "<script>document.getElementById('refresh').submit();</script>";
+	}
 	?>
 	</div> <!-- col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1 -->
 	</div> <!-- panel panel-default -->
