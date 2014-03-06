@@ -14,7 +14,7 @@ Joe Conley, joe.conley@lairdtech.com
     <!-- Le styles -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
 
-<title>LCU - Global Configuration</title>
+<title>LCM - Global Configuration</title>
   </head>
 
   <body>
@@ -73,11 +73,11 @@ Joe Conley, joe.conley@lairdtech.com
 		$TitleStatus=ucwords(substr($sdcstatus[0],11));
 		if (strlen($TitleStatus) == 9)
 		{
-			echo "<title>LCU - $TitleStatus</title>";
+			echo "<title>LCM - $TitleStatus</title>";
 		}
 		else
 		{
-			echo "<title>LCU - Enabled</title>";
+			echo "<title>LCM - Enabled</title>";
 		}
 		exec('sdc_cli global show', $globalShow);
 		echo "";

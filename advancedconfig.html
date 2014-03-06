@@ -188,9 +188,9 @@ Joe Conley, joe.conley@lairdtech.com
 			$NewPass2=$_POST["NewPass2"];
 			
 			$RealPasswordFile='/etc/lighttpd/lighttpd.password';
-			$RealCurrentUser=exec("awk -F ':' '{ print $1 }' /etc/lighttpd/lighttpd.password");
-			$RealCurrentPass=exec("awk -F ':' '{ print $2 }' /etc/lighttpd/lighttpd.password");
-			if ($RealCurrentPass == $CurrentPass)
+			$ReaLCMrrentUser=exec("awk -F ':' '{ print $1 }' /etc/lighttpd/lighttpd.password");
+			$ReaLCMrrentPass=exec("awk -F ':' '{ print $2 }' /etc/lighttpd/lighttpd.password");
+			if ($ReaLCMrrentPass == $CurrentPass)
 			{
 				if ($NewPass == $NewPass2)
 				{
@@ -199,14 +199,14 @@ Joe Conley, joe.conley@lairdtech.com
 						if (file_exists($RealPasswordFile))
 						{	
 							$fp = fopen($RealPasswordFile, 'w');
-							fwrite($fp, $RealCurrentUser . ":" . $NewPass2 . "\n");
+							fwrite($fp, $ReaLCMrrentUser . ":" . $NewPass2 . "\n");
 							fclose($fp);						
 						}
 						else 
 						{
 							exec('touch /etc/lighttpd/lighttpd.password');
 							$fp = fopen($RealPasswordFile, 'w');
-							fwrite($fp, $RealCurrentUser . ":" . $NewPass2 . "\n");
+							fwrite($fp, $ReaLCMrrentUser . ":" . $NewPass2 . "\n");
 							fclose($fp);	
 						}	
 					}
