@@ -473,22 +473,22 @@ Joe Conley, joe.conley@lairdtech.com
 			if (substr($forshow,0,17) == "Auth Server Type:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getServer=substr($forshow,18);
-				if ($getServer == "acs")
+				$getServer=substr($forshow,23);
+				if (trim($getServer) == "1")
 				{
 					$getServer=1;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-					echo "<option value='1' selected>ACS</option>";
-					echo "<option value='2'>SBR</option>";
+					echo "<option value='1' selected>Type 1</option>";
+					echo "<option value='2'>Type 2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getServer == "sbr")
+				elseif (trim($getServer) == "2")
 				{
 					$getServer=2;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-					echo "<option value='1'>ACS</option>";
-					echo "<option value='2' selected>SBR</option>";
+					echo "<option value='1'>Type 1</option>";
+					echo "<option value='2' selected>Type 2</option>";
 					echo "</select>";
 					echo "<br>";
 				}

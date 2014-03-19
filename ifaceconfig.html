@@ -183,7 +183,7 @@ Joe Conley, joe.conley@lairdtech.com
 					</select>
 					<br>
 					<?php
-					for ($j = 0; $j <= 5; $j++)
+					for ($j = 0; $j <= $listLen; $j++)
 					{
 						if ($ifacelist == "br0" && substr(trim($ifaceShow[$i + $j]),0,12) == "bridge_ports")
 						{
@@ -270,7 +270,7 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
 					echo "<br>";
-					echo "Broadcast:<br><input disabled class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
+					echo "Broadcast:<br><input class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
 					echo "<br>";
 					echo "Netmask:<br><input class='form-control input-sm' type='text' name='IPNetmask' value='$getIPNetmask'>";
 					echo "<br>";
@@ -330,9 +330,13 @@ Joe Conley, joe.conley@lairdtech.com
 		{
 			exec("sdc_cli iface set gateway $ifacelist $IPGateway");
 		}
-		if (strlen($IPGateway) != 0)
+		if (strlen($IPNameserver) != 0)
 		{
 			exec("sdc_cli iface set nameserver $ifacelist $IPNameserver");
+		}
+		if (strlen($IPBroadcast) != 0)
+		{
+			exec("sdc_cli iface set broadcast $ifacelist $IPBroadcast");
 		}
 		//Update bridge config
 		if ( $BridgeOne != $GetBridgeOne || $BridgeTwo != $GetBridgeTwo)
