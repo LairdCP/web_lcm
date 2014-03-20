@@ -105,12 +105,18 @@ Joe Conley, joe.conley@lairdtech.com
 		?>
 		</select>
 		<br>
+		<div class="btn-group btn-group-sm col-md-12">
 		<button class="btn btn-primary" type="submit" id="formEdit" name="formEdit">Edit</button>
 		<button class="btn btn-primary" type="submit" id="formAdd" name="formAdd">Add</button>
 		<button class="btn btn-primary" type="submit" id="formRemove" name="formRemove">Remove</button>
+		</div>
 		<br>
 		<br>
+		<div class="btn-group btn-group-sm col-md-12">
+		<button class="btn btn-primary" type="submit" id="formStart" name="formStart">Start</button>
+		<button class="btn btn-primary" type="submit" id="formStop" name="formStop">Stop</button>
 		<button class="btn btn-primary" type="submit" id="formRestart" name="formRestart">Restart</button>
+		</div>
 	</form>
 	</div> <!-- col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-2 -->
 	<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
@@ -193,6 +199,70 @@ Joe Conley, joe.conley@lairdtech.com
 			<?php
 		}
 	}
+	if (isset($_POST['formStart']))
+	{
+		$ifacelist=$_POST["ifacelist"];
+		if (in_array("$ifacelist", $ifconfigState) && strlen($ifacelist) != 0)
+		{
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>Interface <?php echo $ifacelist; ?> is already active.
+			</div>
+			<?php
+		}
+		elseif (in_array("$ifacelist", $ifconfigState) == FALSE && strlen($ifacelist) != 0)
+		{
+			exec("ifrc $ifacelist start &");
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>Starting interface <?php echo $ifacelist; ?>.
+			</div>
+			<?php
+		}
+		else
+		{
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>No interface selected.
+			</div>
+			<?php
+		}
+	}
+if (isset($_POST['formStop']))
+	{
+		$ifacelist=$_POST["ifacelist"];
+		if (in_array("$ifacelist", $ifconfigState) && strlen($ifacelist) != 0)
+		{
+			exec("ifrc $ifacelist stop &");
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>Stopping interface <?php echo $ifacelist; ?>.
+			</div>
+			<?php
+		}
+		elseif (in_array("$ifacelist", $ifconfigState) == FALSE && strlen($ifacelist) != 0)
+		{
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>Interface <?php echo $ifacelist; ?> is not active.
+			</div>
+			<?php
+		}
+		else
+		{
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>No interface selected.
+			</div>
+			<?php
+		}
+	}
 	if (isset($_POST['formRestart']))
 	{
 		$ifacelist=$_POST["ifacelist"];
@@ -203,7 +273,7 @@ Joe Conley, joe.conley@lairdtech.com
 			<br>
 			<br>
 			<br>
-			<div class="alert alert-success" id="hideSuccess">
+			<div class="alert alert-success">
 				<h4>Success!</h4>Interface <?php echo $ifacelist; ?> restarted.
 			</div>
 			<form id=refresh action='' method = 'post'>
@@ -361,11 +431,11 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
 					echo "<br>";
-					echo "Broadcast:<br><input class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
-					echo "<br>";
 					echo "Netmask:<br><input class='form-control input-sm' type='text' name='IPNetmask' value='$getIPNetmask'>";
 					echo "<br>";
 					echo "Gateway:<br><input class='form-control input-sm' type='text' name='IPGateway' value='$getIPGateway'>";
+					echo "<br>";
+					echo "Broadcast:<br><input class='form-control input-sm' type='text' name='IPBroadcast' value='$getIPBroadcast'>";
 					echo "<br>";
 					echo "NameServer:<br><input class='form-control input-sm' type='text' name='IPNameserver' value='$getIPNameserver'>";
 					echo "<br>";
