@@ -172,14 +172,26 @@ Joe Conley, joe.conley@lairdtech.com
 	if (isset($_POST['formRemove']))
 	{
 		$ifacelist=$_POST["ifacelist"];
-		exec("sdc_cli iface remove $ifacelist");
-		?>
-		<br>
-		<div class="alert alert-success">
-			<h4>Success!</h4>Interface <?php echo $ifacelist; ?> removed.
-		</div>
-		<meta http-equiv="refresh" content="0">
-		<?php
+		if (strlen($ifacelist) != 0)
+		{
+			exec("sdc_cli iface remove $ifacelist");
+			?>
+			<br>
+			<div class="alert alert-success">
+				<h4>Success!</h4>Interface <?php echo $ifacelist; ?> removed.
+			</div>
+			<meta http-equiv="refresh" content="0">
+			<?php
+		}
+		else
+		{
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>No interface selected.
+			</div>
+			<?php
+		}
 	}
 	if (isset($_POST['formRestart']))
 	{
@@ -198,6 +210,15 @@ Joe Conley, joe.conley@lairdtech.com
 			<input type = 'hidden' name = 'ifacelist' value = '<?php echo $ifacelist; ?>' />
 			</form>
 			<script>document.getElementById('refresh').submit();</script>
+			<?php
+		}
+		else
+		{
+			?>
+			<br>
+			<div class="alert alert-warning">
+				<h4>Warning!</h4>No interface selected.
+			</div>
 			<?php
 		}
 	}
