@@ -106,11 +106,81 @@ Joe Conley, joe.conley@lairdtech.com
 		</select>
 		<br>
 		<button class="btn btn-primary" type="submit" id="formEdit" name="formEdit">Edit</button>
+		<button class="btn btn-primary" type="submit" id="formAdd" name="formAdd">Add</button>
+		<button class="btn btn-primary" type="submit" id="formRemove" name="formRemove">Remove</button>
+		<br>
+		<br>
 		<button class="btn btn-primary" type="submit" id="formRestart" name="formRestart">Restart</button>
 	</form>
 	</div> <!-- col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-2 -->
 	<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
 	<?php
+	if (isset($_POST['formAdd']))
+	{
+		$ifacelist=$_POST["ifacelist"];
+		echo "<br>";
+		echo "<h2>Enter New Interface Name</h2>";
+		echo "<form name='Addiface' action='' method='post'>";
+		echo "Interface:<br><input class='form-control input-sm' type='text' name='NewIfaceName'>";
+		echo "<br>";
+		?>
+		<button class="btn btn-primary" type='submit' name='AddIfaceSub'>Submit</button>
+		</form>
+		<?php
+	}
+	if (isset($_POST['AddIfaceSub']))
+	{
+		$NewIfaceName=trim($_POST["NewIfaceName"]);
+		if ($NewIfaceName == "wlan0")
+		{
+			$NewIfaceName="wl";
+		}
+		$IfaceListArray = array();
+		for ($i = 0; $i <= $listLen; $i++)
+		{
+			if (substr($ifaceShow[$i],0,5) == "iface")
+			{
+				$ifaceItem=explode(" ",$ifaceShow[$i]);
+				array_push($IfaceListArray,$ifaceItem[1]);
+			}
+		}
+		if (in_array("$NewIfaceName", $IfaceListArray))
+		{
+			?>
+			<br>
+			<div class="alert alert-danger">
+				<h4>Failure!</h4>Interface <?php echo $NewIfaceName; ?> already exists.
+			</div>
+			<?php
+		}
+		else
+		{
+			exec("sdc_cli iface add $NewIfaceName");
+			?>
+			<br>
+			<div class="alert alert-success">
+				<h4>Success!</h4>Interface <?php echo $NewIfaceName; ?> added.
+			</div>
+			<?php
+			echo "<form id=refresh action='' method = 'post'>";
+			echo "<input type = 'hidden' name = 'formEdit' value = '$NewIfaceName' />";
+			echo "<input type = 'hidden' name = 'ifacelist' value = '$NewIfaceName' />";
+			echo "</form>";
+			echo "<script>document.getElementById('refresh').submit();</script>";
+		}
+	}
+	if (isset($_POST['formRemove']))
+	{
+		$ifacelist=$_POST["ifacelist"];
+		exec("sdc_cli iface remove $ifacelist");
+		?>
+		<br>
+		<div class="alert alert-success">
+			<h4>Success!</h4>Interface <?php echo $ifacelist; ?> removed.
+		</div>
+		<meta http-equiv="refresh" content="0">
+		<?php
+	}
 	if (isset($_POST['formRestart']))
 	{
 		$ifacelist=$_POST["ifacelist"];
