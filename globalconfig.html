@@ -91,7 +91,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			} // frag thresh
 			
-			if (substr($forshow,0,14) == "RTS Threshold:")
+			if (substr($forshow,0,14) == "RTS Threshold:" || substr($forshow,0,14) == "RTS threshold:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRTS=substr($forshow,15);
@@ -301,7 +301,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			} // tx max
 
-			if (substr($forshow,0,18) == "Regulatory domain:")
+			if (substr($forshow,0,18) == "Regulatory domain:" || substr($forshow,0,18) == "Regulatory Domain:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRegDom=substr($forshow,19);
@@ -362,7 +362,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			} // ccx features
 						
-			if (substr($forshow,0,18) == "Certificate store:")
+			if (substr($forshow,0,18) == "Certificate store:" || substr($forshow,0,18) == "Certificate Store:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getCert=substr($forshow,19);
@@ -389,7 +389,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";				
 			} // a channel set
 			
-			if (substr($forshow,0,16) == "Aggressive Scan:")
+			if (substr($forshow,0,16) == "Aggressive Scan:" || substr($forshow,0,16) == "Aggressive scan:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAggScan=substr($forshow,17);
@@ -433,7 +433,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			} // default adhoc channel
 			
-			if (substr($forshow,0,14) == "Scan DFS Time:")
+			if (substr($forshow,0,14) == "Scan DFS Time:" || substr($forshow,0,14) == "Scan DFS time:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getScan=substr($forshow,15);
@@ -473,8 +473,8 @@ Joe Conley, joe.conley@lairdtech.com
 			if (substr($forshow,0,17) == "Auth Server Type:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getServer=substr($forshow,23);
-				if (trim($getServer) == "1")
+				$getServer=substr($forshow,18);
+				if (trim($getServer) == "1" || trim($getServer) == "acs")
 				{
 					$getServer=1;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
@@ -483,7 +483,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (trim($getServer) == "2")
+				elseif (trim($getServer) == "2" || trim($getServer) == "sbr")
 				{
 					$getServer=2;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
@@ -652,7 +652,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // probe delay
-			if (substr($forshow,0,17) == "Ignore Null SSID:")
+			if (substr($forshow,0,17) == "Ignore Null SSID:" || substr($forshow,0,17) == "Ignore Null Ssid:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getIgnoreNull=substr($forshow,18);

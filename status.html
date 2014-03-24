@@ -38,8 +38,16 @@ Joe Conley, joe.conley@lairdtech.com
 	$status=$sdcstatus;
 	$TitleStatus=ucwords(substr($sdcstatus[0],11));
 	echo "<title>LCM - $TitleStatus</title>";
-	$subRSSI=substr($status[4],10,3);
-	$RSSIMeter=$subRSSI+120;
+	if (is_numeric(substr($status[3],10,3)))
+	{
+		$subRSSI=substr($status[3],10,3);
+		$RSSIMeter=$subRSSI+120;
+	}
+	elseif (is_numeric(substr($status[4],10,3)))
+	{
+		$subRSSI=substr($status[4],10,3);
+		$RSSIMeter=$subRSSI+120;
+	}
 	?>
 	<!-- Show status -->
 	<div class="panel panel-default">
