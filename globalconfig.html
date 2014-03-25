@@ -474,7 +474,7 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getServer=substr($forshow,18);
-				if (trim($getServer) == "1" || trim($getServer) == "acs")
+				if (trim($getServer) == "type 1" || trim($getServer) == "acs")
 				{
 					$getServer=1;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
@@ -483,7 +483,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (trim($getServer) == "2" || trim($getServer) == "sbr")
+				elseif (trim($getServer) == "type 2" || trim($getServer) == "sbr")
 				{
 					$getServer=2;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
