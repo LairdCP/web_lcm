@@ -58,6 +58,14 @@ Joe Conley, joe.conley@lairdtech.com
 				exec("sdc_cli profile list", $prolist);
 				$listLen=count($prolist);
 				$testcount = 0;
+				if (substr($prolist[$listLen - 2],2,7) == "denotes")
+				{
+					$listLen=$listLen - 3;
+				}
+				elseif ($prolist[$listLen] == "")
+				{
+					--$listLen;
+				}
 				?>
 				<select name='wbprofiles' size='4' class='form-control' style='width:198px'>
 				<?php
@@ -65,13 +73,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					if (strlen(strchr($prolist[$testcount],"ACTIVE",true)) >= 1)
 					{
-						if ( $editprofile == strchr($prolist[$testcount],"ACTIVE",true) || strlen($editprofile) == 0)
+						if ( $editprofile == substr(strchr($prolist[$testcount],"ACTIVE",true),1) || strlen($editprofile) == 0)
 						{
-							echo "<option selected>" . "$prolist[$testcount]" . "</option>";
+							echo "<option selected>" . substr($prolist[$testcount],1) . "</option>";
 						}
 						else
 						{
-							echo "<option>" . "$prolist[$testcount]" . "</option>";
+							echo "<option>" . substr($prolist[$testcount],1) . "</option>";
 						}
 					}
 					++$testcount;
@@ -81,13 +89,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					if (strlen(strchr($prolist[$testcount],"ACTIVE",true)) == 0)
 					{
-						if ( $editprofile == $prolist[$testcount])
+						if ( $editprofile == substr($prolist[$testcount],1))
 						{
-							echo "<option selected>" . "$prolist[$testcount]" . "</option>";
+							echo "<option selected>" . substr($prolist[$testcount],1) . "</option>";
 						}
 						else
 						{
-							echo "<option>" . "$prolist[$testcount]" . "</option>";
+							echo "<option>" . substr($prolist[$testcount],1) . "</option>";
 						}
 					}
 					++$testcount;
