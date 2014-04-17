@@ -75,11 +75,11 @@ Joe Conley, joe.conley@lairdtech.com
 					{
 						if ( $editprofile == substr(strchr($prolist[$testcount],"ACTIVE",true),1) || strlen($editprofile) == 0)
 						{
-							echo "<option selected>" . substr($prolist[$testcount],1) . "</option>";
+							echo "<option selected>" . trim($prolist[$testcount]) . "</option>";
 						}
 						else
 						{
-							echo "<option>" . substr($prolist[$testcount],1) . "</option>";
+							echo "<option>" . trim($prolist[$testcount]) . "</option>";
 						}
 					}
 					++$testcount;
@@ -91,11 +91,11 @@ Joe Conley, joe.conley@lairdtech.com
 					{
 						if ( $editprofile == substr($prolist[$testcount],1))
 						{
-							echo "<option selected>" . substr($prolist[$testcount],1) . "</option>";
+							echo "<option selected>" . trim($prolist[$testcount]) . "</option>";
 						}
 						else
 						{
-							echo "<option>" . substr($prolist[$testcount],1) . "</option>";
+							echo "<option>" . trim($prolist[$testcount]) . "</option>";
 						}
 					}
 					++$testcount;
