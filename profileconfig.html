@@ -89,7 +89,7 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					if (strlen(strchr($prolist[$testcount],"ACTIVE",true)) == 0)
 					{
-						if ( $editprofile == substr($prolist[$testcount],1))
+						if ( $editprofile == trim($prolist[$testcount]))
 						{
 							echo "<option selected>" . trim($prolist[$testcount]) . "</option>";
 						}
