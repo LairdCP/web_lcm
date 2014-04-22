@@ -28,7 +28,7 @@ Joe Conley, joe.conley@lairdtech.com
 		<ul class="nav nav-tabs nav-justified">
 			<li><a href="/status.html">Status</a></li>
 			<li><a href="/profileconfig.html">Wi-Fi</a></li>
-			<li><a href="/globalconfig.html">Wi-Fi Options</a></li>
+			<li><a href="/globalconfig.html">Wi-Fi Globals</a></li>
 			<li class="active"><a href="/ifaceconfig.html">Interfaces</a></li>
 			<li><a href="/advancedconfig.html">Advanced</a></li>
 			<li><a href="/about.html">About</a></li>
@@ -487,27 +487,13 @@ if (isset($_POST['formStop']))
 		//Set DHCP status
 		exec("sdc_cli iface set dhcp $ifacelist $DHCPstatus");
 
-		//Update IP address
-		if (strlen($IPAddress) != 0)
-		{
-			exec("sdc_cli iface set address $ifacelist $IPAddress");
-		}
-		if (strlen($IPNetmask) != 0)
-		{
-			exec("sdc_cli iface set netmask $ifacelist $IPNetmask");
-		}
-		if (strlen($IPGateway) != 0)
-		{
-			exec("sdc_cli iface set gateway $ifacelist $IPGateway");
-		}
-		if (strlen($IPNameserver) != 0)
-		{
-			exec("sdc_cli iface set nameserver $ifacelist $IPNameserver");
-		}
-		if (strlen($IPBroadcast) != 0)
-		{
-			exec("sdc_cli iface set broadcast $ifacelist $IPBroadcast");
-		}
+		//Update addresses
+		exec("sdc_cli iface set address $ifacelist $IPAddress");
+		exec("sdc_cli iface set netmask $ifacelist $IPNetmask");
+		exec("sdc_cli iface set gateway $ifacelist $IPGateway");
+		exec("sdc_cli iface set nameserver $ifacelist $IPNameserver");
+		exec("sdc_cli iface set broadcast $ifacelist $IPBroadcast");
+
 		//Update bridge config
 		if ( $BridgeOne != $GetBridgeOne || $BridgeTwo != $GetBridgeTwo)
 		{
