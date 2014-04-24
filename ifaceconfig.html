@@ -329,16 +329,30 @@ if (isset($_POST['formStop']))
 					echo "<br>";
 					$ifaceDHCPstatus=explode(" ",$ifaceShow[$i]);
 					$ifaceDHCPstatus=$ifaceDHCPstatus[3];
-					echo "Address Aquisition:<br><select class='form-control input-sm' name='DHCPstatus'>";
+					echo "Address Aquisition:<br><select class='form-control input-sm' name='MethodStatus'>";
 					if ($ifaceDHCPstatus == "dhcp")
 					{
-						echo "<option value='on' selected>dhcp</option>";
-						echo "<option value='off' >static</option>";
+						echo "<option selected>dhcp</option>";
+						echo "<option>static</option>";
+						echo "<option>manual</option>";
+					}
+					elseif ($ifaceDHCPstatus == "static")
+					{
+						echo "<option>dhcp</option>";
+						echo "<option selected>static</option>";
+						echo "<option>manual</option>";
+					}
+					elseif ($ifaceDHCPstatus == "manual")
+					{
+						echo "<option>dhcp</option>";
+						echo "<option>static</option>";
+						echo "<option selected>manual</option>";
 					}
 					else
 					{
-						echo "<option value='on'>dhcp</option>";
-						echo "<option value='off' selected>static</option>";
+						echo "<option selected>dhcp</option>";
+						echo "<option>static</option>";
+						echo "<option>manual</option>";
 					}
 					?>
 					</select>
@@ -481,11 +495,11 @@ if (isset($_POST['formStop']))
 		$IPNameserver=$_POST['IPNameserver'];
 		$BridgeOne=$_POST['BridgeOne'];
 		$BridgeTwo=$_POST['BridgeTwo'];
-		$DHCPstatus=$_POST['DHCPstatus'];
+		$MethodStatus=$_POST['MethodStatus'];
 		$AutoState=$_POST['AutoState'];
 		
 		//Set DHCP status
-		exec("sdc_cli iface set dhcp $ifacelist $DHCPstatus");
+		exec("sdc_cli iface set method $ifacelist $MethodStatus");
 
 		//Update addresses
 		exec("sdc_cli iface set address $ifacelist $IPAddress");

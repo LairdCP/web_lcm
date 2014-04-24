@@ -1,3 +1,15 @@
+<html>
+	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+<script>
+(function worker() {
+  $.get( "status_update.php", function( data ) {
+	$('#status_update').html(data);
+    setTimeout(worker, 1000);
+  });
+})();
+</script>
 <!--
 Web Based Configuration Tool for WB Products
 Joe Conley, joe.conley@lairdtech.com
@@ -33,108 +45,9 @@ Joe Conley, joe.conley@lairdtech.com
 			<li><a href="/advancedconfig.html">Advanced</a></li>
 			<li><a href="/about.html">About</a></li>
 		</ul>
-	<?php
-	exec('iw dev wlan0 link | grep -m 1 SSID:', $wlstatus);
-	exec('sdc_cli status 2>&1', $sdcstatus);
-	$status=$sdcstatus;
-	$TitleStatus=ucwords(substr($sdcstatus[0],11));
-	echo "<title>LCM - $TitleStatus</title>";
-	if (is_numeric(substr($status[3],10,3)))
-	{
-		$subRSSI=substr($status[3],10,3);
-		$RSSIMeter=$subRSSI+120;
-	}
-	elseif (is_numeric(substr($status[4],10,3)))
-	{
-		$subRSSI=substr($status[4],10,3);
-		$RSSIMeter=$subRSSI+120;
-	}
-	?>
-	<!-- Show status -->
-	<div class="panel panel-default">
-    <div class="row panel-body">
-	<br>
-	<div class="col-xs-12 col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2"><h2>WB Status</h2></div>
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[1]; ?></strong></h6></div> <!-- /config name -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[2]; ?></strong></h6></div> <!-- /SSID -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[0]; ?></strong></h6></div> <!-- /status -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[5]; ?></strong></h6></div> <!-- /Device name -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[8]; ?></strong></h6></div> <!-- /AP name -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[7]; ?></strong></h6></div> <!-- /IP -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[10]; ?></strong></h6></div> <!-- /AP IP -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[6]; ?></strong></h6></div> <!-- /MAC -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[9]; ?></strong></h6></div> <!-- /AP MAC -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[3]; ?></strong></h6></div> <!-- /Channel -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[13]; ?></strong></h6></div> <!-- /Beacon Period -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[14]; ?></strong></h6></div> <!-- /DTIM -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[11]; ?></strong></h6></div> <!-- /Bit Rate -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[12]; ?></strong></h6></div> <!-- /TX Power -->
-	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[4]; ?></strong></h6></div> <!-- /RSSI -->
-	<div class="col-xs-10 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
-
-	<?php
-	if ($subRSSI == 0 && trim($TitleStatus) != "Authenticated") //account for not connected
-	{
-		if (trim($status[0]) != "no hardware detected")
-		{
-			?>
-			<div class="progress">
-			  <div class="progress-bar progress-bar-danger" role="progressbar" style="width: 0%">
-			  </div>
-			</div>
-			<?php
-		}
-	}	
-	elseif ($subRSSI < -90) //red
-	{
-	?>
-	<div class="progress">
-	  <div class="progress-bar progress-bar-danger" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
-	  </div>
-	</div>
-	<?php
-	}
-	elseif ($subRSSI < -70) //yellow
-	{
-	?>
-	<div class="progress">
-	  <div class="progress-bar progress-bar-warning" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
-	  </div>
-	</div>
-	<?php
-	}
-	elseif ($subRSSI > -20)//account for signals >-20
-	{
-	?>
-	<div class="progress">
-	  <div class="progress-bar progress-bar-success" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
-	  </div>
-	</div>
-	<?php
-	}
-	else //green
-	{
-	?>	
-	<div class="progress">		
-		<div class="progress-bar progress-bar-success" role="progressbar" style='<?php echo "width: $RSSIMeter%;";?>'>
-		</div>
-	</div>
-	<?php
-	}
-	?>
-	</div>
-    </div>
-	</div><!-- /row panel-body -->
-	<meta http-equiv="refresh" content="5" >
+	<p id="status_update"></p>
 	</nav>
     </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-
 
   </body>
 </html>
