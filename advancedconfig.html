@@ -127,53 +127,6 @@ Joe Conley, joe.conley@lairdtech.com
 		  </div>
 		</form>
 		<br>
-		<?php
-		$FWupdateLog='fw_update_log.txt';
-		$FWupdateLogString=implode(file("fw_update_log.txt"));
-		$FWupdateLogPos=strpos($FWupdateLogString, 'Done.');
-		if (file_exists($FWupdateLog) && !isset($_POST['RemoteReboot']) && !isset($_POST['RemoteUpdate']))
-		{
-		?>
-        <div class="col-xs-12 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
-			<div class="panel-group" id="accordion">
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-				  <h4 class="panel-title">
-					<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-					Remote Update Log:
-					</a>
-				  </h4>
-				</div>
-				<div id="collapseOne" class="panel-collapse collapse">
-					<div class="panel-body">
-						<textarea class="form-control" rows="10"><?php
-							echo implode(file("fw_update_log.txt"));
-							?>
-						</textarea>
-						<?php
-						if ($FWupdateLogPos === false)
-						{
-						
-						}
-						else
-						{
-						?>
-						<br>
-						<form name="RemoteReboot" role="form" action='' method='post'>
-						<button type='submit' class='btn btn-warning btn-block'>Reboot device to complete remote update.</button>
-						<input type = "hidden" name = "RemoteReboot" value = "<?php echo $_POST['RemoteReboot']; ?>"/>
-						</form>
-						<?php
-						}
-						?>
-					</div>     
-				</div>
-			  </div>
-			</div>
-		</div>
-		<?php
-		}
-		?>
 		<br>
 		<?php
 	if (isset($_POST['PasswordChange']))
@@ -248,16 +201,19 @@ Joe Conley, joe.conley@lairdtech.com
 				?>
 				<br>
 				<br>
-				<div class="alert alert-danger col-md-offset-2 col-md-8">
-					<strong>Remote Update Started:</strong>
-					Please check log for results. This page will refresh in 5 seconds and the log will be viewable. 
-					<br>
-					<?php
-					exec('fw_update -x --url ' . $optionsRadios . $RemotePath . ' &> fw_update_log.txt &');
-					echo "<form id=refresh action='' method = 'post'>";
-					echo "</form>";
-					?>
-				<meta http-equiv="refresh" content="5" >
+				<div class="col-md-offset-2 col-md-8">
+				<?php
+				exec('fw_update -x --url ' . $optionsRadios . $RemotePath . ' &> fw_update_log.txt &');
+				?>
+				<script>
+				(function worker() {
+				  $.get( "remote_update.php", function( data ) {
+					$('#remote_update').html(data);
+					setTimeout(worker, 1000);
+				  });
+				})();
+				</script>
+				<p id="remote_update"></p>
 				</div>
 				<?php
 			}
