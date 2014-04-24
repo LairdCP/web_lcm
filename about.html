@@ -10,9 +10,19 @@ Joe Conley, joe.conley@lairdtech.com
     <meta name="description" content="Web based configuration tool for WB platform" />
     <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com" />
     <link rel="icon" href="/assets/img/laird_logo.png" />
-    <!-- Le styles -->
+
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-    <title>LCM - About</title>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+	<script>
+	(function worker() {
+	  $.get( "title_update.php", function( data ) {
+		$('#title_update').html(data);
+		setTimeout(worker, 5000);
+	  });
+	})();
+	</script>
+	<title id="title_update"></title>
   </head>
   <body>
     <div class="container">
@@ -136,10 +146,5 @@ Joe Conley, joe.conley@lairdtech.com
       </nav>
     </div>
     <!-- /container -->
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
   </body>
 </html>

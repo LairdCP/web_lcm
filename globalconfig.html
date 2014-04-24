@@ -11,10 +11,18 @@ Joe Conley, joe.conley@lairdtech.com
     <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
     <link rel="icon" href="/assets/img/laird_logo.png">
 
-    <!-- Le styles -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-
-<title>LCM - Global Configuration</title>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+	<script>
+	(function worker() {
+	  $.get( "title_update.php", function( data ) {
+		$('#title_update').html(data);
+		setTimeout(worker, 5000);
+	  });
+	})();
+	</script>
+	<title id="title_update"></title>
   </head>
 
   <body>
@@ -57,16 +65,6 @@ Joe Conley, joe.conley@lairdtech.com
 		</div> <!-- /div for h2 and some php code -->
 		<div class="">
 		<?php
-		exec('sdc_cli status', $sdcstatus);
-		$TitleStatus=ucwords(substr($sdcstatus[0],11));
-		if (strlen($TitleStatus) == 9)
-		{
-			echo "<title>LCM - $TitleStatus</title>";
-		}
-		else
-		{
-			echo "<title>LCM - Enabled</title>";
-		}
 		exec('sdc_cli global show', $globalShow);
 		echo "";
 		$pageDiv=count($globalShow)/2;
@@ -861,13 +859,5 @@ Joe Conley, joe.conley@lairdtech.com
 	</div><!-- pannelpanel-default -->
 	</nav><!-- navbar navbar-default  -->
     </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../assets/js/bootstrap.min.js"></script>
-
-
   </body>
 </html>

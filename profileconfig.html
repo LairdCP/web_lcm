@@ -11,9 +11,22 @@ Joe Conley, joe.conley@lairdtech.com
     <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
     <link rel="icon" href="/assets/img/laird_logo.png">
 
-    <!-- Le styles -->
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+	<?php
+		exec('sdc_cli status 2>&1', $sdcstatus);
+		$TitleStatus=ucwords(substr($sdcstatus[0],11));
+	?>
+	<script>
+	(function worker() {
+	  $.get( "title_update.php", function( data ) {
+		$('#title_update').html(data);
+		setTimeout(worker, 5000);
+	  });
+	})();
+	</script>
+	<title id="title_update"></title>
   </head>
 
   <body>
@@ -34,18 +47,6 @@ Joe Conley, joe.conley@lairdtech.com
 			<li><a href="/about.html">About</a></li>
 		</ul>
 	
-	<?php
-		exec('sdc_cli status', $sdcstatus);
-		$TitleStatus=ucwords(substr($sdcstatus[0],11));
-		if (strlen($TitleStatus) == 9)
-		{
-			echo "<title>LCM - $TitleStatus</title>";
-		}
-		else
-		{
-			echo "<title>LCM - Enabled</title>";
-		}
-	?>
 	<!-- Show profile -->
 	<div class="panel panel-default">
 	<div class="row panel-body">

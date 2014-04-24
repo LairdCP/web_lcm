@@ -1,11 +1,6 @@
-<!--
-Web Based Configuration Tool for WB Products
-Joe Conley, joe.conley@lairdtech.com
--->
 <!DOCTYPE html>
 <html lang="en">
  	<?php
-	exec('iw dev wlan0 link | grep -m 1 SSID:', $wlstatus);
 	exec('sdc_cli status 2>&1', $sdcstatus);
 	$status=$sdcstatus;
 	$TitleStatus=ucwords(substr($sdcstatus[0],11));
