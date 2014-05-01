@@ -21,6 +21,7 @@ Joe Conley, joe.conley@lairdtech.com
 		setTimeout(worker, 5000);
 	  });
 	})();
+	
 	</script>
 	<title id="title_update"></title>
   </head>
@@ -201,7 +202,7 @@ Joe Conley, joe.conley@lairdtech.com
 				?>
 				<br>
 				<br>
-				<div class="col-md-offset-2 col-md-8">
+				<div class="col-sm-offset-2 col-md-offset-2 col-sm-8 col-md-8">
 				<?php
 				exec('fw_update -x --url ' . $optionsRadios . escapeshellcmd($RemotePath) . ' &> fw_update_log.txt &');
 				?>
@@ -212,6 +213,17 @@ Joe Conley, joe.conley@lairdtech.com
 					setTimeout(worker, 1000);
 				  });
 				})();
+
+				$( document ).ready(function () 
+				{
+					var counter = 0;
+					var id = setInterval(function() {
+					   counter = counter + 1;
+					   if(counter <= 10) {
+						window.scrollTo(0, document.body.scrollHeight);
+					   }
+					}, 500);
+				});
 				</script>
 				<p id="remote_update"></p>
 				</div>
