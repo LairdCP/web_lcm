@@ -720,31 +720,31 @@ Joe Conley, joe.conley@lairdtech.com
 	<?php
 	if (isset($_POST['globalEdit']))
 		{
-			$globalEdit=$_POST["globalEdit"];
-			$Frag=$_POST["Frag"];
-			$RTS=$_POST["RTS"];
-			$RXdiv=$_POST["RXdiv"];
-			$TXdiv=$_POST["TXdiv"];
-			$Trigger=$_POST["Trigger"];
-			$Delta=$_POST["Delta"];
-			$Period=$_POST["Period"];
-			$Coexist=$_POST["Coexist"];
-			$TXMax=$_POST["TXMax"];
-			$WMM=$_POST["WMM"];
-			$CCX=$_POST["CCX"];
-			$Cert=$_POST["Cert"];
-			$BGChan=$_POST["BGChan"];
-			$AChan=$_POST["AChan"];
-			$PMK=$_POST["PMK"];
-			$Adhoc=$_POST["Adhoc"];
-			$Scan=$_POST["Scan"];
-			$DFS=$_POST["DFS"];
-			$Server=$_POST["Server"];
-			$TTLSinner=$_POST["TTLSinner"];
-			$FIPS=$_POST["FIPS"];
-			$Probedelay=$_POST["Probedelay"];
-			$IgnoreNull=$_POST["IgnoreNull"];
-			$DateCheck=$_POST["DateCheck"];
+			$globalEdit=escapeshellcmd($_POST["globalEdit"]);
+			$Frag=escapeshellcmd($_POST["Frag"]);
+			$RTS=escapeshellcmd($_POST["RTS"]);
+			$RXdiv=escapeshellcmd($_POST["RXdiv"]);
+			$TXdiv=escapeshellcmd($_POST["TXdiv"]);
+			$Trigger=escapeshellcmd($_POST["Trigger"]);
+			$Delta=escapeshellcmd($_POST["Delta"]);
+			$Period=escapeshellcmd($_POST["Period"]);
+			$Coexist=escapeshellcmd($_POST["Coexist"]);
+			$TXMax=escapeshellcmd($_POST["TXMax"]);
+			$WMM=escapeshellcmd($_POST["WMM"]);
+			$CCX=escapeshellcmd($_POST["CCX"]);
+			$Cert=escapeshellcmd($_POST["Cert"]);
+			$BGChan=escapeshellcmd($_POST["BGChan"]);
+			$AChan=escapeshellcmd($_POST["AChan"]);
+			$PMK=escapeshellcmd($_POST["PMK"]);
+			$Adhoc=escapeshellcmd($_POST["Adhoc"]);
+			$Scan=escapeshellcmd($_POST["Scan"]);
+			$DFS=escapeshellcmd($_POST["DFS"]);
+			$Server=escapeshellcmd($_POST["Server"]);
+			$TTLSinner=escapeshellcmd($_POST["TTLSinner"]);
+			$FIPS=escapeshellcmd($_POST["FIPS"]);
+			$Probedelay=escapeshellcmd($_POST["Probedelay"]);
+			$IgnoreNull=escapeshellcmd($_POST["IgnoreNull"]);
+			$DateCheck=escapeshellcmd($_POST["DateCheck"]);
 
 	
 			if ($Frag != $getFrag && strlen($Frag) > 0)

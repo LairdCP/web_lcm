@@ -1934,32 +1934,32 @@ Joe Conley, joe.conley@lairdtech.com
 			if (isset($_POST['EditSub']))
 			{
 
-				$editprofile=$_POST["wbprofiles"];
+				$editprofile=escapeshellcmd($_POST["wbprofiles"]);
 				$editprofile=chop($editprofile, "ACTIVE");
-				$formeditprofile=$_POST["formEdit"];
-				$Name=$_POST["Name"];
-				$SSID=$_POST["SSID"];
-				$AuthType=$_POST["AuthType"];
-				$ClientName=$_POST["ClientName"];
-				$TxPower=$_POST["TxPower"];
-				$EapType=$_POST["EapType"];
-				$WepType=$_POST["WepType"];
-				$BitRate=$_POST["BitRate"];
-				$Mode=$_POST["Mode"];
-				$PowerSave=$_POST["PowerSave"];
-				$UserName=$_POST["UserName"];
-				$PassWord=$_POST["PassWord"];
-				$PacFileName=$_POST["PacFileName"];
-				$PacPassword=$_POST["PacPassword"];
-				$UserCert=$_POST["UserCert"];
-				$UserCertPass=$_POST["UserCertPass"];
-				$CaCert=$_POST["CaCert"];
-				$WepKey1=$_POST["WepKey1"];
-				$WepKey2=$_POST["WepKey2"];
-				$WepKey3=$_POST["WepKey3"];
-				$WepKey4=$_POST["WepKey4"];
-				$KeyIndex=$_POST["KeyIndex"];
-				$PSK=$_POST["PSK"];
+				$formeditprofile=escapeshellcmd($_POST["formEdit"]);
+				$Name=escapeshellcmd($_POST["Name"]);
+				$SSID=escapeshellcmd($_POST["SSID"]);
+				$AuthType=escapeshellcmd($_POST["AuthType"]);
+				$ClientName=escapeshellcmd($_POST["ClientName"]);
+				$TxPower=escapeshellcmd($_POST["TxPower"]);
+				$EapType=escapeshellcmd($_POST["EapType"]);
+				$WepType=escapeshellcmd($_POST["WepType"]);
+				$BitRate=escapeshellcmd($_POST["BitRate"]);
+				$Mode=escapeshellcmd($_POST["Mode"]);
+				$PowerSave=escapeshellcmd($_POST["PowerSave"]);
+				$UserName=escapeshellcmd($_POST["UserName"]);
+				$PassWord=escapeshellcmd($_POST["PassWord"]);
+				$PacFileName=escapeshellcmd($_POST["PacFileName"]);
+				$PacPassword=escapeshellcmd($_POST["PacPassword"]);
+				$UserCert=escapeshellcmd($_POST["UserCert"]);
+				$UserCertPass=escapeshellcmd($_POST["UserCertPass"]);
+				$CaCert=escapeshellcmd($_POST["CaCert"]);
+				$WepKey1=escapeshellcmd($_POST["WepKey1"]);
+				$WepKey2=escapeshellcmd($_POST["WepKey2"]);
+				$WepKey3=escapeshellcmd($_POST["WepKey3"]);
+				$WepKey4=escapeshellcmd($_POST["WepKey4"]);
+				$KeyIndex=escapeshellcmd($_POST["KeyIndex"]);
+				$PSK=escapeshellcmd($_POST["PSK"]);
 
 				if ($SSID != $getSSID)
 				{
@@ -2000,14 +2000,6 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					exec("sdc_cli profile $editprofile set powersave $PowerSave", $error);
 				}
-				if ($UserName != $getUser)
-				{
-					exec("sdc_cli profile $editprofile set user $UserName", $error);
-				}
-				if ($PassWord != $getPass)
-				{
-					exec("sdc_cli profile $editprofile set password $PassWord", $error);
-				}
 				if ($PacFileName != $getPacFile)
 				{
 					exec("sdc_cli profile $editprofile set pacfilename $PacFileName", $error);
@@ -2020,13 +2012,21 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					exec("sdc_cli profile $editprofile set usercert $UserCert", $error);
 				}	
-				if ($UserCertPass != $getUserCertPass)
-				{
-					exec("sdc_cli profile $editprofile set usercert_password $UserCertPass", $error);
-				}
 				if ($CaCert != $getCAFile)
 				{
 					exec("sdc_cli profile $editprofile set cacert $CaCert", $error);
+				}
+				if ($UserName != $getUser)
+				{
+					exec("sdc_cli profile $editprofile set user $UserName", $error);
+				}
+				if ($PassWord != $getPass)
+				{
+					exec("sdc_cli profile $editprofile set password $PassWord", $error);
+				}
+				if ($UserCertPass != $getUserCertPass)
+				{
+					exec("sdc_cli profile $editprofile set usercert_password $UserCertPass", $error);
 				}
 
 				if ($WepKey1 != $getWEPKey1)

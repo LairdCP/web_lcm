@@ -203,7 +203,7 @@ Joe Conley, joe.conley@lairdtech.com
 				<br>
 				<div class="col-md-offset-2 col-md-8">
 				<?php
-				exec('fw_update -x --url ' . $optionsRadios . $RemotePath . ' &> fw_update_log.txt &');
+				exec('fw_update -x --url ' . $optionsRadios . escapeshellcmd($RemotePath) . ' &> fw_update_log.txt &');
 				?>
 				<script>
 				(function worker() {

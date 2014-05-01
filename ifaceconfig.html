@@ -481,18 +481,18 @@ if (isset($_POST['formStop']))
 	}
 	if (isset($_POST['ifaceEdited']))
 	{
-		$Editiface=$_POST['Editiface'];
-		$ifacelist=$_POST['ifacelist'];
-		$ifaceEdited=$_POST['ifaceEdited'];
-		$IPAddress=$_POST['IPAddress'];
-		$IPBroadcast=$_POST['IPBroadcast'];
-		$IPNetmask=$_POST['IPNetmask'];
-		$IPGateway=$_POST['IPGateway'];
-		$IPNameserver=$_POST['IPNameserver'];
-		$BridgeOne=$_POST['BridgeOne'];
-		$BridgeTwo=$_POST['BridgeTwo'];
-		$MethodStatus=$_POST['MethodStatus'];
-		$AutoState=$_POST['AutoState'];
+		$Editiface=escapeshellcmd($_POST['Editiface']);
+		$ifacelist=escapeshellcmd($_POST['ifacelist']);
+		$ifaceEdited=escapeshellcmd($_POST['ifaceEdited']);
+		$IPAddress=escapeshellcmd($_POST['IPAddress']);
+		$IPBroadcast=escapeshellcmd($_POST['IPBroadcast']);
+		$IPNetmask=escapeshellcmd($_POST['IPNetmask']);
+		$IPGateway=escapeshellcmd($_POST['IPGateway']);
+		$IPNameserver=escapeshellcmd($_POST['IPNameserver']);
+		$BridgeOne=escapeshellcmd($_POST['BridgeOne']);
+		$BridgeTwo=escapeshellcmd($_POST['BridgeTwo']);
+		$MethodStatus=escapeshellcmd($_POST['MethodStatus']);
+		$AutoState=escapeshellcmd($_POST['AutoState']);
 		
 		//Set DHCP status
 		exec("sdc_cli iface set method $ifacelist $MethodStatus");
