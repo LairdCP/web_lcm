@@ -2116,7 +2116,7 @@ Joe Conley, joe.conley@lairdtech.com
 
 				if ($PSK != $getPSK)
 				{
-					if (strlen($PSK) >= 8 && strlen($PSK) <= 63)
+					if (strlen($PSK) >= 8 && strlen($PSK) <= 64)
 					{
 						exec("sdc_cli profile $editprofile set psk $PSK", $error);
 					}
@@ -2124,7 +2124,7 @@ Joe Conley, joe.conley@lairdtech.com
 					{
 						?>
 						<script>
-						alert("PSK needs to be between 8 and 64 characters");
+						alert("ASCII PSK needs to be between 8 and 63 characters.\n\nHexadecimal PSK needs to be 64 characters.");
 						</script>
 						<?php
 					}
