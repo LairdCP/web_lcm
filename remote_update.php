@@ -1,6 +1,6 @@
 <?php
 	$FWupdateLog='fw_update_log.txt';
-	$FWupdateLogString=implode(file("fw_update_log.txt"));
+	$FWupdateLogString=implode("<br>",file("fw_update_log.txt"));
 	$FWupdateLogPos=strpos($FWupdateLogString, 'Done.');
 	if (file_exists($FWupdateLog) && !isset($_POST['RemoteReboot']) && !isset($_POST['RemoteUpdate']))
 	{
@@ -10,16 +10,12 @@
 				<strong>Remote Update Started:</strong>
 				<?php
 				echo "<p>";
-				echo implode(file("fw_update_log.txt"));
+				echo $FWupdateLogString;
 				echo "</p>";
 				?>
 			</div>
 				<?php
-			if ($FWupdateLogPos === false)
-			{
-
-			}
-			else
+			if ($FWupdateLogPos != false)
 			{
 			?>
 			<form name="RemoteReboot" role="form" action='' method='post'>

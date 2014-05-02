@@ -102,24 +102,10 @@ Joe Conley, joe.conley@lairdtech.com
 			<label for="RemotePath1" class="col-md-4 control-label">Remote Update Path</label>
 			<div class="col-md-6">
 				<?php
-				  echo "<input type='text' name='RemotePath' class='form-control input-sm' id='RemotePath1' placeholder='//<server/path/to/images>/fw.txt' value='$getRemotePath'>";
+				  echo "<input type='text' name='RemotePath' class='form-control input-sm' id='RemotePath1' placeholder='<protocol>://<server/path/to/images>/fw.txt' value='$getRemotePath'>";
 				?>	
 			</div>
-				<div class="col-md-offset-4 col-md-3 ">
-					  <label class="radio radio-inline">
-						<?php
-						  echo "<input type='radio' name='optionsRadios' id='optionsRadios1' value='http:' checked>";
-						?>	
-						HTTP
-					  </label>
-					  <label class="radio radio-inline">
-						<?php
-						  echo "<input type='radio' name='optionsRadios' id='optionsRadios2' value='ftp:'>";
-						?>	
-						FTP
-					  </label>
-				</div>
-			  </div>
+		  </div>
 		  <div class="form-group">
 			<div class="col-md-offset-4 col-md-8">
 			  <button type="submit" class="btn btn-primary">Start Remote Update</button>
@@ -195,7 +181,6 @@ Joe Conley, joe.conley@lairdtech.com
 		{
 			$RemoteUpdate=$_POST["RemoteUpdate"];
 			$RemotePath=$_POST["RemotePath"];
-			$optionsRadios=$_POST["optionsRadios"];
 			
 			if (strlen($RemotePath) > 0)
 			{
@@ -204,7 +189,7 @@ Joe Conley, joe.conley@lairdtech.com
 				<br>
 				<div class="col-sm-offset-2 col-md-offset-2 col-sm-8 col-md-8">
 				<?php
-				exec('fw_update -x --url ' . $optionsRadios . escapeshellcmd($RemotePath) . ' &> fw_update_log.txt &');
+				exec('fw_update -x --url ' . escapeshellcmd($RemotePath) . ' &> fw_update_log.txt &');
 				?>
 				<script>
 				(function worker() {
