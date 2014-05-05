@@ -56,10 +56,9 @@ Joe Conley, joe.conley@lairdtech.com
 				<h2>Profile Configuration</h2>
 				<?php
 				$editprofile=$_POST["wbprofiles"];
-				$editprofile=chop($editprofile,"ACTIVE");
+				$editprofile=trim(chop($editprofile,"ACTIVE"));
 				exec("sdc_cli profile list", $prolist);
 				$listLen=count($prolist);
-				$testcount = 0;
 				if (substr($prolist[$listLen - 2],2,7) == "denotes")
 				{
 					$listLen=$listLen - 3;
@@ -67,31 +66,35 @@ Joe Conley, joe.conley@lairdtech.com
 				elseif ($prolist[$listLen] == "")
 				{
 					--$listLen;
-				}	
-				?>
-				<select name='wbprofiles' size='4' class='form-control' style='width:198px'>
-				<?php
-				while ($testcount < $listLen)
-				{
-					if (strlen(strchr($prolist[$testcount],"ACTIVE",true)) >= 1)
-					{
-						if ( $editprofile == substr(strchr($prolist[$testcount],"ACTIVE",true),1) || strlen($editprofile) == 0)
-						{
-							echo "<option selected>" . trim($prolist[$testcount]) . "</option>";
-						}
-						else
-						{
-							echo "<option>" . trim($prolist[$testcount]) . "</option>";
-						}
-					}
-					++$testcount;
 				}
+				function active_search($haystack) {
+					$needle = 'ACTIVE';
+					return(strpos($haystack, $needle));
+				}
+				$findKeys=array_filter($prolist, 'active_search');
+				$keyindex=key($findKeys);
+				$activePosition=$prolist[$keyindex];
+				array_unshift($prolist, $activePosition);
+				unset($prolist[$keyindex + 1]);
+				$prolist=(array_values($prolist));
+				$prolist[0]=substr($prolist[0], 0, -6);
+				echo $prolist[0] . " is active";
+				?>
+				<br>
+				<br>
+				<input type = "hidden" name = "activeProfile" value = "<?php echo $prolist[0] ?>"/>
+				<select name='wbprofiles' size='4' class='form-control' style='width:198px'>
+				<?php				
 				$testcount = 0;
 				while ($testcount < $listLen)
 				{
-					if (strlen(strchr($prolist[$testcount],"ACTIVE",true)) == 0)
+					if (strlen($editprofile) == 0 && $testcount == 0)
 					{
-						if ( $editprofile == trim($prolist[$testcount]))
+						echo "<option selected>" . trim($prolist[$testcount]) . "</option>";
+					}
+					else
+					{
+						if (strlen($editprofile) > 0 && $editprofile == trim($prolist[$testcount]))
 						{
 							echo "<option selected>" . trim($prolist[$testcount]) . "</option>";
 						}
@@ -101,8 +104,8 @@ Joe Conley, joe.conley@lairdtech.com
 						}
 					}
 					++$testcount;
-				}
-				echo "</select>";
+				}				
+				echo "</select>";				
 				?>
 
 				
@@ -386,7 +389,11 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				$ScanListSecurity="psk";
 			}
-
+			elseif ($ScanListSecurity == "wpa-psk-tkip")
+			{
+				$ScanListSecurity="WPA_PSK";
+			}
+			
 			echo "<br>";
 			if (strlen($NewProfile) == 0)
 			{
@@ -466,8 +473,10 @@ Joe Conley, joe.conley@lairdtech.com
 
 		if (isset($_POST['formRemove']))
 		{
-			$wbprofilename=$_POST["wbprofiles"];
-			if (strlen(strchr($wbprofilename,"ACTIVE",true)) >= 1)
+			$wbprofilename=trim($_POST["wbprofiles"]);
+			$activeProfilename=trim($_POST["activeProfile"]);
+			
+			if ($wbprofilename == $activeProfilename)
 			{
 				?>
 				<script>
