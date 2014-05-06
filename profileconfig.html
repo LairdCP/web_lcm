@@ -55,22 +55,15 @@ Joe Conley, joe.conley@lairdtech.com
 				<br>
 				<h2>Profile Configuration</h2>
 				<?php
-				$editprofile=$_POST["wbprofiles"];
-				$editprofile=trim(chop($editprofile,"ACTIVE"));
-				exec("sdc_cli profile list", $prolist);
-				$listLen=count($prolist);
-				if (substr($prolist[$listLen - 2],2,7) == "denotes")
-				{
-					$listLen=$listLen - 3;
-				}
-				elseif ($prolist[$listLen] == "")
-				{
-					--$listLen;
-				}
 				function active_search($haystack) {
 					$needle = 'ACTIVE';
 					return(strpos($haystack, $needle));
 				}
+				
+				$editprofile=$_POST["wbprofiles"];
+				$editprofile=trim(chop($editprofile,"ACTIVE"));
+				exec("sdc_cli profile list", $prolist);
+				$listLen=count($prolist);
 				$findKeys=array_filter($prolist, 'active_search');
 				$keyindex=key($findKeys);
 				$activePosition=$prolist[$keyindex];
@@ -78,9 +71,28 @@ Joe Conley, joe.conley@lairdtech.com
 				unset($prolist[$keyindex + 1]);
 				$prolist=(array_values($prolist));
 				$prolist[0]=substr($prolist[0], 0, -6);
-				echo $prolist[0] . " is active";
+				$ActiveProfile=substr($prolist[0],1);
+				$AutoProfileON=strpos($prolist[$listLen - 2],'Active');
+				$AutoProfileOFF=strpos($prolist[$listLen - 2],'Inactive');
+				if ($AutoProfileON != false)
+				{
+					$listLen=$listLen - 3;
+					echo "Auto profile: Enabled";
+					echo "<br>";
+				}
+				elseif ($AutoProfileOFF != false)
+				{
+					$listLen=$listLen - 3;
+					echo "Active Profile: " . $ActiveProfile;
+					echo "<br>";
+				}
+				elseif ($prolist[$listLen] == "")
+				{
+					--$listLen;
+					echo "Active Profile: " . $ActiveProfile;
+					echo "<br>";
+				}
 				?>
-				<br>
 				<br>
 				<input type = "hidden" name = "activeProfile" value = "<?php echo $prolist[0] ?>"/>
 				<select name='wbprofiles' size='4' class='form-control' style='width:198px'>
@@ -88,6 +100,11 @@ Joe Conley, joe.conley@lairdtech.com
 				$testcount = 0;
 				while ($testcount < $listLen)
 				{
+					$autoCompare=substr($prolist[$testcount],0,1);
+					if ($autoCompare == ("-" || "+"))
+					{
+						$prolist[$testcount]=substr($prolist[$testcount],1);
+					}
 					if (strlen($editprofile) == 0 && $testcount == 0)
 					{
 						echo "<option selected>" . trim($prolist[$testcount]) . "</option>";

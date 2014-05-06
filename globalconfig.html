@@ -585,6 +585,7 @@ Joe Conley, joe.conley@lairdtech.com
 				$getFIPS=substr($forshow,11);
 				if ($getFIPS == "Disabled and Inactive")
 				{
+					$getFIPS="disabled";
 					echo "FIPS:Disabled and Inactive<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
@@ -593,6 +594,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getFIPS == "Inactive - Enabled on next start")
 				{
+					$getFIPS="enabled";
 					echo "FIPS:Inactive - Enabled on next start<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled' selected>Enabled</option>";
 					echo "<option value='disabled'>Disabled</option>";
@@ -601,6 +603,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getFIPS == "Active - Disabled on next start")
 				{
+					$getFIPS="disabled";
 					echo "FIPS:Active - Disabled on next start<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
@@ -609,6 +612,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				elseif ($getFIPS == "Enabled and Active")
 				{
+					$getFIPS="enabled";
 					echo "FIPS:Enabled and Active<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled' selected>Enabled</option>";
 					echo "<option value='disabled'>Disabled</option>";
@@ -705,6 +709,33 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // date check
+			if (substr($forshow,0,13) == "Auto Profile:")
+			{
+				$getAutoProfile=substr($forshow,14);
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				if ($getAutoProfile == "enabled")
+				{
+					$getAutoProfile="enable";
+					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
+					echo "<option value='enable' selected>Enabled</option>";
+					echo "<option value='disable'>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif ($getAutoProfile == "disabled")
+				{
+					$getAutoProfile="disable";
+					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
+					echo "<option value='enable'>Enabled</option>";
+					echo "<option value='disable' selected>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+				}
+				echo "</div>";
+			} // auto profile
 		} // this ends foreach loop to match names
 		?>
 	</div><!-- right side -->
@@ -745,6 +776,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$Probedelay=escapeshellcmd($_POST["Probedelay"]);
 			$IgnoreNull=escapeshellcmd($_POST["IgnoreNull"]);
 			$DateCheck=escapeshellcmd($_POST["DateCheck"]);
+			$AutoProfile=escapeshellcmd($_POST["AutoProfile"]);
 
 	
 			if ($Frag != $getFrag && strlen($Frag) > 0)
@@ -847,6 +879,10 @@ Joe Conley, joe.conley@lairdtech.com
 			if ($DateCheck != $getDateCheck)
 			{
 				exec("sdc_cli global set date-check $DateCheck");
+			}
+			if ($AutoProfile != $getAutoProfile)
+			{
+				exec("sdc_cli global set auto-profile $AutoProfile");
 			}
 			
 			echo "<form id=refresh action='' method = 'post'>";
