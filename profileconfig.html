@@ -77,7 +77,8 @@ Joe Conley, joe.conley@lairdtech.com
 				if ($AutoProfileON != false)
 				{
 					$listLen=$listLen - 3;
-					echo "Auto profile: Enabled";
+					$AutoProlist=$prolist;
+					echo "Auto Profile: Enabled";
 					echo "<br>";
 				}
 				elseif ($AutoProfileOFF != false)
@@ -163,21 +164,88 @@ Joe Conley, joe.conley@lairdtech.com
 
 	<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
 		<?php
+		if ($AutoProfileON != false && !isset($_POST['formActivate']) && !isset($_POST['formEdit']) && !isset($_POST['formAdd']) && !isset($_POST['formScan']) && !isset($_POST['formShow']) && !isset($_POST['formRemove']) && !isset($_POST['formRename']) && !isset($_POST['subAdded'])  && !isset($_POST['formScanLoad']) && !isset($_POST['formScanAdd']) && !isset($_POST['ScanSub']) && !isset($_POST['EditRename']) && !isset($_POST['EditSub']) && !isset($_POST['AutoProfileAdd']))
+		{
+					echo "<br>";
+					echo "<h2>Auto Profile</h2>";
+					?>
+					Active Profiles
+					<br>
+					<br>
+					<input type = "hidden" name = "activeProfile" value = "<?php echo $AutoProlist[0] ?>"/>
+					<form action = "" method = "post">
+						<select name='AutoEnabled' size='4' class='form-control' style='width:198px'>
+						<?php
+						$testcount = 0;
+						while ($testcount < $listLen)
+						{
+							$autoCompare=substr($AutoProlist[$testcount],0,1);
+							if ($autoCompare == "+")
+							{
+								$AutoProlist[$testcount]=substr($AutoProlist[$testcount],1);
+								echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
+							}
+							++$testcount;
+						}				
+						echo "</select>";
+						?>
+						<br>
+						<br>
+						<button class="btn btn-primary" TYPE="submit" name="AutoProfileRemove" style='width:198px'>Remove</button>
+					</form>
+					<br>
+					Inactive Profiles
+					<br>
+					<br>
+					<form action = "" method = "post">
+						<select name='AutoDisabled' size='4' class='form-control' style='width:198px'>
+						<?php
+						$testcount = 0;
+						while ($testcount < $listLen)
+						{
+							$autoCompare=substr($AutoProlist[$testcount],0,1);
+							if ($autoCompare == "-" || $autoCompare == " ")
+							{
+								$AutoProlist[$testcount]=substr($AutoProlist[$testcount],1);
+								echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
+							}
+							++$testcount;
+						}				
+						echo "</select>";	
+						?>
+						<br>
+						<br>
+						<button class="btn btn-primary" TYPE="submit" name="AutoProfileAdd" style='width:198px'>Add</button>
+					</form>
+					<?php
+		}
+		if (isset($_POST['AutoProfileAdd']))
+		{
+			$AutoDisabledProfile=$_POST["AutoDisabled"];
+			exec("sdc_cli profile $AutoDisabledProfile set auto-profile on");
+			echo "<META HTTP-EQUIV='refresh' CONTENT='1'>";
+		}
+		if (isset($_POST['AutoProfileRemove']))
+		{
+			$AutoEnabledProfile=$_POST["AutoEnabled"];
+			exec("sdc_cli profile $AutoEnabledProfile set auto-profile off");
+			echo "<META HTTP-EQUIV='refresh' CONTENT='1'>";
+		}
 		if (isset($_POST['formActivate']))
-				{
-					$wbprofilename=$_POST["wbprofiles"];
-					$wbprofilename=chop($wbprofilename, "ACTIVE");
-					?>
-					<div class="alert alert-success">
-					<h4>Success!</h4>
-					<?php
-					echo "<h6>Activating profile $wbprofilename</h6>";
-					exec("sdc_cli profile $wbprofilename activate", $ActivateOK);
-					?>
-					<meta http-equiv="refresh" content="1">
-					</div>
-					<?php
-				}
+		{
+			$wbprofilename=$_POST["wbprofiles"];
+			$wbprofilename=chop($wbprofilename, "ACTIVE");
+			?>
+			<div class="alert alert-success">
+			<h4>Success!</h4>
+			<?php
+			echo "<h6>Activating profile $wbprofilename</h6>";
+			exec("sdc_cli profile $wbprofilename activate", $ActivateOK);
+			?>
+			<meta http-equiv="refresh" content="1">
+			</div>
+			<?php
+		}
 
 		if (isset($_POST['formAdd']))
 				{
