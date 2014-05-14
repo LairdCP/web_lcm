@@ -395,7 +395,7 @@ Joe Conley, joe.conley@lairdtech.com
 					<th>SSID</th>
 					<th>Channel</th>
 					<th>RSSI</th>
-					<th>Security</th>
+					<th>Preferred Security</th>
 				  </tr>
 				</thead>
 			<tbody>
@@ -422,7 +422,14 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "<td>$scanChan</td>";
 				echo "<td>$scanRSSI</td>";
-				echo "<td>$scanSecurity[0]</td>";
+				if (trim($scanSecurity[0]) == "wep-off")
+				{
+					echo "<td>none</td>";
+				}
+				else
+				{
+					echo "<td>$scanSecurity[0]</td>";
+				}
 				echo "</tr>";				
 			}
 			$ScanCount += 8;
