@@ -330,25 +330,25 @@ if (isset($_POST['formStop']))
 					{
 						echo "<option selected>dhcp</option>";
 						echo "<option>static</option>";
-						echo "<option>manual</option>";
+						echo "<option value='manual'>unmanaged</option>";
 					}
 					elseif ($ifaceDHCPstatus == "static")
 					{
 						echo "<option>dhcp</option>";
 						echo "<option selected>static</option>";
-						echo "<option>manual</option>";
+						echo "<option value='manual'>unmanaged</option>";
 					}
 					elseif ($ifaceDHCPstatus == "manual")
 					{
 						echo "<option>dhcp</option>";
 						echo "<option>static</option>";
-						echo "<option selected>manual</option>";
+						echo "<option value='manual' selected>unmanaged</option>";
 					}
 					else
 					{
 						echo "<option selected>dhcp</option>";
 						echo "<option>static</option>";
-						echo "<option>manual</option>";
+						echo "<option value='manual'>unmanaged</option>";
 					}
 					?>
 					</select>

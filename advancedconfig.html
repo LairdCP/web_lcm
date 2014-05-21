@@ -21,7 +21,6 @@ Joe Conley, joe.conley@lairdtech.com
 		setTimeout(worker, 5000);
 	  });
 	})();
-	
 	</script>
 	<title id="title_update"></title>
   </head>
@@ -95,8 +94,40 @@ Joe Conley, joe.conley@lairdtech.com
 			</div>
 		</form>		
 		<br>
-		<br>		
-		
+		<br>
+		<form name="ImportExport" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				<label class="col-md-4 control-label">Import/Export</label>
+				<div class="col-md-6">
+					<button id="importbutton" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#import">Import</button>
+					<button name="downloadprofiles" id="exportbutton" type="summit" class="btn btn-primary">Export</button>
+				</div>
+			</div>
+			<div id="import" class="collapse">	
+				<br>
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+					<h3 class="panel-title">Import Profiles</h3>
+				  </div>
+				  <div class="panel-body">
+					<form name="Uploadprofiles" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
+						<label for="myProfiles" class="col-md-4 control-label">Select file</label>
+						<input type="file" class="col-md-6" name="myProfiles">
+						<br>
+						<br>
+						<div class="form-group">
+							<div class="col-md-offset-4 col-md-8">
+								<button type="submit" class="btn btn-primary">Import Profiles</button>
+								<input type = "hidden" name="UploadProfiles"/>
+							</div>
+						</div>
+					</form>	
+				  </div>
+				</div>
+			</div>
+		</form>	
+		<br>
+		<br>
 		<form name="RemoteUpdate" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action='' method='post'>
 		  <div class="form-group">
 			<label for="RemotePath1" class="col-md-4 control-label">Remote Update Path</label>
@@ -116,6 +147,12 @@ Joe Conley, joe.conley@lairdtech.com
 		<br>
 		<br>
 		<?php
+	if (isset($_POST['downloadprofiles']))
+		{
+			$profilesconf='profiles.conf';
+			exec('cp /etc/summit/profiles.conf /var/www/docs/');
+			echo "<iframe width='1' height='1' frameborder='0' src='/profiles.conf'></iframe>";
+		}
 	if (isset($_POST['PasswordChange']))
 		{
 			$PasswordChange=$_POST["PasswordChange"];
@@ -303,6 +340,79 @@ Joe Conley, joe.conley@lairdtech.com
 					?>
 					<div class="alert alert-danger col-md-offset-2 col-md-8">
 						<strong>Not a valid cert type</strong>
+					</div>
+					<?php
+				}
+			}
+		}
+	if (isset($_POST['UploadProfiles']) && !isset($_POST['downloadprofiles']))
+		{
+			$UploadCert=$_POST["UploadProfiles"];
+						
+			define("UPLOAD_DIR", "/etc/summit/");
+ 
+			if (!empty($_FILES["myProfiles"]))
+			{
+				$myProfiles = $_FILES["myProfiles"];
+			 
+				if ($myProfiles["error"] !== UPLOAD_ERR_OK) 
+				{
+					?>
+					<div class="alert alert-danger col-md-offset-2 col-md-8">
+						<strong>Error Occurred Uploading Cert</strong>
+					</div>
+					<?php
+					exit;
+				}
+				if ($_FILES["myProfiles"]["type"] == "application/octet-stream") 
+				{
+					// ensure a safe filename
+					$name = "profiles.conf";
+					
+					// bring down wireless interface
+					exec('ifrc wlan0 stop');
+				 
+					// rename old profiles.conf
+					rename('/etc/summit/profiles.conf','/etc/summit/profiles.conf~');
+				 
+					// preserve file from temporary directory
+					$success = move_uploaded_file($myProfiles["tmp_name"],
+						UPLOAD_DIR . $name);
+					if (!$success) 
+					{ 
+						?>
+						<div class="alert alert-danger col-md-offset-2 col-md-8">
+							<strong>Unable to save file.</strong>
+						</div>
+						<?php
+						exit;
+					}
+					else
+					{
+						?>
+						<div class="alert alert-success col-md-offset-2 col-md-8">
+							<strong>Profiles have been imported!</strong>
+							<br>
+							<?php
+							echo "Upload: " . $_FILES["myProfiles"]["name"] . "<br>";
+							echo "Size: " . ($_FILES["myProfiles"]["size"] / 1024) . " kB<br>";
+							echo "Backup of old profiles.conf created";
+							?>
+						</div>
+						<?php
+					}
+				 
+					// set proper permissions on the new file
+					chmod(UPLOAD_DIR . $name, 0644);
+					
+					// bring up wireless interface
+					exec('ifrc wlan0 start');
+				}
+				else
+				{
+					?>
+					<div class="alert alert-danger col-md-offset-2 col-md-8">
+						<strong>Not a valid file</strong>
 					</div>
 					<?php
 				}
