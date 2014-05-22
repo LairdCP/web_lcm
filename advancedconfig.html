@@ -101,6 +101,7 @@ Joe Conley, joe.conley@lairdtech.com
 				<div class="col-md-6">
 					<button id="importbutton" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#import">Import</button>
 					<button name="downloadprofiles" id="exportbutton" type="summit" class="btn btn-primary">Export</button>
+					<button name="restoreprofiles" id="restorebutton" type="summit" class="btn btn-primary">Restore to Default</button>
 				</div>
 			</div>
 			<div id="import" class="collapse">	
@@ -147,6 +148,17 @@ Joe Conley, joe.conley@lairdtech.com
 		<br>
 		<br>
 		<?php
+	if (isset($_POST['restoreprofiles']))
+		{
+			exec('ifrc wlan0 stop');
+			exec('rm /etc/summit/profiles.conf');
+			exec('ifrc wlan0 start');
+			?>
+			<div class="alert alert-success col-md-offset-2 col-md-8">
+				<strong>Profiles have been restored!</strong>
+			</div>
+			<?php
+		}
 	if (isset($_POST['downloadprofiles']))
 		{
 			$profilesconf='profiles.conf';
@@ -345,7 +357,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 			}
 		}
-	if (isset($_POST['UploadProfiles']) && !isset($_POST['downloadprofiles']))
+	if (isset($_POST['UploadProfiles']) && !isset($_POST['downloadprofiles']) && !isset($_POST['restoreprofiles']))
 		{
 			$UploadCert=$_POST["UploadProfiles"];
 						
@@ -359,7 +371,7 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					?>
 					<div class="alert alert-danger col-md-offset-2 col-md-8">
-						<strong>Error Occurred Uploading Cert</strong>
+						<strong>Error Occurred Uploading Profiles</strong>
 					</div>
 					<?php
 					exit;
