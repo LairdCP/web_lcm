@@ -169,54 +169,73 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<br>";
 					echo "<h2>Auto Profile</h2>";
 					?>
-					Active Profiles
-					<br>
-					<br>
-					<input type = "hidden" name = "activeProfile" value = "<?php echo $AutoProlist[0] ?>"/>
-					<form action = "" method = "post">
-						<select name='AutoEnabled' size='4' class='form-control' style='width:198px'>
-						<?php
-						$testcount = 0;
-						while ($testcount < $listLen)
+					<script>
+					function reportRemove(value)
+					{
+						if (value != "")
 						{
-							$autoCompare=substr($AutoProlist[$testcount],0,1);
-							if ($autoCompare == "+")
-							{
-								$AutoProlist[$testcount]=substr($AutoProlist[$testcount],1);
-								echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
-							}
-							++$testcount;
-						}				
-						echo "</select>";
-						?>
-						<br>
-						<br>
-						<button class="btn btn-primary" TYPE="submit" name="AutoProfileRemove" style='width:198px'>Remove</button>
-					</form>
-					<br>
-					Inactive Profiles
-					<br>
-					<br>
-					<form action = "" method = "post">
-						<select name='AutoDisabled' size='4' class='form-control' style='width:198px'>
-						<?php
-						$testcount = 0;
-						while ($testcount < $listLen)
+							document.getElementById('removeAutoButton').disabled=false;
+						}
+					}
+					function reportAdd(value)
+					{
+						if (value != "")
 						{
-							$autoCompare=substr($AutoProlist[$testcount],0,1);
-							if ($autoCompare == "-" || $autoCompare == " ")
+							document.getElementById('addAutoButton').disabled=false;
+						}
+					}
+					</script>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						Active Profiles
+						<br>
+						<br>
+						<input type = "hidden" name = "activeProfile" value = "<?php echo $AutoProlist[0] ?>"/>
+						<form action = "" method = "post">
+							<select name='AutoEnabled' size='4' class='form-control' onchange="reportRemove(this.value)">
+							<?php
+							$testcount = 0;
+							while ($testcount < $listLen)
 							{
-								$AutoProlist[$testcount]=substr($AutoProlist[$testcount],1);
-								echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
-							}
-							++$testcount;
-						}				
-						echo "</select>";	
-						?>
+								$autoCompare=substr($AutoProlist[$testcount],0,1);
+								if ($autoCompare == "+")
+								{
+									$AutoProlist[$testcount]=substr($AutoProlist[$testcount],1);
+									echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
+								}
+								++$testcount;
+							}				
+							echo "</select>";
+							?>
+							<br>
+							<br>
+							<button class="btn btn-primary btn-block" TYPE="submit" id="removeAutoButton" name="AutoProfileRemove" disabled="disabled">Remove</button>
+						</form>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6">
+						Inactive Profiles
 						<br>
 						<br>
-						<button class="btn btn-primary" TYPE="submit" name="AutoProfileAdd" style='width:198px'>Add</button>
-					</form>
+						<form action = "" method = "post">
+							<select name='AutoDisabled' size='4' class='form-control' onchange="reportAdd(this.value)">
+							<?php
+							$testcount = 0;
+							while ($testcount < $listLen)
+							{
+								$autoCompare=substr($AutoProlist[$testcount],0,1);
+								if ($autoCompare == "-" || $autoCompare == " ")
+								{
+									$AutoProlist[$testcount]=substr($AutoProlist[$testcount],1);
+									echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
+								}
+								++$testcount;
+							}				
+							echo "</select>";	
+							?>
+							<br>
+							<br>
+							<button class="btn btn-primary btn-block" TYPE="submit" id="addAutoButton" name="AutoProfileAdd" disabled="disabled">Add</button>
+						</form>
+					</div>
 					<?php
 		}
 		if (isset($_POST['AutoProfileAdd']))
