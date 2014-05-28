@@ -2,3 +2,4 @@
 html_sendall
 /hostapd/hostapd.conf
 /hostapd/hostapd_light.conf
+.kate*
