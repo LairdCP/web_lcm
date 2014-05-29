@@ -233,13 +233,36 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			}// roam trigger
 			
+			if (substr($forshow,0,24) == "Aggressive Roam Trigger:")
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getAggTrigger=substr($forshow,25,3);
+				$num = -95; 
+				echo "Agressive Roam Trigger:<br><select class='form-control input-sm' name='AggTrigger'>";
+				while($num < -50)
+				{
+					$num = $num + 5;
+					if ($num == $getAggTrigger)
+					{
+						echo "<option value='$num' selected>$num dBm</option>";
+					}
+					else
+					{
+						echo "<option value='$num'>$num dBm</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";
+				echo "</div>";
+			}// agressive roam trigger
+			
 			if (substr($forshow,0,11) == "Roam Delta:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getDelta=substr($forshow,12,2);
-				$num1 = 40; 
+				$num1 = 60; 
 				echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
-				while($num1 > 5)
+				while($num1 > 0)
 				{
 					$num1 = $num1 - 5;
 					if ($num1 == $getDelta)
@@ -259,26 +282,44 @@ Joe Conley, joe.conley@lairdtech.com
 			if (substr($forshow,0,12) == "Roam Period:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getPeriod=substr($forshow,13,2);
-				$num2 = 65; 
-				echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
-				while($num2 > 5)
+				$getPeriod=substr($forshow,13);
+				if ($getPeriod == "" || $getPeriod == "<unsupported>")
 				{
-					$num2 = $num2 - 5;
-					if ($num2 == $getPeriod)
-					{
-						echo "<option value='$num2' selected>$num2 Sec</option>";
-					}
-					else
-					{
-						echo "<option value='$num2'>$num2 Sec</option>";
-					}
+				  echo "Roam Period:<br><input class='form-control input-sm' type='text' name='Period' value='<unsupported>' disabled>";
+				  echo "<br>";				  
 				}
-				echo "</select>";
-				echo "<br>";
+				else
+				{
+				  $num2 = 65; 
+				  echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
+				  while($num2 > 5)
+				  {
+					  $num2 = $num2 - 5;
+					  if ($num2 == $getPeriod)
+					  {
+						  echo "<option value='$num2' selected>$num2 Sec</option>";
+					  }
+					  else
+					  {
+						  echo "<option value='$num2'>$num2 Sec</option>";
+					  }
+				  }
+				  echo "</select>";
+				  echo "<br>";
+				}
 				echo "</div>";
 			} // roam period
-
+			
+			if (substr($forshow,0,15) == "Roam Period ms:")
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getPeriodMS=substr($forshow,16);
+				$getPeriodMS=trim(substr($getPeriodMS,0,-2));
+				echo "Roam Period Milliseconds:<br><input class='form-control input-sm' type='text' name='PeriodMS' value='$getPeriodMS'>";
+				echo "<br>";
+				echo "</div>";
+			} // roam period ms
+		
 			if (substr($forshow,0,11) == "BT Coexist:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -771,8 +812,10 @@ Joe Conley, joe.conley@lairdtech.com
 			$RXdiv=escapeshellcmd($_POST["RXdiv"]);
 			$TXdiv=escapeshellcmd($_POST["TXdiv"]);
 			$Trigger=escapeshellcmd($_POST["Trigger"]);
+			$AggTrigger=escapeshellcmd($_POST["AggTrigger"]);
 			$Delta=escapeshellcmd($_POST["Delta"]);
 			$Period=escapeshellcmd($_POST["Period"]);
+			$PeriodMS=escapeshellcmd($_POST["PeriodMS"]);
 			$Coexist=escapeshellcmd($_POST["Coexist"]);
 			$TXMax=escapeshellcmd($_POST["TXMax"]);
 			$WMM=escapeshellcmd($_POST["WMM"]);
@@ -813,13 +856,35 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				exec("sdc_cli global set roam-trigger $Trigger");
 			}
+			if ($AggTrigger != $getAggTrigger)
+			{
+				exec("sdc_cli global set aggressive-roam-trigger $AggTrigger");
+			}
 			if ($Delta != $getDelta)
 			{
 				exec("sdc_cli global set roam-delta $Delta");
 			}
 			if ($Period != $getPeriod)
 			{
-				exec("sdc_cli global set roam-period $Period");
+				if ($getPeriod != "" && $getPeriod != "<unsupported>")
+				{
+				  exec("sdc_cli global set roam-period $Period");
+				}
+			}
+			if ($PeriodMS != $getPeriodMS)
+			{
+				if ($PeriodMS >= 10 && $PeriodMS <= 60000 )
+				{
+				  exec("sdc_cli global set roam-period-ms $PeriodMS");
+				}
+				else
+				{
+				?>
+				<script>
+				alert("Roam Period Milliseconds:\nThis value must be between 10 and 60000.");
+				</script>
+				<?php				
+				}
 			}
 			if ($Coexist != $getCoexist)
 			{
