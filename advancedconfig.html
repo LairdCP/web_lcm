@@ -176,20 +176,24 @@ Joe Conley, joe.conley@lairdtech.com
 	if (isset($_POST['enableAP']))
 		{
 			exec('sdc_cli iface set hostapd wl on');
+			exec('sdc_cli iface set method wl static');
 			exec('ifrc wlan0 restart');
 			?>
 			<div class="alert alert-success col-md-offset-2 col-md-8">
 				<strong>AP mode enabled.</strong>
 			</div>
+			<meta http-equiv="refresh" content="2">
 			<?php
 		}
 	if (isset($_POST['disableAP']))
 		{
 			exec('sdc_cli iface set hostapd wl off');
+			exec('sdc_cli iface set method wl dhcp');
 			exec('ifrc wlan0 restart');
 			?>
 			<div class="alert alert-success col-md-offset-2 col-md-8">
 				<strong>AP mode disabled.</strong>
+			<meta http-equiv="refresh" content="2">
 			</div>
 			<?php
 		}
