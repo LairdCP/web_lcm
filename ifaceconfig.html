@@ -309,8 +309,6 @@ if (isset($_POST['formStop']))
 		if (strlen($ifacelist) != 0)
 		{
 			echo "<br>";
-			//var_dump($ifacelist);
-			//var_dump($ifaceShow);
 			for ($i = 0; $i <= $listLen; $i++)
 			{
 				if (substr($ifaceShow[$i],0,4) == "auto")
@@ -322,6 +320,16 @@ if (isset($_POST['formStop']))
 				}
 				if (substr($ifaceShow[$i],6,strlen($ifacelist)) == "$ifacelist")
 				{
+					$ifaceStart=$i;
+					$ifaceEnd=$listLen;
+					for ($r = 1; $r <= $listLen; $r++)
+					{
+					  if (substr(trim($ifaceShow[$i + $r]),0,5) == "iface")
+					  {
+					    $ifaceEnd=$i + $r;
+					    $r=$listLen + 1;
+					  }
+					}
 					echo "<h2>Edit Interface $ifacelist</h2>";
 					if (isset($_POST['EditIfaceSub']))
 					{
@@ -431,27 +439,29 @@ if (isset($_POST['formStop']))
 							<br>
 							<?php
 						}
-						
-						if (substr(trim($ifaceShow[$i + $j]),0,7) == "address")
-						{
-							$getIPAddress=substr(trim($ifaceShow[$i + $j]),8);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,9) == "broadcast")
-						{
-							$getIPBroadcast=substr(trim($ifaceShow[$i + $j]),10);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,7) == "netmask")
-						{
-							$getIPNetmask=substr(trim($ifaceShow[$i + $j]),8);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,7) == "gateway")
-						{
-							$getIPGateway=substr(trim($ifaceShow[$i + $j]),8);	
-						}
-						if (substr(trim($ifaceShow[$i + $j]),0,10) == "nameserver")
-						{
-							$getIPNameserver=substr(trim($ifaceShow[$i + $j]),11);	
-						}
+					}
+					for ($g = $ifaceStart; $g <= $ifaceEnd; $g++)
+					  {
+					  if (substr(trim($ifaceShow[$g]),0,7) == "address")
+					  {
+						  $getIPAddress=substr(trim($ifaceShow[$g]),8);	
+					  }
+					  if (substr(trim($ifaceShow[$g]),0,9) == "broadcast")
+					  {
+						  $getIPBroadcast=substr(trim($ifaceShow[$g]),10);	
+					  }
+					  if (substr(trim($ifaceShow[$g]),0,7) == "netmask")
+					  {
+						  $getIPNetmask=substr(trim($ifaceShow[$g]),8);	
+					  }
+					  if (substr(trim($ifaceShow[$g]),0,7) == "gateway")
+					  {
+						  $getIPGateway=substr(trim($ifaceShow[$g]),8);	
+					  }
+					  if (substr(trim($ifaceShow[$g]),0,10) == "nameserver")
+					  {
+						  $getIPNameserver=substr(trim($ifaceShow[$g]),11);	
+					  }
 					}
 					echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
 					echo "<br>";
