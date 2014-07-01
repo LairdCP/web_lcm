@@ -531,6 +531,14 @@ if (isset($_POST['formStop']))
 		//Update bridge config
 		if ( $BridgeOne != $GetBridgeOne || $BridgeTwo != $GetBridgeTwo)
 		{
+			if ($BridgeOne == "wl")
+			{
+			  $BridgeOne="wlan0";
+			}
+			elseif ($BridgeTwo == "wl")
+			{
+			  $BridgeTwo="wlan0";
+			}
 			exec("sdc_cli iface set bridge_ports br0 $BridgeOne $BridgeTwo");
 		}
 		//Set interface auto/noauto
