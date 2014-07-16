@@ -75,7 +75,10 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				
 				$editprofile=$_POST["wbprofiles"];
-				$editprofile=trim(chop($editprofile,"ACTIVE"));
+				if (strpos($editprofile,"ACTIVE") != false)
+				{
+				  $editprofile=trim(chop($editprofile,"ACTIVE"));
+				}
 				exec("sdc_cli profile list", $prolist);
 				$listLen=count($prolist);
 				$findKeys=array_filter($prolist, 'active_search');
@@ -267,7 +270,10 @@ Joe Conley, joe.conley@lairdtech.com
 		if (isset($_POST['formActivate']))
 		{
 			$wbprofilename=$_POST["wbprofiles"];
-			$wbprofilename=chop($wbprofilename, "ACTIVE");
+			if (strpos($wbprofilename,"ACTIVE") != false)
+			{
+			  $wbprofilename=trim(chop($wbprofilename,"ACTIVE"));
+			}
 			?>
 			<div class="alert alert-success">
 			<h4>Success!</h4>
@@ -328,7 +334,10 @@ Joe Conley, joe.conley@lairdtech.com
 						$templength=0;
 						foreach ($prolist as $prolisted)
 						{
-							$rawprofile=chop($prolisted,"ACTIVE");
+							if (strpos($rawprofile,"ACTIVE") != false)
+							{
+							  $rawprofile=trim(chop($prolisted,"ACTIVE"));
+							}
 							if (strcasecmp(trim($rawprofile),trim($NewProfile)) != 0)
 							{
 								$templength++;	
@@ -535,7 +544,10 @@ Joe Conley, joe.conley@lairdtech.com
 				$templength=0;
 				foreach ($prolist as $prolisted)
 				{
-					$rawprofile=chop($prolisted,"ACTIVE");
+					if (strpos($rawprofile,"ACTIVE") != false)
+					{
+					  $rawprofile=trim(chop($prolisted,"ACTIVE"));
+					}
 					if (strcasecmp($rawprofile,$NewProfile) != 0)
 					{
 						$templength++;	
@@ -577,7 +589,10 @@ Joe Conley, joe.conley@lairdtech.com
 		if (isset($_POST['formShow']))
 		{
 			$wbprofilename=$_POST["wbprofiles"];
-			$wbprofilename=chop($wbprofilename, "ACTIVE");
+			if (strpos($wbprofilename,"ACTIVE") != false)
+			{
+			  $wbprofilename=trim(chop($wbprofilename,"ACTIVE"));
+			}
 		?>
 				<br>				
 				<h2><?php echo "Profile $wbprofilename Show" ?></h2>
@@ -629,7 +644,10 @@ Joe Conley, joe.conley@lairdtech.com
 		if (isset($_POST['formRename']))
 				{
 					$wbprofilename=$_POST["wbprofiles"];
-					$wbprofilename=chop($wbprofilename, "ACTIVE");
+					if (strpos($wbprofilename,"ACTIVE") != false)
+					{
+					  $wbprofilename=trim(chop($wbprofilename,"ACTIVE"));
+					}
 					$editprofile=$wbprofilename;
 					?>
 						<br>
@@ -650,7 +668,10 @@ Joe Conley, joe.conley@lairdtech.com
 				if (isset($_POST['EditRename']))
 				{
 					$editprofile=$_POST["wbprofiles"];
-					$editprofile=chop($editprofile, "ACTIVE");
+					if (strpos($editprofile,"ACTIVE") != false)
+					{
+					  $editprofile=trim(chop($editprofile,"ACTIVE"));
+					}
 					$renamed=$_POST["renamed"];
 					?>
 						<br>
@@ -728,7 +749,10 @@ Joe Conley, joe.conley@lairdtech.com
 	if (isset($_POST['formEdit']))
 			{
 				$wbprofilename=$_POST["wbprofiles"];
-				$wbprofilename=chop($wbprofilename, "ACTIVE");
+				if (strpos($wbprofilename,"ACTIVE") != false)
+				{
+				  $wbprofilename=trim(chop($wbprofilename,"ACTIVE"));
+				}
 				$editprofile=$wbprofilename;
 				?>
 				<br>
@@ -2069,7 +2093,10 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 
 				$editprofile=escapeshellcmd($_POST["wbprofiles"]);
-				$editprofile=chop($editprofile, "ACTIVE");
+				if (strpos($editprofile,"ACTIVE") != false)
+				{
+				  $editprofile=trim(chop($editprofile,"ACTIVE"));
+				}
 				$formeditprofile=escapeshellcmd($_POST["formEdit"]);
 				$Name=escapeshellcmd($_POST["Name"]);
 				$SSID=escapeshellcmd($_POST["SSID"]);
