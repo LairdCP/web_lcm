@@ -233,29 +233,6 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "</div>";
 			}// roam trigger
 			
-			if (substr($forshow,0,24) == "Aggressive Roam Trigger:")
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getAggTrigger=substr($forshow,25,3);
-				$num = -95; 
-				echo "Agressive Roam Trigger:<br><select class='form-control input-sm' name='AggTrigger'>";
-				while($num < -50)
-				{
-					$num = $num + 5;
-					if ($num == $getAggTrigger)
-					{
-						echo "<option value='$num' selected>$num dBm</option>";
-					}
-					else
-					{
-						echo "<option value='$num'>$num dBm</option>";
-					}
-				}
-				echo "</select>";
-				echo "<br>";
-				echo "</div>";
-			}// agressive roam trigger
-			
 			if (substr($forshow,0,11) == "Roam Delta:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -812,7 +789,6 @@ Joe Conley, joe.conley@lairdtech.com
 			$RXdiv=escapeshellcmd($_POST["RXdiv"]);
 			$TXdiv=escapeshellcmd($_POST["TXdiv"]);
 			$Trigger=escapeshellcmd($_POST["Trigger"]);
-			$AggTrigger=escapeshellcmd($_POST["AggTrigger"]);
 			$Delta=escapeshellcmd($_POST["Delta"]);
 			$Period=escapeshellcmd($_POST["Period"]);
 			$PeriodMS=escapeshellcmd($_POST["PeriodMS"]);
@@ -855,10 +831,6 @@ Joe Conley, joe.conley@lairdtech.com
 			if ($Trigger != $getTrigger)
 			{
 				exec("sdc_cli global set roam-trigger $Trigger");
-			}
-			if ($AggTrigger != $getAggTrigger)
-			{
-				exec("sdc_cli global set aggressive-roam-trigger $AggTrigger");
 			}
 			if ($Delta != $getDelta)
 			{
