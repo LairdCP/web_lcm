@@ -1,6 +1,6 @@
 <!--
 Web Based Configuration Tool for WB Products
-Joe Conley, joe.conley@lairdtech.com
+Contact Laird Wireless Support: ews.support@lairdtech.com
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@ Joe Conley, joe.conley@lairdtech.com
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Web based configuration tool for WB platform">
-    <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
+    <meta name="author" content="ews.support@lairdtech.com">
     <link rel="icon" href="/assets/img/laird_logo.png">
 
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -60,7 +60,7 @@ Joe Conley, joe.conley@lairdtech.com
 			<li><a href="/advancedconfig.html">Advanced</a></li>
 			<li><a href="/about.html">About</a></li>
 		</ul>
-	
+
 	<!-- Show profile -->
 	<div class="panel panel-default">
 	<div class="row panel-body">
@@ -73,7 +73,7 @@ Joe Conley, joe.conley@lairdtech.com
 					$needle = 'ACTIVE';
 					return(strpos($haystack, $needle));
 				}
-				
+
 				$editprofile=$_POST["wbprofiles"];
 				if (strpos($editprofile,"ACTIVE") != false)
 				{
@@ -114,7 +114,7 @@ Joe Conley, joe.conley@lairdtech.com
 				<br>
 				<input type = "hidden" name = "activeProfile" value = "<?php echo $prolist[0] ?>"/>
 				<select name='wbprofiles' size='4' class='form-control' style='width:198px'>
-				<?php				
+				<?php
 				$testcount = 0;
 				while ($testcount < $listLen)
 				{
@@ -139,12 +139,12 @@ Joe Conley, joe.conley@lairdtech.com
 						}
 					}
 					++$testcount;
-				}				
-				echo "</select>";				
+				}
+				echo "</select>";
 				?>
 
-				
-				
+
+
 				<br>
 				<br>
 				<div class="row">
@@ -176,7 +176,7 @@ Joe Conley, joe.conley@lairdtech.com
 				?>
 				</div>
 				</div> <!-- nested row -->
-		</form>	
+		</form>
 	</div> <!-- col-md-4 col-md-offset-2 -->
 
 	<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
@@ -220,7 +220,7 @@ Joe Conley, joe.conley@lairdtech.com
 									echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
 								}
 								++$testcount;
-							}				
+							}
 							echo "</select>";
 							?>
 							<br>
@@ -245,8 +245,8 @@ Joe Conley, joe.conley@lairdtech.com
 									echo "<option>" . trim($AutoProlist[$testcount]) . "</option>";
 								}
 								++$testcount;
-							}				
-							echo "</select>";	
+							}
+							echo "</select>";
 							?>
 							<br>
 							<br>
@@ -311,7 +311,7 @@ Joe Conley, joe.conley@lairdtech.com
 					</div>
 				<?php
 					}
-				
+
 				}
 				if (isset($_POST['subAdded']))
 				{
@@ -340,7 +340,7 @@ Joe Conley, joe.conley@lairdtech.com
 							}
 							if (strcasecmp(trim($rawprofile),trim($NewProfile)) != 0)
 							{
-								$templength++;	
+								$templength++;
 							}
 						}
 						if ($listlength == $templength)
@@ -397,7 +397,7 @@ Joe Conley, joe.conley@lairdtech.com
 					<div class="progress-bar" role="progressbar" style="width:0%">
 				</div>
 			<script>
-				$( document ).ready(function () 
+				$( document ).ready(function ()
 			{
 				var counter = 0;
 				var id = setInterval(function() {
@@ -472,7 +472,7 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					echo "<td>$scanSecurity[0]</td>";
 				}
-				echo "</tr>";				
+				echo "</tr>";
 			}
 			$ScanCount += 8;
 			$ChanCount +=8;
@@ -495,7 +495,7 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 			?>
 				<br>
-				<h6>Enter a unique name for this profile:</h6> 
+				<h6>Enter a unique name for this profile:</h6>
 				<input class="form-control input-sm" type='text' name='NewProfile'>
 				<br>
 				<br>
@@ -527,7 +527,7 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				$ScanListSecurity="WPA_PSK";
 			}
-			
+
 			echo "<br>";
 			if (strlen($NewProfile) == 0)
 			{
@@ -550,7 +550,7 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					if (strcasecmp($rawprofile,$NewProfile) != 0)
 					{
-						$templength++;	
+						$templength++;
 					}
 				}
 				if ($listlength == $templength)
@@ -594,7 +594,7 @@ Joe Conley, joe.conley@lairdtech.com
 			  $wbprofilename=trim(chop($wbprofilename,"ACTIVE"));
 			}
 		?>
-				<br>				
+				<br>
 				<h2><?php echo "Profile $wbprofilename Show" ?></h2>
 				<?php
 				exec("sdc_cli profile $wbprofilename show", $printPro);
@@ -615,15 +615,15 @@ Joe Conley, joe.conley@lairdtech.com
 		{
 			$wbprofilename=trim($_POST["wbprofiles"]);
 			$activeProfilename=trim($_POST["activeProfile"]);
-			
+
 			if ($wbprofilename == $activeProfilename)
 			{
 				?>
 				<script>
 				alert("Error:\nCan not delete the active profile");
 				</script>
-				<?php	
-				echo '<meta http-equiv="refresh" content="0">';	
+				<?php
+				echo '<meta http-equiv="refresh" content="0">';
 			}
 			else
 			{
@@ -631,7 +631,7 @@ Joe Conley, joe.conley@lairdtech.com
 				<br>
 				<div class="alert alert-warning">
 				<h4>Warning!</h4>
-				<?php 
+				<?php
 				echo "Removed profile $wbprofilename";
 				exec("sdc_cli profile $wbprofilename delete");
 				?>
@@ -675,13 +675,13 @@ Joe Conley, joe.conley@lairdtech.com
 					$renamed=$_POST["renamed"];
 					?>
 						<br>
-						<?php	
+						<?php
 						if( trim($editprofile) != trim($renamed))
 						{
 							if( strlen($renamed) != 0 )
 							{
-								if ($renamed != "")	
-								{	
+								if ($renamed != "")
+								{
 									?>
 									<div class="alert alert-success">
 									<h4>Warning!</h4>
@@ -717,7 +717,7 @@ Joe Conley, joe.conley@lairdtech.com
 							<script>
 							alert("Cannot rename to same name");
 							</script>
-							<?php	
+							<?php
 						}
 
 						echo '<meta http-equiv="refresh" content="1">';
@@ -774,14 +774,14 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "<br>";
 				echo "<form name='testEdit' action='' method='post'>";
-	
+
 				$getSSID=substr($ProfilePrint[1], 10);
 				?>
 				<?php
 				echo "SSID:<br><input class='form-control input-sm' type='text' name='SSID' value='$getSSID'>";
 				echo "<br>";
-	
-				$getClient=substr($ProfilePrint[2], 17);	
+
+				$getClient=substr($ProfilePrint[2], 17);
 				echo "Client Name:<br><input class='form-control input-sm' type='text' name='ClientName' value='$getClient'>";
 				echo "<br>";
 
@@ -796,7 +796,7 @@ Joe Conley, joe.conley@lairdtech.com
 				else
 				{
 					echo "<option value='auto'>Auto</option>";
-				}				
+				}
 				while($num < 40)
 				{
 					$num = $num + 1;
@@ -1107,7 +1107,7 @@ Joe Conley, joe.conley@lairdtech.com
 					<br>
 				<?php
 				}
-	
+
 				$getMODE=substr($ProfilePrint[8],10);
 				if ($getMODE == "B only")
 				{
@@ -1383,7 +1383,7 @@ Joe Conley, joe.conley@lairdtech.com
 					<br>
 				<?php
 				}
-				
+
 				$getAuth=substr($ProfilePrint[4],15);
 				if ($getAuth == "open")
 				{
@@ -1727,7 +1727,7 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='' selected>Unsupported WEP Type</option>					
+					<option value='' selected>Unsupported WEP Type</option>
 					<option value='off'>off</option>
 					<option value='on'>on</option>
 					<option value='auto'>auto</option>
@@ -1864,13 +1864,13 @@ Joe Conley, joe.conley@lairdtech.com
 					<br>
 				<?php
 				}
-				
+
 				//Figure out what creds are needed
 
 				if ($getEAP == "leap")  //leap
 				{
 					$getUser=substr($ProfilePrint[10],14);
-					$getPass="********";	
+					$getPass="********";
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
@@ -1881,7 +1881,7 @@ Joe Conley, joe.conley@lairdtech.com
 					$getUser=substr($ProfilePrint[10],14);
 					$getPass="********";
 					$getPacFile=substr($ProfilePrint[12],18);
-					$getPacPass="********";	
+					$getPacPass="********";
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
@@ -1940,7 +1940,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' value='$getPass'>";
 					echo "<br>";
 					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";	
+					echo "<br>";
 				}
 				elseif ($getEAP == "peap-tls") //peap-tls
 				{
@@ -1955,11 +1955,11 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "Usercert Password:<br><input class='form-control input-sm' type='password' name='UserCertPass' value='$getUserCertPass'>";
 					echo "<br>";
 					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";	
+					echo "<br>";
 				}
 				else //none
 				{
-		
+
 				}
 
 				// Prompt for PSK/WEP if required
@@ -1971,9 +1971,9 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 					$getWEPKey1=substr($ProfilePrint[10],14);
 					$getWEPKey2=substr($ProfilePrint[11],14);
-					$getWEPKey3=substr($ProfilePrint[12],14);	
+					$getWEPKey3=substr($ProfilePrint[12],14);
 					$getWEPKey4=substr($ProfilePrint[13],14);
-	
+
 					if (str_word_count($getWEPKey1) == 1)
 					{
 						$getWEPKey1=substr($getWEPKey1,3);
@@ -2017,7 +2017,7 @@ Joe Conley, joe.conley@lairdtech.com
 						<option>4</option>
 						</select>
 						<br>
-					<?php	
+					<?php
 					}
 					else if ($GetActiveKey == 2)
 					{
@@ -2029,7 +2029,7 @@ Joe Conley, joe.conley@lairdtech.com
 						<option>4</option>
 						</select>
 						<br>
-					<?php		
+					<?php
 					}
 					else if ($GetActiveKey == 3)
 					{
@@ -2041,8 +2041,8 @@ Joe Conley, joe.conley@lairdtech.com
 						<option>4</option>
 						</select>
 						<br>
-					<?php	
-					}	
+					<?php
+					}
 					else if ($GetActiveKey == 4)
 					{
 					?>
@@ -2053,22 +2053,22 @@ Joe Conley, joe.conley@lairdtech.com
 						<option selected>4</option>
 						</select>
 						<br>
-					<?php	
-					}	
+					<?php
+					}
 				}
 				elseif ($getWEP == "WPA_PSK") //wpa_psk
 				{
-					$getPSK=substr($ProfilePrint[10],9);	
+					$getPSK=substr($ProfilePrint[10],9);
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
 				elseif ($getWEP == "WPA2_PSK") //wpa2_psk
 				{
-					$getPSK=substr($ProfilePrint[10],9);	
+					$getPSK=substr($ProfilePrint[10],9);
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
 				elseif ($getWEP == "WPA_PSK_AES") //wpa_psk_aes
 				{
-					$getPSK=substr($ProfilePrint[10],9);	
+					$getPSK=substr($ProfilePrint[10],9);
 					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' value='$getPSK'>";
 				}
 				elseif ($getWEP == "WPA_TKIP" || $getWEP == "WPA_AES" || $getWEP == "WPA2_AES" || $getWEP == "CCKM_TKIP" || $getWEP == "CCKM_AES" || $getWEP == "wpa2-psk-tkip" || $getWEP == "wpa2-tkip")
@@ -2144,7 +2144,7 @@ Joe Conley, joe.conley@lairdtech.com
 				if ($WepType != $getWEP && strlen($WepType) > 0)
 				{
 					exec("sdc_cli profile $editprofile set weptype $WepType", $error);
-				}	
+				}
 				if ($EapType != $getEAP)
 				{
 					exec("sdc_cli profile $editprofile set eaptype $EapType", $error);
@@ -2172,7 +2172,7 @@ Joe Conley, joe.conley@lairdtech.com
 				if ($UserCert != $getUserCertFile)
 				{
 					exec("sdc_cli profile $editprofile set usercert $UserCert", $error);
-				}	
+				}
 				if ($CaCert != $getCAFile)
 				{
 					exec("sdc_cli profile $editprofile set cacert $CaCert", $error);
@@ -2198,7 +2198,7 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					else if (strlen($WepKey3) == 0)
 					{
-						exec("sdc_cli profile $editprofile set wep rm 1", $error);		
+						exec("sdc_cli profile $editprofile set wep rm 1", $error);
 					}
 					else
 					{
@@ -2218,7 +2218,7 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					else if (strlen($WepKey2) == 0)
 					{
-						exec("sdc_cli profile $editprofile set wep rm 2", $error);		
+						exec("sdc_cli profile $editprofile set wep rm 2", $error);
 					}
 					else
 					{
@@ -2238,7 +2238,7 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					else if (strlen($WepKey3) == 0)
 					{
-						exec("sdc_cli profile $editprofile set wep rm 3", $error);		
+						exec("sdc_cli profile $editprofile set wep rm 3", $error);
 					}
 					else
 					{
@@ -2258,7 +2258,7 @@ Joe Conley, joe.conley@lairdtech.com
 					}
 					else if (strlen($WepKey4) == 0)
 					{
-						exec("sdc_cli profile $editprofile set wep rm 4", $error);		
+						exec("sdc_cli profile $editprofile set wep rm 4", $error);
 					}
 					else
 					{
@@ -2271,7 +2271,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 
 				if ($KeyIndex != $GetActiveKey)
-				{	
+				{
 					exec("sdc_cli profile $editprofile set wep tx $KeyIndex", $error);
 				}
 
@@ -2290,7 +2290,7 @@ Joe Conley, joe.conley@lairdtech.com
 						<?php
 					}
 				}
-	
+
 				echo "<form id=refresh action='' method = 'post'>";
 				echo "<input type = 'hidden' name = 'wbprofiles' value = '$editprofile' />";
 				echo "<input type = 'hidden' name = 'formEdit' value = '$formeditprofile' />";

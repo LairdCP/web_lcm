@@ -1,6 +1,6 @@
 <!--
 Web Based Configuration Tool for WB Products
-Joe Conley, joe.conley@lairdtech.com
+Contact Laird Wireless Support: ews.support@lairdtech.com
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@ Joe Conley, joe.conley@lairdtech.com
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Web based configuration tool for WB platform">
-    <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
+    <meta name="author" content="ews.support@lairdtech.com">
     <link rel="icon" href="/assets/img/laird_logo.png">
 
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -444,23 +444,23 @@ if (isset($_POST['formStop']))
 					  {
 					  if (substr(trim($ifaceShow[$g]),0,7) == "address")
 					  {
-						  $getIPAddress=substr(trim($ifaceShow[$g]),8);	
+						  $getIPAddress=substr(trim($ifaceShow[$g]),8);
 					  }
 					  if (substr(trim($ifaceShow[$g]),0,9) == "broadcast")
 					  {
-						  $getIPBroadcast=substr(trim($ifaceShow[$g]),10);	
+						  $getIPBroadcast=substr(trim($ifaceShow[$g]),10);
 					  }
 					  if (substr(trim($ifaceShow[$g]),0,7) == "netmask")
 					  {
-						  $getIPNetmask=substr(trim($ifaceShow[$g]),8);	
+						  $getIPNetmask=substr(trim($ifaceShow[$g]),8);
 					  }
 					  if (substr(trim($ifaceShow[$g]),0,7) == "gateway")
 					  {
-						  $getIPGateway=substr(trim($ifaceShow[$g]),8);	
+						  $getIPGateway=substr(trim($ifaceShow[$g]),8);
 					  }
 					  if (substr(trim($ifaceShow[$g]),0,10) == "nameserver")
 					  {
-						  $getIPNameserver=substr(trim($ifaceShow[$g]),11);	
+						  $getIPNameserver=substr(trim($ifaceShow[$g]),11);
 					  }
 					}
 					echo "Address:<br><input class='form-control input-sm' type='text' name='IPAddress' value='$getIPAddress'>";
@@ -483,7 +483,7 @@ if (isset($_POST['formStop']))
 			if ($getAutoState != 1)
 			{
 				echo "<input type='checkbox' name='AutoState' value='on'> Start interface $ifacelist on boot";
-				echo "<br>";			
+				echo "<br>";
 			}
 			?>
 			<input class='form-control input-sm' type = "hidden" name = "ifacelist" value = "<?php echo $_POST['ifacelist']; ?>"/>
@@ -517,7 +517,7 @@ if (isset($_POST['formStop']))
 		$BridgeTwo=escapeshellcmd($_POST['BridgeTwo']);
 		$MethodStatus=escapeshellcmd($_POST['MethodStatus']);
 		$AutoState=escapeshellcmd($_POST['AutoState']);
-		
+
 		//Set DHCP status
 		exec("sdc_cli iface set method $ifacelist $MethodStatus");
 
@@ -550,7 +550,7 @@ if (isset($_POST['formStop']))
 		{
 			exec("sdc_cli iface set auto $ifacelist on");
 		}
-	
+
 		echo "<form id=refresh action='' method = 'post'>";
 		echo "<input type = 'hidden' name = 'formEdit' value = '$ifaceEdited' />";
 		echo "<input type = 'hidden' name = 'ifacelist' value = '$ifacelist' />";

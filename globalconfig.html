@@ -1,6 +1,6 @@
 <!--
 Web Based Configuration Tool for WB Products
-Joe Conley, joe.conley@lairdtech.com
+Contact Laird Wireless Support: ews.support@lairdtech.com
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@ Joe Conley, joe.conley@lairdtech.com
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Web based configuration tool for WB platform">
-    <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
+    <meta name="author" content="ews.support@lairdtech.com">
     <link rel="icon" href="/assets/img/laird_logo.png">
 
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -103,7 +103,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // frag thresh
-			
+
 			if (substr($forshow,0,14) == "RTS Threshold:" || substr($forshow,0,14) == "RTS threshold:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -112,7 +112,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // rts thresh
-			
+
 			if (substr($forshow,0,13) == "RX Diversity:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -166,8 +166,8 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 				}
 				echo "</div>";
-			} // rx diversity 
-			
+			} // rx diversity
+
 			if (substr($forshow,0,13) == "TX Diversity:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -208,13 +208,13 @@ Joe Conley, joe.conley@lairdtech.com
 				{
 				}
 				echo "</div>";
-			} //tx diversity 
-			
+			} //tx diversity
+
 			if (substr($forshow,0,13) == "Roam Trigger:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTrigger=substr($forshow,14,3);
-				$num = -95; 
+				$num = -95;
 				echo "Roam Trigger:<br><select class='form-control input-sm' name='Trigger'>";
 				while($num < -50)
 				{
@@ -232,12 +232,12 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			}// roam trigger
-			
+
 			if (substr($forshow,0,11) == "Roam Delta:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getDelta=substr($forshow,12,2);
-				$num1 = 60; 
+				$num1 = 60;
 				echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
 				while($num1 > 0)
 				{
@@ -263,11 +263,11 @@ Joe Conley, joe.conley@lairdtech.com
 				if ($getPeriod == "" || $getPeriod == "<unsupported>")
 				{
 				  echo "Roam Period:<br><input class='form-control input-sm' type='text' name='Period' value='<unsupported>' disabled>";
-				  echo "<br>";				  
+				  echo "<br>";
 				}
 				else
 				{
-				  $num2 = 65; 
+				  $num2 = 65;
 				  echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
 				  while($num2 > 5)
 				  {
@@ -286,7 +286,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // roam period
-			
+
 			if (substr($forshow,0,15) == "Roam Period ms:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -296,7 +296,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // roam period ms
-		
+
 			if (substr($forshow,0,11) == "BT Coexist:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -322,7 +322,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // bt coexist
-			
+
 			if (substr($forshow,0,7) == "TX Max:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -366,7 +366,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // WMM
-		
+
 			if (substr($forshow,0,13) == "CCX Features:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -392,13 +392,13 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // ccx features
-						
+
 			if (substr($forshow,0,18) == "Certificate store:" || substr($forshow,0,18) == "Certificate Store:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getCert=substr($forshow,19);
 				echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
-				echo "<br>";	
+				echo "<br>";
 				echo "</div>";
 			} // certificate store
 
@@ -408,18 +408,18 @@ Joe Conley, joe.conley@lairdtech.com
 				$getBGChan=substr($forshow,16);
 				echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
 				echo "<br>";
-				echo "</div>";				
+				echo "</div>";
 			} // bg channel set
-			
+
 			if (substr($forshow,0,14) == "A Channel Set:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAChan=substr($forshow,15);
 				echo "A Channel Set:<br><input class='form-control input-sm' type='text' name='AChan' value='$getAChan'>";
 				echo "<br>";
-				echo "</div>";				
+				echo "</div>";
 			} // a channel set
-			
+
 			if (substr($forshow,0,16) == "Aggressive Scan:" || substr($forshow,0,16) == "Aggressive scan:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -428,7 +428,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // aggressive scan
-			
+
 			if (substr($forshow,0,12) == "PMK Caching:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -454,7 +454,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // pmk caching
-			
+
 			if (substr($forshow,0,22) == "Default Adhoc Channel:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -463,7 +463,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // default adhoc channel
-			
+
 			if (substr($forshow,0,14) == "Scan DFS Time:" || substr($forshow,0,14) == "Scan DFS time:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -472,7 +472,7 @@ Joe Conley, joe.conley@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // scan dfs time
-			
+
 			if (substr($forshow,0,13) == "DFS Channels:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -500,7 +500,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // dfs channels
-			
+
 			if (substr($forshow,0,17) == "Auth Server Type:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -528,7 +528,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // auth server type
-			
+
 			if (substr($forshow,0,18) == "TTLS Inner Method:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -664,7 +664,7 @@ Joe Conley, joe.conley@lairdtech.com
 				}
 				echo "</div>";
 			} // fips mode
-			
+
 			if (substr($forshow,0,12) == "Probe Delay:")
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -708,7 +708,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<option value='disable' selected>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
-				}	
+				}
 				else
 				{
 				}
@@ -735,7 +735,7 @@ Joe Conley, joe.conley@lairdtech.com
 					echo "<option value='disable' selected>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
-				}	
+				}
 				else
 				{
 				}
@@ -811,7 +811,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$DateCheck=escapeshellcmd($_POST["DateCheck"]);
 			$AutoProfile=escapeshellcmd($_POST["AutoProfile"]);
 
-	
+
 			if ($Frag != $getFrag && strlen($Frag) > 0)
 			{
 				exec("sdc_cli global set frag $Frag");
@@ -855,7 +855,7 @@ Joe Conley, joe.conley@lairdtech.com
 				<script>
 				alert("Roam Period Milliseconds:\nThis value must be between 10 and 60000.");
 				</script>
-				<?php				
+				<?php
 				}
 			}
 			if ($Coexist != $getCoexist)
@@ -935,7 +935,7 @@ Joe Conley, joe.conley@lairdtech.com
 			{
 				exec("sdc_cli global set auto-profile $AutoProfile");
 			}
-			
+
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
 			echo "<script>document.getElementById('refresh').submit();</script>";

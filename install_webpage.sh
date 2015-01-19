@@ -1,5 +1,5 @@
 #This script will install and setup WB webserver
-#Joe Conley, joe.conley@lairdtech.com
+#Contact Laird Wireless Support: ews.support@lairdtech.com
 
 echo "Installing Web LCU!"
 
@@ -100,7 +100,7 @@ then
 	cp lighttpd.conf /etc/lighttpd/
 else
 	echo "lighttpd.conf not found, cant install correctly"
-fi 
+fi
 
 if ps aux | grep "[p]hp-cgi" > /dev/null
 then

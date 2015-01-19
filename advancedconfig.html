@@ -1,6 +1,6 @@
 <!--
 Web Based Configuration Tool for WB Products
-Joe Conley, joe.conley@lairdtech.com
+Contact Laird Wireless Support: ews.support@lairdtech.com
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +8,7 @@ Joe Conley, joe.conley@lairdtech.com
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Web based configuration tool for WB platform">
-    <meta name="author" content="Joseph Conley:joe.conley@lairdtech.com">
+    <meta name="author" content="ews.support@lairdtech.com">
     <link rel="icon" href="/assets/img/laird_logo.png">
 
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
@@ -65,7 +65,7 @@ Joe Conley, joe.conley@lairdtech.com
 		  <div class="form-group">
 			<label for="inputCurrentPass" class="col-md-4 control-label">Current Admin Password:</label>
 			<div class="col-md-6">
-			<?php 
+			<?php
 			  echo "<input type='password' name='CurrentPass' class='form-control input-sm' id='inputCurrentPass' value='$getCurrentPass'>";
 			?>
 			</div>
@@ -106,7 +106,7 @@ Joe Conley, joe.conley@lairdtech.com
 					<input type = "hidden" name="UploadCert" value="<?php echo $_POST['UploadCert']; ?>"/>
 				</div>
 			</div>
-		</form>		
+		</form>
 		<br>
 		<br>
 		<form name="apMode" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post">
@@ -117,7 +117,7 @@ Joe Conley, joe.conley@lairdtech.com
 		      <button name="disableAP" type="summit" class="btn btn-primary">Disable</button>
 		    </div>
 		  </div>
-		</form>	
+		</form>
 		<br>
 		<br>
 		<form name="ImportExport" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action="" method="post" enctype="multipart/form-data">
@@ -129,7 +129,7 @@ Joe Conley, joe.conley@lairdtech.com
 					<button name="restoreprofiles" id="restorebutton" type="summit" class="btn btn-primary">Restore to Default</button>
 				</div>
 			</div>
-			<div id="import" class="collapse">	
+			<div id="import" class="collapse">
 				<br>
 				<div class="panel panel-default">
 				  <div class="panel-heading">
@@ -147,11 +147,11 @@ Joe Conley, joe.conley@lairdtech.com
 								<input type = "hidden" name="UploadProfiles"/>
 							</div>
 						</div>
-					</form>	
+					</form>
 				  </div>
 				</div>
 			</div>
-		</form>	
+		</form>
 		<br>
 		<br>
 		<form name="RemoteUpdate" class="form-horizontal col-sm-8 col-sm-offset-2 col-md-offset-2" role="form" action='' method='post'>
@@ -160,7 +160,7 @@ Joe Conley, joe.conley@lairdtech.com
 			<div class="col-md-6">
 				<?php
 				  echo "<input type='text' name='RemotePath' class='form-control input-sm' id='RemotePath1' placeholder='<protocol>://<server/path/to/images>/fw.txt' value='$getRemotePath'>";
-				?>	
+				?>
 			</div>
 		  </div>
 		  <div class="form-group">
@@ -220,7 +220,7 @@ Joe Conley, joe.conley@lairdtech.com
 			$CurrentPass=$_POST["CurrentPass"];
 			$NewPass=$_POST["NewPass"];
 			$NewPass2=$_POST["NewPass2"];
-			
+
 			$RealPasswordFile='/etc/lighttpd/lighttpd.password';
 			$ReaLCMrrentUser=exec("awk -F ':' '{ print $1 }' /etc/lighttpd/lighttpd.password");
 			$ReaLCMrrentPass=exec("awk -F ':' '{ print $2 }' /etc/lighttpd/lighttpd.password");
@@ -231,18 +231,18 @@ Joe Conley, joe.conley@lairdtech.com
 					if (strlen($NewPass) > 0 && strlen($NewPass2) > 0)
 					{
 						if (file_exists($RealPasswordFile))
-						{	
+						{
 							$fp = fopen($RealPasswordFile, 'w');
 							fwrite($fp, $ReaLCMrrentUser . ":" . $NewPass2 . "\n");
-							fclose($fp);						
+							fclose($fp);
 						}
-						else 
+						else
 						{
 							exec('touch /etc/lighttpd/lighttpd.password');
 							$fp = fopen($RealPasswordFile, 'w');
 							fwrite($fp, $ReaLCMrrentUser . ":" . $NewPass2 . "\n");
-							fclose($fp);	
-						}	
+							fclose($fp);
+						}
 					}
 					else
 					{
@@ -250,7 +250,7 @@ Joe Conley, joe.conley@lairdtech.com
 						<script>
 						alert("New Passwords must not be blank!");
 						</script>
-						<?php					
+						<?php
 					}
 				}
 				else
@@ -270,7 +270,7 @@ Joe Conley, joe.conley@lairdtech.com
 				</script>
 				<?php
 			}
-			
+
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
 			// echo "<script>document.getElementById('refresh').submit();</script>";
@@ -279,7 +279,7 @@ Joe Conley, joe.conley@lairdtech.com
 		{
 			$RemoteUpdate=$_POST["RemoteUpdate"];
 			$RemotePath=$_POST["RemotePath"];
-			
+
 			if (strlen($RemotePath) > 0)
 			{
 				?>
@@ -297,7 +297,7 @@ Joe Conley, joe.conley@lairdtech.com
 				  });
 				})();
 
-				$( document ).ready(function () 
+				$( document ).ready(function ()
 				{
 					var counter = 0;
 					var id = setInterval(function() {
@@ -312,7 +312,7 @@ Joe Conley, joe.conley@lairdtech.com
 				</div>
 				<?php
 			}
-			
+
 			echo "<form id=refresh action='' method = 'post'>";
 			echo "</form>";
 		}
@@ -321,9 +321,9 @@ Joe Conley, joe.conley@lairdtech.com
 			?>
 			<div class="alert alert-danger col-md-offset-2 col-md-8">
 				<strong>Device Rebooting!</strong>
-				The page will attempt to redirect in 20 seconds if IP address remains the same. 
+				The page will attempt to redirect in 20 seconds if IP address remains the same.
 			</div>
-			<?php		
+			<?php
 			exec('sleep 3 ; reboot &');
 			?>
 			<meta http-equiv="refresh" content="20;url=/about.html" />
@@ -332,14 +332,14 @@ Joe Conley, joe.conley@lairdtech.com
 	if (isset($_POST['UploadCert']))
 		{
 			$UploadCert=$_POST["UploadCert"];
-						
+
 			define("UPLOAD_DIR", "/etc/ssl/");
- 
+
 			if (!empty($_FILES["myFile"]))
 			{
 				$myFile = $_FILES["myFile"];
-			 
-				if ($myFile["error"] !== UPLOAD_ERR_OK) 
+
+				if ($myFile["error"] !== UPLOAD_ERR_OK)
 				{
 					?>
 					<div class="alert alert-danger col-md-offset-2 col-md-8">
@@ -348,29 +348,29 @@ Joe Conley, joe.conley@lairdtech.com
 					<?php
 					exit;
 				}
-				if (($_FILES["myFile"]["type"] == "application/pkix-cert") 
-					|| ($_FILES["myFile"]["type"] == "application/x-pkcs7-certificates") 
-					|| ($_FILES["myFile"]["type"] == "application/octet-stream") 
-					|| ($_FILES["myFile"]["type"] == "application/x-pkcs12") 
+				if (($_FILES["myFile"]["type"] == "application/pkix-cert")
+					|| ($_FILES["myFile"]["type"] == "application/x-pkcs7-certificates")
+					|| ($_FILES["myFile"]["type"] == "application/octet-stream")
+					|| ($_FILES["myFile"]["type"] == "application/x-pkcs12")
 					|| ($_FILES["myFile"]["type"] == "application/x-x509-ca-cert"))
 				{
 					// ensure a safe filename
 					$name = preg_replace("/[^A-Z0-9._-]/i", "_", $myFile["name"]);
-				 
+
 					//don't overwrite an existing file
 					$i = 0;
 					$parts = pathinfo($name);
-					while (file_exists(UPLOAD_DIR . $name)) 
+					while (file_exists(UPLOAD_DIR . $name))
 					{
 						$i++;
 						$name = $parts["filename"] . "-" . $i . "." . $parts["extension"];
 					}
-				 
+
 					// preserve file from temporary directory
 					$success = move_uploaded_file($myFile["tmp_name"],
 						UPLOAD_DIR . $name);
-					if (!$success) 
-					{ 
+					if (!$success)
+					{
 						?>
 						<div class="alert alert-danger col-md-offset-2 col-md-8">
 							<strong>Unable to save file.</strong>
@@ -392,7 +392,7 @@ Joe Conley, joe.conley@lairdtech.com
 						</div>
 						<?php
 					}
-				 
+
 					// set proper permissions on the new file
 					chmod(UPLOAD_DIR . $name, 0644);
 				}
@@ -409,14 +409,14 @@ Joe Conley, joe.conley@lairdtech.com
 	if (isset($_POST['UploadProfiles']) && !isset($_POST['downloadprofiles']) && !isset($_POST['restoreprofiles']))
 		{
 			$UploadCert=$_POST["UploadProfiles"];
-						
+
 			define("UPLOAD_DIR", "/etc/summit/");
- 
+
 			if (!empty($_FILES["myProfiles"]))
 			{
 				$myProfiles = $_FILES["myProfiles"];
-			 
-				if ($myProfiles["error"] !== UPLOAD_ERR_OK) 
+
+				if ($myProfiles["error"] !== UPLOAD_ERR_OK)
 				{
 					?>
 					<div class="alert alert-danger col-md-offset-2 col-md-8">
@@ -425,22 +425,22 @@ Joe Conley, joe.conley@lairdtech.com
 					<?php
 					exit;
 				}
-				if ($_FILES["myProfiles"]["type"] == "application/octet-stream") 
+				if ($_FILES["myProfiles"]["type"] == "application/octet-stream")
 				{
 					// ensure a safe filename
 					$name = "profiles.conf";
-					
+
 					// bring down wireless interface
 					exec('ifrc wlan0 stop');
-				 
+
 					// rename old profiles.conf
 					rename('/etc/summit/profiles.conf','/etc/summit/profiles.conf~');
-				 
+
 					// preserve file from temporary directory
 					$success = move_uploaded_file($myProfiles["tmp_name"],
 						UPLOAD_DIR . $name);
-					if (!$success) 
-					{ 
+					if (!$success)
+					{
 						?>
 						<div class="alert alert-danger col-md-offset-2 col-md-8">
 							<strong>Unable to save file.</strong>
@@ -462,10 +462,10 @@ Joe Conley, joe.conley@lairdtech.com
 						</div>
 						<?php
 					}
-				 
+
 					// set proper permissions on the new file
 					chmod(UPLOAD_DIR . $name, 0644);
-					
+
 					// bring up wireless interface
 					exec('ifrc wlan0 start');
 				}
