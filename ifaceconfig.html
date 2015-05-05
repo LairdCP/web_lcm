@@ -67,15 +67,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 		exec("sdc_cli iface show", $ifaceShow);
 		exec("ifconfig | grep 'Link encap' | awk '{ print $1 }'", $ifconfigState);
 		$listLen=count($ifaceShow);
-		//var_dump($ifconfigState);
-		if (in_array("wlan0", $ifconfigState))
-		{
-			$WlanKey=array_search('wlan0', $ifconfigState);
-			$replacements=array($WlanKey => "wl");
-			$ifconfigState=array_replace($ifconfigState,$replacements);
-		}
-		//echo "<br>";
-		//var_dump($ifconfigState);
+		$wirelessAlias="wlan0";
 		$ifacelist=$_POST["ifacelist"];
 		?>
 		<select name='ifacelist' size='4' class='form-control' style='width:198px'>
@@ -84,6 +76,16 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 		{
 			if (substr($ifaceShow[$i],0,5) == "iface")
 			{
+				if (substr($ifaceShow[$i],0,8) == "iface wl" && strpos($ifaceShow[$i],'#') === false)
+				{
+					if (strpos($ifaceShow[$i],'wlan0') === false)
+					{
+						$WlanKey=array_search('wlan0', $ifconfigState);
+						$replacements=array($WlanKey => "wl");
+						$ifconfigState=array_replace($ifconfigState,$replacements);
+						$wirelessAlias="wl";
+					}
+				}
 				$ifaceItem=explode(" ",$ifaceShow[$i]);
 				if ($ifacelist == $ifaceItem[1])
 				{
@@ -383,13 +385,16 @@ if (isset($_POST['formStop']))
 							$bridge_port_choice=explode(" ", substr(trim($ifaceShow[$i + $j]),13));
 							$GetBridgeOne=$bridge_port_choice[0];
 							$GetBridgeTwo=$bridge_port_choice[1];
-							if ($GetBridgeOne == "wlan0")
+							if ($wirelessAlias == "wl")
 							{
-								$GetBridgeOne="wl";
-							}
-							if ($GetBridgeTwo == "wlan0")
-							{
-								$GetBridgeTwo="wl";
+								if ($GetBridgeOne == "wlan0")
+								{
+									$GetBridgeOne="wl";
+								}
+								if ($GetBridgeTwo == "wlan0")
+								{
+									$GetBridgeTwo="wl";
+								}
 							}
 							?>
 							<div class="row">
