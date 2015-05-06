@@ -33,6 +33,7 @@
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[3]; ?></strong></h6></div> <!-- /Channel -->
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[13]; ?></strong></h6></div> <!-- /Beacon Period -->
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[14]; ?></strong></h6></div> <!-- /DTIM -->
+	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[11]; ?></strong></h6></div> <!-- /Bit Rate -->
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-1 col-md-offset-2"><h6><strong><?php echo $status[12]; ?></strong></h6></div> <!-- /TX Power -->
 	<div class="col-xs-6 col-sm-4 col-md-4 col-sm-offset-2 col-md-offset-2"><h6><strong><?php echo $status[4]; ?></strong></h6></div> <!-- /RSSI -->
 	<div class="col-xs-10 col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">

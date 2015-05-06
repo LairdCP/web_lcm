@@ -785,7 +785,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "Client Name:<br><input class='form-control input-sm' type='text' name='ClientName' value='$getClient'>";
 				echo "<br>";
 
-				$getTX=substr($ProfilePrint[3],14,4);
+				$getTX=strtolower(substr($ProfilePrint[3],14,4));
 				$getTX=trim($getTX);
 				$num = 0;
 				echo "TX Power:<br><select class='form-control input-sm' name='TxPower'>";
@@ -1042,7 +1042,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				<?php
 				}
 
-				$getPower=substr($ProfilePrint[9],15);
+				$getPower=strtolower(substr($ProfilePrint[9],15));
 				if ($getPower == "off")
 				{
 				?>
@@ -1088,7 +1088,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				<?php
 				}
 
-				$getAuth=substr($ProfilePrint[4],15);
+				$getAuth=strtolower(substr($ProfilePrint[4],15));
 				if ($getAuth == "open")
 				{
 				?>
@@ -1111,7 +1111,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					<br>
 				<?php
 				}
-				elseif ($getAuth == "network EAP")
+				elseif ($getAuth == "network eap")
 				{
 					?>
 					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
@@ -1135,7 +1135,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				<?php
 				}
 
-				$getWEP=substr($ProfilePrint[6],14);
+				$getWEP=strtolower(substr($ProfilePrint[6],14));
 				if ($getWEP == "wep-off")
 				{
 					$getWEP="off";
