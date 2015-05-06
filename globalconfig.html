@@ -87,24 +87,24 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 		{
 			$forshow=trim($forshow);
 			$forCount = $forCount + 1;
-			if (substr($forshow,0,24) == "Fragmentation threshold:")
+			if (stristr($forshow,"Fragmentation threshold:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getFrag=substr($forshow,25);
-				if ($getFrag == "<unsupported>")
+				if (stristr($forshow,"<unsupported>"))
 				{
-					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag' disabled>";
+					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='<unsupported>' disabled>";
 					echo "<br>";
 				}
 				else
 				{
+					$getFrag=substr($forshow,25);
 					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag'>";
 					echo "<br>";
 				}
 				echo "</div>";
 			} // frag thresh
 
-			if (substr($forshow,0,14) == "RTS Threshold:" || substr($forshow,0,14) == "RTS threshold:")
+			if (stristr($forshow,"RTS Threshold:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRTS=substr($forshow,15);
@@ -113,17 +113,17 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // rts thresh
 
-			if (substr($forshow,0,13) == "RX Diversity:")
+			if (stristr($forshow,"RX Diversity:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getRXDiv=substr($forshow,14);
-				if ($getRXDiv == "<unsupported>")
+				if (stristr($forshow,"<unsupported>"))
 				{
-					echo "RX Diversity:<br><input class='form-control input-sm' type='text' name='RXdiv' value='$getRXDiv' disabled>";
+					echo "RX Diversity:<br><input class='form-control input-sm' type='text' name='RXdiv' value='<unsupported>' disabled>";
 					echo "<br>";
 				}
-				elseif ($getRXDiv == "main")
+				elseif (stristr($forshow,"main"))
 				{
+					$getRXDiv="main";
 					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
 					echo "<option value='main' selected>Main Only</option>";
 					echo "<option value='aux'>AUX Only</option>";
@@ -132,8 +132,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getRXDiv == "aux")
+				elseif (stristr($forshow,"aux"))
 				{
+					$getRXDiv="aux";
 					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
 					echo "<option value='main'>Main Only</option>";
 					echo "<option value='aux' selected>AUX Only</option>";
@@ -142,8 +143,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getRXDiv == "start_main")
+				elseif (stristr($forshow,"start_main"))
 				{
+					$getRXDiv="start_main";
 					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
 					echo "<option value='main'>Main Only</option>";
 					echo "<option value='aux'>AUX Only</option>";
@@ -152,8 +154,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getRXDiv == "start_aux")
+				elseif (stristr($forshow,"start_aux"))
 				{
+					$getRXDiv="start_aux";
 					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
 					echo "<option value='main'>Main Only</option>";
 					echo "<option value='aux'>AUX Only</option>";
@@ -168,17 +171,17 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // rx diversity
 
-			if (substr($forshow,0,13) == "TX Diversity:")
+			if (stristr($forshow,"TX Diversity:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getTXDiv=substr($forshow,14);
-				if ($getTXDiv == "<unsupported>")
+				if (stristr($forshow,"<unsupported>"))
 				{
-					echo "TX Diversity:<br><input class='form-control input-sm' type='text' name='TXdiv' value='$getTXDiv' disabled>";
+					echo "TX Diversity:<br><input class='form-control input-sm' type='text' name='TXdiv' value='<unsupported>' disabled>";
 					echo "<br>";
 				}
-				elseif ($getTXDiv == "main")
+				elseif (stristr($forshow,"main"))
 				{
+					$getTXDiv="main";
 					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
 					echo "<option value='main' selected>Main Only</option>";
 					echo "<option value='aux'>AUX Only</option>";
@@ -186,8 +189,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTXDiv == "aux")
+				elseif (stristr($forshow,"aux"))
 				{
+					$getTXDiv="aux";
 					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
 					echo "<option value='main'>Main Only</option>";
 					echo "<option value='aux' selected>AUX Only</option>";
@@ -195,8 +199,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTXDiv == "on")
+				elseif (stristr($forshow,"on"))
 				{
+					$getTXDiv="on";
 					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
 					echo "<option value='main'>Main Only</option>";
 					echo "<option value='aux'>AUX Only</option>";
@@ -210,7 +215,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} //tx diversity
 
-			if (substr($forshow,0,13) == "Roam Trigger:")
+			if (stristr($forshow,"Roam Trigger:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getTrigger=substr($forshow,14,3);
@@ -233,7 +238,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			}// roam trigger
 
-			if (substr($forshow,0,11) == "Roam Delta:")
+			if (stristr($forshow,"Roam Delta:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getDelta=substr($forshow,12,2);
@@ -256,11 +261,11 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // roam delta
 
-			if (substr($forshow,0,12) == "Roam Period:")
+			if (stristr($forshow,"Roam Period:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getPeriod=substr($forshow,13);
-				if ($getPeriod == "" || $getPeriod == "<unsupported>")
+				if (stristr($forshow,"<unsupported>"))
 				{
 				  echo "Roam Period:<br><input class='form-control input-sm' type='text' name='Period' value='<unsupported>' disabled>";
 				  echo "<br>";
@@ -287,7 +292,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // roam period
 
-			if (substr($forshow,0,15) == "Roam Period ms:")
+			if (stristr($forshow,"Roam Period ms:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getPeriodMS=substr($forshow,16);
@@ -297,20 +302,21 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // roam period ms
 
-			if (substr($forshow,0,11) == "BT Coexist:")
+			if (stristr($forshow,"BT Coexist:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getCoexist=substr($forshow,12);
-				if ($getCoexist == "on")
+				if (stristr($forshow,"on"))
 				{
+					$getCoexist="on";
 					echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
 					echo "<option value='on' selected>On</option>";
 					echo "<option value='off'>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getCoexist == "off")
+				elseif (stristr($forshow,"off"))
 				{
+					$getCoexist="off";
 					echo "BT Coexist:<br><select class='form-control input-sm' name='Coexist'>";
 					echo "<option value='on'>On</option>";
 					echo "<option value='off' selected>Off</option>";
@@ -323,16 +329,23 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // bt coexist
 
-			if (substr($forshow,0,7) == "TX Max:")
+			if (stristr($forshow,"TX Max:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getTXMax=substr($forshow,8);
-				echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
+				if (stristr($forshow,"<unsupported>"))
+				{
+					echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='<unsupported>' disabled>";
+				}
+				else
+				{
+					$getTXMax=substr($forshow,8);
+					echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
+				}
 				echo "<br>";
 				echo "</div>";
 			} // tx max
 
-			if (substr($forshow,0,18) == "Regulatory domain:" || substr($forshow,0,18) == "Regulatory Domain:")
+			if (stristr($forshow,"Regulatory domain:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getRegDom=substr($forshow,19);
@@ -341,20 +354,21 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // regulatory domain
 
-			if (substr($forshow,0,4) == "WMM:")
+			if (stristr($forshow,"WMM:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getWMM=substr($forshow,5);
-				if ($getWMM == "on")
+				if (stristr($forshow,"on"))
 				{
+					$getWMM="on";
 					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
 					echo "<option value='on' selected>On</option>";
 					echo "<option value='off'>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getWMM == "off")
+				elseif (stristr($forshow,"off"))
 				{
+					$getWMM="off";
 					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
 					echo "<option value='on'>On</option>";
 					echo "<option value='off' selected>Off</option>";
@@ -367,20 +381,21 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // WMM
 
-			if (substr($forshow,0,13) == "CCX Features:")
+			if (stristr($forshow,"CCX Features:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getCCX=substr($forshow,14);
-				if ($getCCX == "full")
+				if (stristr($forshow,"full"))
 				{
+					$getCCX="full";
 					echo "CCX Features:<br><select class='form-control input-sm' name='CCX'>";
 					echo "<option value='full' selected>Full</option>";
 					echo "<option value='off'>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getCCX == "off")
+				elseif (stristr($forshow,"off"))
 				{
+					$getCCX="off";
 					echo "CCX Features:<br><select class='form-control input-sm' name='CCX'>";
 					echo "<option value='full'>Full</option>";
 					echo "<option value='off' selected>Off</option>";
@@ -393,7 +408,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // ccx features
 
-			if (substr($forshow,0,18) == "Certificate store:" || substr($forshow,0,18) == "Certificate Store:")
+			if (stristr($forshow,"Certificate store:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getCert=substr($forshow,19);
@@ -402,7 +417,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // certificate store
 
-			if (substr($forshow,0,15) == "BG Channel Set:")
+			if (stristr($forshow,"BG Channel Set:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getBGChan=substr($forshow,16);
@@ -411,7 +426,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // bg channel set
 
-			if (substr($forshow,0,14) == "A Channel Set:")
+			if (stristr($forshow,"A Channel Set:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAChan=substr($forshow,15);
@@ -420,29 +435,29 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // a channel set
 
-			if (substr($forshow,0,16) == "Aggressive Scan:" || substr($forshow,0,16) == "Aggressive scan:")
+			if (stristr($forshow,"Aggressive Scan:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getAggScan=substr($forshow,17);
-				echo "Aggressive Scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='$getAggScan' disabled>";
+				echo "Aggressive Scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='<unsupported>' disabled>";
 				echo "<br>";
 				echo "</div>";
 			} // aggressive scan
 
-			if (substr($forshow,0,12) == "PMK Caching:")
+			if (stristr($forshow,"PMK Caching:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getPMK=substr($forshow,21);
-				if ($getPMK == "0")
+				if (stristr($forshow," 0") || stristr($forshow,"standard"))
 				{
+					$getPMK="0";
 					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
 					echo "<option value='0' selected>Standard</option>";
 					echo "<option value='1'>OPMK</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getPMK == "1")
+				elseif (stristr($forshow," 1") || stristr($forshow,"OPMK"))
 				{
+					$getPMK="1";
 					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
 					echo "<option value='0'>Standard</option>";
 					echo "<option value='1' selected>OPMK</option>";
@@ -455,7 +470,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // pmk caching
 
-			if (substr($forshow,0,22) == "Default Adhoc Channel:")
+			if (stristr($forshow,"Default Adhoc Channel:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getAdhoc=substr($forshow,23);
@@ -464,7 +479,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // default adhoc channel
 
-			if (substr($forshow,0,14) == "Scan DFS Time:" || substr($forshow,0,14) == "Scan DFS time:")
+			if (stristr($forshow,"Scan DFS Time:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getScan=substr($forshow,15);
@@ -473,25 +488,36 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // scan dfs time
 
-			if (substr($forshow,0,13) == "DFS Channels:")
+			if (stristr($forshow,"DFS Channels:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getDFS=substr($forshow,14);
-				if ($getDFS == "full")
+				if (stristr($forshow,"full"))
 				{
 					$getDFS="on";
 					echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
 					echo "<option value='on' selected>Full</option>";
 					echo "<option value='off'>Off</option>";
+					echo "<option value='optimized'>Optimized</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getDFS == "off")
+				elseif (stristr($forshow,"off"))
 				{
 					$getDFS="off";
 					echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
 					echo "<option value='on'>Full</option>";
 					echo "<option value='off' selected>Off</option>";
+					echo "<option value='optimized'>Optimized</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow,"optimized"))
+				{
+					$getDFS="optimized";
+					echo "DFS Channels:<br><select class='form-control input-sm' name='DFS'>";
+					echo "<option value='on'>Full</option>";
+					echo "<option value='off'>Off</option>";
+					echo "<option value='optimized' selected>Optimized</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -501,11 +527,10 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // dfs channels
 
-			if (substr($forshow,0,17) == "Auth Server Type:")
+			if (stristr($forshow,"Auth Server Type:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getServer=substr($forshow,18);
-				if (trim($getServer) == "type 1" || trim($getServer) == "acs")
+				if (stristr($forshow,"type 1") || stristr($forshow,"acs"))
 				{
 					$getServer=1;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
@@ -514,7 +539,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (trim($getServer) == "type 2" || trim($getServer) == "sbr")
+				if (stristr($forshow,"type 2") || stristr($forshow,"sbr"))
 				{
 					$getServer=2;
 					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
@@ -529,12 +554,12 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // auth server type
 
-			if (substr($forshow,0,18) == "TTLS Inner Method:")
+			if (stristr($forshow,"TTLS Inner Method:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getTTLSinner=substr($forshow,19);
-				if ($getTTLSinner == "auto")
+				if (stristr($forshow,"auto"))
 				{
+					$getTTLSinner="auto";
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
 					echo "<option value='auto' selected>Auto</option>";
 					echo "<option value='mschapv2'>MSCHAP v2</option>";
@@ -545,8 +570,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "mschapv2")
+				elseif (stristr($forshow,"mschapv2"))
 				{
+					$getTTLSinner="mschapv2";
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
 					echo "<option value='auto'>Auto</option>";
 					echo "<option value='mschapv2' selected>MSCHAP v2</option>";
@@ -557,8 +583,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "mschap")
+				elseif (stristr($forshow,"mschap"))
 				{
+					$getTTLSinner="mschap";
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
 					echo "<option value='auto'>Auto</option>";
 					echo "<option value='mschapv2'>MSCHAP v2</option>";
@@ -569,8 +596,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "pap")
+				elseif (stristr($forshow,"pap"))
 				{
+					$getTTLSinner="pap";
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
 					echo "<option value='auto'>Auto</option>";
 					echo "<option value='mschapv2'>MSCHAP v2</option>";
@@ -581,8 +609,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "chap")
+				elseif (stristr($forshow,"chap"))
 				{
+					$getTTLSinner="chap";
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
 					echo "<option value='auto'>Auto</option>";
 					echo "<option value='mschapv2'>MSCHAP v2</option>";
@@ -593,8 +622,9 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getTTLSinner == "eap_mschapv2")
+				elseif (stristr($forshow,"eap_mschapv2"))
 				{
+					$getTTLSinner="eap_mschapv2";
 					echo "TTLS Inner Method:<br><select class='form-control input-sm' name='TTLSinner' >";
 					echo "<option value='auto'>Auto</option>";
 					echo "<option value='mschapv2'>MSCHAP v2</option>";
@@ -611,49 +641,48 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // ttls inner method
 
-			if (substr($forshow,0,10) == "FIPS Mode:")
+			if (stristr($forshow,"FIPS Mode:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getFIPS=substr($forshow,11);
-				if ($getFIPS == "Disabled and Inactive")
+				if (stristr($forshow,"Disabled and Inactive"))
 				{
 					$getFIPS="disabled";
-					echo "FIPS:Disabled and Inactive<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS: Disabled and Inactive<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getFIPS == "Inactive - Enabled on next start")
+				elseif (stristr($forshow,"Inactive - Enabled on next start"))
 				{
 					$getFIPS="enabled";
-					echo "FIPS:Inactive - Enabled on next start<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS: Inactive - Enabled on next start<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled' selected>Enabled</option>";
 					echo "<option value='disabled'>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getFIPS == "Active - Disabled on next start")
+				elseif (stristr($forshow,"Active - Disabled on next start"))
 				{
 					$getFIPS="disabled";
-					echo "FIPS:Active - Disabled on next start<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS: Active - Disabled on next start<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getFIPS == "Enabled and Active")
+				elseif (stristr($forshow,"Enabled and Active"))
 				{
 					$getFIPS="enabled";
-					echo "FIPS:Enabled and Active<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS: Enabled and Active<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled' selected>Enabled</option>";
 					echo "<option value='disabled'>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getFIPS == "Unable to determine")
+				elseif (stristr($forshow,"Unable to determine"))
 				{
-					echo "FIPS:Unable to determine<br><select class='form-control input-sm' name='FIPS'>";
+					echo "FIPS: Unable to determine<br><select class='form-control input-sm' name='FIPS'>";
 					echo "<option value='enabled'>Enabled</option>";
 					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
@@ -665,7 +694,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "</div>";
 			} // fips mode
 
-			if (substr($forshow,0,12) == "Probe Delay:")
+			if (stristr($forshow,"Probe Delay:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
 				$getProbedelay=substr($forshow,13);
@@ -687,11 +716,10 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				echo "<br>";
 				echo "</div>";
 			} // probe delay
-			if (substr($forshow,0,17) == "Ignore Null SSID:" || substr($forshow,0,17) == "Ignore Null Ssid:")
+			if (stristr($forshow,"Ignore Null SSID:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getIgnoreNull=substr($forshow,18);
-				if ($getIgnoreNull == "enabled")
+				if (stristr($forshow,"enabled"))
 				{
 					$getIgnoreNull="enable";
 					echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
@@ -700,7 +728,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getIgnoreNull == "disabled")
+				elseif (stristr($forshow,"disabled"))
 				{
 					$getIgnoreNull="disable";
 					echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
@@ -714,11 +742,10 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				}
 				echo "</div>";
 			} // ignore null ssid
-			if (substr($forshow,0,11) == "Date Check:")
+			if (stristr($forshow,"Date Check:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getDateCheck=substr($forshow,12);
-				if ($getDateCheck == "enabled")
+				if (stristr($forshow,"enabled"))
 				{
 					$getDateCheck="enable";
 					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
@@ -727,7 +754,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getDateCheck == "disabled")
+				elseif (stristr($forshow,"disable"))
 				{
 					$getDateCheck="disable";
 					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
@@ -741,11 +768,10 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 				}
 				echo "</div>";
 			} // date check
-			if (substr($forshow,0,13) == "Auto Profile:")
+			if (stristr($forshow,"Auto Profile:"))
 			{
-				$getAutoProfile=substr($forshow,14);
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if ($getAutoProfile == "enabled")
+				if (stristr($forshow,"enable"))
 				{
 					$getAutoProfile="enable";
 					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
@@ -754,7 +780,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif ($getAutoProfile == "disabled")
+				elseif (stristr($forshow,"disable"))
 				{
 					$getAutoProfile="disable";
 					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
@@ -942,7 +968,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 
 		}
 		?>
-   	</div><!-- panel -->
+	</div><!-- panel -->
 	</div><!-- pannelpanel-default -->
 	</nav><!-- navbar navbar-default  -->
     </div> <!-- /container -->
