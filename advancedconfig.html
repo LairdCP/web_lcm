@@ -175,9 +175,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 		<?php
 	if (isset($_POST['enableAP']))
 		{
-			exec('sdc_cli iface set hostapd wl on');
-			exec('sdc_cli iface set method wl static');
-			exec('ifrc wlan0 restart');
+			exec('hostapd_mode on');
 			?>
 			<div class="alert alert-success col-md-offset-2 col-md-8">
 				<strong>AP mode enabled.</strong>
@@ -187,9 +185,7 @@ Contact Laird Wireless Support: ews.support@lairdtech.com
 		}
 	if (isset($_POST['disableAP']))
 		{
-			exec('sdc_cli iface set hostapd wl off');
-			exec('sdc_cli iface set method wl dhcp');
-			exec('ifrc wlan0 restart');
+			exec('hostapd_mode off');
 			?>
 			<div class="alert alert-success col-md-offset-2 col-md-8">
 				<strong>AP mode disabled.</strong>
