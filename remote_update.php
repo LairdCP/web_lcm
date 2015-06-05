@@ -1,3 +1,7 @@
+<!--
+  Copyright (c) 2015, Laird; Released under the ISC license.
+  Contact: ews-support@lairdtech.com
+-->
 <?php
 	$FWupdateLog='fw_update_log.txt';
 	$FWupdateLogString=implode("<br>",file("fw_update_log.txt"));
