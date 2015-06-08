@@ -1,3 +1,7 @@
+<!--
+  Copyright (c) 2015, Laird; Released under the ISC license.
+  Contact: ews-support@lairdtech.com
+-->
 <!DOCTYPE html>
 <html lang="en">
  	<?php
