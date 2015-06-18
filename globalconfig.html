@@ -87,81 +87,32 @@
 		{
 			$forshow=trim($forshow);
 			$forCount = $forCount + 1;
-			if (stristr($forshow,"Fragmentation threshold:"))
+			if (stristr($forshow,"A Channel Set:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"<unsupported>"))
-				{
-					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='<unsupported>' disabled>";
-					echo "<br>";
-				}
-				else
-				{
-					$getFrag=substr($forshow,25);
-					echo "Fragmentation Threshold:<br><input class='form-control input-sm' type='text' name='Frag' value='$getFrag'>";
-					echo "<br>";
-				}
-				echo "</div>";
-			} // frag thresh
-
-			if (stristr($forshow,"RTS Threshold:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getRTS=substr($forshow,15);
-				echo "RTS Threshold:<br><input class='form-control input-sm' type='text' name='RTS' value='$getRTS'>";
+				$getAChan=substr($forshow,15);
+				echo "A Channel Set:<br><input class='form-control input-sm' type='text' name='AChan' value='$getAChan'>";
 				echo "<br>";
 				echo "</div>";
-			} // rts thresh
-
-			if (stristr($forshow,"RX Diversity:"))
+			} // a channel set
+			if (stristr($forshow,"Auth Server Type:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"<unsupported>"))
+				if (stristr($forshow,"type 1") || stristr($forshow,"acs"))
 				{
-					echo "RX Diversity:<br><input class='form-control input-sm' type='text' name='RXdiv' value='<unsupported>' disabled>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"main"))
-				{
-					$getRXDiv="main";
-					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
-					echo "<option value='main' selected>Main Only</option>";
-					echo "<option value='aux'>AUX Only</option>";
-					echo "<option value='start_main'>On-Start on Main</option>";
-					echo "<option value='start_aux'>On-Start on AUX</option>";
+					$getServer=1;
+					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
+					echo "<option value='1' selected>Type 1</option>";
+					echo "<option value='2'>Type 2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (stristr($forshow,"aux"))
+				if (stristr($forshow,"type 2") || stristr($forshow,"sbr"))
 				{
-					$getRXDiv="aux";
-					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
-					echo "<option value='main'>Main Only</option>";
-					echo "<option value='aux' selected>AUX Only</option>";
-					echo "<option value='start_main'>On-Start on Main</option>";
-					echo "<option value='start_aux'>On-Start on AUX</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"start_main"))
-				{
-					$getRXDiv="start_main";
-					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
-					echo "<option value='main'>Main Only</option>";
-					echo "<option value='aux'>AUX Only</option>";
-					echo "<option value='start_main' selected>On-Start on Main</option>";
-					echo "<option value='start_aux'>On-Start on AUX</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"start_aux"))
-				{
-					$getRXDiv="start_aux";
-					echo "RX Diversity:<br><select class='form-control input-sm' name='RXdiv'>";
-					echo "<option value='main'>Main Only</option>";
-					echo "<option value='aux'>AUX Only</option>";
-					echo "<option value='start_main'>On-Start on Main</option>";
-					echo "<option value='start_aux' selected>On-Start on AUX</option>";
+					$getServer=2;
+					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
+					echo "<option value='1'>Type 1</option>";
+					echo "<option value='2' selected>Type 2</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -169,43 +120,25 @@
 				{
 				}
 				echo "</div>";
-			} // rx diversity
-
-			if (stristr($forshow,"TX Diversity:"))
+			} // auth server type
+			if (stristr($forshow,"Auto Profile:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"<unsupported>"))
+				if (stristr($forshow,"on"))
 				{
-					echo "TX Diversity:<br><input class='form-control input-sm' type='text' name='TXdiv' value='<unsupported>' disabled>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"main"))
-				{
-					$getTXDiv="main";
-					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-					echo "<option value='main' selected>Main Only</option>";
-					echo "<option value='aux'>AUX Only</option>";
-					echo "<option value='on'>On</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"aux"))
-				{
-					$getTXDiv="aux";
-					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-					echo "<option value='main'>Main Only</option>";
-					echo "<option value='aux' selected>AUX Only</option>";
-					echo "<option value='on'>On</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"on"))
-				{
-					$getTXDiv="on";
-					echo "TX Diversity:<br><select class='form-control input-sm' name='TXdiv'>";
-					echo "<option value='main'>Main Only</option>";
-					echo "<option value='aux'>AUX Only</option>";
+					$getAutoProfile="on";
+					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
 					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow,"off"))
+				{
+					$getAutoProfile="off";
+					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -213,95 +146,15 @@
 				{
 				}
 				echo "</div>";
-			} //tx diversity
-
-			if (stristr($forshow,"Roam Trigger:"))
+			} // auto profile
+			if (stristr($forshow,"BG Channel Set:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getTrigger=substr($forshow,14,3);
-				$num = -95;
-				echo "Roam Trigger:<br><select class='form-control input-sm' name='Trigger'>";
-				while($num < -50)
-				{
-					$num = $num + 5;
-					if ($num == $getTrigger)
-					{
-						echo "<option value='$num' selected>$num dBm</option>";
-					}
-					else
-					{
-						echo "<option value='$num'>$num dBm</option>";
-					}
-				}
-				echo "</select>";
+				$getBGChan=substr($forshow,16);
+				echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
 				echo "<br>";
 				echo "</div>";
-			}// roam trigger
-
-			if (stristr($forshow,"Roam Delta:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getDelta=substr($forshow,12,2);
-				$num1 = 60;
-				echo "Roam Delta:<br><select class='form-control input-sm' name='Delta'>";
-				while($num1 > 0)
-				{
-					$num1 = $num1 - 5;
-					if ($num1 == $getDelta)
-					{
-						echo "<option value='$num1' selected>$num1 dBm</option>";
-					}
-					else
-					{
-						echo "<option value='$num1'>$num1 dBm</option>";
-					}
-				}
-				echo "</select>";
-				echo "<br>";
-				echo "</div>";
-			} // roam delta
-
-			if (stristr($forshow,"Roam Period:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getPeriod=substr($forshow,13);
-				if (stristr($forshow,"<unsupported>"))
-				{
-				  echo "Roam Period:<br><input class='form-control input-sm' type='text' name='Period' value='<unsupported>' disabled>";
-				  echo "<br>";
-				}
-				else
-				{
-				  $num2 = 65;
-				  echo "Roam Period:<br><select class='form-control input-sm' name='Period'>";
-				  while($num2 > 5)
-				  {
-					  $num2 = $num2 - 5;
-					  if ($num2 == $getPeriod)
-					  {
-						  echo "<option value='$num2' selected>$num2 Sec</option>";
-					  }
-					  else
-					  {
-						  echo "<option value='$num2'>$num2 Sec</option>";
-					  }
-				  }
-				  echo "</select>";
-				  echo "<br>";
-				}
-				echo "</div>";
-			} // roam period
-
-			if (stristr($forshow,"Roam Period ms:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getPeriodMS=substr($forshow,16);
-				$getPeriodMS=trim(substr($getPeriodMS,0,-2));
-				echo "Roam Period Milliseconds:<br><input class='form-control input-sm' type='text' name='PeriodMS' value='$getPeriodMS'>";
-				echo "<br>";
-				echo "</div>";
-			} // roam period ms
-
+			} // bg channel set
 			if (stristr($forshow,"BT Coexist:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -328,59 +181,6 @@
 				}
 				echo "</div>";
 			} // bt coexist
-
-			if (stristr($forshow,"TX Max:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"<unsupported>"))
-				{
-					echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='<unsupported>' disabled>";
-				}
-				else
-				{
-					$getTXMax=substr($forshow,8);
-					echo "TX Max:<br><input class='form-control input-sm' type='text' name='TXMax' value='$getTXMax'>";
-				}
-				echo "<br>";
-				echo "</div>";
-			} // tx max
-
-			if (stristr($forshow,"Regulatory domain:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getRegDom=substr($forshow,19);
-				echo "Regulatory domain:<br><input class='form-control input-sm' type='text' name='RegDom' value='$getRegDom' disabled>";
-				echo "<br>";
-				echo "</div>";
-			} // regulatory domain
-
-			if (stristr($forshow,"WMM:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"on"))
-				{
-					$getWMM="on";
-					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
-					echo "<option value='on' selected>On</option>";
-					echo "<option value='off'>Off</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"off"))
-				{
-					$getWMM="off";
-					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
-					echo "<option value='on'>On</option>";
-					echo "<option value='off' selected>Off</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				else
-				{
-				}
-				echo "</div>";
-			} // WMM
-
 			if (stristr($forshow,"CCX Features:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -407,60 +207,32 @@
 				}
 				echo "</div>";
 			} // ccx features
-
-			if (stristr($forshow,"Certificate store:"))
+			if (stristr($forshow,"Certificate Path:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getCert=substr($forshow,19);
-				echo "Certificate store:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
+				$getCert=substr($forshow,18);
+				echo "Certificate Path:<br><input class='form-control input-sm' type='text' name='Cert' value='$getCert'>";
 				echo "<br>";
 				echo "</div>";
-			} // certificate store
-
-			if (stristr($forshow,"BG Channel Set:"))
+			} // certificate path
+			if (stristr($forshow,"Date Check:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getBGChan=substr($forshow,16);
-				echo "BG Channel Set:<br><input class='form-control input-sm' type='text' name='BGChan' value='$getBGChan'>";
-				echo "<br>";
-				echo "</div>";
-			} // bg channel set
-
-			if (stristr($forshow,"A Channel Set:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getAChan=substr($forshow,15);
-				echo "A Channel Set:<br><input class='form-control input-sm' type='text' name='AChan' value='$getAChan'>";
-				echo "<br>";
-				echo "</div>";
-			} // a channel set
-
-			if (stristr($forshow,"Aggressive Scan:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				echo "Aggressive Scan:<br><input class='form-control input-sm' type='text' name='AggScan' value='<unsupported>' disabled>";
-				echo "<br>";
-				echo "</div>";
-			} // aggressive scan
-
-			if (stristr($forshow,"PMK Caching:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow," 0") || stristr($forshow,"standard"))
+				if (stristr($forshow,"On"))
 				{
-					$getPMK="0";
-					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
-					echo "<option value='0' selected>Standard</option>";
-					echo "<option value='1'>OPMK</option>";
+					$getDateCheck="on";
+					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
+					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (stristr($forshow," 1") || stristr($forshow,"OPMK"))
+				elseif (stristr($forshow,"Off"))
 				{
-					$getPMK="1";
-					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
-					echo "<option value='0'>Standard</option>";
-					echo "<option value='1' selected>OPMK</option>";
+					$getDateCheck="off";
+					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -468,8 +240,7 @@
 				{
 				}
 				echo "</div>";
-			} // pmk caching
-
+			} // date check
 			if (stristr($forshow,"Default Adhoc Channel:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -478,16 +249,6 @@
 				echo "<br>";
 				echo "</div>";
 			} // default adhoc channel
-
-			if (stristr($forshow,"Scan DFS Time:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getScan=substr($forshow,15);
-				echo "Scan DFS time:<br><input class='form-control input-sm' type='text' name='Scan' value='$getScan'>";
-				echo "<br>";
-				echo "</div>";
-			} // scan dfs time
-
 			if (stristr($forshow,"DFS Channels:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -526,25 +287,50 @@
 				}
 				echo "</div>";
 			} // dfs channels
-
-			if (stristr($forshow,"Auth Server Type:"))
+			if (stristr($forshow,"FIPS Mode:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"type 1") || stristr($forshow,"acs"))
+				if (stristr($forshow,"Disabled and Inactive"))
 				{
-					$getServer=1;
-					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-					echo "<option value='1' selected>Type 1</option>";
-					echo "<option value='2'>Type 2</option>";
+					$getFIPS="disabled";
+					echo "FIPS: Disabled and Inactive<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled'>Enabled</option>";
+					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				if (stristr($forshow,"type 2") || stristr($forshow,"sbr"))
+				elseif (stristr($forshow,"Inactive - Enabled on next start"))
 				{
-					$getServer=2;
-					echo "Auth Server Type:<br><select class='form-control input-sm' name='Server'>";
-					echo "<option value='1'>Type 1</option>";
-					echo "<option value='2' selected>Type 2</option>";
+					$getFIPS="enabled";
+					echo "FIPS: Inactive - Enabled on next start<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled' selected>Enabled</option>";
+					echo "<option value='disabled'>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow,"Active - Disabled on next start"))
+				{
+					$getFIPS="disabled";
+					echo "FIPS: Active - Disabled on next start<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled'>Enabled</option>";
+					echo "<option value='disabled' selected>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow,"Enabled and Active"))
+				{
+					$getFIPS="enabled";
+					echo "FIPS: Enabled and Active<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled' selected>Enabled</option>";
+					echo "<option value='disabled'>Disabled</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow,"Unable to determine"))
+				{
+					echo "FIPS: Unable to determine<br><select class='form-control input-sm' name='FIPS'>";
+					echo "<option value='enabled'>Enabled</option>";
+					echo "<option value='disabled' selected>Disabled</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -552,8 +338,136 @@
 				{
 				}
 				echo "</div>";
-			} // auth server type
-
+			} // fips mode
+			if (stristr($forshow,"Ignore Null SSID:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				if (stristr($forshow,"On"))
+				{
+					$getIgnoreNull="on";
+					echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
+					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow,"Off"))
+				{
+					$getIgnoreNull="off";
+					echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+				}
+				echo "</div>";
+			} // ignore null ssid
+			if (stristr($forshow,"PMK Caching:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				if (stristr($forshow," 0") || stristr($forshow,"standard"))
+				{
+					$getPMK="0";
+					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
+					echo "<option value='0' selected>Standard</option>";
+					echo "<option value='1'>OPMK</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				elseif (stristr($forshow," 1") || stristr($forshow,"OPMK"))
+				{
+					$getPMK="1";
+					echo "PMK Caching:<br><select class='form-control input-sm' name='PMK'>";
+					echo "<option value='0'>Standard</option>";
+					echo "<option value='1' selected>OPMK</option>";
+					echo "</select>";
+					echo "<br>";
+				}
+				else
+				{
+				}
+				echo "</div>";
+			} // pmk caching
+			if (stristr($forshow,"Probe Delay:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getProbedelay=substr($forshow,13,-4);
+				$num = 1;
+				echo "Probe Delay:<br><select class='form-control input-sm' name='Probedelay'>";
+				while($num < 120)
+				{
+					$num = $num + 1;
+					if ($num == $getProbedelay)
+					{
+						echo "<option value='$num' selected>$num seconds</option>";
+					}
+					else
+					{
+						echo "<option value='$num'>$num seconds</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";
+				echo "</div>";
+			} // probe delay
+			if (stristr($forshow,"Regulatory domain:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getRegDom=substr($forshow,19);
+				echo "Regulatory domain:<br><input class='form-control input-sm' type='text' name='RegDom' value='$getRegDom' disabled>";
+				echo "<br>";
+				echo "</div>";
+			} // regulatory domain
+			if (stristr($forshow,"Roam Period ms:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getPeriodMS=substr($forshow,16);
+				$getPeriodMS=trim(substr($getPeriodMS,0,-2));
+				echo "Roam Period Milliseconds:<br><input class='form-control input-sm' type='number' name='PeriodMS' min='10' max='60000' value='$getPeriodMS'>";
+				echo "<br>";
+				echo "</div>";
+			} // roam period ms
+			if (stristr($forshow,"Roam Trigger:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getTrigger=substr($forshow,14,3);
+				$num = -95;
+				echo "Roam Trigger:<br><select class='form-control input-sm' name='Trigger'>";
+				while($num < -50)
+				{
+					$num = $num + 5;
+					if ($num == $getTrigger)
+					{
+						echo "<option value='$num' selected>$num dBm</option>";
+					}
+					else
+					{
+						echo "<option value='$num'>$num dBm</option>";
+					}
+				}
+				echo "</select>";
+				echo "<br>";
+				echo "</div>";
+			}// roam trigger
+			if (stristr($forshow,"RTS Threshold:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getRTS=substr($forshow,15,-6);
+				echo "RTS Threshold:<br><input class='form-control input-sm' type='number' name='RTS' min='0' max='2347' value='$getRTS'>";
+				echo "<br>";
+				echo "</div>";
+			} // rts thresh
+			if (stristr($forshow,"Scan DFS Time:"))
+			{
+				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
+				$getScan=substr($forshow,15,-3);
+				echo "Scan DFS time:<br><input class='form-control input-sm' type='number' name='Scan' min='20' max='500' value='$getScan'>";
+				echo "<br>";
+				echo "</div>";
+			} // scan dfs time
 			if (stristr($forshow,"TTLS Inner Method:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
@@ -640,51 +554,24 @@
 				}
 				echo "</div>";
 			} // ttls inner method
-
-			if (stristr($forshow,"FIPS Mode:"))
+			if (stristr($forshow,"UAPSD:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"Disabled and Inactive"))
+				if (stristr($forshow,"on"))
 				{
-					$getFIPS="disabled";
-					echo "FIPS: Disabled and Inactive<br><select class='form-control input-sm' name='FIPS'>";
-					echo "<option value='enabled'>Enabled</option>";
-					echo "<option value='disabled' selected>Disabled</option>";
+					$getUAPSD="on";
+					echo "UAPSD:<br><select class='form-control input-sm' name='UAPSD'>";
+					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (stristr($forshow,"Inactive - Enabled on next start"))
+				elseif (stristr($forshow,"off"))
 				{
-					$getFIPS="enabled";
-					echo "FIPS: Inactive - Enabled on next start<br><select class='form-control input-sm' name='FIPS'>";
-					echo "<option value='enabled' selected>Enabled</option>";
-					echo "<option value='disabled'>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"Active - Disabled on next start"))
-				{
-					$getFIPS="disabled";
-					echo "FIPS: Active - Disabled on next start<br><select class='form-control input-sm' name='FIPS'>";
-					echo "<option value='enabled'>Enabled</option>";
-					echo "<option value='disabled' selected>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"Enabled and Active"))
-				{
-					$getFIPS="enabled";
-					echo "FIPS: Enabled and Active<br><select class='form-control input-sm' name='FIPS'>";
-					echo "<option value='enabled' selected>Enabled</option>";
-					echo "<option value='disabled'>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"Unable to determine"))
-				{
-					echo "FIPS: Unable to determine<br><select class='form-control input-sm' name='FIPS'>";
-					echo "<option value='enabled'>Enabled</option>";
-					echo "<option value='disabled' selected>Disabled</option>";
+					$getUAPSD="off";
+					echo "UAPSD:<br><select class='form-control input-sm' name='UAPSD'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -692,48 +579,25 @@
 				{
 				}
 				echo "</div>";
-			} // fips mode
-
-			if (stristr($forshow,"Probe Delay:"))
+			} // UAPSD
+			if (stristr($forshow,"WMM:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getProbedelay=substr($forshow,13);
-				$num = 1;
-				echo "Probe Delay:<br><select class='form-control input-sm' name='Probedelay'>";
-				while($num < 120)
+				if (stristr($forshow,"on"))
 				{
-					$num = $num + 1;
-					if ($num == $getProbedelay)
-					{
-						echo "<option value='$num' selected>$num seconds</option>";
-					}
-					else
-					{
-						echo "<option value='$num'>$num seconds</option>";
-					}
-				}
-				echo "</select>";
-				echo "<br>";
-				echo "</div>";
-			} // probe delay
-			if (stristr($forshow,"Ignore Null SSID:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"enabled"))
-				{
-					$getIgnoreNull="enable";
-					echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
-					echo "<option value='enable' selected>Enabled</option>";
-					echo "<option value='disable'>Disabled</option>";
+					$getWMM="on";
+					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
+					echo "<option value='on' selected>On</option>";
+					echo "<option value='off'>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
-				elseif (stristr($forshow,"disabled"))
+				elseif (stristr($forshow,"off"))
 				{
-					$getIgnoreNull="disable";
-					echo "Ignore Null SSID:<br><select class='form-control input-sm' name='IgnoreNull'>";
-					echo "<option value='enable'>Enabled</option>";
-					echo "<option value='disable' selected>Disabled</option>";
+					$getWMM="off";
+					echo "WMM:<br><select class='form-control input-sm' name='WMM'>";
+					echo "<option value='on'>On</option>";
+					echo "<option value='off' selected>Off</option>";
 					echo "</select>";
 					echo "<br>";
 				}
@@ -741,59 +605,7 @@
 				{
 				}
 				echo "</div>";
-			} // ignore null ssid
-			if (stristr($forshow,"Date Check:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"enabled"))
-				{
-					$getDateCheck="enable";
-					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
-					echo "<option value='enable' selected>Enabled</option>";
-					echo "<option value='disable'>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"disable"))
-				{
-					$getDateCheck="disable";
-					echo "Date Check:<br><select class='form-control input-sm' name='DateCheck'>";
-					echo "<option value='enable'>Enabled</option>";
-					echo "<option value='disable' selected>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				else
-				{
-				}
-				echo "</div>";
-			} // date check
-			if (stristr($forshow,"Auto Profile:"))
-			{
-				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				if (stristr($forshow,"enable"))
-				{
-					$getAutoProfile="enable";
-					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
-					echo "<option value='enable' selected>Enabled</option>";
-					echo "<option value='disable'>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				elseif (stristr($forshow,"disable"))
-				{
-					$getAutoProfile="disable";
-					echo "Auto Profile:<br><select class='form-control input-sm' name='AutoProfile'>";
-					echo "<option value='enable'>Enabled</option>";
-					echo "<option value='disable' selected>Disabled</option>";
-					echo "</select>";
-					echo "<br>";
-				}
-				else
-				{
-				}
-				echo "</div>";
-			} // auto profile
+			} // WMM
 		} // this ends foreach loop to match names
 		?>
 	</div><!-- right side -->
@@ -810,32 +622,27 @@
 	if (isset($_POST['globalEdit']))
 		{
 			$globalEdit=escapeshellcmd($_POST["globalEdit"]);
-			$Frag=escapeshellcmd($_POST["Frag"]);
-			$RTS=escapeshellcmd($_POST["RTS"]);
-			$RXdiv=escapeshellcmd($_POST["RXdiv"]);
-			$TXdiv=escapeshellcmd($_POST["TXdiv"]);
-			$Trigger=escapeshellcmd($_POST["Trigger"]);
-			$Delta=escapeshellcmd($_POST["Delta"]);
-			$Period=escapeshellcmd($_POST["Period"]);
-			$PeriodMS=escapeshellcmd($_POST["PeriodMS"]);
+			$AChan=escapeshellcmd($_POST["AChan"]);
+			$Server=escapeshellcmd($_POST["Server"]);
+			$AutoProfile=escapeshellcmd($_POST["AutoProfile"]);
+			$BGChan=escapeshellcmd($_POST["BGChan"]);
 			$Coexist=escapeshellcmd($_POST["Coexist"]);
-			$TXMax=escapeshellcmd($_POST["TXMax"]);
-			$WMM=escapeshellcmd($_POST["WMM"]);
 			$CCX=escapeshellcmd($_POST["CCX"]);
 			$Cert=escapeshellcmd($_POST["Cert"]);
-			$BGChan=escapeshellcmd($_POST["BGChan"]);
-			$AChan=escapeshellcmd($_POST["AChan"]);
-			$PMK=escapeshellcmd($_POST["PMK"]);
-			$Adhoc=escapeshellcmd($_POST["Adhoc"]);
-			$Scan=escapeshellcmd($_POST["Scan"]);
-			$DFS=escapeshellcmd($_POST["DFS"]);
-			$Server=escapeshellcmd($_POST["Server"]);
-			$TTLSinner=escapeshellcmd($_POST["TTLSinner"]);
-			$FIPS=escapeshellcmd($_POST["FIPS"]);
-			$Probedelay=escapeshellcmd($_POST["Probedelay"]);
-			$IgnoreNull=escapeshellcmd($_POST["IgnoreNull"]);
 			$DateCheck=escapeshellcmd($_POST["DateCheck"]);
-			$AutoProfile=escapeshellcmd($_POST["AutoProfile"]);
+			$Adhoc=escapeshellcmd($_POST["Adhoc"]);
+			$DFS=escapeshellcmd($_POST["DFS"]);
+			$FIPS=escapeshellcmd($_POST["FIPS"]);
+			$IgnoreNull=escapeshellcmd($_POST["IgnoreNull"]);
+			$PMK=escapeshellcmd($_POST["PMK"]);
+			$Probedelay=escapeshellcmd($_POST["Probedelay"]);
+			$PeriodMS=escapeshellcmd($_POST["PeriodMS"]);
+			$Trigger=escapeshellcmd($_POST["Trigger"]);
+			$RTS=escapeshellcmd($_POST["RTS"]);
+			$Scan=escapeshellcmd($_POST["Scan"]);
+			$TTLSinner=escapeshellcmd($_POST["TTLSinner"]);
+			$UAPSD=escapeshellcmd($_POST["UAPSD"]);
+			$WMM=escapeshellcmd($_POST["WMM"]);
 
 
 			if ($Frag != $getFrag && strlen($Frag) > 0)
@@ -891,6 +698,10 @@
 			if ($TXMax != $getTXMax)
 			{
 				exec("sdc_cli global set tx-max $TXMax");
+			}
+			if ($UAPSD != $getUAPSD)
+			{
+				exec("sdc_cli global set uapsd $UAPSD");
 			}
 			if ($WMM != $getWMM)
 			{
