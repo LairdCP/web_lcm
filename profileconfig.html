@@ -812,7 +812,7 @@
 				echo "</select>";
 				echo "<br>";
 
-				$getMODE=substr($ProfilePrint[8],10);
+				$getMODE=substr($ProfilePrint[7],10);
 				if ($getMODE == "B only")
 				{
 				?>
@@ -1042,7 +1042,7 @@
 				<?php
 				}
 
-				$getPower=strtolower(substr($ProfilePrint[9],15));
+				$getPower=strtolower(substr($ProfilePrint[8],15));
 				if ($getPower == "off")
 				{
 				?>
@@ -1095,7 +1095,7 @@
 					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
 					<option value='open' selected>Open</option>
 					<option value='shared'>Shared</option>
-					<option value='eap'>Network EAP</option>
+					<option value='eap'>EAP</option>
 					</select>
 					<br>
 				<?php
@@ -1106,18 +1106,18 @@
 					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
 					<option value='open'>Open</option>
 					<option value='shared'  selected>Shared</option>
-					<option value='eap'>Network EAP</option>
+					<option value='eap'>EAP</option>
 					</select>
 					<br>
 				<?php
 				}
-				elseif ($getAuth == "network eap")
+				elseif ($getAuth == "eap")
 				{
 					?>
 					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
 					<option value='open'>Open</option>
 					<option value='shared'>Shared</option>
-					<option value='eap' selected>Network EAP</option>
+					<option value='eap' selected>EAP</option>
 					</select>
 					<br>
 					<?php
@@ -1129,7 +1129,7 @@
 					Auth Type:<br><select class='form-control input-sm' name='AuthType'>
 					<option value='open'>Open</option>
 					<option value='shared'>Shared</option>
-					<option value='eap'>Network EAP</option>
+					<option value='eap'>EAP</option>
 					</select>
 					<br>
 				<?php
@@ -1572,7 +1572,7 @@
 
 				if ($getEAP == "leap")  //leap
 				{
-					$getUser=substr($ProfilePrint[10],14);
+					$getUser=substr($ProfilePrint[9],14);
 					$getPass="";
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
@@ -1581,9 +1581,9 @@
 				}
 				elseif ($getEAP == "eap-fast") //eap-fast
 				{
-					$getUser=substr($ProfilePrint[10],14);
+					$getUser=substr($ProfilePrint[9],14);
 					$getPass="";
-					$getPacFile=substr($ProfilePrint[12],18);
+					$getPacFile=substr($ProfilePrint[11],18);
 					$getPacPass="";
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
@@ -1596,9 +1596,9 @@
 				}
 				elseif ($getEAP == "peap-mschapv2") //peap-mschap
 				{
-					$getUser=substr($ProfilePrint[10],14);
+					$getUser=substr($ProfilePrint[9],14);
 					$getPass="";
-					$getCAFile=substr($ProfilePrint[12],13);
+					$getCAFile=substr($ProfilePrint[11],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
@@ -1608,9 +1608,9 @@
 				}
 				elseif ($getEAP == "peap-gtc") //peap-gtc
 				{
-					$getUser=substr($ProfilePrint[10],14);
+					$getUser=substr($ProfilePrint[9],14);
 					$getPass="";
-					$getCAFile=substr($ProfilePrint[12],13);
+					$getCAFile=substr($ProfilePrint[11],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
@@ -1620,10 +1620,10 @@
 				}
 				elseif ($getEAP == "eap-tls") //eap-tls
 				{
-					$getUser=substr($ProfilePrint[10],14);
-					$getUserCertFile=substr($ProfilePrint[11],15);
+					$getUser=substr($ProfilePrint[9],14);
+					$getUserCertFile=substr($ProfilePrint[10],15);
 					$getUserCertPass="";
-					$getCAFile=substr($ProfilePrint[13],13);
+					$getCAFile=substr($ProfilePrint[12],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
@@ -1635,9 +1635,9 @@
 				}
 				elseif ($getEAP == "eap-ttls") //eap-ttls
 				{
-					$getUser=substr($ProfilePrint[10],14);
+					$getUser=substr($ProfilePrint[9],14);
 					$getPass="";
-					$getCAFile=substr($ProfilePrint[12],13);
+					$getCAFile=substr($ProfilePrint[11],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
@@ -1647,8 +1647,8 @@
 				}
 				elseif ($getEAP == "peap-tls") //peap-tls
 				{
-					$getUser=substr($ProfilePrint[10],14);
-					$getUserCertFile=substr($ProfilePrint[11],15);
+					$getUser=substr($ProfilePrint[9],14);
+					$getUserCertFile=substr($ProfilePrint[10],15);
 					$getUserCertPass="";
 					$getCAFile=substr($ProfilePrint[12],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
@@ -1669,10 +1669,10 @@
 					}
 					elseif ($getWEP == "wep") //on
 					{
-						$getWEPKey1=substr($ProfilePrint[10],14);
-						$getWEPKey2=substr($ProfilePrint[11],14);
-						$getWEPKey3=substr($ProfilePrint[12],14);
-						$getWEPKey4=substr($ProfilePrint[13],14);
+						$getWEPKey1=substr($ProfilePrint[9],14);
+						$getWEPKey2=substr($ProfilePrint[10],14);
+						$getWEPKey3=substr($ProfilePrint[11],14);
+						$getWEPKey4=substr($ProfilePrint[12],14);
 
 						if (str_word_count($getWEPKey1) == 1)
 						{
