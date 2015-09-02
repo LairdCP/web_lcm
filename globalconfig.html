@@ -159,22 +159,8 @@
 			if (stristr($forshow,"Beacon Miss Time:"))
 			{
 				echo "<div class='col-sm-8 col-sm-offset-2 col-md-3'>";
-				$getBeaconMissTime=substr($forshow,18,-5);
-				echo "Beacon Miss Time:<br><select class='form-control input-sm' name='BeaconMissTime'>";
-				$num = 1;
-				while($num <= 5)
-				{
-					if ($num == $getBeaconMissTime)
-					{
-						echo "<option value='$num' selected>$num seconds</option>";
-					}
-					else
-					{
-						echo "<option value='$num'>$num seconds</option>";
-					}
-					$num++;
-				}
-				echo "</select>";
+				$getBeaconMissTime=substr($forshow,18,-4);
+				echo "Beacon Miss Time in TUs:<br><input class='form-control input-sm' type='number' name='BeaconMissTime' min='1000' max='5000' value='$getBeaconMissTime'>";
 				echo "<br>";
 				echo "</div>";
 			} // beacon miss time
