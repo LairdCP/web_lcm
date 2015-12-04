@@ -1088,6 +1088,15 @@
 				<?php
 				}
 
+				if ($getPower == "fast")
+				{
+					$getPSPdelay=strtolower(substr($ProfilePrint[9],15,3));
+					?>
+						PSP Delay:<br><input class='form-control input-sm' type='number' name='PSPdelay' min='10' max='500' value=<?php echo $getPSPdelay; ?>>
+						<br>
+					<?php
+				}
+
 				$getAuth=strtolower(substr($ProfilePrint[4],15));
 				if ($getAuth == "open")
 				{
@@ -1572,7 +1581,12 @@
 
 				if ($getEAP == "leap")  //leap
 				{
-					$getUser=substr($ProfilePrint[9],14);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+					}
 					$getPass="";
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
@@ -1581,9 +1595,15 @@
 				}
 				elseif ($getEAP == "eap-fast") //eap-fast
 				{
-					$getUser=substr($ProfilePrint[9],14);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+						$getPacFile=substr($ProfilePrint[11],18);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+						$getPacFile=substr($ProfilePrint[12],18);
+					}
 					$getPass="";
-					$getPacFile=substr($ProfilePrint[11],18);
 					$getPacPass="";
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
@@ -1596,9 +1616,15 @@
 				}
 				elseif ($getEAP == "peap-mschapv2") //peap-mschap
 				{
-					$getUser=substr($ProfilePrint[9],14);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+						$getCAFile=substr($ProfilePrint[11],13);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+						$getCAFile=substr($ProfilePrint[12],13);
+					}
 					$getPass="";
-					$getCAFile=substr($ProfilePrint[11],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
@@ -1608,9 +1634,15 @@
 				}
 				elseif ($getEAP == "peap-gtc") //peap-gtc
 				{
-					$getUser=substr($ProfilePrint[9],14);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+						$getCAFile=substr($ProfilePrint[11],13);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+						$getCAFile=substr($ProfilePrint[12],13);
+					}
 					$getPass="";
-					$getCAFile=substr($ProfilePrint[11],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
@@ -1620,10 +1652,17 @@
 				}
 				elseif ($getEAP == "eap-tls") //eap-tls
 				{
-					$getUser=substr($ProfilePrint[9],14);
-					$getUserCertFile=substr($ProfilePrint[10],15);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+						$getUserCertFile=substr($ProfilePrint[10],15);
+						$getCAFile=substr($ProfilePrint[12],13);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+						$getUserCertFile=substr($ProfilePrint[11],15);
+						$getCAFile=substr($ProfilePrint[13],13);
+					}
 					$getUserCertPass="";
-					$getCAFile=substr($ProfilePrint[12],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
@@ -1635,9 +1674,15 @@
 				}
 				elseif ($getEAP == "eap-ttls") //eap-ttls
 				{
-					$getUser=substr($ProfilePrint[9],14);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+						$getCAFile=substr($ProfilePrint[11],13);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+						$getCAFile=substr($ProfilePrint[12],13);
+					}
 					$getPass="";
-					$getCAFile=substr($ProfilePrint[11],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
@@ -1647,10 +1692,17 @@
 				}
 				elseif ($getEAP == "peap-tls") //peap-tls
 				{
-					$getUser=substr($ProfilePrint[9],14);
-					$getUserCertFile=substr($ProfilePrint[10],15);
+					if ($getPower != "fast"){
+						$getUser=substr($ProfilePrint[9],14);
+						$getUserCertFile=substr($ProfilePrint[10],15);
+						$getCAFile=substr($ProfilePrint[12],13);
+					}
+					else{
+						$getUser=substr($ProfilePrint[10],14);
+						$getUserCertFile=substr($ProfilePrint[11],15);
+						$getCAFile=substr($ProfilePrint[13],13);
+					}
 					$getUserCertPass="";
-					$getCAFile=substr($ProfilePrint[12],13);
 					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
 					echo "<br>";
 					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
@@ -1669,10 +1721,18 @@
 					}
 					elseif ($getWEP == "wep") //on
 					{
-						$getWEPKey1=substr($ProfilePrint[9],14);
-						$getWEPKey2=substr($ProfilePrint[10],14);
-						$getWEPKey3=substr($ProfilePrint[11],14);
-						$getWEPKey4=substr($ProfilePrint[12],14);
+						if ($getPower != "fast"){
+							$getWEPKey1=substr($ProfilePrint[9],14);
+							$getWEPKey2=substr($ProfilePrint[10],14);
+							$getWEPKey3=substr($ProfilePrint[11],14);
+							$getWEPKey4=substr($ProfilePrint[12],14);
+						}
+						else{
+							$getWEPKey1=substr($ProfilePrint[10],14);
+							$getWEPKey2=substr($ProfilePrint[11],14);
+							$getWEPKey3=substr($ProfilePrint[12],14);
+							$getWEPKey4=substr($ProfilePrint[13],14);
+						}
 
 						if (str_word_count($getWEPKey1) == 1)
 						{
@@ -1808,6 +1868,7 @@
 				$WepType=escapeshellcmd($_POST["WepType"]);
 				$Mode=escapeshellcmd($_POST["Mode"]);
 				$PowerSave=escapeshellcmd($_POST["PowerSave"]);
+				$PSPdelay=escapeshellcmd($_POST["PSPdelay"]);
 				$UserName=escapeshellcmd($_POST["UserName"]);
 				$PassWord=escapeshellcmd($_POST["PassWord"]);
 				$PacFileName=escapeshellcmd($_POST["PacFileName"]);
@@ -1845,9 +1906,9 @@
 				{
 					exec("sdc_cli profile $editprofile set weptype $WepType", $error);
 				}
-				if ($EapType != $getEAP)
+				if (strtolower($EapType) != $getEAP)
 				{
-					exec("sdc_cli profile $editprofile set eaptype $EapType", $error);
+					exec("sdc_cli profile $editprofile set eaptype " . strtolower($EapType), $error);
 				}
 				if ($Mode != $getMODE)
 				{
@@ -1856,6 +1917,10 @@
 				if ($PowerSave != $getPower)
 				{
 					exec("sdc_cli profile $editprofile set powersave $PowerSave", $error);
+				}
+				if ($PSPdelay != $getPSPdelay)
+				{
+					exec("sdc_cli profile $editprofile set pspdelay $PSPdelay", $error);
 				}
 				if ($PacFileName != $getPacFile)
 				{
