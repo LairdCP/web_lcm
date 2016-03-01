@@ -89,24 +89,31 @@
 				$prolist=(array_values($prolist));
 				$prolist[0]=substr($prolist[0], 0, -6);
 				$ActiveProfile=substr($prolist[0],1);
+				exec("sdc_cli global show auto-profile", $autoProfileState);
+				$autoProfileState=str_replace('Auto Profile: ','',trim($autoProfileState[0]));
 				$AutoProfileON=strpos($prolist[$listLen - 2],'Active');
 				$AutoProfileOFF=strpos($prolist[$listLen - 2],'Inactive');
 				if ($AutoProfileON != false)
 				{
-					$listLen=$listLen - 3;
+					$listLen=$listLen - 2;
+					$AutoProlist=$prolist;
+					echo "Auto Profile: Enabled";
+					echo "<br>";
+				}
+				elseif (strcmp(strtolower($autoProfileState),'on') == 0)
+				{
 					$AutoProlist=$prolist;
 					echo "Auto Profile: Enabled";
 					echo "<br>";
 				}
 				elseif ($AutoProfileOFF != false)
 				{
-					$listLen=$listLen - 3;
+					$listLen=$listLen - 2;
 					echo "Active Profile: " . $ActiveProfile;
 					echo "<br>";
 				}
 				elseif ($prolist[$listLen] == "")
 				{
-					--$listLen;
 					echo "Active Profile: " . $ActiveProfile;
 					echo "<br>";
 				}
@@ -181,7 +188,7 @@
 
 	<div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-1">
 		<?php
-		if ($AutoProfileON != false && !isset($_POST['formActivate']) && !isset($_POST['formEdit']) && !isset($_POST['formAdd']) && !isset($_POST['formScan']) && !isset($_POST['formShow']) && !isset($_POST['formRemove']) && !isset($_POST['formRename']) && !isset($_POST['subAdded'])  && !isset($_POST['formScanLoad']) && !isset($_POST['formScanAdd']) && !isset($_POST['ScanSub']) && !isset($_POST['EditRename']) && !isset($_POST['EditSub']) && !isset($_POST['AutoProfileAdd']))
+		if (($AutoProfileON != false || strcmp(strtolower($autoProfileState),'on') == 0) && !isset($_POST['formActivate']) && !isset($_POST['formEdit']) && !isset($_POST['formAdd']) && !isset($_POST['formScan']) && !isset($_POST['formShow']) && !isset($_POST['formRemove']) && !isset($_POST['formRename']) && !isset($_POST['subAdded'])  && !isset($_POST['formScanLoad']) && !isset($_POST['formScanAdd']) && !isset($_POST['ScanSub']) && !isset($_POST['EditRename']) && !isset($_POST['EditSub']) && !isset($_POST['AutoProfileAdd']))
 		{
 					echo "<br>";
 					echo "<h2>Auto Profile</h2>";
