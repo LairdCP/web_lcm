@@ -59,6 +59,7 @@ body {
   padding-right: 20px;
   padding-left: 20px;
 }
+
 .nav-sidebar > .active > a,
 .nav-sidebar > .active > a:hover,
 .nav-sidebar > .active > a:focus {
@@ -66,7 +67,17 @@ body {
   background-color: #428bca;
 }
 
+.nav-submenu > li > a {
+  padding-right: 25px;
+  padding-left: 25px;
+}
 
+.nav-submenu > .active > a,
+.nav-submenu > .active > a:hover,
+.nav-submenu > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
 /*
  * Main content
  */
@@ -103,3 +114,8 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+#Slider .slider-selection {
+	background: #BABABA;
+}
+

@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>WebLCM Example</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+		<!-- Custom styles for this template -->
+		<link href="assets/css/dashboard.css" rel="stylesheet">
+		<!-- https://github.com/seiyria/bootstrap-slider/blob/master/LICENSE.md -->
+		<link href="assets/css/bootstrap-slider.min.css" rel="stylesheet">
+
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		<!-- https://github.com/seiyria/bootstrap-slider/blob/master/LICENSE.md -->
+		<script src="assets/js/bootstrap-slider.min.js"></script>
+		<script>
+		var intervalId;
+		clickStatusPage();
+
+		function SDCERRtoString(SDCERR){
+			switch(parseInt(SDCERR)) {
+				case 0: //SDCERR_SUCCESS
+					$("#returnData").addClass("alert alert-success");
+					$("#returnData").html("Success");
+					break;
+				case 1: //SDCERR_FAIL
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Failure");
+					break;
+				case 2: //SDCERR_INVALID_NAME
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid Name");
+					break;
+				case 3: //SDCERR_INVALID_CONFIG
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid Config");
+					break;
+				case 4: //SDCERR_INVALID_DELETE
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid Delete");
+					break;
+				case 5: //SDCERR_POWERCYCLE_REQUIRED
+					$("#returnData").addClass("alert alert-info");
+					$("#returnData").html("Failure");
+					break;
+				case 6: //SDCERR_INVALID_PARAMETER
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid Parameter");
+					break;
+				case 7: //SDCERR_INVALID_EAP_TYPE
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid EAP TYPE");
+					break;
+				case 8: //SDCERR_INVALID_FILE
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid File");
+					break;
+				case 9: //SDCERR_INSUFFICIENT_MEMORY
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Insufficient Memory");
+					break;
+				case 10: //SDCERR_NOT_IMPLEMENTED
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Not Implemented");
+					break;
+				case 11: //SDCERR_NO_HARDWARE
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("No Hardware");
+					break;
+				case 12: //SDCERR_INVALID_VALUE
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid Value");
+					break;
+				default:
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Unknown Data");
+			}
+		}
+
+		function CARDSTATEtoString(CARDSTATE){
+			switch(CARDSTATE) {
+				case 0: //CARDSTATE_NOT_INSERTED
+					return "Not Inserted";
+					break;
+				case 1: //CARDSTATE_NOT_ASSOCIATED
+					return "Not Associated";
+					break;
+				case 2: //CARDSTATE_ASSOCIATED
+					return "Associated";
+					break;
+				case 3: //CARDSTATE_AUTHENTICATED
+					return "Authenticated";
+					break;
+				case 4: //CARDSTATE_FCCTEST
+					return "FCC Test";
+					break;
+				case 5: //CARDSTATE_NOT_SDC
+					return "Not Laird";
+					break;
+				case 6: //CARDSTATE_DISABLED
+					return "Disabled";
+					break;
+				case 7: //CARDSTATE_ERROR
+					return "Error";
+					break;
+				case 8: //CARDSTATE_AP_MODE
+					return "AP Mode";
+					break;
+				default:
+					return "Unknown card state";
+			}
+		}
+
+		function updateStatus(){
+			console.log("Getting status.php");
+			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
+				var rssi = data.rssi;
+				var rssiMeter = rssi + 120;
+				$('#cardState').html(CARDSTATEtoString(data.cardState));
+				$('#configName').html(data.configName);
+				$('#ssid').html(data.ssid);
+				$('#channel').html(data.channel);
+				$('#rssi').html(rssi);
+				$('#clientName').html(data.clientName);
+				$('#client_MAC').html(data.client_MAC);
+				$('#client_IP').html(data.client_IP);
+				$('#APName').html(data.APName);
+				$('#AP_MAC').html(data.AP_MAC);
+				$('#AP_IP').html(data.AP_IP);
+				$('#bitRate').html(data.bitRate);
+				$('#txPower').html(data.txPower);
+				$('#beaconPeriod').html(data.beaconPeriod);
+				$('#DTIM').html(data.DTIM);
+
+				$("#progressbar").removeClass("progress-bar-danger progress-bar-warning progress-bar-success");
+				var rssiWidth = rssiMeter.toString().concat("%");
+				if (rssi < -90){ //red
+					$("#progressbar").addClass("progress-bar-danger");
+					$("#progressbar").css('width',rssiWidth);
+				} else if (rssi < -70){ //yellow
+					$("#progressbar").addClass("progress-bar-warning");
+					$("#progressbar").css('width',rssiWidth);
+				} else {
+					$("#progressbar").addClass("progress-bar-success");
+					$("#progressbar").css('width',rssiWidth);
+				}
+			})
+			.fail(function() {
+				console.log("Failed to get data, retrying.");
+				setIntervalStatus();
+			});
+		}
+
+		function setIntervalStatus(){
+			console.log("Setting interval");
+			if (!intervalId){
+				intervalId = setInterval(updateStatus, 1000);
+			} else {
+				console.log("Interval already set");
+			}
+		}
+
+		function clickStatusPage() {
+			if (intervalId){
+				console.log("Status already active");
+			} else {
+				$("li").removeClass("active");
+				$("#LiStatus").addClass("active");
+				$("#returnData").removeClass();
+				$("#returnData").html("");
+				$("#helpText").html("This page shows the current state of WiFi");
+				$.ajax({
+					url: "html/status.html",
+					data: {},
+					type: "GET",
+					dataType: "html",
+					success: function (data) {
+						$('#main_section').html(data);
+						setIntervalStatus();
+					},
+					error: function (xhr, status) {
+						if (intervalId){
+							console.log("Clearing interval");
+							clearInterval(intervalId);
+							intervalId = 0;
+						}
+						console.log("Error, too many requests");
+					},
+				});
+			}
+		}
+
+		function updateEditProfilePage(profileName){
+			var retry = 0;
+			var data = {
+					profileName: profileName,
+				}
+			$.ajax({
+				url: "php/editProfile.php",
+				type: "POST",
+				data: JSON.stringify(data),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log("GOT MESSAGE")
+				console.log(msg);
+				console.log(String(msg.SDCERR));
+				document.getElementById("profileName").value = msg.configName;
+				document.getElementById("SSID").value = msg.SSID;
+				document.getElementById("clientName").value = msg.clientName;
+				$('#txSlider').slider('setValue', msg.txPower);
+				document.getElementById("authType").selectedIndex =  msg.authType;
+			})
+			.fail(function() {
+				console.log("Failed to get profile data, retrying");
+				if (retry < 5){
+					updateEditProfilePage(profileName);
+					retry++;
+				}
+			});
+		}
+
+		function selectedProfile(){
+			var retry = 0;
+			console.log("Value");
+			var selectedProfile = document.getElementById("profileSelect").value;
+			console.log(selectedProfile);
+			$.ajax({
+				url: "html/editProfile.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						console.log("Clearing interval");
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("#helpText").html("Adjust profile settings.");
+				},
+				error: function (xhr, status) {
+					console.log("Error, couldn't get editProfile.html");
+				},
+			})
+			.done(function( msg ) {
+				console.log("Now try to get profile from PHP");
+				updateEditProfilePage(selectedProfile);
+				$('#txSlider').slider({
+					formatter: function(value) {
+						if (value != 0){
+							return 'Current value: ' + value;
+						} else {
+							return 'Current value: Auto';
+						}
+					}
+				});
+			})
+			.fail(function() {
+				console.log("Failed to get editProfile, retrying");
+				if (retry < 5){
+					selectedProfile();
+					retry++;
+				}
+			});
+		}
+
+		function updateSelectProfilePage(){
+			var retry = 0;
+			$.ajax({
+				url: "php/selectProfile.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				var x = document.getElementById("profileSelect");
+				x.size = String(msg.NumConfigs);
+				for (i = 0; i < msg.NumConfigs; i++) {
+					var option = document.createElement("option");
+					option.text = msg.profiles[i];
+					x.add(option);
+				}
+			})
+			.fail(function() {
+				console.log("Failed to get profiles, retrying");
+				if (retry < 5){
+					updateSelectProfilePage();
+					retry++;
+				}
+			});
+		}
+
+		function clickProfileEditPage() {
+			var retry = 0;
+			$.ajax({
+				url: "html/selectProfile.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						console.log("Clearing interval");
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$("li").removeClass("active");
+					$("#submenuEdit").addClass("active");
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("#helpText").html("These are the current WiFi profiles.");
+					setTimeout(updateSelectProfilePage(),1000);
+				},
+			})
+			.fail(function() {
+				console.log("Error, couldn't get selectProfile.html.. retrying");
+				if (retry < 5){
+					clickProfileEditPage();
+					retry++;
+				}
+			});
+		}
+
+		function clickAddProfilePage() {
+			var retry = 0;
+			$.ajax({
+				url: "html/addProfile.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						console.log("Clearing interval");
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#submenuAdd").addClass("active");
+					$("#helpText").html("Enter the name of the profile you would like to add.");
+				},
+			})
+			.fail(function() {
+				console.log("Error, couldn't get addProfile.html.. retrying");
+				if (retry < 5){
+					clickAddProfilePage();
+					retry++;
+				}
+			});
+		}
+
+		function updateRemoveProfilePage(){
+			var retry = 0;
+			$.ajax({
+				url: "php/profileList.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				console.log(String(msg.SDCERR));
+				console.log(String(msg.profiles[0]));
+				var x = document.getElementById("profileSelect");
+				x.size = String(msg.NumConfigs);
+				for (i = 0; i < msg.NumConfigs; i++) {
+					var option = document.createElement("option");
+					option.text = msg.profiles[i];
+					if (msg.profiles[i] != msg.currentConfig){
+						x.add(option);
+					}
+				}
+			})
+			.fail(function() {
+				console.log("Failed to get profiles, retrying");
+				if (retry < 5){
+					updateSelectProfilePage();
+					retry++;
+				}
+			});
+		}
+
+		function clickRemoveProfilePage() {
+			var retry = 0;
+			$.ajax({
+				url: "html/removeProfile.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						console.log("Clearing interval");
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#submenuRemove").addClass("active");
+					$("#helpText").html("Select the name of the profile you would like to remove.");
+					setTimeout(updateRemoveProfilePage(),1000);
+				},
+			})
+			.fail(function() {
+				console.log("Error, couldn't get removeProfile.html.. retrying");
+				if (retry < 5){
+					clickRemoveProfilePage();
+					retry++;
+				}
+			});
+		}
+
+		function addProfile(){
+			var profileName = document.getElementById("profileName").value;
+			var SSID = document.getElementById("SSID").value;
+			if (profileName != ""){
+				var newProfile = {
+					profileName: profileName,
+					SSID: SSID,
+				}
+				$.ajax({
+					url: "php/addProfile.php",
+					type: "POST",
+					data: JSON.stringify(newProfile),
+					contentType: "application/json",
+				})
+				.done(function( msg ) {
+					console.log(msg);
+					console.log(msg.SDCERR);
+					SDCERRtoString(msg.SDCERR);
+				});
+			} else {
+				console.log("Name is null");
+			}
+		};
+
+		function removeProfile(){
+			console.log("Value");
+			console.log(document.getElementById("profileSelect").value);
+			var oldProfile = {
+				profileName: document.getElementById("profileSelect").value
+			}
+			$.ajax({
+				url: "php/removeProfile.php",
+				type: "POST",
+				data: JSON.stringify(oldProfile),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				SDCERRtoString(msg.SDCERR);
+			});
+		};
+
+		function clickAdvancedPage(){
+			if (intervalId){
+				console.log("Clearing interval");
+				clearInterval(intervalId);
+				intervalId = 0;
+			}
+			$("#returnData").removeClass();
+			$("#returnData").html("");
+			$("li").removeClass("active");
+			$("#LiAdvanced").addClass("active");
+		}
+		</script>
+
+	</head>
+
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">WebLCM</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#">Dashboard</a></li>
+						<li><a href="#">Settings</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						<li id="LiStatus" class="active"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
+						<li id="LiProfile"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
+							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiProfile">
+								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage()">Edit Profiles - FRAMEWORK STARTED</a></li>
+								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage()">Add profile</a></li>
+								<li id="submenuRemove"><a href="#" onclick="clickRemoveProfilePage()">Remove profile</a></li>
+								<li><a href="#">Rename profile - NOT IMPLEMENTED</a></li>
+							</ul>
+						<li id="LiGlobal"><a href="#">WiFi Globals - NOT IMPLEMENTED</a></li>
+						<li id="LiScan"><a href="#">WiFi Scan - NOT IMPLEMENTED</a></li>
+						<li id="LiAdvanced" onclick="clickAdvancedPage()"><a href="#">WiFi Advanced - NOT IMPLEMENTED</a></li>
+					</ul>
+					<ul class="nav nav-sidebar">
+						<li><a href="#">Interface Configuration - NOT IMPLEMENTED</a></li>
+						<li><a href="#">System Version - NOT IMPLEMENTED</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<div class="row placeholders">
+						<div class="col-xs-6 col-sm-6 placeholder">
+							<p id="main_section"></p>
+						</div>
+						<div id="helpSection" class="col-xs-0 col-sm-6 placeholder">
+							<div id="returnData" class="" role="alert"></div>
+							<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+							<h4>Need help?</h4>
+							<span id="helpText" class="text-muted">This page shows the current state of WiFi</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
