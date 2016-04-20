@@ -252,7 +252,13 @@
 					$('#pspDelaySlider').slider('setValue', msg.pspDelay);
 				}
 				if (msg.wepType == 1){
+					$("#wepIndexDisplay").removeClass("hidden");
+					document.getElementById("wepIndex").selectedIndex =  msg.wepIndex - 1;
 					$("#wepTypeOnDisplay").removeClass("hidden");
+					document.getElementById("index1").value =  msg.WEPKey1;
+					document.getElementById("index2").value =  msg.WEPKey2;
+					document.getElementById("index3").value =  msg.WEPKey3;
+					document.getElementById("index4").value =  msg.WEPKey4;
 				} else if (msg.wepType == 3 || msg.wepType == 5 || msg.wepType == 11 || msg.wepType == 13){
 					$("#pskDisplay").removeClass("hidden");
 				}
