@@ -109,9 +109,7 @@
 			$psk = str_repeat(" ",PSK_SZ);
 			$result = GetPSK($cfgs,$psk);
 			if($result == SDCERR_SUCCESS){
-				if(!empty(trim($psk[0]))){
-					$returnedResult['PSK'] = "********";
-				}
+				$returnedResult['PSK'] = "********";
 			}
 		}
 
@@ -123,12 +121,8 @@
 					$passWord = str_repeat(" ",USER_PWD_SZ);
 					$result = GetLEAPCred($cfgs,$userName,$passWord);
 					if($result == SDCERR_SUCCESS){
-						if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($passWord[0]))){
-							$returnedResult['passWord'] = "********";
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['passWord'] = "********";
 					}
 					break;
 				case EAP_EAPFAST:
@@ -138,18 +132,10 @@
 					$PACPassWord = str_repeat(" ",CRED_PFILE_SZ);
 					$result = GetEAPFASTCred($cfgs,$userName,$passWord,$PACFileName,$PACPassWord);
 					if($result == SDCERR_SUCCESS){
-						if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($passWord[0]))){
-							$returnedResult['passWord'] = "********";
-						}
-						if(!empty(trim($PACFileName))){
-							$returnedResult['PACFileName'] = $PACFileName;
-						}
-						if(!empty(trim($PACPassWord[0]))){
-							$returnedResult['PACPassWord'] = "********";
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['passWord'] = "********";
+						$returnedResult['PACFileName'] = $PACFileName;
+						$returnedResult['PACPassWord'] = "********";
 					}
 					break;
 				case EAP_PEAPMSCHAP:
@@ -159,17 +145,9 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPMSCHAPCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($passWord[0]))){
-							$returnedResult['passWord'] = "********";
-						}
-						if(CERTLOCATIONp_value($certLocation) == CERT_FILE){
-							if(!empty(trim($caCert))){
-								$returnedResult['CACert'] = $caCert;
-							}
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['passWord'] = "********";
+						$returnedResult['CACert'] = trim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -180,17 +158,9 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPGTCCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($passWord[0]))){
-							$returnedResult['passWord'] = "********";
-						}
-						if(CERTLOCATIONp_value($certLocation) == CERT_FILE){
-							if(!empty(trim($caCert))){
-								$returnedResult['CACert'] = $caCert;
-							}
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['passWord'] = "********";
+						$returnedResult['CACert'] = trim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -202,23 +172,11 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($userCert))){
-							$returnedResult['userCert'] = $userCert;
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['userCert'] = $userCert;
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
-						if($result == SDCERR_SUCCESS){
-							if(!empty(trim($userCertPassword[0]))){
-								$returnedResult['userCertPassword'] = "********";
-							}
-						}
-						if(CERTLOCATIONp_value($certLocation) == CERT_FILE){
-							if(!empty(trim($caCert))){
-								$returnedResult['CACert'] = $caCert;
-							}
-						}
+						$returnedResult['userCertPassword'] = "********";
+						$returnedResult['CACert'] = trim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -229,17 +187,9 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetEAPTTLSCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($passWord[0]))){
-							$returnedResult['passWord'] = "********";
-						}
-						if(CERTLOCATIONp_value($certLocation) == CERT_FILE){
-							if(!empty(trim($caCert))){
-								$returnedResult['CACert'] = $caCert;
-							}
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['passWord'] = "********";
+						$returnedResult['CACert'] = trim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -251,23 +201,11 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-							if(!empty(trim($userName))){
-							$returnedResult['userName'] = $userName;
-						}
-						if(!empty(trim($userCert))){
-							$returnedResult['userCert'] = $userCert;
-						}
+						$returnedResult['userName'] = $userName;
+						$returnedResult['userCert'] = $userCert;
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
-						if($result == SDCERR_SUCCESS){
-							if(!empty(trim($userCertPassword[0]))){
-								$returnedResult['userCertPassword'] = "********";
-							}
-						}
-						if(CERTLOCATIONp_value($certLocation) == CERT_FILE){
-							if(!empty(trim($caCert))){
-								$returnedResult['CACert'] = $caCert;
-							}
-						}
+						$returnedResult['userCertPassword'] = "********";
+						$returnedResult['CACert'] = trim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;

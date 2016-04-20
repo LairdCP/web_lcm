@@ -261,21 +261,29 @@
 					document.getElementById("index4").value =  msg.WEPKey4;
 				} else if (msg.wepType == 3 || msg.wepType == 5 || msg.wepType == 11 || msg.wepType == 13){
 					$("#pskDisplay").removeClass("hidden");
+					document.getElementById("psk").value =  msg.PSK;
 				}
 				if (msg.eapType >= 1){
 					$("#userNameDisplay").removeClass("hidden");
+					document.getElementById("userName").value =  msg.userName;
 					if (!(msg.eapType == 5 || msg.eapType == 7)){
 						$("#passWordDisplay").removeClass("hidden");
+						document.getElementById("passWord").value =  msg.passWord;
 					} else {
 						$("#userCertDisplay").removeClass("hidden");
+						document.getElementById("userCert").value =  msg.userCert;
 						$("#userCertPasswordDisplay").removeClass("hidden");
+						document.getElementById("userCertPassword").value =  msg.userCertPassword;
 					}
 					if (msg.eapType > 2 && msg.eapType < 8){
 						$("#CACertDisplay").removeClass("hidden");
+						document.getElementById("CACert").value =  msg.CACert;
 					}
 					if (msg.eapType == 2){
 						$("#PACFilenameDisplay").removeClass("hidden");
+						document.getElementById("PACFilename").value =  msg.PACFileName;
 						$("#PACPasswordDisplay").removeClass("hidden");
+						document.getElementById("PACPassword").value =  msg.PACPassword;
 					}
 				}
 			})
