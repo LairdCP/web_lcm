@@ -122,7 +122,6 @@
 		}
 
 		function updateStatus(){
-			console.log("Getting status.php");
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
 				var rssi = data.rssi;
 				var rssiMeter = rssi + 120;
@@ -162,7 +161,6 @@
 		}
 
 		function setIntervalStatus(){
-			console.log("Setting interval");
 			if (!intervalId){
 				intervalId = setInterval(updateStatus, 1000);
 			} else {
@@ -190,7 +188,6 @@
 					},
 					error: function (xhr, status) {
 						if (intervalId){
-							console.log("Clearing interval");
 							clearInterval(intervalId);
 							intervalId = 0;
 						}
@@ -200,49 +197,103 @@
 			}
 		}
 
-		function updateEditProfilePage(profileName){
-			var retry = 0;
+		function submitProfile(){
+			var profileData = {
+				profileName:  document.getElementById("profileName").value,
+				SSID: document.getElementById("SSID").value,
+				clientName: document.getElementById("clientName").value,
+				txPower: parseInt($('#txSlider').val()),
+				authType: parseInt(document.getElementById("authType").value),
+				eapType: parseInt(document.getElementById("eapType").value),
+				wepType: parseInt(document.getElementById("wepType").value),
+				radioMode: parseInt(document.getElementById("radioMode").value),
+				powerSave: parseInt(document.getElementById("powerSave").value),
+				pspDelay: parseInt($('#pspDelaySlider').val()),
+			}
+			console.log(profileData);
+		}
+
+		function SelectedIndex(sel, val) {
+			for(var i = 0, j = sel.options.length; i < j; ++i) {
+				if(sel.options[i].value == val) {
+				sel.selectedIndex = i;
+				break;
+				}
+			}
+		}
+
+		function updateGetProfilePage(profileName){
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			var data = {
 					profileName: profileName,
 				}
 			$.ajax({
-				url: "php/editProfile.php",
+				url: "php/getProfile.php",
 				type: "POST",
 				data: JSON.stringify(data),
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
-				console.log("GOT MESSAGE")
 				console.log(msg);
-				console.log(String(msg.SDCERR));
 				document.getElementById("profileName").value = msg.configName;
 				document.getElementById("SSID").value = msg.SSID;
 				document.getElementById("clientName").value = msg.clientName;
 				$('#txSlider').slider('setValue', msg.txPower);
 				document.getElementById("authType").selectedIndex =  msg.authType;
+				document.getElementById("eapType").selectedIndex =  msg.eapType;
+				//If index does not start at 0 and run contiguously we must check against options value
+				SelectedIndex(document.getElementById("wepType"),msg.wepType);
+				SelectedIndex(document.getElementById("radioMode"),msg.radioMode);
+				document.getElementById("powerSave").selectedIndex =  msg.powerSave;
+				if (msg.powerSave == 2){
+					$("#pspDelayDisplay").removeClass("hidden");
+					$('#pspDelaySlider').slider('setValue', msg.pspDelay);
+				}
+				if (msg.wepType == 1){
+					$("#wepTypeOnDisplay").removeClass("hidden");
+				} else if (msg.wepType == 3 || msg.wepType == 5 || msg.wepType == 11 || msg.wepType == 13){
+					$("#pskDisplay").removeClass("hidden");
+				}
+				if (msg.eapType >= 1){
+					$("#userNameDisplay").removeClass("hidden");
+					if (!(msg.eapType == 5 || msg.eapType == 7)){
+						$("#passWordDisplay").removeClass("hidden");
+					} else {
+						$("#userCertDisplay").removeClass("hidden");
+						$("#userCertPasswordDisplay").removeClass("hidden");
+					}
+					if (msg.eapType > 2 && msg.eapType < 8){
+						$("#CACertDisplay").removeClass("hidden");
+					}
+					if (msg.eapType == 2){
+						$("#PACFilenameDisplay").removeClass("hidden");
+						$("#PACPasswordDisplay").removeClass("hidden");
+					}
+				}
 			})
 			.fail(function() {
 				console.log("Failed to get profile data, retrying");
 				if (retry < 5){
-					updateEditProfilePage(profileName);
+					updateGetProfilePage(profileName);
 					retry++;
 				}
 			});
 		}
 
 		function selectedProfile(){
-			var retry = 0;
-			console.log("Value");
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			var selectedProfile = document.getElementById("profileSelect").value;
-			console.log(selectedProfile);
 			$.ajax({
-				url: "html/editProfile.html",
+				url: "html/getProfile.html",
 				data: {},
 				type: "GET",
 				dataType: "html",
 				success: function (data) {
 					if (intervalId){
-						console.log("Clearing interval");
 						clearInterval(intervalId);
 						intervalId = 0;
 					}
@@ -252,12 +303,12 @@
 					$("#helpText").html("Adjust profile settings.");
 				},
 				error: function (xhr, status) {
-					console.log("Error, couldn't get editProfile.html");
+					console.log("Error, couldn't get getProfile.html");
 				},
 			})
 			.done(function( msg ) {
 				console.log("Now try to get profile from PHP");
-				updateEditProfilePage(selectedProfile);
+				updateGetProfilePage(selectedProfile);
 				$('#txSlider').slider({
 					formatter: function(value) {
 						if (value != 0){
@@ -267,9 +318,14 @@
 						}
 					}
 				});
+				$('#pspDelaySlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
 			})
 			.fail(function() {
-				console.log("Failed to get editProfile, retrying");
+				console.log("Failed to get getProfile, retrying");
 				if (retry < 5){
 					selectedProfile();
 					retry++;
@@ -278,7 +334,9 @@
 		}
 
 		function updateSelectProfilePage(){
-			var retry = 0;
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			$.ajax({
 				url: "php/selectProfile.php",
 				type: "POST",
@@ -304,7 +362,9 @@
 		}
 
 		function clickProfileEditPage() {
-			var retry = 0;
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			$.ajax({
 				url: "html/selectProfile.html",
 				data: {},
@@ -312,7 +372,6 @@
 				dataType: "html",
 				success: function (data) {
 					if (intervalId){
-						console.log("Clearing interval");
 						clearInterval(intervalId);
 						intervalId = 0;
 					}
@@ -335,7 +394,9 @@
 		}
 
 		function clickAddProfilePage() {
-			var retry = 0;
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			$.ajax({
 				url: "html/addProfile.html",
 				data: {},
@@ -343,7 +404,6 @@
 				dataType: "html",
 				success: function (data) {
 					if (intervalId){
-						console.log("Clearing interval");
 						clearInterval(intervalId);
 						intervalId = 0;
 					}
@@ -365,22 +425,22 @@
 		}
 
 		function updateRemoveProfilePage(){
-			var retry = 0;
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			$.ajax({
-				url: "php/profileList.php",
+				url: "php/listProfile.php",
 				type: "POST",
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
 				console.log(msg);
-				console.log(String(msg.SDCERR));
-				console.log(String(msg.profiles[0]));
 				var x = document.getElementById("profileSelect");
-				x.size = String(msg.NumConfigs);
+				x.size = String(msg.NumConfigs - 1);
 				for (i = 0; i < msg.NumConfigs; i++) {
 					var option = document.createElement("option");
-					option.text = msg.profiles[i];
 					if (msg.profiles[i] != msg.currentConfig){
+						option.text = msg.profiles[i];
 						x.add(option);
 					}
 				}
@@ -395,7 +455,9 @@
 		}
 
 		function clickRemoveProfilePage() {
-			var retry = 0;
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			$.ajax({
 				url: "html/removeProfile.html",
 				data: {},
@@ -403,7 +465,6 @@
 				dataType: "html",
 				success: function (data) {
 					if (intervalId){
-						console.log("Clearing interval");
 						clearInterval(intervalId);
 						intervalId = 0;
 					}
@@ -468,7 +529,6 @@
 
 		function clickAdvancedPage(){
 			if (intervalId){
-				console.log("Clearing interval");
 				clearInterval(intervalId);
 				intervalId = 0;
 			}
@@ -504,31 +564,31 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-3 col-md-2 sidebar">
+				<div class="col-xs-3 col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
 						<li id="LiStatus" class="active"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
 						<li id="LiProfile"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
 							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiProfile">
-								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage()">Edit Profiles - FRAMEWORK STARTED</a></li>
+								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage()">Edit Profiles</a></li>
 								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage()">Add profile</a></li>
 								<li id="submenuRemove"><a href="#" onclick="clickRemoveProfilePage()">Remove profile</a></li>
-								<li><a href="#">Rename profile - NOT IMPLEMENTED</a></li>
+								<li><a href="#">Rename profile - X</a></li>
 							</ul>
-						<li id="LiGlobal"><a href="#">WiFi Globals - NOT IMPLEMENTED</a></li>
-						<li id="LiScan"><a href="#">WiFi Scan - NOT IMPLEMENTED</a></li>
-						<li id="LiAdvanced" onclick="clickAdvancedPage()"><a href="#">WiFi Advanced - NOT IMPLEMENTED</a></li>
+						<li id="LiGlobal"><a href="#">WiFi Globals - X</a></li>
+						<li id="LiScan"><a href="#">WiFi Scan - X</a></li>
+						<li id="LiAdvanced" onclick="clickAdvancedPage()"><a href="#">WiFi Advanced - X</a></li>
 					</ul>
 					<ul class="nav nav-sidebar">
-						<li><a href="#">Interface Configuration - NOT IMPLEMENTED</a></li>
-						<li><a href="#">System Version - NOT IMPLEMENTED</a></li>
+						<li><a href="#">Interface Configuration - X</a></li>
+						<li><a href="#">System Version - X</a></li>
 					</ul>
 				</div>
-				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div class="col-xs-9 col-xs-offset-3 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<div class="row placeholders">
-						<div class="col-xs-6 col-sm-6 placeholder">
+						<div class="col-xs-12 col-sm-6 placeholder">
 							<p id="main_section"></p>
 						</div>
-						<div id="helpSection" class="col-xs-0 col-sm-6 placeholder">
+						<div id="helpSection" class="col-xs-0 col-sm-6 hidden-xs hidden-sm placeholder">
 							<div id="returnData" class="" role="alert"></div>
 							<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
 							<h4>Need help?</h4>
