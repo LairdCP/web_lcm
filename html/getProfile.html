@@ -26,35 +26,6 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label class="pull-left" for="eapType">EAP Type:</label>
-				<select class="form-control" id="eapType">
-					<option value='0'>None</option>
-					<option value='1'>LEAP</option>
-					<option value='2'>EAP-FAST</option>
-					<option value='3'>PEAP-MSCHAPv2</option>
-					<option value='4'>PEAP-GTC</option>
-					<option value='5'>EAP-TLS</option>
-					<option value='6'>EAP-TTLS</option>
-					<option value='7'>PEAP-TLS</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label class="pull-left" for="wepType">WEP Type:</label>
-				<select class="form-control" id="wepType">
-					<option value='0'>None</option>
-					<option value='1'>WEP</option>
-					<option value='2'>WEP-EAP</option>
-					<option value='3'>WPA-PSK</option>
-					<option value='4'>WPA-TKIP</option>
-					<option value='5'>WPA2-PSK</option>
-					<option value='6'>WPA2-AES</option>
-					<option value='7'>CCKM-TKIP</option>
-					<option value='10'>CCKM-AES</option>
-					<option value='11'>WPA-PSK-AES</option>
-					<option value='12'>WPA-AES</option>
-				</select>
-			</div>
-			<div class="form-group">
 				<label class="pull-left" for="radioMode">Radio Mode:</label>
 				<select class="form-control" id="radioMode">
 					<option value='0'>B</option>
@@ -82,6 +53,35 @@
 			<div class="form-group hidden" id="pspDelayDisplay">
 				<label class="pull-left" for="pspDelaySlider">PSP Delay:</label>
 				<input id="pspDelaySlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="10" data-slider-max="500" data-slider-step="1" data-slider-value="200"/>
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="wepType">WEP Type:</label>
+				<select class="form-control" id="wepType" onchange="onchangeWEP()">
+					<option value='0'>None</option>
+					<option value='1'>WEP</option>
+					<option value='2'>WEP-EAP</option>
+					<option value='3'>WPA-PSK</option>
+					<option value='4'>WPA-TKIP</option>
+					<option value='5'>WPA2-PSK</option>
+					<option value='6'>WPA2-AES</option>
+					<option value='7'>CCKM-TKIP</option>
+					<option value='10'>CCKM-AES</option>
+					<option value='11'>WPA-PSK-AES</option>
+					<option value='12'>WPA-AES</option>
+				</select>
+			</div>
+			<div class="form-group hidden" id="eapTypeDisplay">
+				<label class="pull-left" for="eapType">EAP Type:</label>
+				<select class="form-control" id="eapType">
+					<option value='0'>None</option>
+					<option value='1'>LEAP</option>
+					<option value='2'>EAP-FAST</option>
+					<option value='3'>PEAP-MSCHAPv2</option>
+					<option value='4'>PEAP-GTC</option>
+					<option value='5'>EAP-TLS</option>
+					<option value='6'>EAP-TTLS</option>
+					<option value='7'>PEAP-TLS</option>
+				</select>
 			</div>
 			<div class="form-group hidden" id="wepIndexDisplay">
 				<label class="pull-left" for="wepIndex">WEP Key Index:</label>

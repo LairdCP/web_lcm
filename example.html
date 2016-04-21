@@ -121,6 +121,97 @@
 			}
 		}
 
+		function onchangeWEP(){
+			var wepType = parseInt(document.getElementById("wepType").value);
+			var eapType = parseInt(document.getElementById("eapType").value);
+			function clearCredsDisplay(){
+				$("#eapTypeDisplay").addClass("hidden");
+				$("#wepIndexDisplay").addClass("hidden");
+				$("#wepTypeOnDisplay").addClass("hidden");
+				$("#pskDisplay").addClass("hidden");
+				$("#userNameDisplay").addClass("hidden");
+				$("#passWordDisplay").addClass("hidden");
+				$("#userCertDisplay").addClass("hidden");
+				$("#userCertPasswordDisplay").addClass("hidden");
+				$("#CACertDisplay").addClass("hidden");
+				$("#PACFilenameDisplay").addClass("hidden");
+				$("#PACPasswordDisplay").addClass("hidden");
+			}
+			function displayProperEAPCreds(){
+				$("#eapTypeDisplay").removeClass("hidden");
+				$("#userNameDisplay").removeClass("hidden");
+				if (!(eapType == 5 || eapType == 7)){
+					$("#passWordDisplay").removeClass("hidden");
+				} else {
+					$("#userCertDisplay").removeClass("hidden");
+					$("#userCertPasswordDisplay").removeClass("hidden");
+				}
+				if (eapType > 2 && eapType < 8){
+					$("#CACertDisplay").removeClass("hidden");
+				}
+				if (eapType == 2){
+					$("#PACFilenameDisplay").removeClass("hidden");
+					$("#PACPasswordDisplay").removeClass("hidden");
+				}
+			}
+			switch (wepType){
+				case 0:
+					clearCredsDisplay();
+					break;
+				case 1:
+					clearCredsDisplay();
+					$("#wepIndexDisplay").removeClass("hidden");
+					$("#wepTypeOnDisplay").removeClass("hidden");
+					break;
+				case 2:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 3:
+					clearCredsDisplay();
+					$("#pskDisplay").removeClass("hidden");
+					break;
+				case 4:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 5:
+					clearCredsDisplay();
+					$("#pskDisplay").removeClass("hidden");
+					break;
+				case 6:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 7:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 8:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 9:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 10:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				case 11:
+					clearCredsDisplay();
+					$("#pskDisplay").removeClass("hidden");
+					break;
+				case 12:
+					clearCredsDisplay();
+					displayProperEAPCreds();
+					break;
+				default:
+					break;
+			}
+		}
+
 		function updateStatus(){
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
 				var rssi = data.rssi;
@@ -264,6 +355,7 @@
 					document.getElementById("psk").value =  msg.PSK;
 				}
 				if (msg.eapType >= 1){
+					$("#eapTypeDisplay").removeClass("hidden");
 					$("#userNameDisplay").removeClass("hidden");
 					document.getElementById("userName").value =  msg.userName;
 					if (!(msg.eapType == 5 || msg.eapType == 7)){
