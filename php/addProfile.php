@@ -13,6 +13,14 @@
 	if ($result == SDCERR_SUCCESS){
 		$cfgs->configName = $newProfile->{'profileName'};
 		$cfgs->SSID = $newProfile->{'SSID'};
+		$cfgs->clientName = $newProfile->{'clientName'};
+		$cfgs->txPower = $newProfile->{'txPower'};
+		$cfgs->authType = $newProfile->{'authType'};
+		$cfgs->eapType = $newProfile->{'eapType'};
+		$cfgs->powerSave = $newProfile->{'powerSave'};
+		$cfgs->wepType = $newProfile->{'wepType'};
+		$cfgs->bitRate = $newProfile->{'bitRate'};
+		$cfgs->radioMode = $newProfile->{'radioMode'};
 		$result = AddConfig($cfgs);
 	}
 
