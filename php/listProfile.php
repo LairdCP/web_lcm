@@ -5,14 +5,13 @@
 	}
 	header("Content-Type: application/json");
 
+	$returnedResult = [
+		'SDCERR' => SDCERR_FAIL,
+	];
+
 	$Count = new_ulongp();
 	$currentConfig = str_repeat(" ",CONFIG_NAME_SZ);
 	$result = GetNumConfigs($Count);
-
-	$returnedResult = [
-		'SDCERR' => $result,
-		'NumConfigs' => ulongp_value($Count),
-	];
 
 	if($result == SDCERR_SUCCESS){
 		$cfgs = new_SDCConfig_array(ulongp_value($Count));
@@ -27,7 +26,9 @@
 		}
 		delete_SDCConfig_array($cfgs);
 	}
+	$returnedResult['NumConfigs'] = ulongp_value($Count);
 	$returnedResult['profiles'] = $profileList;
+	$returnedResult['SDCERR'] = $result;
 
 	echo json_encode($returnedResult);
 

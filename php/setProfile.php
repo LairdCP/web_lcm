@@ -7,7 +7,7 @@
 	$Profile = json_decode(stripslashes(file_get_contents("php://input")));
 
 	$returnedResult = [
-		'SDCERR' => 1,
+		'SDCERR' => SDCERR_FAIL,
 	];
 
 	$cfgs = new SDCConfig();

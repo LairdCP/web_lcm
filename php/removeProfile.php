@@ -6,6 +6,10 @@
 	header("Content-Type: application/json");
 	$oldProfile = json_decode(stripslashes(file_get_contents("php://input")));
 
+	$returnedResult = [
+		'SDCERR' => SDCERR_FAIL,
+	];
+
 	$cconfig = new SDCConfig();
 
 	$result = GetConfig($oldProfile->{'profileName'}, $cconfig);
