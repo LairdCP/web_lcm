@@ -219,21 +219,4 @@
 
 	free_SDCConfig($cfgs);
 
-// typedef struct _SDCConfig {
-// 	char        configName[CONFIG_NAME_SZ];
-// 	char        SSID[SSID_SZ];
-// 	char        clientName[CLIENT_NAME_SZ];
-// 	int         txPower;
-// 	AUTH        authType;
-// 	EAPTYPE     eapType;
-// 	POWERSAVE   powerSave; // POWERSAVE enum is 4 bytes.  Upper word used for pspDelay
-// 	WEPTYPE     wepType;
-// 	BITRATE     bitRate;
-// 	RADIOMODE   radioMode;
-// 	CRYPT       userName;
-// 	CRYPT       userPwd;
-// 	CRYPT       PSK;
-// 	CRYPT       WEPKeys;
-// } SDCConfig;
-
 ?>

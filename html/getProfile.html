@@ -56,7 +56,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="wepType">WEP Type:</label>
-				<select class="form-control" id="wepType" onchange="onchangeWEP()">
+				<select class="form-control" id="wepType" onchange="onchangeSecurity()">
 					<option value='0'>None</option>
 					<option value='1'>WEP</option>
 					<option value='2'>WEP-EAP</option>
@@ -72,11 +72,10 @@
 			</div>
 			<div class="form-group hidden" id="eapTypeDisplay">
 				<label class="pull-left" for="eapType">EAP Type:</label>
-				<select class="form-control" id="eapType">
-					<option value='0'>None</option>
+				<select class="form-control" id="eapType" onchange="onchangeSecurity()">
 					<option value='1'>LEAP</option>
 					<option value='2'>EAP-FAST</option>
-					<option value='3'>PEAP-MSCHAPv2</option>
+					<option value='3' selected>PEAP-MSCHAPv2</option>
 					<option value='4'>PEAP-GTC</option>
 					<option value='5'>EAP-TLS</option>
 					<option value='6'>EAP-TTLS</option>

@@ -121,7 +121,7 @@
 			}
 		}
 
-		function onchangeWEP(){
+		function onchangeSecurity(){
 			var wepType = parseInt(document.getElementById("wepType").value);
 			var eapType = parseInt(document.getElementById("eapType").value);
 			function clearCredsDisplay(){
@@ -180,21 +180,9 @@
 					$("#pskDisplay").removeClass("hidden");
 					break;
 				case 6:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
 				case 7:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
 				case 8:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
 				case 9:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
 				case 10:
 					clearCredsDisplay();
 					displayProperEAPCreds();
