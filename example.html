@@ -277,6 +277,9 @@
 		}
 
 		function submitProfile(){
+			if (typeof retry == 'undefined') {
+				var retry = 0;
+			}
 			var profileData = {
 				profileName:  document.getElementById("profileName").value,
 				SSID: document.getElementById("SSID").value,
@@ -303,6 +306,23 @@
 				PACPassword: document.getElementById("PACPassword").value,
 			}
 			console.log(profileData);
+			$.ajax({
+				url: "php/setProfile.php",
+				type: "POST",
+				data: JSON.stringify(profileData),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				SDCERRtoString(msg.SDCERR);
+			})
+			.fail(function() {
+				console.log("Failed to get profile data, retrying");
+				if (retry < 5){
+					submitProfile();
+					retry++;
+				}
+			});
 		}
 
 		function SelectedIndex(sel, val) {
