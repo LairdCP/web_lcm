@@ -16,9 +16,22 @@
 		$cfgs->clientName = $newProfile->{'clientName'};
 		$cfgs->txPower = $newProfile->{'txPower'};
 		$cfgs->authType = $newProfile->{'authType'};
-		$cfgs->eapType = $newProfile->{'eapType'};
 		$cfgs->powerSave = $newProfile->{'powerSave'};
 		$cfgs->wepType = $newProfile->{'wepType'};
+		switch ($cfgs->wepType){
+			case WEP_OFF:
+			case WEP_ON:
+			case WPA_PSK:
+			case WPA2_PSK:
+			case WPA_PSK_AES:
+			case WPA2_PSK_TKIP:
+				$cfgs->eapType = EAP_NONE;
+				break;
+			default:
+				$cfgs->eapType = $newProfile->{'eapType'};
+				break;
+
+		}
 		$cfgs->bitRate = $newProfile->{'bitRate'};
 		$cfgs->radioMode = $newProfile->{'radioMode'};
 		$result = AddConfig($cfgs);
