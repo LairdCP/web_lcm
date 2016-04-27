@@ -28,6 +28,38 @@
 				break;
 			case WEP_ON:
 				$cfgs->eapType = EAP_NONE;
+				function getWepLength($wepKey){
+					if (strlen($wepKey) == 5){
+						return WEPLEN_40BIT;
+					} else if (strlen($wepKey) == 13){
+						return WEPLEN_128BIT;
+					}
+					return WEPLEN_NOT_SET;
+				}
+				function strToHex($key,$string)
+				{
+					for ($i=0; $i < 27; $i++)
+					{
+						uchar_array_setitem($key,$i,dechex(ord($string[$i])));
+					}
+				}
+				$wepKey1 = new_uchar_array(27);
+				$wepKey2 = new_uchar_array(27);
+				$wepKey3 = new_uchar_array(27);
+				$wepKey4 = new_uchar_array(27);
+				strToHex($wepKey1,$newProfile->{'index1'});
+				strToHex($wepKey2,$newProfile->{'index2'});
+				strToHex($wepKey3,$newProfile->{'index3'});
+				strToHex($wepKey4,$newProfile->{'index4'});
+				$result = SetMultipleWEPKeys($cfgs,$newProfile->{'wepIndex'},
+					getWepLength($newProfile->{'index1'}),$wepKey1,
+					getWepLength($newProfile->{'index2'}),$wepKey2,
+					getWepLength($newProfile->{'index3'}),$wepKey3,
+					getWepLength($newProfile->{'index4'}),$wepKey4);
+				delete_uchar_array($wepKey1);
+				delete_uchar_array($wepKey2);
+				delete_uchar_array($wepKey3);
+				delete_uchar_array($wepKey4);
 				break;
 			case WPA_PSK:
 			case WPA2_PSK:
