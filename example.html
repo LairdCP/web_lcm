@@ -281,7 +281,7 @@
 				var retry = 0;
 			}
 			var profileData = {
-				profileName:  document.getElementById("profileName").value,
+				profileName: document.getElementById("profileName").value,
 				SSID: document.getElementById("SSID").value,
 				clientName: document.getElementById("clientName").value,
 				txPower: parseInt($('#txSlider').val()),
@@ -639,6 +639,19 @@
 					radioMode: parseInt(document.getElementById("radioMode").value),
 					powerSave: parseInt(document.getElementById("powerSave").value),
 					pspDelay: parseInt($('#pspDelaySlider').val()),
+					wepIndex: parseInt(document.getElementById("wepIndex").value),
+					index1: parseInt(document.getElementById("index1").value),
+					index2: parseInt(document.getElementById("index2").value),
+					index3: parseInt(document.getElementById("index3").value),
+					index4: parseInt(document.getElementById("index4").value),
+					psk: document.getElementById("psk").value,
+					userName: document.getElementById("userName").value,
+					passWord: document.getElementById("passWord").value,
+					userCert: document.getElementById("userCert").value,
+					userCertPassword: document.getElementById("userCertPassword").value,
+					CACert: document.getElementById("CACert").value,
+					PACFilename: document.getElementById("PACFilename").value,
+					PACPassword: document.getElementById("PACPassword").value,
 				}
 				console.log(newProfile);
 				$.ajax({

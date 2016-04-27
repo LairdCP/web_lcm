@@ -145,7 +145,7 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPMSCHAPCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['passWord'] = "********";
 						$returnedResult['CACert'] = trim($caCert);
 					}
@@ -158,7 +158,7 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPGTCCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['passWord'] = "********";
 						$returnedResult['CACert'] = trim($caCert);
 					}
@@ -172,7 +172,7 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['userCert'] = $userCert;
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
 						$returnedResult['userCertPassword'] = "********";
@@ -187,7 +187,7 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetEAPTTLSCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['passWord'] = "********";
 						$returnedResult['CACert'] = trim($caCert);
 					}
@@ -201,7 +201,7 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['userCert'] = $userCert;
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
 						$returnedResult['userCertPassword'] = "********";
