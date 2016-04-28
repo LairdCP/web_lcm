@@ -276,10 +276,7 @@
 			}
 		}
 
-		function submitProfile(){
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function submitProfile(retry){
 			var profileData = {
 				profileName: document.getElementById("profileName").value,
 				SSID: document.getElementById("SSID").value,
@@ -319,8 +316,10 @@
 			.fail(function() {
 				console.log("Failed to get profile data, retrying");
 				if (retry < 5){
-					submitProfile();
 					retry++;
+					submitProfile(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
@@ -334,10 +333,7 @@
 			}
 		}
 
-		function updateGetProfilePage(profileName){
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function updateGetProfilePage(profileName,retry){
 			var data = {
 					profileName: profileName,
 				}
@@ -402,16 +398,15 @@
 			.fail(function() {
 				console.log("Failed to get profile data, retrying");
 				if (retry < 5){
-					updateGetProfilePage(profileName);
 					retry++;
+					updateGetProfilePage(profileName,retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
 
-		function selectedProfile(){
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function selectedProfile(retry){
 			var selectedProfile = document.getElementById("profileSelect").value;
 			$.ajax({
 				url: "html/getProfile.html",
@@ -434,7 +429,7 @@
 			})
 			.done(function( msg ) {
 				console.log("Now try to get profile from PHP");
-				updateGetProfilePage(selectedProfile);
+				updateGetProfilePage(selectedProfile,0);
 				$('#txSlider').slider({
 					formatter: function(value) {
 						if (value != 0){
@@ -451,18 +446,17 @@
 				});
 			})
 			.fail(function() {
-				console.log("Failed to get getProfile, retrying");
+				console.log("Failed to get get Profile, retrying");
 				if (retry < 5){
-					selectedProfile();
 					retry++;
+					selectedProfile(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
 
-		function updateSelectProfilePage(){
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function updateSelectProfilePage(retry){
 			$.ajax({
 				url: "php/listProfile.php",
 				type: "POST",
@@ -480,17 +474,17 @@
 			})
 			.fail(function() {
 				console.log("Failed to get profiles, retrying");
+				console.log(retry);
 				if (retry < 5){
-					updateSelectProfilePage();
 					retry++;
+					updateSelectProfilePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
 
-		function clickProfileEditPage() {
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function clickProfileEditPage(retry) {
 			$.ajax({
 				url: "html/selectProfile.html",
 				data: {},
@@ -507,22 +501,21 @@
 					$("#returnData").removeClass();
 					$("#returnData").html("");
 					$("#helpText").html("These are the current WiFi profiles.");
-					setTimeout(updateSelectProfilePage(),1000);
+					setTimeout(updateSelectProfilePage(retry),1000);
 				},
 			})
 			.fail(function() {
 				console.log("Error, couldn't get selectProfile.html.. retrying");
 				if (retry < 5){
-					clickProfileEditPage();
 					retry++;
+					clickProfileEditPage(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
 
-		function clickAddProfilePage() {
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function clickAddProfilePage(retry) {
 			$.ajax({
 				url: "html/addProfile.html",
 				data: {},
@@ -558,16 +551,15 @@
 			.fail(function() {
 				console.log("Error, couldn't get addProfile.html.. retrying");
 				if (retry < 5){
-					clickAddProfilePage();
 					retry++;
+					clickAddProfilePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
 
-		function updateRemoveProfilePage(){
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function updateRemoveProfilePage(retry){
 			$.ajax({
 				url: "php/listProfile.php",
 				type: "POST",
@@ -588,16 +580,15 @@
 			.fail(function() {
 				console.log("Failed to get profiles, retrying");
 				if (retry < 5){
-					updateSelectProfilePage();
 					retry++;
+					updateSelectProfilePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
 
-		function clickRemoveProfilePage() {
-			if (typeof retry == 'undefined') {
-				var retry = 0;
-			}
+		function clickRemoveProfilePage(retry) {
 			$.ajax({
 				url: "html/removeProfile.html",
 				data: {},
@@ -614,14 +605,16 @@
 					$("li").removeClass("active");
 					$("#submenuRemove").addClass("active");
 					$("#helpText").html("Select the name of the profile you would like to remove.");
-					setTimeout(updateRemoveProfilePage(),1000);
+					setTimeout(updateRemoveProfilePage(retry),1000);
 				},
 			})
 			.fail(function() {
 				console.log("Error, couldn't get removeProfile.html.. retrying");
 				if (retry < 5){
-					clickRemoveProfilePage();
 					retry++;
+					clickRemoveProfilePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
 				}
 			});
 		}
@@ -729,9 +722,9 @@
 						<li id="LiStatus" class="active"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
 						<li id="LiProfile"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
 							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiProfile">
-								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage()">Edit Profiles</a></li>
-								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage()">Add profile</a></li>
-								<li id="submenuRemove"><a href="#" onclick="clickRemoveProfilePage()">Remove profile</a></li>
+								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
+								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage(0)">Add profile</a></li>
+								<li id="submenuRemove"><a href="#" onclick="clickRemoveProfilePage(0)">Remove profile</a></li>
 								<li><a href="#">Rename profile - X</a></li>
 							</ul>
 						<li id="LiGlobal"><a href="#">WiFi Globals - X</a></li>
