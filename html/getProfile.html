@@ -3,23 +3,23 @@
 		<form>
 			<div class="form-group">
 				<label class="pull-left" for="profileName">Profile Name:</label>
-				<input type="text" class="form-control" id="profileName" readonly>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="profileName" readonly>
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="SSID">SSID:</label>
-				<input type="text" class="form-control" id="SSID">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="SSID">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="clientName">Client Name:</label>
-				<input type="text" class="form-control" id="clientName">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="clientName">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="txSlider">TX Power:</label>
-				<input id="txSlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="0"/>
+				<input onchange="onChangeSubmit()" id="txSlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="0"/>
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="authType">Auth Type:</label>
-				<select class="form-control" id="authType">
+				<select onchange="onChangeSubmit()" class="form-control" id="authType">
 					<option value='0'>Open</option>
 					<option value='1'>Shared</option>
 					<option value='2'>EAP</option>
@@ -27,7 +27,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="radioMode">Radio Mode:</label>
-				<select class="form-control" id="radioMode">
+				<select onchange="onChangeSubmit()" class="form-control" id="radioMode">
 					<option value='0'>B</option>
 					<option value='1'>BG</option>
 					<option value='2'>G</option>
@@ -44,7 +44,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="powerSave">Power save:</label>
-				<select class="form-control" id="powerSave">
+				<select onchange="onChangeSubmit();onChangePowersave()" class="form-control" id="powerSave">
 					<option value='0'>Off</option>
 					<option value='1'>Max</option>
 					<option value='2'>Fast</option>
@@ -52,11 +52,11 @@
 			</div>
 			<div class="form-group hidden" id="pspDelayDisplay">
 				<label class="pull-left" for="pspDelaySlider">PSP Delay:</label>
-				<input id="pspDelaySlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="10" data-slider-max="500" data-slider-step="1" data-slider-value="200"/>
+				<input onchange="onChangeSubmit()" id="pspDelaySlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="10" data-slider-max="500" data-slider-step="1" data-slider-value="200"/>
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="wepType">WEP Type:</label>
-				<select class="form-control" id="wepType" onchange="onchangeSecurity()">
+				<select class="form-control" id="wepType" onchange="onChangeSubmit();onChangeSecurity()">
 					<option value='0'>None</option>
 					<option value='1'>WEP</option>
 					<option value='2'>WEP-EAP</option>
@@ -72,7 +72,7 @@
 			</div>
 			<div class="form-group hidden" id="eapTypeDisplay">
 				<label class="pull-left" for="eapType">EAP Type:</label>
-				<select class="form-control" id="eapType" onchange="onchangeSecurity()">
+				<select class="form-control" id="eapType" onchange="onChangeSubmit();onChangeSecurity()">
 					<option value='1'>LEAP</option>
 					<option value='2'>EAP-FAST</option>
 					<option value='3' selected>PEAP-MSCHAPv2</option>
@@ -84,7 +84,7 @@
 			</div>
 			<div class="form-group hidden" id="wepIndexDisplay">
 				<label class="pull-left" for="wepIndex">WEP Key Index:</label>
-				<select class="form-control" id="wepIndex">
+				<select onchange="onChangeSubmit()" class="form-control" id="wepIndex">
 					<option value='1'>1</option>
 					<option value='2'>2</option>
 					<option value='3'>3</option>
@@ -93,48 +93,47 @@
 			</div>
 			<div class="form-group hidden" id="wepTypeOnDisplay">
 				<label class="pull-left" for="index1">Index 1:</label>
-				<input type="text" class="form-control" id="index1">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index1">
 				<label class="pull-left" for="index2">Index 2:</label>
-				<input type="text" class="form-control" id="index2">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index2">
 				<label class="pull-left" for="index3">Index 3:</label>
-				<input type="text" class="form-control" id="index3">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index3">
 				<label class="pull-left" for="index4">Index 4:</label>
-				<input type="text" class="form-control" id="index4">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index4">
 			</div>
 			<div class="form-group hidden" id=pskDisplay>
 				<label class="pull-left" for="psk">PreShared Key:</label>
-				<input type="text" class="form-control" id="psk">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="psk">
 			</div>
 			<div class="form-group hidden" id=userNameDisplay>
 				<label class="pull-left" for="userName">Username:</label>
-				<input type="text" class="form-control" id="userName">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="userName">
 			</div>
 			<div class="form-group hidden" id=passWordDisplay>
 				<label class="pull-left" for="passWord">Password:</label>
-				<input type="password" class="form-control" id="passWord">
+				<input onchange="onChangeSubmit()" type="password" class="form-control" id="passWord">
 			</div>
 			<div class="form-group hidden" id=userCertDisplay>
 				<label class="pull-left" for="userCert">User Cert:</label>
-				<input type="text" class="form-control" id="userCert">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="userCert">
 			</div>
 			<div class="form-group hidden" id=userCertPasswordDisplay>
 				<label class="pull-left" for="userCertPassword">User Cert password:</label>
-				<input type="password" class="form-control" id="userCertPassword">
+				<input onchange="onChangeSubmit()" type="password" class="form-control" id="userCertPassword">
 			</div>
 			<div class="form-group hidden" id=CACertDisplay>
 				<label class="pull-left" for="CACert">CA Cert:</label>
-				<input type="text" class="form-control" id="CACert">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="CACert">
 			</div>
 			<div class="form-group hidden" id=PACFilenameDisplay>
 				<label class="pull-left" for="PACFilename">PAC Filename:</label>
-				<input type="text" class="form-control" id="PACFilename">
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="PACFilename">
 			</div>
 			<div class="form-group hidden" id=PACPasswordDisplay>
 				<label class="pull-left" for="PACPassword">PAC Password:</label>
-				<input type="password" class="form-control" id="PACPassword">
+				<input onchange="onChangeSubmit()" type="password" class="form-control" id="PACPassword">
 			</div>
-
-			<button onclick="submitProfile()" type="button" class="btn btn-primary">Submit</button>
 		</form>
+			<a id="submitButton" onclick="submitProfile()" class="btn btn-primary disabled" role="button">Submit</a>
 	</div>
 </html>

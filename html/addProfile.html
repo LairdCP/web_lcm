@@ -45,7 +45,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="powerSave">Power save:</label>
-				<select class="form-control" id="powerSave">
+				<select onchange="onChangePowersave()" class="form-control" id="powerSave">
 					<option value='0'>Off</option>
 					<option value='1'>Max</option>
 					<option value='2' selected>Fast</option>
@@ -57,7 +57,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="wepType">WEP Type:</label>
-				<select class="form-control" id="wepType" onchange="onchangeSecurity()">
+				<select class="form-control" id="wepType" onchange="onChangeSecurity()">
 					<option value='0'>None</option>
 					<option value='1'>WEP</option>
 					<option value='2'>WEP-EAP</option>
@@ -73,7 +73,7 @@
 			</div>
 			<div class="form-group hidden" id="eapTypeDisplay">
 				<label class="pull-left" for="eapType">EAP Type:</label>
-				<select class="form-control" id="eapType" onchange="onchangeSecurity()">
+				<select class="form-control" id="eapType" onchange="onChangeSecurity()">
 					<option value='1'>LEAP</option>
 					<option value='2'>EAP-FAST</option>
 					<option value='3' selected>PEAP-MSCHAPv2</option>

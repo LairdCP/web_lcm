@@ -121,7 +121,28 @@
 			}
 		}
 
-		function onchangeSecurity(){
+		function onChangeSubmit(){
+			$("#submitButton").removeClass("disabled");
+		}
+
+		function onChangePowersave(){
+			var powerSave = parseInt(document.getElementById("powerSave").value);
+			console.log(powerSave);
+			switch (powerSave){
+				case 0:
+				case 1:
+					$("#pspDelayDisplay").addClass("hidden");
+					break;
+				case 2:
+					$("#pspDelayDisplay").removeClass("hidden");
+					break;
+				default:
+					$("#pspDelayDisplay").removeClass("hidden");
+					break;
+			}
+		}
+
+		function onChangeSecurity(){
 			var wepType = parseInt(document.getElementById("wepType").value);
 			var eapType = parseInt(document.getElementById("eapType").value);
 			function clearCredsDisplay(){
@@ -312,6 +333,7 @@
 			.done(function( msg ) {
 				console.log(msg);
 				SDCERRtoString(msg.SDCERR);
+				$("#submitButton").addClass("disabled");
 			})
 			.fail(function() {
 				console.log("Failed to get profile data, retrying");
