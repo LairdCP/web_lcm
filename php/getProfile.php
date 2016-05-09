@@ -121,7 +121,7 @@
 					$passWord = str_repeat(" ",USER_PWD_SZ);
 					$result = GetLEAPCred($cfgs,$userName,$passWord);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['passWord'] = "********";
 					}
 					break;
@@ -132,7 +132,7 @@
 					$PACPassWord = str_repeat(" ",CRED_PFILE_SZ);
 					$result = GetEAPFASTCred($cfgs,$userName,$passWord,$PACFileName,$PACPassWord);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = $userName;
+						$returnedResult['userName'] = trim($userName);
 						$returnedResult['passWord'] = "********";
 						$returnedResult['PACFileName'] = $PACFileName;
 						$returnedResult['PACPassWord'] = "********";
@@ -173,7 +173,7 @@
 					$result = GetEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
 						$returnedResult['userName'] = trim($userName);
-						$returnedResult['userCert'] = $userCert;
+						$returnedResult['userCert'] = trim($userCert);
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
 						$returnedResult['userCertPassword'] = "********";
 						$returnedResult['CACert'] = trim($caCert);
@@ -202,7 +202,7 @@
 					$result = GetPEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
 						$returnedResult['userName'] = trim($userName);
-						$returnedResult['userCert'] = $userCert;
+						$returnedResult['userCert'] = trim($userCert);
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
 						$returnedResult['userCertPassword'] = "********";
 						$returnedResult['CACert'] = trim($caCert);

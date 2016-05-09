@@ -85,24 +85,24 @@
 					case EAP_PEAPMSCHAP:
 						$certLocation = new_CERTLOCATIONp();
 						CERTLOCATIONp_assign($certLocation,CERT_FILE);
-						$caCertBuf = str_repeat(" ",CRED_CERT_SZ);
-						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen($newProfile->{'CACert'}));
+						$caCertBuf = str_repeat("\0",CRED_CERT_SZ);
+						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen(trim($newProfile->{'CACert'})));
 						$result = SetPEAPMSCHAPCred($cfgs,$newProfile->{'userName'},$newProfile->{'passWord'},CERTLOCATIONp_value($certLocation),$caCert);
 						delete_CERTLOCATIONp($certLocation);
 						break;
 					case EAP_PEAPGTC:
 						$certLocation = new_CERTLOCATIONp();
 						CERTLOCATIONp_assign($certLocation,CERT_FILE);
-						$caCertBuf = str_repeat(" ",CRED_CERT_SZ);
-						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen($newProfile->{'CACert'}));
+						$caCertBuf = str_repeat("\0",CRED_CERT_SZ);
+						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen(trim($newProfile->{'CACert'})));
 						$result = SetPEAPGTCCred($cfgs,$newProfile->{'userName'},$newProfile->{'passWord'},CERTLOCATIONp_value($certLocation),$caCert);
 						delete_CERTLOCATIONp($certLocation);
 						break;
 					case EAP_EAPTLS:
 						$certLocation = new_CERTLOCATIONp();
 						CERTLOCATIONp_assign($certLocation,CERT_FILE);
-						$caCertBuf = str_repeat(" ",CRED_CERT_SZ);
-						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen($newProfile->{'CACert'}));
+						$caCertBuf = str_repeat("\0",CRED_CERT_SZ);
+						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen(trim($newProfile->{'CACert'})));
 						$result = SetEAPTLSCred($cfgs,$newProfile->{'userName'},$newProfile->{'userCert'},CERTLOCATIONp_value($certLocation),$caCert);
 						if ($result == SDCERR_SUCCESS){
 							$result = SetUserCertPassword($cfgs,$newProfile->{'userCertPassword'});
@@ -112,16 +112,16 @@
 					case EAP_EAPTTLS:
 						$certLocation = new_CERTLOCATIONp();
 						CERTLOCATIONp_assign($certLocation,CERT_FILE);
-						$caCertBuf = str_repeat(" ",CRED_CERT_SZ);
-						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen($newProfile->{'CACert'}));
+						$caCertBuf = str_repeat("\0",CRED_CERT_SZ);
+						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen(trim($newProfile->{'CACert'})));
 						$result = SetEAPTTLSCred($cfgs,$newProfile->{'userName'},$newProfile->{'passWord'},CERTLOCATIONp_value($certLocation),$caCert);
 						delete_CERTLOCATIONp($certLocation);
 						break;
 					case EAP_PEAPTLS:
 						$certLocation = new_CERTLOCATIONp();
 						CERTLOCATIONp_assign($certLocation,CERT_FILE);
-						$caCertBuf = str_repeat(" ",CRED_CERT_SZ);
-						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen($newProfile->{'CACert'}));
+						$caCertBuf = str_repeat("\0",CRED_CERT_SZ);
+						$caCert = substr_replace($caCertBuf,$newProfile->{'CACert'},0,strlen(trim($newProfile->{'CACert'})));
 						$result = SetPEAPTLSCred($cfgs,$newProfile->{'userName'},$newProfile->{'userCert'},CERTLOCATIONp_value($certLocation),$caCert);
 						if ($result == SDCERR_SUCCESS){
 							$result = SetUserCertPassword($cfgs,$newProfile->{'userCertPassword'});
