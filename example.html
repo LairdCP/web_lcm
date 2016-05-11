@@ -702,6 +702,97 @@
 			});
 		};
 
+		function getSupportedGlobals(retry){
+			$.ajax({
+				url: "php/supportedGlobals.php",
+				type: "GET",
+				contentType: "application/json",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					console.log(data);
+					for (var key in data) {
+						if (data[key] == 1 && key != "SDCERR"){
+							$("#" + key + "Display").removeClass("hidden");
+						}
+						$("#submitButton").removeClass("hidden");
+					}
+				},
+			})
+			.fail(function() {
+				console.log("Error, couldn't get supportedGlobals.php.. retrying");
+				if (retry < 5){
+					retry++;
+					getSupportedGlobals(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function clickGlobalsPage(retry){
+			$.ajax({
+				url: "html/getGlobals.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#LiGlobal").addClass("active");
+					$("#helpText").html("Here are the global configuration options for WiFi");
+					$('#BeaconMissTimeoutSlider').slider({
+						formatter: function(value) {
+							return 'Current value: ' + value;
+						}
+					});
+					$('#probeDelaySlider').slider({
+						formatter: function(value) {
+							return 'Current value: ' + value;
+						}
+					});
+					$('#roamPeriodmsSlider').slider({
+						formatter: function(value) {
+							return 'Current value: ' + value;
+						}
+					});
+					$('#roamTriggerSlider').slider({
+						formatter: function(value) {
+							return 'Current value: -' + value;
+						}
+					});
+					$('#RTSThresholdSlider').slider({
+						formatter: function(value) {
+							return 'Current value: ' + value;
+						}
+					});
+					$('#scanDFSTimeSlider').slider({
+						formatter: function(value) {
+							return 'Current value: ' + value;
+						}
+					});
+					getSupportedGlobals(0);
+				},
+			})
+			.fail(function() {
+				console.log("Error, couldn't get getGlobals.html.. retrying");
+				if (retry < 5){
+					retry++;
+					clickGlobalsPage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function clickAdvancedPage(){
 			if (intervalId){
 				clearInterval(intervalId);
@@ -749,7 +840,7 @@
 								<li id="submenuRemove"><a href="#" onclick="clickRemoveProfilePage(0)">Remove profile</a></li>
 								<li><a href="#">Rename profile - X</a></li>
 							</ul>
-						<li id="LiGlobal"><a href="#">WiFi Globals - X</a></li>
+						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
 						<li id="LiScan"><a href="#">WiFi Scan - X</a></li>
 						<li id="LiAdvanced" onclick="clickAdvancedPage()"><a href="#">WiFi Advanced - X</a></li>
 					</ul>
