@@ -641,6 +641,14 @@
 			});
 		}
 
+		function updateAddProfileSlider(){
+			//https://github.com/seiyria/bootstrap-slider/issues/523
+			setTimeout(function() {
+				$('#pspDelaySlider').slider("relayout");
+				$('#txSlider').slider("relayout");
+			}, 500);
+		}
+
 		function addProfile(){
 			if (profileName != ""){
 				var newProfile = {
