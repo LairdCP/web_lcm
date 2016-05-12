@@ -40,8 +40,13 @@
 			$returnedResult['TTLSInnerMethod'] = $supportedGlobals->TTLSInnerMethod;
 			$returnedResult['uAPSD'] = $supportedGlobals->uAPSD;
 			$returnedResult['WMEenabled'] = $supportedGlobals->WMEenabled;
+			$returnedResult['suppInfoDateCheck'] = $supportedGlobals->suppInfo & SUPPINFO_TLS_TIME_CHECK; //special case
+			$returnedResult['fips'] = $supportedGlobals->suppInfo & SUPPINFO_FIPS; //special case
 		}
 	}
+
+	$returnedResult['SDCERR'] = $result;
+
 	echo json_encode($returnedResult);
 
 	delete_RADIOCHIPSETp($rcs);

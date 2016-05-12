@@ -2,19 +2,131 @@
 	<div class="col-xs-12 col-sm-12 placeholder">
 		<form>
 			<div class="form-group hidden" id="aLRSDisplay">
-				<label class="pull-left" for="aLRS">A channel set:</label>
-				<input onchange="" type="text" class="form-control" id="aLRS">
+				<label class="pull-left">A channel set:</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel36">36</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel40">40</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel44">44</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel48">48</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel52">52</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel56">56</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel60">60</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel64">64</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel100">100</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel104">104</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel108">108</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel112">112</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel116">116</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel120">120</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel124">124</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel128">128</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel132">132</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel136">136</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel140">140</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel149">149</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel153">153</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel157">157</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel161">161</input>
+					</label>
+					<label class="checkbox-inline">
+						<input type="checkbox" id="channel165">165</input>
+					</label>
 			</div>
 			<div class="form-group hidden" id="authServerTypeDisplay">
 				<label class="pull-left" for="authServerType">Auth Server Type:</label>
 				<select onchange="" class="form-control" id="authServerType">
-					<option value='1' selected>Type 1</option>
-					<option value='2'>Type 2</option>
+					<option value='0' selected>Type 1</option>
+					<option value='1'>Type 2</option>
 				</select>
 			</div>
 			<div class="form-group hidden" id="bLRSDisplay">
-				<label class="pull-left" for="bLRS">B channel Set:</label>
-				<input onchange="" type="text" class="form-control" id="bLRS">
+				<label class="pull-left">B channel Set:</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel1">1</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel2">2</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel3">3</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel4">4</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel5">5</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel6">6</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel7">7</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel8">8</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel9">9</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel10">10</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel11">11</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel12">12</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel13">13</input>
+				</label>
+				<label class="checkbox-inline">
+						<input type="checkbox" id="channel14">14</input>
+				</label>
 			</div>
 			<div class="form-group hidden" id="BeaconMissTimeoutDisplay">
 				<label class="pull-left" for="BeaconMissTimeoutSlider">Beacon Miss Time:</label>
@@ -30,8 +142,9 @@
 			<div class="form-group hidden" id="CCXfeaturesDisplay">
 				<label class="pull-left" for="CCXfeatures">CCX Features:</label>
 				<select onchange="" class="form-control" id="CCXfeatures">
-					<option value='0'>Off</option>
-					<option value='1' selected>Full</option>
+					<option value='0'>Optimized</option>
+					<option value='1'>Full</option>
+					<option value='2' selected>Off</option>
 				</select>
 			</div>
 			<div class="form-group hidden" id="certPathDisplay">
@@ -76,6 +189,10 @@
 					<option value='2'>Optimized</option>
 				</select>
 			</div>
+			<div class="form-group hidden" id="FragThresholdDisplay">
+				<label class="pull-left" for="FragThresholdSlider">Fragmentation Threshold:</label>
+				<input onchange="" id="FragThresholdSlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="256" data-slider-max="2346" data-slider-step="1" data-slider-value="2346"/>
+			</div>
 			<div class="form-group hidden" id="fipsDisplay">
 				<label class="pull-left" for="fips">FIPS Mode:</label>
 				<select onchange="" class="form-control" id="fips">
@@ -100,7 +217,7 @@
 			</div>
 			<div class="form-group hidden" id="roamPeriodmsDisplay">
 				<label class="pull-left" for="roamPeriodmsSlider">Roam Period ms:</label>
-				<input onchange="" id="roamPeriodmsSlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="10" data-slider-max="5000" data-slider-step="1" data-slider-value="5000"/>
+				<input onchange="" id="roamPeriodmsSlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="10" data-slider-max="60000" data-slider-step="1" data-slider-value="60000"/>
 			</div>
 			<div class="form-group hidden" id="roamTriggerDisplay">
 				<label class="pull-left" for="roamTriggerSlider">Roam Trigger:</label>
@@ -114,8 +231,8 @@
 				<label class="pull-left" for="scanDFSTimeSlider">Scan DFS Time:</label>
 				<input onchange="" id="scanDFSTimeSlider" style="width:100%" data-slider-id='Slider' type="text" data-slider-min="20" data-slider-max="500" data-slider-step="1" data-slider-value="120"/>
 			</div>
-			<div class="form-group hidden">
-				<label class="pull-left" for="TTLSInnerMethodDisplay">PMK Caching:</label>
+			<div class="form-group hidden" id="TTLSInnerMethodDisplay">
+				<label class="pull-left" for="TTLSInnerMethod">TTLS Inner Method:</label>
 				<select onchange="" class="form-control" id="TTLSInnerMethod">
 					<option value='0'>Auto</option>
 					<option value='1'>MSCHAP v2</option>
@@ -123,6 +240,20 @@
 					<option value='3'>PAP</option>
 					<option value='4'>CHAP</option>
 					<option value='5'>EAP MSCHAP v2</option>
+				</select>
+			</div>
+			<div class="form-group hidden" id="uAPSDDisplay">
+				<label class="pull-left" for="uAPSD">UAPSD:</label>
+				<select onchange="" class="form-control" id="uAPSD">
+					<option value='0'>Off</option>
+					<option value='1'>On</option>
+				</select>
+			</div>
+			<div class="form-group hidden" id="WMEenabledDisplay">
+				<label class="pull-left" for="WMEenabled">WMM:</label>
+				<select onchange="" class="form-control" id="WMEenabled">
+					<option value='0'>Off</option>
+					<option value='1'>On</option>
 				</select>
 			</div>
 		</form>

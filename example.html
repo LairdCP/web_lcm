@@ -714,7 +714,7 @@
 					}
 					console.log(data);
 					for (var key in data) {
-						if (data[key] == 1 && key != "SDCERR"){
+						if (data[key] != 0 && key != "SDCERR"){
 							$("#" + key + "Display").removeClass("hidden");
 						}
 						$("#submitButton").removeClass("hidden");
@@ -726,6 +726,68 @@
 				if (retry < 5){
 					retry++;
 					getSupportedGlobals(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function isSlider(id){
+			switch(id){
+				case "BeaconMissTimeout":
+				case "fragThreshold":
+				case "probeDelay":
+				case "roamPeriodms":
+				case "roamTrigger":
+				case "RTSThreshold":
+				case "scanDFSTime":
+					return true;
+					break;
+				default:
+					return false
+					break;
+			}
+		}
+
+		function getGlobals(retry){
+			$.ajax({
+				url: "php/getGlobals.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function(msg) {
+				if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+				}
+				console.log(msg);
+				for (var key in msg) {
+					if (key != "SDCERR"){
+						if (isSlider(key)){
+							$("#" + key + "Slider").slider('setValue', msg[key]);
+						} else{
+							if (key != "suppInfo"){
+								if (key == "aLRS"){
+									for (var aChannel in msg[key]){
+										document.getElementById("channel" + msg[key][aChannel]).checked = true;
+									}
+								}else if(key == "bLRS"){
+									for (var bChannel in msg[key]){
+										document.getElementById("channel" + msg[key][bChannel]).checked = true;
+									}
+								}else{
+									document.getElementById(key).value = msg[key];
+								}
+							}
+						}
+					}
+				}
+			})
+			.fail(function() {
+				console.log("Error, couldn't get getGlobals.php.. retrying");
+				if (retry < 5){
+					retry++;
+					getGlobals(retry);
 				} else {
 					console.log("Retry max attempt reached");
 				}
@@ -749,38 +811,56 @@
 					$("li").removeClass("active");
 					$("#LiGlobal").addClass("active");
 					$("#helpText").html("Here are the global configuration options for WiFi");
-					$('#BeaconMissTimeoutSlider').slider({
-						formatter: function(value) {
-							return 'Current value: ' + value;
-						}
-					});
-					$('#probeDelaySlider').slider({
-						formatter: function(value) {
-							return 'Current value: ' + value;
-						}
-					});
-					$('#roamPeriodmsSlider').slider({
-						formatter: function(value) {
-							return 'Current value: ' + value;
-						}
-					});
-					$('#roamTriggerSlider').slider({
-						formatter: function(value) {
-							return 'Current value: -' + value;
-						}
-					});
-					$('#RTSThresholdSlider').slider({
-						formatter: function(value) {
-							return 'Current value: ' + value;
-						}
-					});
-					$('#scanDFSTimeSlider').slider({
-						formatter: function(value) {
-							return 'Current value: ' + value;
-						}
-					});
-					getSupportedGlobals(0);
 				},
+			})
+			.done(function( data ) {
+				getGlobals(0);
+				getSupportedGlobals(0);
+				$('#BeaconMissTimeoutSlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
+				$('#fragThresholdSlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
+				$('#probeDelaySlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
+				$('#roamPeriodmsSlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
+				$('#roamTriggerSlider').slider({
+					formatter: function(value) {
+						return 'Current value: -' + value;
+					}
+				});
+				$('#RTSThresholdSlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
+				$('#scanDFSTimeSlider').slider({
+					formatter: function(value) {
+						return 'Current value: ' + value;
+					}
+				});
+				//https://github.com/seiyria/bootstrap-slider/issues/523
+				setTimeout(function() {
+					$('#BeaconMissTimeoutSlider').slider("relayout");
+					$('#fragThresholdSlider').slider("relayout");
+					$('#probeDelaySlider').slider("relayout");
+					$('#roamPeriodmsSlider').slider("relayout");
+					$('#roamTriggerSlider').slider("relayout");
+					$('#RTSThresholdSlider').slider("relayout");
+					$('#scanDFSTimeSlider').slider("relayout");
+				}, 500);
 			})
 			.fail(function() {
 				console.log("Error, couldn't get getGlobals.html.. retrying");
