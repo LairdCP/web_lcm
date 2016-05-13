@@ -783,6 +783,25 @@
 									for (var bChannel in msg[key]){
 										document.getElementById("channel" + msg[key][bChannel]).checked = true;
 									}
+								}else if(key == "fipsStatus"){
+									console.log(msg[key]);
+									switch (msg[key])
+									{
+										case 0: //FIPS_INACTIVE
+											document.getElementById("fipsStatus").innerHTML = "FIPS disabled and inactive:";
+											break;
+										case 1: //FIPS_INACTIVE_ENABLED
+											document.getElementById("fipsStatus").innerHTML =  "FIPS Mode inactive, enabled on next start:";
+											break;
+										case 2: //FIPS_ACTIVE_DISABLED
+											document.getElementById("fipsStatus").innerHTML =  "FIPS Mode active, disabled on next start:";
+											break;
+										case 3: //FIPS_ACTIVE
+											document.getElementById("fipsStatus").innerHTML =  "FIPS Mode enabled and active:";
+											break;
+										default:
+											break;
+									}
 								}else{
 									document.getElementById(key).value = msg[key];
 								}

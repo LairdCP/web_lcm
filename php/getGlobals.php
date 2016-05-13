@@ -65,6 +65,14 @@
 			}
 			$returnedResult['suppInfoDateCheck'] = $suppInfoDateCheck; //special case
 			$returnedResult['fips'] = $cfgs->suppInfo & SUPPINFO_FIPS; //special case
+			$current = str_repeat(" ",1);
+			$next = str_repeat(" ",1);
+			$combined = 4;
+			$result = LRD_WF_GetFipsStatus($current, $next);
+			if ($result == SDCERR_SUCCESS){
+				$combined = ((boolval(trim($current)) << 1) | boolval(trim($next)));
+			}
+			$returnedResult['fipsStatus'] = $combined;
 		}
 	}
 
