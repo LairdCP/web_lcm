@@ -784,7 +784,6 @@
 										document.getElementById("channel" + msg[key][bChannel]).checked = true;
 									}
 								}else if(key == "fipsStatus"){
-									console.log(msg[key]);
 									switch (msg[key])
 									{
 										case 0: //FIPS_INACTIVE
@@ -894,6 +893,34 @@
 				if (retry < 5){
 					retry++;
 					clickGlobalsPage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function submitGlobals(retry){
+			var globalData = {
+				authServerType: document.getElementById("authServerType").value,
+
+			}
+			console.log(globalData);
+			$.ajax({
+				url: "php/setGlobals.php",
+				type: "POST",
+				data: JSON.stringify(globalData),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				SDCERRtoString(msg.SDCERR);
+				$("#submitButton").addClass("disabled");
+			})
+			.fail(function() {
+				console.log("Failed to send global data, retrying");
+				if (retry < 5){
+					retry++;
+					submitGlobals(retry);
 				} else {
 					console.log("Retry max attempt reached");
 				}
