@@ -900,9 +900,43 @@
 		}
 
 		function submitGlobals(retry){
+			var totalAChannelValue = 0;
+			AchannelArray = [36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165];
+			for (var channel in AchannelArray){
+				if(document.getElementById('channel' + AchannelArray[channel]).checked){
+					totalAChannelValue += parseInt(document.getElementById('channel' + AchannelArray[channel]).value);
+				}
+			}
+			var totalBGChannelValue = 0;
+			for (j = 1; j <= 14; j++){
+				if(document.getElementById('channel' + j).checked){
+					totalBGChannelValue += parseInt(document.getElementById('channel' + j).value);
+				}
+			}
 			var globalData = {
+				aLRS: totalAChannelValue,
 				authServerType: document.getElementById("authServerType").value,
-
+				bLRS: totalBGChannelValue,
+				BeaconMissTimeout: parseInt($('#BeaconMissTimeoutSlider').val()),
+				BTcoexist: document.getElementById("BTcoexist").value,
+				CCXfeatures: document.getElementById("CCXfeatures").value,
+				certPath: document.getElementById("certPath").value,
+// 				suppInfo: document.getElementById("suppInfo").value,
+				defAdhocChannel: document.getElementById("defAdhocChannel").value,
+				DFSchannels: document.getElementById("DFSchannels").value,
+				fragThreshold: parseInt($('#fragThresholdSlider').val()),
+				PMKcaching: document.getElementById("PMKcaching").value,
+				probeDelay: parseInt($('#probeDelaySlider').val()),
+				regDomain: document.getElementById("regDomain").value,
+				roamPeriodms: parseInt($('#roamPeriodmsSlider').val()),
+				roamTrigger: parseInt($('#roamTriggerSlider').val()),
+				RTSThreshold: parseInt($('#RTSThresholdSlider').val()),
+				scanDFSTime: parseInt($('#scanDFSTimeSlider').val()),
+				TTLSInnerMethod: document.getElementById("TTLSInnerMethod").value,
+				uAPSD: document.getElementById("uAPSD").value,
+				WMEenabled: document.getElementById("WMEenabled").value,
+				suppInfoDateCheck: document.getElementById("suppInfoDateCheck").value,
+				fips: document.getElementById("fips").value,
 			}
 			console.log(globalData);
 			$.ajax({
