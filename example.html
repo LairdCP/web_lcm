@@ -243,13 +243,16 @@
 
 				$("#progressbar").removeClass("progress-bar-danger progress-bar-warning progress-bar-success");
 				var rssiWidth = rssiMeter.toString().concat("%");
-				if (rssi < -90){ //red
+				if (rssi == 0){ //Not connected
+					$("#progressbar").addClass("progress-bar-danger");
+					$("#progressbar").css('width',rssiWidth);
+				} else if (rssi < -90){ //red
 					$("#progressbar").addClass("progress-bar-danger");
 					$("#progressbar").css('width',rssiWidth);
 				} else if (rssi < -70){ //yellow
 					$("#progressbar").addClass("progress-bar-warning");
 					$("#progressbar").css('width',rssiWidth);
-				} else {
+				} else { //green
 					$("#progressbar").addClass("progress-bar-success");
 					$("#progressbar").css('width',rssiWidth);
 				}
