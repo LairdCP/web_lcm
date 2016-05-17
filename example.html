@@ -974,6 +974,69 @@
 			$("li").removeClass("active");
 			$("#LiAdvanced").addClass("active");
 		}
+
+		function getVersion(retry){
+			$.ajax({
+				url: "php/version.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function(msg) {
+				if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+				}
+				console.log(msg);
+				document.getElementById("sdk").innerHTML = msg.sdk;
+				document.getElementById("chipset").innerHTML = msg.chipset;
+				document.getElementById("driver").innerHTML = msg.driver;
+				document.getElementById("supplicant").innerHTML = msg.supplicant;
+				document.getElementById("php_sdk").innerHTML = msg.php_sdk;
+				document.getElementById("build").innerHTML = msg.build;
+			})
+			.fail(function() {
+				console.log("Error, couldn't get version.php.. retrying");
+				if (retry < 5){
+					retry++;
+					getVersion(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function clickVersionPage(retry){
+			$.ajax({
+				url: "html/version.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#LiVersion").addClass("active");
+					$("#helpText").html("System version information");
+				},
+			})
+			.done(function( data ) {
+				getVersion(0);
+			})
+			.fail(function() {
+				console.log("Error, couldn't get version.html.. retrying");
+				if (retry < 5){
+					retry++;
+					clickGlobalsPage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
 		</script>
 
 	</head>
@@ -1017,7 +1080,7 @@
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li><a href="#">Interface Configuration - X</a></li>
-						<li><a href="#">System Version - X</a></li>
+						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-9 col-xs-offset-3 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
