@@ -23,6 +23,7 @@
 		<script src="assets/js/bootstrap.min.js"></script>
 		<!-- https://github.com/seiyria/bootstrap-slider/blob/master/LICENSE.md -->
 		<script src="assets/js/bootstrap-slider.min.js"></script>
+		<script src="assets/js/button-adjuster.js"></script>
 		<script>
 		var intervalId;
 		clickStatusPage();
@@ -61,23 +62,27 @@
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid EAP TYPE");
 					break;
-				case 8: //SDCERR_INVALID_FILE
+				case 8: //SDCERR_INVALID_WEP_TYPE
+					$("#returnData").addClass("alert alert-danger");
+					$("#returnData").html("Invalid WEP TYPE");
+					break;
+				case 9: //SDCERR_INVALID_FILE
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid File");
 					break;
-				case 9: //SDCERR_INSUFFICIENT_MEMORY
+				case 10: //SDCERR_INSUFFICIENT_MEMORY
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Insufficient Memory");
 					break;
-				case 10: //SDCERR_NOT_IMPLEMENTED
+				case 11: //SDCERR_NOT_IMPLEMENTED
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Not Implemented");
 					break;
-				case 11: //SDCERR_NO_HARDWARE
+				case 12: //SDCERR_NO_HARDWARE
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("No Hardware");
 					break;
-				case 12: //SDCERR_INVALID_VALUE
+				case 13: //SDCERR_INVALID_VALUE
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid Value");
 					break;
@@ -505,7 +510,6 @@
 			})
 			.fail(function() {
 				console.log("Failed to get profiles, retrying");
-				console.log(retry);
 				if (retry < 5){
 					retry++;
 					updateSelectProfilePage(retry);
@@ -1005,15 +1009,56 @@
 			});
 		}
 
-		function clickAdvancedPage(){
-			if (intervalId){
-				clearInterval(intervalId);
-				intervalId = 0;
-			}
-			$("#returnData").removeClass();
-			$("#returnData").html("");
-			$("li").removeClass("active");
-			$("#LiAdvanced").addClass("active");
+		function uploadCert(retry){
+			var file_data = $('#fileToUpload').prop('files')[0];
+			var form_data = new FormData();
+			form_data.append('file', file_data);
+			$.ajax({
+				url: 'php/upload.php', // point to server-side PHP script
+				cache: false,
+				contentType: false,
+				processData: false,
+				data: form_data,
+				type: 'POST',
+			})
+			.done(function( data ) {
+				console.log(data);
+				SDCERRtoString(data.SDCERR);
+			})
+		}
+
+		function clickAdvancedPage(retry){
+			$.ajax({
+				url: "html/advanced.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#LiAdvanced").addClass("active");
+					$("#helpText").html("Advanced configuration options");
+				},
+			})
+			.done(function( data ) {
+				$('input[type=file]').bootstrapFileInput();
+				$('.file-inputs').bootstrapFileInput();
+			})
+			.fail(function() {
+				console.log("Error, couldn't get advanced.html.. retrying");
+				if (retry < 5){
+					retry++;
+					clickAdvancedPage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
 		}
 
 		function getVersion(retry){
@@ -1117,7 +1162,7 @@
 							</ul>
 						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
 						<li id="LiScan"><a href="#">WiFi Scan - X</a></li>
-						<li id="LiAdvanced" onclick="clickAdvancedPage()"><a href="#">WiFi Advanced - X</a></li>
+						<li id="LiAdvanced" onclick="clickAdvancedPage(0)"><a href="#">WiFi Advanced - X</a></li>
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li><a href="#">Interface Configuration - X</a></li>
