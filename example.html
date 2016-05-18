@@ -495,7 +495,13 @@
 					var option = document.createElement("option");
 					option.text = msg.profiles[i];
 					x.add(option);
+					if (msg.profiles[i] == msg.currentConfig){
+						x.selectedIndex = i;
+						var helpText = document.getElementById("helpText").innerHTML;
+						$("#helpText").html(helpText + " Profile " + msg.currentConfig + " is the active profile.");
+					}
 				}
+
 			})
 			.fail(function() {
 				console.log("Failed to get profiles, retrying");
@@ -503,6 +509,41 @@
 				if (retry < 5){
 					retry++;
 					updateSelectProfilePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function activateProfile(retry){
+			var data = {
+					profileName: document.getElementById("profileSelect").value,
+			}
+			console.log("Activating profile " + data.profileName);
+			$.ajax({
+				url: "php/activateProfile.php",
+				type: "POST",
+				data: JSON.stringify(data),
+				contentType: "application/json",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+				},
+				error: function (xhr, status) {
+					console.log("Error, couldn't get activateProfile.php");
+				},
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				SDCERRtoString(msg.SDCERR);
+			})
+			.fail(function() {
+				console.log("Failed to activate profile, retrying");
+				if (retry < 5){
+					retry++;
+					activateProfile(retry);
 				} else {
 					console.log("Retry max attempt reached");
 				}

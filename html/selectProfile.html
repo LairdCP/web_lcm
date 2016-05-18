@@ -3,6 +3,13 @@
 		<select class="form-control" id="profileSelect">
 		</select>
 		<br>
-		<button onclick="selectedProfile()" type="button" class="btn btn-primary">Edit</button>
+		<div class="btn-group btn-group-justified" role="group" aria-label="...">
+			<div class="btn-group" role="group">
+				<button onclick="activateProfile(0)" type="button" class="btn btn-default">Activate</button>
+			</div>
+			<div class="btn-group" role="group">
+				<button onclick="selectedProfile(0)" type="button" class="btn btn-default">Edit</button>
+			</div>
+		</div>
 	</form>
 </html>
