@@ -1027,6 +1027,32 @@
 			})
 		}
 
+		function submitAdvanced(retry){
+			var AdvancedData = {
+				suppDebugLevel: parseInt(document.getElementById("suppDebugLevel").value),
+				driverDebugLevel: parseInt(document.getElementById("driverDebugLevel").value),
+			}
+			$.ajax({
+				url: "php/setAdvanced.php",
+				type: "POST",
+				data: JSON.stringify(AdvancedData),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				SDCERRtoString(msg.SDCERR);
+				$("#submitButton").addClass("disabled");
+			})
+			.fail(function() {
+				console.log("Failed to send advanced data, retrying");
+				if (retry < 5){
+					retry++;
+					submitAdvanced(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function getAdvanced(retry){
 			$.ajax({
 				url: "php/getAdvanced.php",
