@@ -86,6 +86,18 @@
 
 	$returnedResult['php_sdk'] = LRD_PHP_SDK_VERSION_MAJOR . "." . LRD_PHP_SDK_VERSION_MINOR . "." . LRD_PHP_SDK_VERSION_REVISION . "." . LRD_PHP_VERSION_SUB_REVISION;
 
+	$firmwareStringLength = new_intp();
+	intp_assign($firmwareStringLength,80);
+	$firmwareString = str_repeat(" ",intp_value($firmwareStringLength));
+	$returnedResult['firmware'] = "Firmware not loaded.  Unable to check firmware version.";
+	$firmwareSDCERR = LRD_WF_GetFirmwareVersionString($firmwareString, $firmwareStringLength);
+	if ($firmwareSDCERR == SDCERR_SUCCESS){
+		$returnedResult['firmware'] = $firmwareString;
+	}else{
+		$result = $firmwareSDCERR;
+	}
+	delete_intp($firmwareStringLength);
+
 	$returnedResult['SDCERR'] = $result;
 
 	echo json_encode($returnedResult);
