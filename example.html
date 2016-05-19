@@ -1027,6 +1027,32 @@
 			})
 		}
 
+		function getAdvanced(retry){
+			$.ajax({
+				url: "php/getAdvanced.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function(msg) {
+				if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+				}
+				console.log(msg);
+				document.getElementById("suppDebugLevel").value = msg.suppDebugLevel;
+				document.getElementById("driverDebugLevel").value = msg.driverDebugLevel;
+			})
+			.fail(function() {
+				console.log("Error, couldn't get getAdvanced.php.. retrying");
+				if (retry < 5){
+					retry++;
+					getAdvanced(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function clickAdvancedPage(retry){
 			$.ajax({
 				url: "html/advanced.html",
@@ -1049,6 +1075,7 @@
 			.done(function( data ) {
 				$('input[type=file]').bootstrapFileInput();
 				$('.file-inputs').bootstrapFileInput();
+				getAdvanced(0);
 			})
 			.fail(function() {
 				console.log("Error, couldn't get advanced.html.. retrying");
