@@ -1,0 +1,51 @@
+</html>
+	<form class="col-xs-12 col-sm-12 placeholder" class="form-inline">
+		<div class="form-group">
+			<div class="form-group">
+				<label class="pull-left" for="InterfaceName">Interface Name:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="InterfaceName" readonly>
+			</div>
+			<div class="form-group" id="methodDisplay"">
+				<label class="pull-left" for="method">Address Acquisition:</label>
+				<select class="form-control" id="method">
+					<option value='dhcp'>DHCP</option>
+					<option value='static'>Static</option>
+					<option value='manual'>Manual</option>
+				</select>
+			</div>
+			<div class="form-group col-xs-6 hidden" id="br_port_1_Display"">
+				<label class="pull-left" for="br_port_1">Bridge:</label>
+				<select class="form-control" id="br_port_1">
+				</select>
+			</div>
+			<div class="form-group col-xs-6 hidden" id="br_port_2_Display"">
+				<label class="pull-left" for="br_port_2">With:</label>
+				<select class="form-control" id="br_port_2">
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="address">Address:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="address">
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="netmask">Netmask:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="netmask">
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="gateway">Gateway:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="gateway">
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="broadcast">Broadcast:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="broadcast">
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="nameserver">Nameserver:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="nameserver">
+			</div>
+		</div>
+		<div>
+			<button onclick="" type="button" class="btn btn-primary">Submit</button>
+		</div>
+	</form>
+</html>

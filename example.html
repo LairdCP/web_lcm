@@ -506,7 +506,6 @@
 						$("#helpText").html(helpText + " Profile " + msg.currentConfig + " is the active profile.");
 					}
 				}
-
 			})
 			.fail(function() {
 				console.log("Failed to get profiles, retrying");
@@ -1114,6 +1113,189 @@
 			});
 		}
 
+		function updateGetInterfacePage(interfaceName,retry){
+			$.ajax({
+				url: "php/getInterfaces.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( data ) {
+				console.log(data);
+				console.log(data.Interfaces);
+				console.log("Number of interfaces: " + Object.keys(data.Interfaces).length);
+				for (var iface in data.Interfaces){
+					if (iface == interfaceName){
+						document.getElementById("InterfaceName").value = iface;
+						switch (data.Interfaces[iface].inet){
+							case "dhcp":
+								document.getElementById("method").selectedIndex = 0;
+								break;
+							case "static":
+								document.getElementById("method").selectedIndex = 1;
+								break;
+							case "manual":
+								document.getElementById("method").selectedIndex = 2;
+								break;
+							default:
+								$("#methodDisplay").addClass("hidden");
+								break;
+						}
+						if (data.Interfaces[iface].br_port_1 && data.Interfaces[iface].br_port_2){
+							$("#br_port_1_Display").removeClass("hidden");
+							$("#br_port_2_Display").removeClass("hidden");
+							var x = document.getElementById("br_port_1");
+							x.size = Object.keys(data.AutoInterfaces).length;
+							var y = document.getElementById("br_port_2");
+							y.size = Object.keys(data.AutoInterfaces).length;
+							for (var Autoiface in data.AutoInterfaces) {
+								var br_port_1 = document.createElement("option");
+								var br_port_2 = document.createElement("option");
+								br_port_1.text = Autoiface;
+								br_port_2.text = Autoiface;
+								x.add(br_port_1);
+								y.add(br_port_2);
+								if (br_port_1.text == data.Interfaces[iface].br_port_1){
+									x.selectedIndex = br_port_1.index;
+								}
+								if (br_port_2.text == data.Interfaces[iface].br_port_2){
+									y.selectedIndex = br_port_2.index;
+								}
+							}
+						}
+						if (data.Interfaces[iface].address){
+							document.getElementById("address").value = data.Interfaces[iface].address;
+						}
+						if (data.Interfaces[iface].netmask){
+							document.getElementById("netmask").value = data.Interfaces[iface].netmask;
+						}
+						if (data.Interfaces[iface].gateway){
+							document.getElementById("gateway").value = data.Interfaces[iface].gateway;
+						}
+						if (data.Interfaces[iface].broadcast){
+							document.getElementById("broadcast").value = data.Interfaces[iface].broadcast;
+						}
+						if (data.Interfaces[iface].nameserver){
+							document.getElementById("nameserver").value = data.Interfaces[iface].nameserver;
+						}
+						for (var prop in data.Interfaces[iface]){
+							console.log(prop + ":" + data.Interfaces[iface][prop]);
+						}
+					}
+				}
+			})
+			.fail(function() {
+				console.log("Failed to get interface data, retrying");
+				if (retry < 5){
+					retry++;
+					updateGetInterfacePage(interfaceName,retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function selectedInterface(retry){
+			var selectedInterface = document.getElementById("InterfaceSelect").value;
+			$.ajax({
+				url: "html/getInterface.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("#helpText").html("Adjust interface settings.");
+				},
+				error: function (xhr, status) {
+					console.log("Error, couldn't get getInterface.html");
+				},
+			})
+			.done(function( msg ) {
+				console.log("Now try to get interface from PHP");
+				updateGetInterfacePage(selectedInterface,0);
+			})
+			.fail(function() {
+				console.log("Failed to get get interface, retrying");
+				if (retry < 5){
+					retry++;
+					selectedInterface(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function updateSelectInterfacePage(retry){
+			$.ajax({
+				url: "php/getInterfaces.php",
+				data: {},
+				type: "POST",
+				contentType: "application/json",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+				},
+			})
+			.done(function( data ) {
+				var x = document.getElementById("InterfaceSelect");
+				x.size = Object.keys(data.Interfaces).length;
+				for (var iface in data.Interfaces) {
+					var option = document.createElement("option");
+					option.text = iface;
+					x.add(option);
+				}
+			})
+			.fail(function() {
+				console.log("Error, couldn't get getInterfaces.php.. retrying");
+				if (retry < 5){
+					retry++;
+					updateSelectInterfacePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function clickInterfacePage(retry){
+			$.ajax({
+				url: "html/selectInterface.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#LiInterface").addClass("active");
+					$("#helpText").html("Interface information");
+				},
+			})
+			.done(function( data ) {
+				updateSelectInterfacePage(0);
+			})
+			.fail(function() {
+				console.log("Error, couldn't get getInterfaces.php.. retrying");
+				if (retry < 5){
+					retry++;
+					clickInterfacePage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function getVersion(retry){
 			$.ajax({
 				url: "php/version.php",
@@ -1219,7 +1401,7 @@
 						<li id="LiAdvanced" onclick="clickAdvancedPage(0)"><a href="#">WiFi Advanced - X</a></li>
 					</ul>
 					<ul class="nav nav-sidebar">
-						<li><a href="#">Interface Configuration - X</a></li>
+						<li id="LiInterface" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration - X</a></li>
 						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>
 				</div>
