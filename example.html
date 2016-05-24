@@ -1113,6 +1113,42 @@
 			});
 		}
 
+		function submitInterface(retry){
+			var InterfaceData = {
+				interfaceName: document.getElementById("interfaceName").value,
+				auto: document.getElementById("auto").value,
+				method: document.getElementById("method").value,
+				br_port_1: document.getElementById("br_port_1").value,
+				br_port_2: document.getElementById("br_port_2").value,
+				address: document.getElementById("address").value,
+				netmask: document.getElementById("netmask").value,
+				gateway: document.getElementById("gateway").value,
+				broadcast: document.getElementById("broadcast").value,
+				nameserver: document.getElementById("nameserver").value,
+			}
+			console.log(InterfaceData);
+			$.ajax({
+				url: "php/setInterfaces.php",
+				type: "POST",
+				data: JSON.stringify(InterfaceData),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				SDCERRtoString(msg.SDCERR);
+				$("#submitButton").addClass("disabled");
+			})
+			.fail(function() {
+				console.log("Failed to set interface data, retrying");
+				if (retry < 5){
+					retry++;
+					submitInterface(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function updateGetInterfacePage(interfaceName,retry){
 			$.ajax({
 				url: "php/getInterfaces.php",
@@ -1125,7 +1161,10 @@
 				console.log("Number of interfaces: " + Object.keys(data.Interfaces).length);
 				for (var iface in data.Interfaces){
 					if (iface == interfaceName){
-						document.getElementById("InterfaceName").value = iface;
+						document.getElementById("interfaceName").value = iface;
+						if (data.AutoInterfaces[iface]){
+							document.getElementById("auto").selectedIndex = 1;
+						}
 						switch (data.Interfaces[iface].inet){
 							case "dhcp":
 								document.getElementById("method").selectedIndex = 0;
@@ -1196,6 +1235,9 @@
 
 		function selectedInterface(retry){
 			var selectedInterface = document.getElementById("InterfaceSelect").value;
+			if (!selectedInterface){
+				return;
+			}
 			$.ajax({
 				url: "html/getInterface.html",
 				data: {},
