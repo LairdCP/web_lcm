@@ -1,0 +1,30 @@
+<html>
+	<div class="col-xs-12 col-sm-12 placeholder">
+		<form>
+			<div class="form-group hidden" id="remoteUpdateDisplay">
+				<label class="pull-left" for="remoteUpdate">Remote Update:</label>
+				<input onchange="onChangeSubmit()" type="text" class="form-control" id="remoteUpdate" placeholder="<protocol>://<server/path/to/images>/fw.txt">
+			</div>
+		<form>
+		<a id="submitButton" onclick="startUpdate(0)" class="btn btn-primary disabled hidden" role="button">Start</a>
+		<div class="progress" id="updateProgressDisplay">
+			<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+		</div>
+		<div class="panel panel-warning hidden" id="updateLogDisplay">
+			<div class="panel-heading">
+				<h3 class="panel-title">Device Updating</h3>
+			</div>
+			<div class="panel-body hidden" id="updateLogTextDisplay">
+				<div class="form-group hidden" id="startOverButtonDisplay">
+					<a id="startOverButton" onclick="restartUpdate(0)" class="btn btn-primary" role="button">Start Over</a>
+					<br>
+				</div>
+				<div class="form-group hidden" id="rebootButtonDisplay">
+					<a id="rebootButton" onclick="rebootDevice(0)" class="btn btn-primary" role="button">Reboot</a>
+					<br>
+				</div>
+				<textarea class="form-control" style="resize:none;overflow:hidden;outline:none;" id="updateLogText"></textarea>
+			</div>
+		</div>
+	</div>
+</html>

@@ -264,13 +264,13 @@
 			})
 			.fail(function() {
 				console.log("Failed to get data, retrying.");
-				setIntervalStatus();
+				setIntervalUpdate(updateStatus);
 			});
 		}
 
-		function setIntervalStatus(){
+		function setIntervalUpdate(functionName){
 			if (!intervalId){
-				intervalId = setInterval(updateStatus, 1000);
+				intervalId = setInterval(functionName, 1000);
 			} else {
 				console.log("Interval already set");
 			}
@@ -292,7 +292,7 @@
 					dataType: "html",
 					success: function (data) {
 						$('#main_section').html(data);
-						setIntervalStatus();
+						setIntervalUpdate(updateStatus);
 					},
 					error: function (xhr, status) {
 						if (intervalId){
@@ -1113,6 +1113,176 @@
 			});
 		}
 
+		function restartUpdate(retry){
+			$.ajax({
+				url: "php/restartUpdate.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				clickAdvancedRemoteUpdate(0)
+			})
+			.fail(function() {
+				console.log("Failed to restart update, retrying");
+				if (retry < 5){
+					retry++;
+					restartUpdate(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function rebootDevice(retry){
+			$.ajax({
+				url: "php/reboot.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				$("#updateLogDisplay").addClass("hidden");
+				$("#updateLogTextDisplay").addClass("hidden");
+				$("#updateProgressDisplay").removeClass("hidden");
+				$("#helpText").html("Device is now rebooting. The page will attempt to redirect in 20 seconds if IP address remains the same.");
+				setTimeout("location.reload(true);", 20000);
+			})
+			.fail(function() {
+				console.log("Failed to reboot device, retrying");
+				if (retry < 5){
+					retry++;
+					rebootDevice(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function startUpdate(retry){
+			var updateData = {
+				remoteUpdate: document.getElementById("remoteUpdate").value,
+			}
+			console.log(updateData);
+			$.ajax({
+				url: "php/startUpdate.php",
+				type: "POST",
+				data: JSON.stringify(updateData),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				checkUpdateStarted(0);
+			})
+			.fail(function() {
+				console.log("Failed to send update data, retrying");
+				if (retry < 5){
+					retry++;
+					startUpdate(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function showUpdateLog(retry){
+			$.ajax({
+				url: "php/getUpdateLog.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( data ) {
+				var logLength = Object.keys(data.log).length;
+				document.getElementById("updateLogText").rows = logLength + 3;
+				$("#updateProgressDisplay").addClass("hidden");
+				$("#updateLogDisplay").removeClass("hidden");
+				$("#updateLogTextDisplay").removeClass("hidden");
+				$("#updateLogText").html(data.log);
+				if (data.log[logLength - 1].trim() == "Done."){
+					if (intervalId){
+							clearInterval(intervalId);
+							intervalId = 0;
+					}
+					if (data.log[logLength - 2].trim().substring(0,7) == "Errors:"){
+						$("#startOverButtonDisplay").removeClass("hidden");
+					}else{
+						$("#rebootButtonDisplay").removeClass("hidden");
+					}
+				}else{
+					if (!intervalId){
+						setIntervalUpdate(showUpdateLog);
+					}
+				}
+			})
+			.fail(function() {
+				console.log("Error, couldn't get update log..");
+				if (retry < 5){
+					retry++;
+					clickAdvancedRemoteUpdate(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function checkUpdateStarted(retry){
+			$.ajax({
+				url: "php/verifyUpdate.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function( data ) {
+				if (data.fwUpdate == "running"){
+					$("#remoteUpdateDisplay").addClass("hidden");
+					$("#submitButton").addClass("hidden");
+					showUpdateLog(0);
+				}else{
+					$("#updateProgressDisplay").addClass("hidden");
+					$("#remoteUpdateDisplay").removeClass("hidden");
+					$("#submitButton").removeClass("hidden");
+				}
+			})
+			.fail(function() {
+				console.log("Error, couldn't get verifyUpdate.php.. retrying");
+				if (retry < 5){
+					retry++;
+					checkUpdateStarted(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function clickAdvancedRemoteUpdate(retry){
+			$.ajax({
+				url: "html/remoteUpdate.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#submenuRemoteUpdate").addClass("active");
+					$("#helpText").html("Remotely update device");
+				},
+			})
+			.done(function( data ) {
+				checkUpdateStarted(0);
+			})
+			.fail(function() {
+				console.log("Error, couldn't get remoteUpdate.html.. retrying");
+				if (retry < 5){
+					retry++;
+					clickAdvancedRemoteUpdate(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function submitInterface(retry){
 			var InterfaceData = {
 				interfaceName: document.getElementById("interfaceName").value,
@@ -1440,7 +1610,10 @@
 							</ul>
 						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
 						<li id="LiScan"><a href="#">WiFi Scan - X</a></li>
-						<li id="LiAdvanced" onclick="clickAdvancedPage(0)"><a href="#">WiFi Advanced - X</a></li>
+						<li id="LiAdvanced" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced - X</a></li>
+							<ul class="nav nav-submenu collapse" id="submenu2" role="menu" aria-labelledby="LiAdvanced">
+								<li id="submenuRemoteUpdate"><a href="#" onclick="clickAdvancedRemoteUpdate(0)">Remote Update</a></li>
+							</ul>
 					</ul>
 					<ul class="nav nav-sidebar">
 						<li id="LiInterface" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration - X</a></li>
