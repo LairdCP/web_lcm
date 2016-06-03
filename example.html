@@ -1008,6 +1008,79 @@
 			});
 		}
 
+		function getScan(retry){
+			$.ajax({
+				url: "php/scan.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function(msg) {
+				if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+				}
+				console.log(msg);
+				var table = document.getElementById("scanTable");
+				for (var scanItem in msg["scanList"]){
+					var row = table.insertRow(-1);
+					var cell0 = row.insertCell(0);
+					var cell1 = row.insertCell(1);
+					var cell2 = row.insertCell(2);
+					var cell3 = row.insertCell(3);
+					var cell4 = row.insertCell(4);
+					cell0.innerHTML = msg["scanList"][scanItem].SSID;
+					cell1.innerHTML = msg["scanList"][scanItem].BSSID;
+					cell2.innerHTML = msg["scanList"][scanItem].channel;
+					cell3.innerHTML = msg["scanList"][scanItem].RSSI;
+					cell4.innerHTML = msg["scanList"][scanItem].security;
+				}
+				$("#updateProgressDisplay").addClass("hidden");
+				$("#scanTableDisplay").removeClass("hidden");
+			})
+			.fail(function() {
+				console.log("Error, couldn't get scan.php.. retrying");
+				if (retry < 5){
+					retry++;
+					getScan(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function clickScanPage(retry){
+			$.ajax({
+				url: "html/scan.html",
+				data: {},
+				type: "GET",
+				dataType: "html",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+					$('#main_section').html(data);
+					$("#returnData").removeClass();
+					$("#returnData").html("");
+					$("li").removeClass("active");
+					$("#LiScan").addClass("active");
+					$("#helpText").html("Scan for wireless networks");
+				},
+			})
+			.done(function( data ) {
+				getScan(0);
+			})
+			.fail(function() {
+				console.log("Error, couldn't get scan.html.. retrying");
+				if (retry < 5){
+					retry++;
+					clickScanPage(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function uploadCert(retry){
 			var file_data = $('#fileToUpload').prop('files')[0];
 			var form_data = new FormData();
@@ -1609,7 +1682,7 @@
 								<li><a href="#">Rename profile - X</a></li>
 							</ul>
 						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
-						<li id="LiScan"><a href="#">WiFi Scan - X</a></li>
+						<li id="LiScan" onclick="clickScanPage(0)"><a href="#">WiFi Scan</a></li>
 						<li id="LiAdvanced" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced - X</a></li>
 							<ul class="nav nav-submenu collapse" id="submenu2" role="menu" aria-labelledby="LiAdvanced">
 								<li id="submenuRemoteUpdate"><a href="#" onclick="clickAdvancedRemoteUpdate(0)">Remote Update</a></li>
