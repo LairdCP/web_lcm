@@ -436,8 +436,10 @@
 			});
 		}
 
-		function selectedProfile(retry){
-			var selectedProfile = document.getElementById("profileSelect").value;
+		function selectedProfile(selectedProfile,retry){
+			if(!selectedProfile){
+				var selectedProfile = document.getElementById("profileSelect").value;
+			}
 			$.ajax({
 				url: "html/getProfile.html",
 				data: {},
@@ -479,7 +481,7 @@
 				console.log("Failed to get get Profile, retrying");
 				if (retry < 5){
 					retry++;
-					selectedProfile(retry);
+					selectedProfile(selectedProfile,retry);
 				} else {
 					console.log("Retry max attempt reached");
 				}
@@ -1007,6 +1009,61 @@
 				}
 			});
 		}
+		function scanToProfile(){
+			var profileName = document.getElementById("profileName").value;
+			selectedProfile(profileName,0);
+		}
+
+		function addScanProfile(){
+			var newProfile = {
+				profileName: document.getElementById("profileName").value,
+				SSID: document.getElementById("newSSID").value,
+				wepType: document.getElementById("security").value,
+			}
+			if (newProfile.profileName == ""){
+				$("#profileNameDisplay").addClass("has-error");
+				$("#profileName").popover({content:'Please enter profile name',placement:'bottom'});
+				$("#profileName").popover('show')
+				return;
+			}
+			$.ajax({
+				url: "php/addProfile.php",
+				type: "POST",
+				data: JSON.stringify(newProfile),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				console.log(msg.SDCERR);
+				SDCERRtoString(msg.SDCERR);
+				if (document.getElementById("returnData").innerHTML == "Success"){
+					$("#goToProfileDisplay").removeClass("hidden");
+				}
+			});
+		}
+
+		function allowDrop(ev){
+			ev.preventDefault();
+		}
+
+		function drag(ev){
+			var table = document.getElementById("scanTable");
+			var index = $(ev.currentTarget).index() + 1;
+			if (index > 1){
+				ev.dataTransfer.setData("ssid", table.rows[index].cells[0].innerHTML);
+				var securityArray = table.rows[index].cells[4].innerHTML.split(",");
+				ev.dataTransfer.setData("security",securityArray[0]);
+			}
+		}
+
+		function drop(ev){
+			ev.preventDefault();
+			var table = document.getElementById("addTable");
+			document.getElementById("newSSID").value = ev.dataTransfer.getData("ssid");
+			document.getElementById("security").value = ev.dataTransfer.getData("security");
+			$("#profileNameDisplay").removeClass("has-error");
+			$("#addScanDisplay").removeClass("hidden");
+		}
 
 		function getScan(retry){
 			$.ajax({
@@ -1019,10 +1076,11 @@
 					clearInterval(intervalId);
 					intervalId = 0;
 				}
-				console.log(msg);
 				var table = document.getElementById("scanTable");
 				for (var scanItem in msg["scanList"]){
 					var row = table.insertRow(-1);
+					row.setAttribute('draggable', true);
+					row.setAttribute('ondragstart', 'drag(event)');
 					var cell0 = row.insertCell(0);
 					var cell1 = row.insertCell(1);
 					var cell2 = row.insertCell(2);

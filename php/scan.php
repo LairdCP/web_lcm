@@ -58,9 +58,10 @@
 				$scanListItem["channel"] = $item->channel;
 				$scanListItem["RSSI"] = $item->RSSI/100;
 				$scanListItem["BSSType"] = ($item->bssType==INFRASTRUCTURE?"Infrastructure":"Adhoc");
+				$scanListItem["security"] = "";
 				foreach ($priority as $key => $value) {
 					if (intval($item->securityMask) & $value){
-						$scanListItem["security"] .= $key . ";";
+						$scanListItem["security"][] = $key;
 					}
 				}
 				array_push($scanList, $scanListItem);
