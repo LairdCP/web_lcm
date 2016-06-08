@@ -1414,6 +1414,58 @@
 			});
 		}
 
+		function modifyInterface(option,retry){
+			var InterfaceSelect = document.getElementById("InterfaceSelect");
+			var InterfaceData = {
+				interfaceName: document.getElementById("newInterfaceName").value,
+				option: option,
+			}
+			if (option == "remove"){
+				InterfaceData.interfaceName = InterfaceSelect.value;
+			}
+			if (InterfaceData.interfaceName != ""){
+				$.ajax({
+					url: "php/setInterfaces.php",
+					type: "POST",
+					data: JSON.stringify(InterfaceData),
+					contentType: "application/json",
+				})
+				.done(function( msg ) {
+					console.log(msg);
+					SDCERRtoString(msg.SDCERR);
+					if (document.getElementById("returnData").innerHTML == "Success"){
+						if (option == "add"){
+							$("#newInterfaceNameDisplay").addClass("hidden");
+							var newOption = document.createElement("option");
+							newOption.text = InterfaceData.interfaceName;
+							InterfaceSelect.add(newOption);
+							InterfaceSelect.size = InterfaceSelect.size + 1;
+						} else if (option == "remove"){
+							for(var i = 0; i < InterfaceSelect.options.length; i++) {
+								if (InterfaceData.interfaceName == InterfaceSelect.options[i].text){
+									InterfaceSelect.options.remove(i);
+									InterfaceSelect.size = InterfaceSelect.size - 1;
+								}
+							}
+						}
+					}
+				})
+				.fail(function() {
+					console.log("Failed to set interface data, retrying");
+					if (retry < 5){
+						retry++;
+						modifyInterface(option,retry)
+					} else {
+						console.log("Retry max attempt reached");
+					}
+				});
+			}
+		}
+
+		function showAddInterface(){
+			$("#newInterfaceNameDisplay").removeClass("hidden");
+		}
+
 		function submitInterface(retry){
 			var InterfaceData = {
 				interfaceName: document.getElementById("interfaceName").value,
@@ -1457,9 +1509,6 @@
 				contentType: "application/json",
 			})
 			.done(function( data ) {
-				console.log(data);
-				console.log(data.Interfaces);
-				console.log("Number of interfaces: " + Object.keys(data.Interfaces).length);
 				for (var iface in data.Interfaces){
 					if (iface == interfaceName){
 						document.getElementById("interfaceName").value = iface;
@@ -1516,9 +1565,6 @@
 						}
 						if (data.Interfaces[iface].nameserver){
 							document.getElementById("nameserver").value = data.Interfaces[iface].nameserver;
-						}
-						for (var prop in data.Interfaces[iface]){
-							console.log(prop + ":" + data.Interfaces[iface][prop]);
 						}
 					}
 				}
