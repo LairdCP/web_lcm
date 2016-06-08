@@ -19,6 +19,7 @@
 	$cfgs->authType = $Profile->{'authType'};
 	$cfgs->eapType = $Profile->{'eapType'};
 	$cfgs->powerSave = ($Profile->{'powerSave'} & 0xf);
+	$cfgs->powerSave = (($Profile->{'pspDelay'} << 16) | (int)($cfgs->powerSave & 0x0000ffff));
 	$cfgs->wepType = $Profile->{'wepType'};
 	switch ($cfgs->wepType){
 		case WEP_OFF:

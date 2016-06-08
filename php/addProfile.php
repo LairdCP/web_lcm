@@ -32,6 +32,9 @@
 		}
 		if (isset($newProfile->{'powerSave'})){
 			$cfgs->powerSave = $newProfile->{'powerSave'};
+			if (isset($newProfile->{'pspDelay'})){
+				$cfgs->powerSave = (($newProfile->{'pspDelay'} << 16) | (int)($cfgs->powerSave & 0x0000ffff));
+			}
 		}
 		if (isset($newProfile->{'wepType'})){
 			if(!is_int($newProfile->{'wepType'})){
