@@ -10,6 +10,22 @@
 			<div class="btn-group" role="group">
 				<button onclick="selectedProfile(null,0)" type="button" class="btn btn-default">Edit</button>
 			</div>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					more <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="#" onclick="showRenameProfile()">Rename profile</a></li>
+					<li><a href="#" onclick="removeProfile()">Remove Interface</a></li>
+				</ul>
+			</div>
+		</div>
+		<br>
+		<div class="input-group hidden" id="newProfileNameDisplay">
+			<input type="text" class="form-control" id="newProfileName"  placeholder="Rename profile to...">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" onclick="renameProfile(0)">rename</button>
+			</span>
 		</div>
 	</form>
 </html>

@@ -92,6 +92,11 @@
 			}
 		}
 
+		function CustomErrMsg(message){
+			$("#returnData").addClass("alert alert-danger");
+			$("#returnData").html(message);
+		}
+
 		function CARDSTATEtoString(CARDSTATE){
 			switch(CARDSTATE) {
 				case 0: //CARDSTATE_NOT_INSERTED
@@ -504,6 +509,7 @@
 					x.add(option);
 					if (msg.profiles[i] == msg.currentConfig){
 						x.selectedIndex = i;
+						option.id = "activeProfile";
 						var helpText = document.getElementById("helpText").innerHTML;
 						$("#helpText").html(helpText + " Profile " + msg.currentConfig + " is the active profile.");
 					}
@@ -554,6 +560,84 @@
 				}
 			});
 		}
+
+		function renameProfile(retry){
+			var profileSelect = document.getElementById("profileSelect");
+			var selectedProfile = profileSelect.options[profileSelect.selectedIndex].text;
+			var profileName = {
+					currentName: selectedProfile,
+					newName: document.getElementById("newProfileName").value,
+			}
+			$.ajax({
+				url: "php/renameProfile.php",
+				type: "POST",
+				data: JSON.stringify(profileName),
+				contentType: "application/json",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+				},
+				error: function (xhr, status) {
+					console.log("Error, couldn't get renameProfile.php");
+				},
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				SDCERRtoString(msg.SDCERR);
+				if (document.getElementById("returnData").innerHTML == "Success"){
+					for(var i = 0; i < profileSelect.options.length; i++) {
+						if (profileName.currentName == profileSelect.options[i].text){
+							profileSelect.options[i].text = profileName.newName;
+						}
+					}
+					$("#newProfileNameDisplay").addClass("hidden");
+				}
+			})
+			.fail(function() {
+				console.log("Failed to rename profile, retrying");
+				if (retry < 5){
+					retry++;
+					renameProfile(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function showRenameProfile(){
+			$("#newProfileNameDisplay").removeClass("hidden");
+		}
+
+		function removeProfile(){
+			var profileSelect = document.getElementById("profileSelect");
+			var activeProfile = document.getElementById("activeProfile");
+			var oldProfile = {
+				profileName: profileSelect.value
+			}
+			if (oldProfile.profileName != activeProfile.text){
+				$.ajax({
+					url: "php/removeProfile.php",
+					type: "POST",
+					data: JSON.stringify(oldProfile),
+					contentType: "application/json",
+				})
+				.done(function( msg ) {
+					SDCERRtoString(msg.SDCERR);
+					if (document.getElementById("returnData").innerHTML == "Success"){
+						for(var i = 0; i < profileSelect.options.length; i++) {
+							if (oldProfile.profileName == profileSelect.options[i].text){
+								profileSelect.options.remove(i);
+								profileSelect.size = profileSelect.size - 1;
+							}
+						}
+					}
+				});
+			} else {
+				CustomErrMsg("Cant delete active profile");
+			}
+		};
 
 		function clickProfileEditPage(retry) {
 			$.ajax({
@@ -630,66 +714,6 @@
 			});
 		}
 
-		function updateRemoveProfilePage(retry){
-			$.ajax({
-				url: "php/listProfile.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				var x = document.getElementById("profileSelect");
-				x.size = String(msg.NumConfigs - 1);
-				for (i = 0; i < msg.NumConfigs; i++) {
-					var option = document.createElement("option");
-					if (msg.profiles[i] != msg.currentConfig){
-						option.text = msg.profiles[i];
-						x.add(option);
-					}
-				}
-			})
-			.fail(function() {
-				console.log("Failed to get profiles, retrying");
-				if (retry < 5){
-					retry++;
-					updateSelectProfilePage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickRemoveProfilePage(retry) {
-			$.ajax({
-				url: "html/removeProfile.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
-					$("li").removeClass("active");
-					$("#submenuRemove").addClass("active");
-					$("#helpText").html("Select the name of the profile you would like to remove.");
-					setTimeout(updateRemoveProfilePage(retry),1000);
-				},
-			})
-			.fail(function() {
-				console.log("Error, couldn't get removeProfile.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickRemoveProfilePage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
 		function updateAddProfileSlider(){
 			//https://github.com/seiyria/bootstrap-slider/issues/523
 			setTimeout(function() {
@@ -740,23 +764,6 @@
 			} else {
 				console.log("Name is null");
 			}
-		};
-
-		function removeProfile(){
-			console.log("Value");
-			console.log(document.getElementById("profileSelect").value);
-			var oldProfile = {
-				profileName: document.getElementById("profileSelect").value
-			}
-			$.ajax({
-				url: "php/removeProfile.php",
-				type: "POST",
-				data: JSON.stringify(oldProfile),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				SDCERRtoString(msg.SDCERR);
-			});
 		};
 
 		function getSupportedGlobals(retry){
@@ -1782,8 +1789,6 @@
 							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiProfile">
 								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
 								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage(0)">Add profile</a></li>
-								<li id="submenuRemove"><a href="#" onclick="clickRemoveProfilePage(0)">Remove profile</a></li>
-								<li><a href="#">Rename profile - X</a></li>
 							</ul>
 						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
 						<li id="LiScan" onclick="clickScanPage(0)"><a href="#">WiFi Scan</a></li>
