@@ -29,6 +29,7 @@
 		clickStatusPage();
 
 		function SDCERRtoString(SDCERR){
+			$("#returnData").removeClass();
 			switch(parseInt(SDCERR)) {
 				case 0: //SDCERR_SUCCESS
 					$("#returnData").addClass("alert alert-success");
@@ -93,6 +94,7 @@
 		}
 
 		function CustomErrMsg(message){
+			$("#returnData").removeClass();
 			$("#returnData").addClass("alert alert-danger");
 			$("#returnData").html(message);
 		}
@@ -1791,13 +1793,13 @@
 							</ul>
 						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
 						<li id="LiScan" onclick="clickScanPage(0)"><a href="#">WiFi Scan</a></li>
-						<li id="LiAdvanced" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced - X</a></li>
+						<li id="LiAdvanced" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced</a></li>
 							<ul class="nav nav-submenu collapse" id="submenu2" role="menu" aria-labelledby="LiAdvanced">
 								<li id="submenuRemoteUpdate"><a href="#" onclick="clickAdvancedRemoteUpdate(0)">Remote Update</a></li>
 							</ul>
 					</ul>
 					<ul class="nav nav-sidebar">
-						<li id="LiInterface" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration - X</a></li>
+						<li id="LiInterface" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration</a></li>
 						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>
 				</div>
