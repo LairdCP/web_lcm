@@ -515,6 +515,24 @@
 						$("#helpText").html(helpText + " Profile " + msg.currentConfig + " is the active profile.");
 					}
 				}
+				if (msg.autoProfiles){
+					for (var profile in msg.autoProfiles){
+						var table = document.getElementById("autoProfileTable");
+						var row = table.insertRow(-1);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var checkbox = document.createElement('input');
+						cell1.innerHTML = profile;
+						checkbox.type = "checkbox";
+						checkbox.name = "autoProfile" + parseInt(row.rowIndex);
+						checkbox.value = profile;
+						if (msg.autoProfiles[profile] == true){
+							checkbox.checked = true;
+						}
+						cell2.appendChild(checkbox);
+					}
+					$("#autoProfileDisplay").removeClass("hidden");
+				}
 			})
 			.fail(function() {
 				console.log("Failed to get profiles, retrying");
