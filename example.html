@@ -494,6 +494,10 @@
 			});
 		}
 
+		function enableAutoProfileSubmit(){
+			$("#applyAutoProfile").removeClass("disabled");
+		}
+
 		function updateSelectProfilePage(retry){
 			$.ajax({
 				url: "php/listProfile.php",
@@ -516,21 +520,25 @@
 					}
 				}
 				if (msg.autoProfiles){
+					var table = document.getElementById("autoProfileTable").getElementsByTagName('tbody')[0];
+					var row, cell1, cell2, checkbox,button,buttonText;
 					for (var profile in msg.autoProfiles){
-						var table = document.getElementById("autoProfileTable");
-						var row = table.insertRow(-1);
-						var cell1 = row.insertCell(0);
-						var cell2 = row.insertCell(1);
-						var checkbox = document.createElement('input');
+						row = table.insertRow(-1);
+						cell1 = row.insertCell(0);
+						cell2 = row.insertCell(1);
+						checkbox = document.createElement('input');
 						cell1.innerHTML = profile;
 						checkbox.type = "checkbox";
-						checkbox.name = "autoProfile" + parseInt(row.rowIndex);
+						checkbox.name = profile;
 						checkbox.value = profile;
+						checkbox.setAttribute("onchange","enableAutoProfileSubmit()");
 						if (msg.autoProfiles[profile] == true){
 							checkbox.checked = true;
 						}
 						cell2.appendChild(checkbox);
 					}
+					row.style.borderBottom="1px solid rgb(211, 211, 211)";
+					$("#activateProfile").addClass("hidden");
 					$("#autoProfileDisplay").removeClass("hidden");
 				}
 			})
@@ -657,6 +665,19 @@
 				CustomErrMsg("Cant delete active profile");
 			}
 		};
+
+		function submitAutoProfile(retry){
+			var rows,index,profile,value;
+			autoProfileList = [];
+			rows = document.getElementById("autoProfileTable").rows;
+			for (index = 1; index < rows.length; index++){
+				profile = rows[index].cells[0].innerHTML;
+				value = rows[index].cells[1].children[0].checked;
+				autoProfileList[profile] = value;
+			}
+			console.log(autoProfileList);
+			$("#applyAutoProfile").addClass("disabled");
+		}
 
 		function clickProfileEditPage(retry) {
 			$.ajax({
