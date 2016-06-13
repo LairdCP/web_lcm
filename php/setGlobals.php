@@ -28,6 +28,10 @@
 					$cfgs->authServerType = $global->{'authServerType'};
 				}
 
+				if ($supportedGlobals->autoProfile){
+					$cfgs->autoProfile = $global->{'autoProfile'};
+				}
+
 				if ($supportedGlobals->bLRS){
 					$cfgs->bLRS = $global->{'bLRS'};
 				}

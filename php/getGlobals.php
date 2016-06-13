@@ -39,6 +39,7 @@
 
 			$returnedResult['aLRS'] = $aLRS;
 			$returnedResult['authServerType'] = $cfgs->authServerType;
+			$returnedResult['autoProfile'] = $cfgs->autoProfile & 1;
 			$returnedResult['bLRS'] = $bLRS;
 			$returnedResult['BeaconMissTimeout'] = $cfgs->BeaconMissTimeout;
 			$returnedResult['BTcoexist'] = $cfgs->BTcoexist;

@@ -668,7 +668,7 @@
 
 		function submitAutoProfile(retry){
 			var rows,index,profile,value;
-			autoProfileList = [];
+			autoProfileList = {};
 			rows = document.getElementById("autoProfileTable").rows;
 			for (index = 1; index < rows.length; index++){
 				profile = rows[index].cells[0].innerHTML;
@@ -676,7 +676,17 @@
 				autoProfileList[profile] = value;
 			}
 			console.log(autoProfileList);
-			$("#applyAutoProfile").addClass("disabled");
+			$.ajax({
+				url: "php/setAutoProfileList.php",
+				type: "POST",
+				data: JSON.stringify(autoProfileList),
+				contentType: "application/json",
+			})
+			.done(function( msg ) {
+				console.log(msg);
+				SDCERRtoString(msg.SDCERR);
+				$("#applyAutoProfile").addClass("disabled");
+			});
 		}
 
 		function clickProfileEditPage(retry) {
@@ -1012,6 +1022,7 @@
 			var globalData = {
 				aLRS: totalAChannelValue,
 				authServerType: document.getElementById("authServerType").value,
+				autoProfile: document.getElementById("autoProfile").value,
 				bLRS: totalBGChannelValue,
 				BeaconMissTimeout: parseInt($('#BeaconMissTimeoutSlider').val()),
 				BTcoexist: document.getElementById("BTcoexist").value,

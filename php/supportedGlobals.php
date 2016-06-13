@@ -17,6 +17,7 @@
 		if($result == SDCERR_SUCCESS){
 			$returnedResult['aLRS'] = $supportedGlobals->aLRS;
 			$returnedResult['authServerType'] = $supportedGlobals->authServerType;
+			$returnedResult['autoProfile'] = $supportedGlobals->autoProfile;
 			$returnedResult['bLRS'] = $supportedGlobals->bLRS;
 			$returnedResult['BeaconMissTimeout'] = $supportedGlobals->BeaconMissTimeout;
 			$returnedResult['BTcoexist'] = $supportedGlobals->BTcoexist;
