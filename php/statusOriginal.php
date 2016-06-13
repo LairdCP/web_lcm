@@ -1,4 +1,7 @@
 <?php
+# Copyright (c) 2016, Laird
+# Contact: ews-support@lairdtech.com
+
 include("../lrd_php_sdk.php");
 
 if( !extension_loaded('lrd_php_sdk') )
