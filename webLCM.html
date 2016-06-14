@@ -1839,7 +1839,15 @@
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Dashboard</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickStatusPage()" href="#">WiFi Status</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickGlobalsPage(0)" href="#">WiFi Globals</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickScanPage(0)" href="#">WiFi Scan</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickAdvancedPage(0)" href="#">WiFi Advanced</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickAdvancedRemoteUpdate(0)" href="#">Remote Update</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickInterfacePage(0)" href="#">Interface Configuration</a></li>
+						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickVersionPage(0)" href="#">System Version</a></li>
 						<li><a href="#">Settings</a></li>
 					</ul>
 				</div>
@@ -1848,7 +1856,7 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-3 col-sm-3 col-md-2 sidebar">
+				<div class="col-xs-3 col-sm-3 col-md-2 sidebar hidden-xs">
 					<ul class="nav nav-sidebar">
 						<li id="LiStatus" class="active"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
 						<li id="LiProfile"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
@@ -1868,14 +1876,14 @@
 						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>
 				</div>
-				<div class="col-xs-9 col-xs-offset-3 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<div class="row placeholders">
-						<div class="col-xs-12 col-sm-6 placeholder">
+						<div class="col-xs-12 col-sm-12 col-md-6 placeholder">
 							<p id="main_section"></p>
 						</div>
-						<div id="helpSection" class="col-xs-0 col-sm-6 hidden-xs hidden-sm placeholder">
+						<div id="helpSection" class="col-md-6 hidden-xs hidden-sm placeholder">
 							<div id="returnData" class="" role="alert"></div>
-							<img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+							<img src="/assets/img/logo.png" width="320" height="87" class="img-responsive" alt="Responsive image" style="border-radius: 0%">
 							<h4>Need help?</h4>
 							<span id="helpText" class="text-muted">This page shows the current state of WiFi</span>
 						</div>
