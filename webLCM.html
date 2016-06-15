@@ -249,6 +249,7 @@
 
 		function updateStatus(){
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
+				console.log(data);
 				var rssi = data.rssi;
 				var rssiMeter = rssi + 120;
 				$('#cardState').html(CARDSTATEtoString(data.cardState));
@@ -283,7 +284,8 @@
 					$("#progressbar").css('width',rssiWidth);
 				}
 			})
-			.fail(function() {
+			.fail(function(data) {
+				console.log(data);
 				console.log("Failed to get data, retrying.");
 				setIntervalUpdate(updateStatus);
 			});
@@ -1694,6 +1696,51 @@
 			});
 		}
 
+		function setInterfaceState(ev,retry){
+			var actionFromID = ev.target.id.split("-");
+			var InterfaceData = {
+				interface: actionFromID[0],
+				action: ev.target.value.toLowerCase(),
+			}
+			if (!$("#" + ev.target.id).hasClass("disabled")){
+				$.ajax({
+					url: "php/setInterfaceState.php",
+					type: "POST",
+					data: JSON.stringify(InterfaceData),
+					contentType: "application/json",
+					success: function (data) {
+						if (intervalId){
+							clearInterval(intervalId);
+							intervalId = 0;
+						}
+					},
+				})
+				.done(function( data ) {
+					SDCERRtoString(data.SDCERR);
+					if (document.getElementById("returnData").innerHTML == "Success"){
+						var startID = $("#" + actionFromID[0] + "-Start");
+						var stopID = $("#" + actionFromID[0] + "-Stop");
+						if (actionFromID[1] == "Start"){
+							startID.addClass("disabled active");
+							stopID.removeClass("disabled active");
+						} else {
+							stopID.addClass("disabled active");
+							startID.removeClass("disabled active");
+						}
+					}
+				})
+				.fail(function() {
+					console.log("Error, couldn't get setInterfaceState.php.. retrying");
+					if (retry < 5){
+						retry++;
+						setInterfaceState(ev,retry);
+					} else {
+						console.log("Retry max attempt reached");
+					}
+				});
+			}
+		}
+
 		function updateSelectInterfacePage(retry){
 			$.ajax({
 				url: "php/getInterfaces.php",
@@ -1710,10 +1757,48 @@
 			.done(function( data ) {
 				var x = document.getElementById("InterfaceSelect");
 				x.size = Object.keys(data.Interfaces).length;
+				var table = document.getElementById("interfaceStateTable").getElementsByTagName('tbody')[0];
+				var row, cell1, cell2,cell3,startBtn,length,found,index = 1;
 				for (var iface in data.Interfaces) {
+					//Interface Select options
 					var option = document.createElement("option");
 					option.text = iface;
 					x.add(option);
+
+					//Interface State table
+					row = table.insertRow(-1);
+					cell1 = row.insertCell(0);
+					cell2 = row.insertCell(1);
+					cell3 = row.insertCell(2);
+					cell1.innerHTML = iface;
+					startBtn = document.createElement('input');
+					startBtn.type = "button";
+					startBtn.className = "btn btn-default";
+					startBtn.value = "Start";
+					startBtn.id = iface + "-" + startBtn.value;
+					startBtn.onclick=function(){setInterfaceState(event,0)};
+					stopBtn = document.createElement('input');
+					stopBtn.type = "button";
+					stopBtn.className = "btn btn-default";
+					stopBtn.value = "Stop";
+					stopBtn.id = iface + "-" + stopBtn.value;
+					stopBtn.onclick=function(){setInterfaceState(event,0)};
+					cell2.appendChild(startBtn);
+					cell3.appendChild(stopBtn);
+					for (var ifaceState in data.InterfaceState) {
+						if (data.InterfaceState[ifaceState] == iface){
+							startBtn.className = startBtn.className + " disabled active";
+							found = 1;
+							break;
+						}
+						else{
+							found = 0;
+						}
+					}
+					if (!found){
+						stopBtn.className = stopBtn.className + " disabled active";
+					}
+					index++;
 				}
 			})
 			.fail(function() {
@@ -1885,7 +1970,7 @@
 						</div>
 						<div id="helpSection" class="col-md-6 hidden-xs hidden-sm placeholder">
 							<div id="returnData" class="" role="alert"></div>
-							<img src="/assets/img/logo.png" width="320" height="87" class="img-responsive" alt="Responsive image" style="border-radius: 0%">
+							<img src="/assets/img/logo.png" width="320" height="87" class="img-responsive" alt="Responsive image" style="border-radius: 0%" ondragstart="return false;">
 							<h4>Need help?</h4>
 							<span id="helpText" class="text-muted">This page shows the current state of WiFi</span>
 						</div>

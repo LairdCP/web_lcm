@@ -14,6 +14,7 @@
 
 	$autoInterfaces = [];
 	$InterfaceList = [];
+	$InterfaceState = [];
 	$ENABLE = 0;
 	$DISABLE = -1;
 	$EMPTY = -2;
@@ -42,6 +43,17 @@
 				if((checkLine($line) == $ENABLE) && ($pos !== FALSE)){
 					$strArray = explode(' ',trim($line));
 					$Interface = $strArray[1];
+					if(file_exists('/sys/class/net/' . $Interface . '/uevent')){
+						$stateHandle = fopen('/sys/class/net/' . $Interface . '/uevent', "r");
+						if ($stateHandle) {
+							while (($line = fgets($stateHandle)) !== false) {
+								$stateArray = explode('=',trim($line));
+								if ($stateArray[0] == "INTERFACE"){
+									$InterfaceState[] = $strArray[1];
+								}
+							}
+						}
+					}
 					$InterfaceList[$Interface][$strArray[2]] = $strArray[3];
 					while ((($line = fgets($handle)) !== false) && (checkLine($line) != $EMPTY)) {
 						if(checkLine($line) == $DISABLE){
@@ -77,6 +89,7 @@
 
 	$returnedResult['Interfaces'] = $InterfaceList;
 	$returnedResult['AutoInterfaces'] = $autoInterfaces;
+	$returnedResult['InterfaceState'] = $InterfaceState;
 
 	echo json_encode($returnedResult);
 ?>
