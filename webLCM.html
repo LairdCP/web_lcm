@@ -250,38 +250,44 @@
 		function updateStatus(){
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
 				console.log(data);
-				var rssi = data.rssi;
-				var rssiMeter = rssi + 120;
-				$('#cardState').html(CARDSTATEtoString(data.cardState));
-				$('#configName').html(data.configName);
-				$('#ssid').html(data.ssid);
-				$('#channel').html(data.channel);
-				$('#rssi').html(rssi);
-				$('#clientName').html(data.clientName);
-				$('#client_MAC').html(data.client_MAC);
-				$('#client_IP').html(data.client_IP);
-				$('#APName').html(data.APName);
-				$('#AP_MAC').html(data.AP_MAC);
-				$('#AP_IP').html(data.AP_IP);
-				$('#bitRate').html(data.bitRate);
-				$('#txPower').html(data.txPower);
-				$('#beaconPeriod').html(data.beaconPeriod);
-				$('#DTIM').html(data.DTIM);
+				if (data.SDCERR == 12){
+					$("#status-success").addClass("hidden");
+					$("#status-hardware").removeClass("hidden");
+				} else {
+					$("#status-success").removeClass("hidden");
+					var rssi = data.rssi;
+					var rssiMeter = rssi + 120;
+					$('#cardState').html(CARDSTATEtoString(data.cardState));
+					$('#configName').html(data.configName);
+					$('#ssid').html(data.ssid);
+					$('#channel').html(data.channel);
+					$('#rssi').html(rssi);
+					$('#clientName').html(data.clientName);
+					$('#client_MAC').html(data.client_MAC);
+					$('#client_IP').html(data.client_IP);
+					$('#APName').html(data.APName);
+					$('#AP_MAC').html(data.AP_MAC);
+					$('#AP_IP').html(data.AP_IP);
+					$('#bitRate').html(data.bitRate);
+					$('#txPower').html(data.txPower);
+					$('#beaconPeriod').html(data.beaconPeriod);
+					$('#DTIM').html(data.DTIM);
 
-				$("#progressbar").removeClass("progress-bar-danger progress-bar-warning progress-bar-success");
-				var rssiWidth = rssiMeter.toString().concat("%");
-				if (rssi == 0){ //Not connected
-					$("#progressbar").addClass("progress-bar-danger");
-					$("#progressbar").css('width',rssiWidth);
-				} else if (rssi < -90){ //red
-					$("#progressbar").addClass("progress-bar-danger");
-					$("#progressbar").css('width',rssiWidth);
-				} else if (rssi < -70){ //yellow
-					$("#progressbar").addClass("progress-bar-warning");
-					$("#progressbar").css('width',rssiWidth);
-				} else { //green
-					$("#progressbar").addClass("progress-bar-success");
-					$("#progressbar").css('width',rssiWidth);
+					$("#progressbar").removeClass("progress-bar-danger progress-bar-warning progress-bar-success");
+					var rssiWidth = rssiMeter.toString().concat("%");
+					if (rssi == 0){ //Not connected
+						$("#progressbar").addClass("progress-bar-danger");
+						$("#progressbar").css('width',rssiWidth);
+					} else if (rssi < -90){ //red
+						$("#progressbar").addClass("progress-bar-danger");
+						$("#progressbar").css('width',rssiWidth);
+					} else if (rssi < -70){ //yellow
+						$("#progressbar").addClass("progress-bar-warning");
+						$("#progressbar").css('width',rssiWidth);
+					} else { //green
+						$("#progressbar").addClass("progress-bar-success");
+						$("#progressbar").css('width',rssiWidth);
+					}
 				}
 			})
 			.fail(function(data) {
@@ -1153,24 +1159,29 @@
 					clearInterval(intervalId);
 					intervalId = 0;
 				}
-				var table = document.getElementById("scanTable");
-				for (var scanItem in msg["scanList"]){
-					var row = table.insertRow(-1);
-					row.setAttribute('draggable', true);
-					row.setAttribute('ondragstart', 'drag(event)');
-					var cell0 = row.insertCell(0);
-					var cell1 = row.insertCell(1);
-					var cell2 = row.insertCell(2);
-					var cell3 = row.insertCell(3);
-					var cell4 = row.insertCell(4);
-					cell0.innerHTML = msg["scanList"][scanItem].SSID;
-					cell1.innerHTML = msg["scanList"][scanItem].BSSID;
-					cell2.innerHTML = msg["scanList"][scanItem].channel;
-					cell3.innerHTML = msg["scanList"][scanItem].RSSI;
-					cell4.innerHTML = msg["scanList"][scanItem].security;
+				if (msg.SDCERR == 12){
+					$("#updateProgressDisplay").addClass("hidden");
+					$("#status-hardware").removeClass("hidden");
+				} else {
+					var table = document.getElementById("scanTable");
+					for (var scanItem in msg["scanList"]){
+						var row = table.insertRow(-1);
+						row.setAttribute('draggable', true);
+						row.setAttribute('ondragstart', 'drag(event)');
+						var cell0 = row.insertCell(0);
+						var cell1 = row.insertCell(1);
+						var cell2 = row.insertCell(2);
+						var cell3 = row.insertCell(3);
+						var cell4 = row.insertCell(4);
+						cell0.innerHTML = msg["scanList"][scanItem].SSID;
+						cell1.innerHTML = msg["scanList"][scanItem].BSSID;
+						cell2.innerHTML = msg["scanList"][scanItem].channel;
+						cell3.innerHTML = msg["scanList"][scanItem].RSSI;
+						cell4.innerHTML = msg["scanList"][scanItem].security;
+					}
+					$("#updateProgressDisplay").addClass("hidden");
+					$("#scanTableDisplay").removeClass("hidden");
 				}
-				$("#updateProgressDisplay").addClass("hidden");
-				$("#scanTableDisplay").removeClass("hidden");
 			})
 			.fail(function() {
 				console.log("Error, couldn't get scan.php.. retrying");
