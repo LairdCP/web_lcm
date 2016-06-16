@@ -250,6 +250,7 @@
 		function updateStatus(){
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
 				console.log(data);
+				$("#updateProgressDisplay").addClass("hidden");
 				if (data.SDCERR == 12){
 					$("#status-success").addClass("hidden");
 					$("#status-hardware").removeClass("hidden");
@@ -1118,6 +1119,7 @@
 				console.log(msg.SDCERR);
 				SDCERRtoString(msg.SDCERR);
 				if (document.getElementById("returnData").innerHTML == "Success"){
+					document.getElementById("goToProfile").textContent += newProfile.profileName;
 					$("#goToProfileDisplay").removeClass("hidden");
 					document.getElementById("profileNameHidden").value = newProfile.profileName;
 					document.getElementById("addTable").reset();
