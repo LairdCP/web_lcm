@@ -6,12 +6,17 @@
 <html>
 	<div class="col-xs-12 col-sm-12 placeholder">
 		<form>
-			<div class="form-group col-xs-12 col-sm-12">
+			<div class="form-group">
 				<label class="pull-left">Upload Certificate to device:</label>
 			</div>
 			<div class="form-group">
 				<input id="fileToUpload" type="file" data-filename-placement="inside"  title="Select Certificate">
 				<a id="submitCertButton" onclick="uploadCert(0)" role="button" class="btn btn-default">Upload</a>
+			</div>
+			<div class="form-group">
+				<label class="pull-left" for="generateLog">Generate and download log:</label>
+				<a id="generateLog" onclick="generateLog(0)" role="button" class="btn btn-default disabled">Generate</a>
+				<a id="downloadLog" onclick="removeLog(0)" role="button" class="btn btn-default disabled" href="php/downloadLog.php">Download</a>
 			</div>
 			<div class="form-group" id="suppDebugLevelDisplay">
 				<label class="pull-left" for="suppDebugLevel">Supplicant debug level:</label>

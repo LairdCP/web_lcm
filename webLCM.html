@@ -307,7 +307,7 @@
 		}
 
 		function clickStatusPage() {
-			if (intervalId){
+			if ($("#LiStatus").hasClass("active")){
 				console.log("Status already active");
 			} else {
 				$("li").removeClass("active");
@@ -329,7 +329,8 @@
 							clearInterval(intervalId);
 							intervalId = 0;
 						}
-						console.log("Error, too many requests");
+						console.log("Error, couldn't get status.html.. retrying");
+						clickStatusPage();
 					},
 				});
 			}
@@ -1247,6 +1248,84 @@
 			})
 		}
 
+		function generateLog(retry){
+			$.ajax({
+				url: "php/generateLog.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function(msg) {
+				if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+				}
+				setIntervalUpdate(checkLog);
+			})
+			.fail(function() {
+				console.log("Error, couldn't get generateLog.php.. retrying");
+				if (retry < 5){
+					retry++;
+					generateLog(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function removeLog(retry){
+			$.ajax({
+				url: "php/removeLog.php",
+				type: "POST",
+				contentType: "application/json",
+			})
+			.done(function(msg) {
+				if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+				}
+				document.getElementById("generateLog").textContent = "Generate";
+				$("#generateLog").removeClass("disabled");
+				$("#downloadLog").addClass("disabled");
+			})
+			.fail(function() {
+				console.log("Error, couldn't get removeLog.php.. retrying");
+				if (retry < 5){
+					retry++;
+					removeLog(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function checkLog(){
+			var getStatusJSON = $.getJSON( "php/checkLog.php", function( data ) {
+				if (data.state == "finished"){
+					$("#generateLog").addClass("disabled");
+					$("#downloadLog").removeClass("disabled");
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+				} else if (data.state == "stopped"){
+					$("#generateLog").removeClass("disabled");
+					$("#downloadLog").addClass("disabled");
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+				} else if (data.state == "running"){
+					document.getElementById("generateLog").textContent = "Generating";
+					$("#generateLog").addClass("disabled");
+					$("#downloadLog").addClass("disabled");
+				}
+			})
+			.fail(function(data) {
+				console.log("Error, couldn't get checkLog.php.. retrying");
+				setIntervalUpdate(checkLog);
+			});
+		}
+
 		function submitAdvanced(retry){
 			var AdvancedData = {
 				suppDebugLevel: parseInt(document.getElementById("suppDebugLevel").value),
@@ -1287,6 +1366,7 @@
 				console.log(msg);
 				document.getElementById("suppDebugLevel").value = msg.suppDebugLevel;
 				document.getElementById("driverDebugLevel").value = msg.driverDebugLevel;
+				setIntervalUpdate(checkLog);
 			})
 			.fail(function() {
 				console.log("Error, couldn't get getAdvanced.php.. retrying");
