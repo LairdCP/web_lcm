@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <!--
   Copyright (c) 2016, Laird
   Permission to use, copy, modify, and/or distribute this software for any
@@ -13,8 +14,6 @@
 
   Contact: ews-support@lairdtech.com
 -->
-
-<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -41,64 +40,83 @@
 		<script src="assets/js/button-adjuster.js"></script>
 		<script>
 		var intervalId;
-		clickStatusPage();
+		var sdcsdk = [];
+		$.ajax({
+			url: "php/defines.php",
+			type: "POST",
+			contentType: "application/json",
+			retry: 1,
+			success:  function(data) {
+				console.log(data);
+				sdcsdk = data;
+				clickStatusPage();
+			},
+			error: function(){
+				if (this.retry < 5){
+					this.retry++;
+					$.ajax(this);
+					return;
+				}
+			}
+		});
+
 
 		function SDCERRtoString(SDCERR){
 			$("#returnData").removeClass();
 			switch(parseInt(SDCERR)) {
-				case 0: //SDCERR_SUCCESS
+				case sdcsdk.SDCERR.SDCERR_SUCCESS:
 					$("#returnData").addClass("alert alert-success");
 					$("#returnData").html("Success");
 					break;
-				case 1: //SDCERR_FAIL
+				case sdcsdk.SDCERR.SDCERR_FAIL:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Failure");
 					break;
-				case 2: //SDCERR_INVALID_NAME
+				case sdcsdk.SDCERR.SDCERR_INVALID_NAME:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid Name");
 					break;
-				case 3: //SDCERR_INVALID_CONFIG
+				case sdcsdk.SDCERR.SDCERR_INVALID_CONFIG:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid Config");
 					break;
-				case 4: //SDCERR_INVALID_DELETE
+				case sdcsdk.SDCERR.SDCERR_INVALID_DELETE:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid Delete");
 					break;
-				case 5: //SDCERR_POWERCYCLE_REQUIRED
+				case sdcsdk.SDCERR.SDCERR_POWERCYCLE_REQUIRED:
 					$("#returnData").addClass("alert alert-info");
-					$("#returnData").html("Failure");
+					$("#returnData").html("Power Cycle Required");
 					break;
-				case 6: //SDCERR_INVALID_PARAMETER
+				case sdcsdk.SDCERR.SDCERR_INVALID_PARAMETER:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid Parameter");
 					break;
-				case 7: //SDCERR_INVALID_EAP_TYPE
+				case sdcsdk.SDCERR.SDCERR_INVALID_EAP_TYPE:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid EAP TYPE");
 					break;
-				case 8: //SDCERR_INVALID_WEP_TYPE
+				case sdcsdk.SDCERR.SDCERR_INVALID_WEP_TYPE:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid WEP TYPE");
 					break;
-				case 9: //SDCERR_INVALID_FILE
+				case sdcsdk.SDCERR.SDCERR_INVALID_FILE:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid File");
 					break;
-				case 10: //SDCERR_INSUFFICIENT_MEMORY
+				case sdcsdk.SDCERR.SDCERR_INSUFFICIENT_MEMORY:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Insufficient Memory");
 					break;
-				case 11: //SDCERR_NOT_IMPLEMENTED
+				case sdcsdk.SDCERR.SDCERR_NOT_IMPLEMENTED:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Not Implemented");
 					break;
-				case 12: //SDCERR_NO_HARDWARE
+				case sdcsdk.SDCERR.SDCERR_NO_HARDWARE:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("No Hardware");
 					break;
-				case 13: //SDCERR_INVALID_VALUE
+				case sdcsdk.SDCERR.SDCERR_INVALID_VALUE:
 					$("#returnData").addClass("alert alert-danger");
 					$("#returnData").html("Invalid Value");
 					break;
@@ -116,33 +134,24 @@
 
 		function CARDSTATEtoString(CARDSTATE){
 			switch(CARDSTATE) {
-				case 0: //CARDSTATE_NOT_INSERTED
+				case sdcsdk.CARDSTATE.CARDSTATE_NOT_INSERTED:
 					return "Not Inserted";
-					break;
-				case 1: //CARDSTATE_NOT_ASSOCIATED
+				case sdcsdk.CARDSTATE.CARDSTATE_NOT_ASSOCIATED:
 					return "Not Associated";
-					break;
-				case 2: //CARDSTATE_ASSOCIATED
+				case sdcsdk.CARDSTATE.CARDSTATE_ASSOCIATED:
 					return "Associated";
-					break;
-				case 3: //CARDSTATE_AUTHENTICATED
+				case sdcsdk.CARDSTATE.CARDSTATE_AUTHENTICATED:
 					return "Authenticated";
-					break;
-				case 4: //CARDSTATE_FCCTEST
+				case sdcsdk.CARDSTATE.CARDSTATE_FCCTEST:
 					return "FCC Test";
-					break;
-				case 5: //CARDSTATE_NOT_SDC
+				case sdcsdk.CARDSTATE.CARDSTATE_NOT_SDC:
 					return "Not Laird";
-					break;
-				case 6: //CARDSTATE_DISABLED
+				case sdcsdk.CARDSTATE.CARDSTATE_DISABLED:
 					return "Disabled";
-					break;
-				case 7: //CARDSTATE_ERROR
+				case sdcsdk.CARDSTATE.CARDSTATE_ERROR:
 					return "Error";
-					break;
-				case 8: //CARDSTATE_AP_MODE
+				case sdcsdk.CARDSTATE.CARDSTATE_AP_MODE:
 					return "AP Mode";
-					break;
 				default:
 					return "Unknown card state";
 			}
@@ -155,11 +164,11 @@
 		function onChangePowersave(){
 			var powerSave = parseInt(document.getElementById("powerSave").value);
 			switch (powerSave){
-				case 0:
-				case 1:
+				case sdcsdk.POWERSAVE.POWERSAVE_OFF:
+				case sdcsdk.POWERSAVE.POWERSAVE_MAX:
 					$("#pspDelayDisplay").addClass("hidden");
 					break;
-				case 2:
+				case sdcsdk.POWERSAVE.POWERSAVE_FAST:
 					$("#pspDelayDisplay").removeClass("hidden");
 					break;
 				default:
@@ -187,58 +196,58 @@
 			function displayProperEAPCreds(){
 				$("#eapTypeDisplay").removeClass("hidden");
 				$("#userNameDisplay").removeClass("hidden");
-				if (!(eapType == 5 || eapType == 7)){
+				if (!(eapType == sdcsdk.EAPTYPE.EAP_EAPTLS || eapType == sdcsdk.EAPTYPE.EAP_PEAPTLS)){
 					$("#passWordDisplay").removeClass("hidden");
 				} else {
 					$("#userCertDisplay").removeClass("hidden");
 					$("#userCertPasswordDisplay").removeClass("hidden");
 				}
-				if (eapType > 2 && eapType < 8){
+				if (eapType > sdcsdk.EAPTYPE.EAP_EAPFAST && eapType < sdcsdk.EAPTYPE.EAP_WAPI_CERT){
 					$("#CACertDisplay").removeClass("hidden");
 				}
-				if (eapType == 2){
+				if (eapType == sdcsdk.EAPTYPE.EAP_EAPFAST){
 					$("#PACFilenameDisplay").removeClass("hidden");
 					$("#PACPasswordDisplay").removeClass("hidden");
 				}
 			}
 			switch (wepType){
-				case 0:
+				case sdcsdk.WEPTYPE.WEP_OFF:
 					clearCredsDisplay();
 					break;
-				case 1:
+				case sdcsdk.WEPTYPE.WEP_ON:
 					clearCredsDisplay();
 					$("#wepIndexDisplay").removeClass("hidden");
 					$("#wepTypeOnDisplay").removeClass("hidden");
 					break;
-				case 2:
+				case sdcsdk.WEPTYPE.WEP_AUTO:
 					clearCredsDisplay();
 					displayProperEAPCreds();
 					break;
-				case 3:
+				case sdcsdk.WEPTYPE.WPA_PSK:
 					clearCredsDisplay();
 					$("#pskDisplay").removeClass("hidden");
 					break;
-				case 4:
+				case sdcsdk.WEPTYPE.WPA_TKIP:
 					clearCredsDisplay();
 					displayProperEAPCreds();
 					break;
-				case 5:
+				case sdcsdk.WEPTYPE.WPA2_PSK:
 					clearCredsDisplay();
 					$("#pskDisplay").removeClass("hidden");
 					break;
-				case 6:
-				case 7:
-				case 8:
-				case 9:
-				case 10:
+				case sdcsdk.WEPTYPE.WPA2_AES:
+				case sdcsdk.WEPTYPE.CCKM_TKIP:
+				case sdcsdk.WEPTYPE.WEP_CKIP:
+				case sdcsdk.WEPTYPE.WEP_AUTO_CKIP:
+				case sdcsdk.WEPTYPE.CCKM_AES:
 					clearCredsDisplay();
 					displayProperEAPCreds();
 					break;
-				case 11:
+				case sdcsdk.WEPTYPE.WPA_PSK_AES:
 					clearCredsDisplay();
 					$("#pskDisplay").removeClass("hidden");
 					break;
-				case 12:
+				case sdcsdk.WEPTYPE.WPA_AES:
 					clearCredsDisplay();
 					displayProperEAPCreds();
 					break;
@@ -251,7 +260,7 @@
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
 				console.log(data);
 				$("#updateProgressDisplay").addClass("hidden");
-				if (data.SDCERR == 12){
+				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_NO_HARDWARE){
 					$("#status-success").addClass("hidden");
 					$("#status-hardware").removeClass("hidden");
 				} else {
@@ -330,6 +339,7 @@
 							intervalId = 0;
 						}
 						console.log("Error, couldn't get status.html.. retrying");
+						$("#LiStatus").removeClass("active")
 						clickStatusPage();
 					},
 				});
@@ -416,11 +426,11 @@
 				SelectedIndex(document.getElementById("eapType"),msg.eapType);
 				SelectedIndex(document.getElementById("radioMode"),msg.radioMode);
 				document.getElementById("powerSave").selectedIndex =  msg.powerSave;
-				if (msg.powerSave == 2){
+				if (msg.powerSave == sdcsdk.POWERSAVE.POWERSAVE_FAST){
 					$("#pspDelayDisplay").removeClass("hidden");
 					$('#pspDelaySlider').slider('setValue', msg.pspDelay);
 				}
-				if (msg.wepType == 1){
+				if (msg.wepType == sdcsdk.WEPTYPE.WEP_ON){
 					$("#wepIndexDisplay").removeClass("hidden");
 					document.getElementById("wepIndex").selectedIndex =  msg.wepIndex - 1;
 					$("#wepTypeOnDisplay").removeClass("hidden");
@@ -428,14 +438,14 @@
 					document.getElementById("index2").value =  msg.WEPKey2;
 					document.getElementById("index3").value =  msg.WEPKey3;
 					document.getElementById("index4").value =  msg.WEPKey4;
-				} else if (msg.wepType == 3 || msg.wepType == 5 || msg.wepType == 11 || msg.wepType == 13){
+				} else if (msg.wepType == sdcsdk.WEPTYPE.WPA_PSK || msg.wepType == sdcsdk.WEPTYPE.WPA2_PSK || msg.wepType == sdcsdk.WEPTYPE.WPA_PSK_AES || msg.wepType == WPA2_PSK_TKIP){
 					$("#pskDisplay").removeClass("hidden");
 					document.getElementById("psk").value =  msg.PSK;
-				} else if (msg.eapType >= 1){
+				} else if (msg.eapType >= sdcsdk.EAPTYPE.EAP_LEAP){
 					$("#eapTypeDisplay").removeClass("hidden");
 					$("#userNameDisplay").removeClass("hidden");
 					document.getElementById("userName").value =  msg.userName;
-					if (!(msg.eapType == 5 || msg.eapType == 7)){
+					if (!(msg.eapType == sdcsdk.EAPTYPE.EAP_EAPTLS || msg.eapType == sdcsdk.EAPTYPE.EAP_PEAPTLS)){
 						$("#passWordDisplay").removeClass("hidden");
 						document.getElementById("passWord").value =  msg.passWord;
 					} else {
@@ -444,11 +454,11 @@
 						$("#userCertPasswordDisplay").removeClass("hidden");
 						document.getElementById("userCertPassword").value =  msg.userCertPassword;
 					}
-					if (msg.eapType > 2 && msg.eapType < 8){
+					if (msg.eapType > sdcsdk.EAPTYPE.EAP_EAPFAST && msg.eapType < sdcsdk.EAPTYPE.EAP_WAPI_CERT){
 						$("#CACertDisplay").removeClass("hidden");
 						document.getElementById("CACert").value =  msg.CACert;
 					}
-					if (msg.eapType == 2){
+					if (msg.eapType == sdcsdk.EAPTYPE.EAP_EAPFAST){
 						$("#PACFilenameDisplay").removeClass("hidden");
 						document.getElementById("PACFilename").value =  msg.PACFileName;
 						$("#PACPasswordDisplay").removeClass("hidden");
@@ -2038,7 +2048,7 @@
 			<div class="row">
 				<div class="col-xs-3 col-sm-3 col-md-2 sidebar hidden-xs">
 					<ul class="nav nav-sidebar">
-						<li id="LiStatus" class="active"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
+						<li id="LiStatus"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
 						<li id="LiProfile"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
 							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiProfile">
 								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
