@@ -60,79 +60,83 @@
 			}
 		});
 
+		function clearReturnData(){
+			$("[id^='return']").removeClass();
+			$("[id^='return']").html("");
+		}
 
 		function SDCERRtoString(SDCERR){
-			$("#returnData").removeClass();
+			$("[id^='return']").removeClass();
 			switch(parseInt(SDCERR)) {
 				case sdcsdk.SDCERR.SDCERR_SUCCESS:
-					$("#returnData").addClass("alert alert-success");
-					$("#returnData").html("Success");
+					$("[id^='return']").addClass("alert alert-success");
+					$("[id^='return']").html("Success");
 					break;
 				case sdcsdk.SDCERR.SDCERR_FAIL:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Failure");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Failure");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_NAME:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid Name");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid Name");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_CONFIG:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid Config");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid Config");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_DELETE:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid Delete");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid Delete");
 					break;
 				case sdcsdk.SDCERR.SDCERR_POWERCYCLE_REQUIRED:
-					$("#returnData").addClass("alert alert-info");
-					$("#returnData").html("Power Cycle Required");
+					$("[id^='return']").addClass("alert alert-info");
+					$("[id^='return']").html("Power Cycle Required");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_PARAMETER:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid Parameter");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid Parameter");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_EAP_TYPE:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid EAP TYPE");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid EAP TYPE");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_WEP_TYPE:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid WEP TYPE");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid WEP TYPE");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_FILE:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid File");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid File");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INSUFFICIENT_MEMORY:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Insufficient Memory");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Insufficient Memory");
 					break;
 				case sdcsdk.SDCERR.SDCERR_NOT_IMPLEMENTED:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Not Implemented");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Not Implemented");
 					break;
 				case sdcsdk.SDCERR.SDCERR_NO_HARDWARE:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("No Hardware");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("No Hardware");
 					break;
 				case sdcsdk.SDCERR.SDCERR_INVALID_VALUE:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Invalid Value");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Invalid Value");
 					break;
 				default:
-					$("#returnData").addClass("alert alert-danger");
-					$("#returnData").html("Unknown Data");
+					$("[id^='return']").addClass("alert alert-danger");
+					$("[id^='return']").html("Unknown Data");
 			}
 		}
 
 		function CustomErrMsg(message){
 			if (message.length >= 20){
-				$("#returnData").css( "fontSize", "12px" );
+				$("#returnDataNav").css( "fontSize", "12px" );
 			}
-			$("#returnData").removeClass();
-			$("#returnData").addClass("alert alert-danger");
-			$("#returnData").html(message);
+			$("[id^='return']").removeClass();
+			$("[id^='return']").addClass("alert alert-danger");
+			$("[id^='return']").html(message);
 		}
 
 		function CARDSTATEtoString(CARDSTATE){
@@ -324,8 +328,7 @@
 			} else {
 				$("li").removeClass("active");
 				$("#LiStatus").addClass("active");
-				$("#returnData").removeClass();
-				$("#returnData").html("");
+				clearReturnData();
 				$("#helpText").html("This page shows the current state of WiFi");
 				$.ajax({
 					url: "html/status.html",
@@ -495,8 +498,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("#helpText").html("Adjust profile settings.");
 				},
 				error: function (xhr, status) {
@@ -651,7 +653,7 @@
 			.done(function( msg ) {
 				console.log(msg);
 				SDCERRtoString(msg.SDCERR);
-				if (document.getElementById("returnData").innerHTML == "Success"){
+				if (document.getElementById("returnDataNav").innerHTML == "Success"){
 					for(var i = 0; i < profileSelect.options.length; i++) {
 						if (profileName.currentName == profileSelect.options[i].text){
 							profileSelect.options[i].text = profileName.newName;
@@ -690,7 +692,7 @@
 				})
 				.done(function( msg ) {
 					SDCERRtoString(msg.SDCERR);
-					if (document.getElementById("returnData").innerHTML == "Success"){
+					if (document.getElementById("returnDataNav").innerHTML == "Success"){
 						for(var i = 0; i < profileSelect.options.length; i++) {
 							if (oldProfile.profileName == profileSelect.options[i].text){
 								profileSelect.options.remove(i);
@@ -741,8 +743,7 @@
 					$("li").removeClass("active");
 					$("#submenuEdit").addClass("active");
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("#helpText").html("These are the current WiFi profiles.");
 					setTimeout(updateSelectProfilePage(retry),1000);
 				},
@@ -770,8 +771,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#submenuAdd").addClass("active");
 					$("#helpText").html("Enter the name of the profile you would like to add.");
@@ -976,8 +976,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#LiGlobal").addClass("active");
 					$("#helpText").html("Here are the global configuration options for WiFi");
@@ -1135,7 +1134,7 @@
 				console.log(msg);
 				console.log(msg.SDCERR);
 				SDCERRtoString(msg.SDCERR);
-				if (document.getElementById("returnData").innerHTML == "Success"){
+				if (document.getElementById("returnDataNav").innerHTML == "Success"){
 					document.getElementById("goToProfile").textContent = "Edit Profile " + newProfile.profileName;
 					$("#goToProfileDisplay").removeClass("hidden");
 					document.getElementById("profileNameHidden").value = newProfile.profileName;
@@ -1225,8 +1224,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#LiScan").addClass("active");
 					$("#helpText").html("Scan for wireless networks");
@@ -1407,8 +1405,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#LiAdvanced").addClass("active");
 					$("#helpText").html("Advanced configuration options");
@@ -1579,8 +1576,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#submenuRemoteUpdate").addClass("active");
 					$("#helpText").html("Remotely update device");
@@ -1619,7 +1615,7 @@
 				.done(function( msg ) {
 					console.log(msg);
 					SDCERRtoString(msg.SDCERR);
-					if (document.getElementById("returnData").innerHTML == "Success"){
+					if (document.getElementById("returnDataNav").innerHTML == "Success"){
 						if (option == "add"){
 							$("#newInterfaceNameDisplay").addClass("hidden");
 							var newOption = document.createElement("option");
@@ -1782,8 +1778,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("#helpText").html("Adjust interface settings.");
 				},
 				error: function (xhr, status) {
@@ -1826,7 +1821,7 @@
 				})
 				.done(function( data ) {
 					SDCERRtoString(data.SDCERR);
-					if (document.getElementById("returnData").innerHTML == "Success"){
+					if (document.getElementById("returnDataNav").innerHTML == "Success"){
 						var startID = $("#" + actionFromID[0] + "-Start");
 						var stopID = $("#" + actionFromID[0] + "-Stop");
 						if (actionFromID[1] == "Start"){
@@ -1933,8 +1928,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#LiInterface").addClass("active");
 					$("#helpText").html("Interface information");
@@ -1997,8 +1991,7 @@
 						intervalId = 0;
 					}
 					$('#main_section').html(data);
-					$("#returnData").removeClass();
-					$("#returnData").html("");
+					clearReturnData();
 					$("li").removeClass("active");
 					$("#LiVersion").addClass("active");
 					$("#helpText").html("System version information");
@@ -2031,10 +2024,10 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand hidden-xs" href="#">WebLCM</a>
-					<img class="navbar-brand img-responsive visible-xs-block" alt="Brand" src="/assets/img/logo_white.png" width="90" height="34" style="padding-left:2px;padding-right:0px;">
-					<span class="navbar-brand" style="padding-top:13px;padding-left:8px;padding-right:8px;">
-						<span id="returnData" class="" style="padding-left:8px;padding-right:8px;" role="alert"></span>
+					<a class="navbar-brand hidden-xs hidden-sm" href="#">WebLCM</a>
+					<img class="navbar-brand img-responsive visible-xs-block visible-sm-block" alt="Brand" src="/assets/img/logo_white.png" width="90" height="34" style="padding-left:2px;padding-right:0px;">
+					<span class="navbar-brand visible-xs-block visible-sm-block" style="padding-top:13px;padding-left:8px;padding-right:8px;">
+						<span id="returnDataNav" class="" style="padding-left:8px;padding-right:8px;" role="alert"></span>
 					</span>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
@@ -2082,6 +2075,7 @@
 							<p id="main_section"></p>
 						</div>
 						<div id="helpSection" class="col-md-6 hidden-xs hidden-sm placeholder">
+							<div id="returnDataHelp" class="" role="alert"></div>
 							<img src="/assets/img/logo.png" width="320" height="87" class="img-responsive" alt="Responsive image" style="border-radius: 0%" ondragstart="return false;">
 							<h4>Need help?</h4>
 							<span id="helpText" class="text-muted">This page shows the current state of WiFi</span>
