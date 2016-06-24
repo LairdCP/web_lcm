@@ -1711,28 +1711,6 @@
 								$("#methodDisplay").addClass("hidden");
 								break;
 						}
-						if (data.Interfaces[iface].br_port_1 && data.Interfaces[iface].br_port_2){
-							$("#br_port_1_Display").removeClass("hidden");
-							$("#br_port_2_Display").removeClass("hidden");
-							var x = document.getElementById("br_port_1");
-							x.size = Object.keys(data.AutoInterfaces).length;
-							var y = document.getElementById("br_port_2");
-							y.size = Object.keys(data.AutoInterfaces).length;
-							for (var Autoiface in data.AutoInterfaces) {
-								var br_port_1 = document.createElement("option");
-								var br_port_2 = document.createElement("option");
-								br_port_1.text = Autoiface;
-								br_port_2.text = Autoiface;
-								x.add(br_port_1);
-								y.add(br_port_2);
-								if (br_port_1.text == data.Interfaces[iface].br_port_1){
-									x.selectedIndex = br_port_1.index;
-								}
-								if (br_port_2.text == data.Interfaces[iface].br_port_2){
-									y.selectedIndex = br_port_2.index;
-								}
-							}
-						}
 						if (data.Interfaces[iface].address){
 							document.getElementById("address").value = data.Interfaces[iface].address;
 						}
@@ -1859,6 +1837,8 @@
 				},
 			})
 			.done(function( data ) {
+				var isBridged = false;
+				var isNAT = false;
 				var x = document.getElementById("InterfaceSelect");
 				x.size = Object.keys(data.Interfaces).length;
 				var table = document.getElementById("interfaceStateTable").getElementsByTagName('tbody')[0];
@@ -1868,6 +1848,14 @@
 					var option = document.createElement("option");
 					option.text = iface;
 					x.add(option);
+
+					//Special Interface setInterface
+					if (iface == "br0"){
+						isBridged = true;
+					}
+					if (data.Interfaces[iface]["post-cfg-do"] && data.Interfaces[iface]["pre-dcfg-do"]){
+						isNAT = iface;
+					}
 
 					//Interface State table
 					row = table.insertRow(-1);
@@ -1903,6 +1891,44 @@
 						stopBtn.className = stopBtn.className + " disabled active";
 					}
 					index++;
+				}
+
+				//Special Interface setInterface
+				$("#br_port_1_Display").removeClass("hidden");
+				$("#br_port_2_Display").removeClass("hidden");
+				var y = document.getElementById("br_port_1");
+				// y.size = Object.keys(data.AutoInterfaces).length;
+				var z = document.getElementById("br_port_2");
+				// z.size = Object.keys(data.AutoInterfaces).length;
+				for (var Autoiface in data.AutoInterfaces) {
+					if (Autoiface != "br0" && Autoiface != "lo"){
+						var br_port_1 = document.createElement("option");
+						var br_port_2 = document.createElement("option");
+						if (Autoiface == "wlan0"){
+							br_port_1.text = Autoiface;
+							y.add(br_port_1);
+							y.selectedIndex = br_port_1.index;
+						}
+						br_port_2.text = Autoiface;
+						z.add(br_port_2);
+						if (br_port_1.text == data.Interfaces[iface].br_port_1){
+							y.selectedIndex = br_port_1.index;
+						}
+						if (br_port_2.text == data.Interfaces[iface].br_port_2){
+							z.selectedIndex = br_port_2.index;
+						}else if (isNAT == Autoiface){
+							z.selectedIndex = br_port_2.index;
+						}
+					}
+				}
+				if(!isBridged && !isNAT){
+					document.getElementById("SpecialInterfaceNone").checked = true;
+				} else if (isBridged && !isNAT){
+					document.getElementById("SpecialInterfaceBridge").checked = true;
+				} else if (!isBridged && isNAT){
+					document.getElementById("SpecialInterfaceNAT").checked = true;
+				} else {
+					$("#SpecialInterface").addClass("hidden");
 				}
 			})
 			.fail(function() {
@@ -2071,7 +2097,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<div class="row placeholders">
-						<div class="col-xs-12 col-sm-12 col-md-6 placeholder">
+						<div class="col-xs-12 col-sm-12 col-md-6 placeholder" style="height:600px;overflow-y:auto">
 							<p id="main_section"></p>
 						</div>
 						<div id="helpSection" class="col-md-6 hidden-xs hidden-sm placeholder">

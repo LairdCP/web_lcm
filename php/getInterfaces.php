@@ -65,6 +65,12 @@
 							}else{
 								$InterfaceList[$Interface][$strArray[0]] = $strArray[1];
 							}
+							if ($strArray[0] == 'post-cfg-do'){
+								$InterfaceList[$Interface]['post-cfg-do'] = $strArray[2];
+							}
+							if ($strArray[0] == 'pre-dcfg-do'){
+								$InterfaceList[$Interface]['pre-dcfg-do'] = $strArray[2];
+							}
 						}
 					}
 				}
