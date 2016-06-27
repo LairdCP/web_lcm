@@ -40,13 +40,13 @@
 				<div class="panel-body">
 					<form class="form-horizontal">
 						<label class="radio-inline">
-							<input type="radio" name="inlineRadioOptions" id="SpecialInterfaceNone" value="None">None
+							<input type="radio" name="inlineRadioOptions" id="SpecialInterfaceNone" value="None" onchange="onChangeSubmit()">None
 						</label>
 						<label class="radio-inline">
-							<input type="radio" name="inlineRadioOptions" id="SpecialInterfaceBridge" value="Bridge">Bridge
+							<input type="radio" name="inlineRadioOptions" id="SpecialInterfaceBridge" value="Bridge" onchange="onChangeSubmit()">Bridge
 						</label>
 						<label class="radio-inline">
-							<input type="radio" name="inlineRadioOptions" id="SpecialInterfaceNAT" value="NAT">NAT
+							<input type="radio" name="inlineRadioOptions" id="SpecialInterfaceNAT" value="NAT" onchange="onChangeSubmit()">NAT
 						</label>
 						<br><br>
 						<div class="form-group">
@@ -59,6 +59,11 @@
 								<label class="pull-left" for="br_port_2">With:</label>
 								<select onchange="onChangeSubmit()" class="form-control" id="br_port_2">
 								</select>
+							</div>
+						</div>
+						<div class="btn-group btn-group-justified" role="group">
+							<div class="btn-group" role="group">
+								<a onclick="modifySpecialInterface(0)" data-previous-nat="" type="button" class="btn btn-default disabled" id="submitButton">Apply and Activate</a>
 							</div>
 						</div>
 					</form>

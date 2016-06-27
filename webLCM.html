@@ -1823,6 +1823,53 @@
 			}
 		}
 
+		function modifySpecialInterface(retry){
+			var SpecialState,int_1,int_2,previousNAT;
+			if (document.getElementById("SpecialInterfaceNone").checked){
+				SpecialState = document.getElementById("SpecialInterfaceNone").value;
+			} else if (document.getElementById("SpecialInterfaceBridge").checked){
+				SpecialState = document.getElementById("SpecialInterfaceBridge").value;
+			} else if (document.getElementById("SpecialInterfaceNAT").checked){
+				SpecialState = document.getElementById("SpecialInterfaceNAT").value;
+			} else {
+				return;
+			}
+			int_1 = document.getElementById("br_port_1").value;
+			int_2 = document.getElementById("br_port_2").value;
+			previousNAT = document.getElementById("submitButton").getAttribute("data-previous-nat");
+
+			var InterfaceData = {
+				state: SpecialState,
+				int_1: int_1,
+				int_2: int_2,
+				previousNAT: previousNAT,
+			}
+			$.ajax({
+				url: "php/setSpecialInterfaces.php",
+				type: "POST",
+				data: JSON.stringify(InterfaceData),
+				contentType: "application/json",
+				success: function (data) {
+					if (intervalId){
+						clearInterval(intervalId);
+						intervalId = 0;
+					}
+				},
+			})
+			.done(function( data ) {
+				SDCERRtoString(data.SDCERR);
+			})
+			.fail(function() {
+				console.log("Error, couldn't get setSpecialInterfaces.php.. retrying");
+				if (retry < 5){
+					retry++;
+					modifySpecialInterface(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
 		function updateSelectInterfacePage(retry){
 			$.ajax({
 				url: "php/getInterfaces.php",
@@ -1909,8 +1956,10 @@
 							y.add(br_port_1);
 							y.selectedIndex = br_port_1.index;
 						}
-						br_port_2.text = Autoiface;
-						z.add(br_port_2);
+						if (Autoiface != "wlan0"){
+							br_port_2.text = Autoiface;
+							z.add(br_port_2);
+						}
 						if (br_port_1.text == data.Interfaces[iface].br_port_1){
 							y.selectedIndex = br_port_1.index;
 						}
@@ -1918,6 +1967,7 @@
 							z.selectedIndex = br_port_2.index;
 						}else if (isNAT == Autoiface){
 							z.selectedIndex = br_port_2.index;
+							document.getElementById("submitButton").setAttribute("data-previous-nat", Autoiface);
 						}
 					}
 				}
@@ -2097,7 +2147,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<div class="row placeholders">
-						<div class="col-xs-12 col-sm-12 col-md-6 placeholder" style="height:600px;overflow-y:auto">
+						<div class="col-xs-12 col-sm-12 col-md-6 placeholder" style="height:900px;overflow-y:auto">
 							<p id="main_section"></p>
 						</div>
 						<div id="helpSection" class="col-md-6 hidden-xs hidden-sm placeholder">
