@@ -1199,14 +1199,12 @@
 						cell2.innerHTML = msg["scanList"][scanItem].channel;
 						cell3.innerHTML = msg["scanList"][scanItem].RSSI;
 						cell4.innerHTML = msg["scanList"][scanItem].security[0];
-						if( $('.sidebar').css('display')=='none'){
-							row.onclick=function(){
-								document.getElementById("newSSID").value = this.cells[0].innerHTML;
-								document.getElementById("security").value = this.cells[4].innerHTML;
-								$("#profileNameDisplay").removeClass("has-error");
-								$("#addScanDisplay").removeClass("hidden");
-							};
-						}
+						row.onclick=function(){
+							document.getElementById("newSSID").value = this.cells[0].innerHTML;
+							document.getElementById("security").value = this.cells[4].innerHTML;
+							$("#profileNameDisplay").removeClass("has-error");
+							$("#addScanDisplay").removeClass("hidden");
+						};
 					}
 					$("#updateProgressDisplay").addClass("hidden");
 					$("#scanTableDisplay").removeClass("hidden");
@@ -2158,10 +2156,10 @@
 				</div>
 				<div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<div class="row placeholders">
-						<div class="col-xs-12 col-sm-12 col-md-6 placeholder">
+						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 placeholder">
 							<p id="main_section"></p>
 						</div>
-						<div id="helpSection" class="col-md-6 hidden-xs hidden-sm placeholder">
+						<div id="helpSection" class="col-md-4 col-lg-4 hidden-xs hidden-sm placeholder">
 							<div id="returnDataHelp" class="" role="alert"></div>
 							<img src="/assets/img/logo.png" width="320" height="87" class="img-responsive" alt="Responsive image" style="border-radius: 0%" ondragstart="return false;">
 							<h4>Need help?</h4>
