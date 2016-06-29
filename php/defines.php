@@ -6,6 +6,7 @@
 	if(!extension_loaded('lrd_php_sdk')){
 		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
 	}
+	session_start();
 	header("Content-Type: application/json");
 
 	$returnedResult = array(
@@ -423,8 +424,12 @@
 			'ATH6KL_DBG_RECOVERY' => ATH6KL_DBG_RECOVERY,
 			'ATH6KL_DBG_ANY' => ATH6KL_DBG_ANY,
 		),
+		'SESSION' => SDCERR_FAIL,
 	);
-
+	if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 60)) {
+		$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+		$returnedResult['SESSION'] = SDCERR_SUCCESS;
+	}
 	echo json_encode($returnedResult);
 
 ?>

@@ -53,6 +53,11 @@
 			success:  function(data) {
 				console.log(data);
 				sdcsdk = data;
+				if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+					$("#loggin").addClass("hidden");
+					$("#loggout").removeClass("hidden");
+					$(".locked").removeClass("hidden");
+				}
 				clickStatusPage();
 			},
 			error: function(){
@@ -166,6 +171,64 @@
 				default:
 					return "Unknown card state";
 			}
+		}
+
+		function login(retry){
+			$.ajax({
+				url: "php/login.php",
+				data: {},
+				type: "GET",
+				contentType: "application/json",
+			})
+			.done(function( data ) {
+				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_SUCCESS){
+					$("#loggin").addClass("hidden");
+					$("#loggout").removeClass("hidden");
+					$(".locked").removeClass("hidden");
+				}
+			})
+			.fail(function() {
+				console.log("Error, couldn't get startSession.php.. retrying");
+				if (retry < 5){
+					retry++;
+					loggin(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function logout(retry){
+			$.ajax({
+				url: "php/logout.php",
+				data: {},
+				type: "GET",
+				contentType: "application/json",
+			})
+			.done(function( data ) {
+				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_SUCCESS){
+					$("#loggout").addClass("hidden");
+					$("#loggin").removeClass("hidden");
+					$(".locked").addClass("hidden");
+					clickStatusPage();
+				}
+			})
+			.fail(function() {
+				console.log("Error, couldn't get stopSession.php.. retrying");
+				if (retry < 5){
+					retry++;
+					loggout(retry);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
+
+		function expiredSession(){
+			$("#loggout").addClass("hidden");
+			$("#loggin").removeClass("hidden");
+			$(".locked").addClass("hidden");
+			clickStatusPage();
 		}
 
 		function onChangeSubmit(){
@@ -550,6 +613,10 @@
 			})
 			.done(function( msg ) {
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				var x = document.getElementById("profileSelect");
 				x.size = String(msg.NumConfigs);
 				for (i = 0; i < msg.NumConfigs; i++) {
@@ -619,6 +686,10 @@
 			})
 			.done(function( msg ) {
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 			})
 			.fail(function() {
@@ -656,6 +727,10 @@
 			})
 			.done(function( msg ) {
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 				if (document.getElementById("returnDataNav").innerHTML == "Success"){
 					for(var i = 0; i < profileSelect.options.length; i++) {
@@ -695,6 +770,10 @@
 					contentType: "application/json",
 				})
 				.done(function( msg ) {
+					if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+						expiredSession();
+						return;
+					}
 					SDCERRtoString(msg.SDCERR);
 					if (document.getElementById("returnDataNav").innerHTML == "Success"){
 						for(var i = 0; i < profileSelect.options.length; i++) {
@@ -728,6 +807,10 @@
 			})
 			.done(function( msg ) {
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 				$("#applyAutoProfile").addClass("disabled");
 			});
@@ -851,6 +934,10 @@
 				.done(function( msg ) {
 					console.log(msg);
 					console.log(msg.SDCERR);
+					if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+						expiredSession();
+						return;
+					}
 					SDCERRtoString(msg.SDCERR);
 				});
 			} else {
@@ -869,6 +956,10 @@
 						intervalId = 0;
 					}
 					console.log(data);
+					if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+						expiredSession();
+						return;
+					}
 					for (var key in data) {
 						if (data[key] != 0 && key != "SDCERR"){
 							$("#" + key + "Display").removeClass("hidden");
@@ -917,8 +1008,12 @@
 					intervalId = 0;
 				}
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				for (var key in msg) {
-					if (key != "SDCERR"){
+					if (key != "SDCERR" && key != "SESSION"){
 						if (isSlider(key)){
 							$("#" + key + "Slider").slider('setValue', msg[key]);
 						} else{
@@ -1095,6 +1190,10 @@
 			})
 			.done(function( msg ) {
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 				$("#submitButton").addClass("disabled");
 			})
@@ -1137,6 +1236,10 @@
 			.done(function( msg ) {
 				console.log(msg);
 				console.log(msg.SDCERR);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 				if (document.getElementById("returnDataNav").innerHTML == "Success"){
 					document.getElementById("goToProfile").textContent = "Edit Profile " + newProfile.profileName;
@@ -1179,6 +1282,10 @@
 				if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
+				}
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
 				}
 				if (msg.SDCERR == 12){
 					$("#updateProgressDisplay").addClass("hidden");
@@ -1361,6 +1468,10 @@
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 				$("#submitButton").addClass("disabled");
 			})
@@ -1387,6 +1498,10 @@
 					intervalId = 0;
 				}
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				document.getElementById("suppDebugLevel").value = msg.suppDebugLevel;
 				document.getElementById("driverDebugLevel").value = msg.driverDebugLevel;
 				setIntervalUpdate(checkLog);
@@ -1443,6 +1558,10 @@
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				clickAdvancedRemoteUpdate(0)
 			})
 			.fail(function() {
@@ -1463,6 +1582,10 @@
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				$("#updateLogDisplay").addClass("hidden");
 				$("#updateLogTextDisplay").addClass("hidden");
 				$("#updateProgressDisplay").removeClass("hidden");
@@ -1492,6 +1615,10 @@
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				checkUpdateStarted(0);
 			})
 			.fail(function() {
@@ -1552,6 +1679,10 @@
 				contentType: "application/json",
 			})
 			.done(function( data ) {
+				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				if (data.fwUpdate == "running"){
 					$("#remoteUpdateDisplay").addClass("hidden");
 					$("#submitButton").addClass("hidden");
@@ -1623,6 +1754,10 @@
 				})
 				.done(function( msg ) {
 					console.log(msg);
+					if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+						expiredSession();
+						return;
+					}
 					SDCERRtoString(msg.SDCERR);
 					if (document.getElementById("returnDataNav").innerHTML == "Success"){
 						if (option == "add"){
@@ -1679,6 +1814,10 @@
 			})
 			.done(function( msg ) {
 				console.log(msg);
+				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(msg.SDCERR);
 				$("#submitButton").addClass("disabled");
 			})
@@ -1700,6 +1839,10 @@
 				contentType: "application/json",
 			})
 			.done(function( data ) {
+				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				for (var iface in data.Interfaces){
 					if (iface == interfaceName){
 						document.getElementById("interfaceName").value = iface;
@@ -1807,6 +1950,10 @@
 					},
 				})
 				.done(function( data ) {
+					if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+						expiredSession();
+						return;
+					}
 					SDCERRtoString(data.SDCERR);
 					if (document.getElementById("returnDataNav").innerHTML == "Success"){
 						var startID = $("#" + actionFromID[0] + "-Start");
@@ -1866,6 +2013,10 @@
 				},
 			})
 			.done(function( data ) {
+				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				SDCERRtoString(data.SDCERR);
 			})
 			.fail(function() {
@@ -1893,6 +2044,10 @@
 				},
 			})
 			.done(function( data ) {
+				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				var isBridged = false;
 				var isNAT = false;
 				var x = document.getElementById("InterfaceSelect");
@@ -2116,17 +2271,33 @@
 					</span>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
+					<form id="loggin" class="navbar-form navbar-right">
+						<div class="form-group">
+							<input type="text" placeholder="Username" class="form-control">
+						</div>
+						<div class="form-group">
+							<input type="text" placeholder="Password" class="form-control">
+						</div>
+						<div class="form-group">
+							<a type="button" onclick="login(0)" class="btn btn-default" href="#">Sign in</a>
+						</div>
+					</form>
+					<form id="loggout" class="navbar-form navbar-right hidden">
+						<div class="form-group">
+							<a type="button" onclick="logout(0)" class="btn btn-default" href="#">Log out</a>
+						</div>
+					</form>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickStatusPage()" href="#">WiFi Status</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickGlobalsPage(0)" href="#">WiFi Globals</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickScanPage(0)" href="#">WiFi Scan</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickAdvancedPage(0)" href="#">WiFi Advanced</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickAdvancedRemoteUpdate(0)" href="#">Remote Update</a></li>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickInterfacePage(0)" href="#">Interface Configuration</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickGlobalsPage(0)" href="#">WiFi Globals</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickScanPage(0)" href="#">WiFi Scan</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedPage(0)" href="#">WiFi Advanced</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedRemoteUpdate(0)" href="#">Remote Update</a></li>
+						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickInterfacePage(0)" href="#">Interface Configuration</a></li>
 						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickVersionPage(0)" href="#">System Version</a></li>
-						<li><a href="#">Settings</a></li>
+						<li class="hidden"><a href="#">Settings</a></li>
 					</ul>
 				</div>
 			</div>
@@ -2137,20 +2308,20 @@
 				<div class="col-xs-3 col-sm-3 col-md-2 sidebar hidden-xs">
 					<ul class="nav nav-sidebar">
 						<li id="LiStatus"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
-						<li id="LiProfile"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
-							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiProfile">
+						<li id="LiProfile" class="locked hidden"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
+							<ul class="nav nav-submenu collapse in locked hidden" id="submenu1" role="menu" aria-labelledby="LiProfile">
 								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
 								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage(0)">Add profile</a></li>
 							</ul>
-						<li id="LiGlobal"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
-						<li id="LiScan" onclick="clickScanPage(0)"><a href="#">WiFi Scan</a></li>
-						<li id="LiAdvanced" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced</a></li>
-							<ul class="nav nav-submenu collapse" id="submenu2" role="menu" aria-labelledby="LiAdvanced">
+						<li id="LiGlobal" class="locked hidden"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
+						<li id="LiScan" class="locked hidden" onclick="clickScanPage(0)"><a href="#">WiFi Scan</a></li>
+						<li id="LiAdvanced" class="locked hidden" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced</a></li>
+							<ul class="nav nav-submenu collapse locked hidden" id="submenu2" role="menu" aria-labelledby="LiAdvanced">
 								<li id="submenuRemoteUpdate"><a href="#" onclick="clickAdvancedRemoteUpdate(0)">Remote Update</a></li>
 							</ul>
 					</ul>
 					<ul class="nav nav-sidebar">
-						<li id="LiInterface" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration</a></li>
+						<li id="LiInterface" class="locked hidden" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration</a></li>
 						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>
 				</div>
