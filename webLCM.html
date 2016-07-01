@@ -181,6 +181,7 @@
 				contentType: "application/json",
 			})
 			.done(function( data ) {
+				console.log(data);
 				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_SUCCESS){
 					$("#loggin").addClass("hidden");
 					$("#loggout").removeClass("hidden");
@@ -191,7 +192,7 @@
 				console.log("Error, couldn't get startSession.php.. retrying");
 				if (retry < 5){
 					retry++;
-					loggin(retry);
+					login(retry);
 				} else {
 					console.log("Retry max attempt reached");
 				}
@@ -333,6 +334,11 @@
 		function updateStatus(){
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
 				console.log(data);
+				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+					$("#loggout").addClass("hidden");
+					$("#loggin").removeClass("hidden");
+					$(".locked").addClass("hidden");
+				}
 				$("#updateProgressDisplay").addClass("hidden");
 				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_NO_HARDWARE){
 					$("#status-success").addClass("hidden");
@@ -376,7 +382,7 @@
 			})
 			.fail(function(data) {
 				console.log(data);
-				console.log("Failed to get data, retrying.");
+				console.log("Failed to get status.php, retrying.");
 				setIntervalUpdate(updateStatus);
 			});
 		}

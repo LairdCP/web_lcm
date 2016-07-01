@@ -2,12 +2,7 @@
 # Copyright (c) 2016, Laird
 # Contact: ews-support@lairdtech.com
 
-	require("../lrd_php_sdk.php");
-	if(!extension_loaded('lrd_php_sdk')){
-		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
-	}
-	session_start();
-	header("Content-Type: application/json");
+	require("webLCM.php");
 
 	$returnedResult = array(
 		'DEFINES' => array(
@@ -426,10 +421,8 @@
 		),
 		'SESSION' => SDCERR_FAIL,
 	);
-	if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] < 60)) {
-		$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
-		$returnedResult['SESSION'] = SDCERR_SUCCESS;
-	}
+	$returnedResult['SESSION'] = verifyAuthentication(false);
+
 	echo json_encode($returnedResult);
 
 ?>

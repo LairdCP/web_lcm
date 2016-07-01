@@ -7,14 +7,11 @@
 		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
 	}
 	header("Content-Type: application/json");
-
-	$result = session_start();
+	session_start();
 
 	$returnedResult = [
 		'SDCERR' => SDCERR_FAIL,
 	];
-
-	session_start();
 
 	session_unset();     // unset $_SESSION variable for the run-time
 	$result = session_destroy();   // destroy session data in storage
@@ -22,5 +19,5 @@
 		$returnedResult['SDCERR'] = SDCERR_SUCCESS;
 	}
 
-		echo json_encode($returnedResult);
+	echo json_encode($returnedResult);
 ?>

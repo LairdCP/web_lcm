@@ -2,15 +2,8 @@
 # Copyright (c) 2016, Laird
 # Contact: ews-support@lairdtech.com
 
-	require("../lrd_php_sdk.php");
-
-	if(!extension_loaded('lrd_php_sdk')){
-		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
-	}
-
-	$returnedResult = [
-		'SDCERR' => SDCERR_FAIL,
-	];
+	require("webLCM.php");
+	$returnedResult['SESSION'] = verifyAuthentication(false);
 
 	function checkLeadingZero($mac, $len){
 		for($x = 0; $x <= MAC_ADDR_SZ - 1; $x++){
