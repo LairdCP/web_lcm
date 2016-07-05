@@ -420,8 +420,10 @@
 			'ATH6KL_DBG_ANY' => ATH6KL_DBG_ANY,
 		),
 		'SESSION' => SDCERR_FAIL,
+		'IGNORE_SESSION' => SDCERR_FAIL,
 	);
 	$returnedResult['SESSION'] = verifyAuthentication(false);
+	$returnedResult['IGNORE_SESSION'] = skipLogin();
 
 	echo json_encode($returnedResult);
 

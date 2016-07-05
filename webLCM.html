@@ -55,7 +55,9 @@
 				sdcsdk = data;
 				if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
 					$("#loggin").addClass("hidden");
-					$("#loggout").removeClass("hidden");
+					if (sdcsdk.IGNORE_SESSION != sdcsdk.SDCERR.SDCERR_SUCCESS){
+						$("#loggout").removeClass("hidden");
+					}
 					$(".locked").removeClass("hidden");
 				}
 				clickStatusPage();
@@ -174,10 +176,14 @@
 		}
 
 		function login(retry){
+			var creds = {
+				username: document.getElementById("username").value,
+				password: document.getElementById("password").value,
+			}
 			$.ajax({
 				url: "php/login.php",
-				data: {},
-				type: "GET",
+				data: JSON.stringify(creds),
+				type: "POST",
 				contentType: "application/json",
 			})
 			.done(function( data ) {
@@ -186,7 +192,12 @@
 					$("#loggin").addClass("hidden");
 					$("#loggout").removeClass("hidden");
 					$(".locked").removeClass("hidden");
+					clearReturnData();
+				} else {
+					CustomErrMsg("Credentials are invalid");
 				}
+				document.getElementById("username").value = null;
+				document.getElementById("password").value = null;
 			})
 			.fail(function() {
 				console.log("Error, couldn't get startSession.php.. retrying");
@@ -213,6 +224,8 @@
 					$(".locked").addClass("hidden");
 					clickStatusPage();
 				}
+				document.getElementById("username").value = null;
+				document.getElementById("password").value = null;
 			})
 			.fail(function() {
 				console.log("Error, couldn't get stopSession.php.. retrying");
@@ -2279,10 +2292,10 @@
 				<div id="navbar" class="navbar-collapse collapse">
 					<form id="loggin" class="navbar-form navbar-right">
 						<div class="form-group">
-							<input type="text" placeholder="Username" class="form-control">
+							<input type="text" id="username" placeholder="Username" class="form-control">
 						</div>
 						<div class="form-group">
-							<input type="text" placeholder="Password" class="form-control">
+							<input type="password" id="password" placeholder="Password" class="form-control">
 						</div>
 						<div class="form-group">
 							<a type="button" onclick="login(0)" class="btn btn-default" href="#">Sign in</a>

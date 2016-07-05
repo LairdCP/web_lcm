@@ -9,6 +9,7 @@
 	header("Content-Type: application/json");
 
 	$result = session_start();
+	$creds = json_decode(stripslashes(file_get_contents("php://input")));
 
 	$returnedResult = [
 		'SDCERR' => SDCERR_FAIL,
@@ -16,13 +17,14 @@
 
 	syslog(LOG_WARNING, $result);
 	if ($result == true){
-		syslog(LOG_WARNING, "Is true");
-		$returnedResult['SDCERR'] = SDCERR_SUCCESS;
-		syslog(LOG_WARNING, $returnedResult['SDCERR']);
-		if (!isset($_SESSION['LAST_ACTIVITY'])){
-			$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+		$lines = file('/etc/lighttpd/webLCM.password');
+		if (password_verify( $creds->{'username'},trim($lines[0])) == true && password_verify($creds->{'password'},trim($lines[1])) == true){
+			$returnedResult['SDCERR'] = SDCERR_SUCCESS;
+			if (!isset($_SESSION['LAST_ACTIVITY'])){
+				$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+			}
+			$returnedResult['LAST_ACTIVITY'] = $_SESSION['LAST_ACTIVITY'];
 		}
-		$returnedResult['LAST_ACTIVITY'] = $_SESSION['LAST_ACTIVITY'];
 	}
 
 	echo json_encode($returnedResult);

@@ -14,9 +14,16 @@
 		'SDCERR' => SDCERR_FAIL,
 		'SESSION' => SDCERR_FAIL,
 	];
+	function skipLogin(){
+		// return SDCERR_SUCCESS;
+		return SDCERR_FAIL;
+	}
 
 	function verifyAuthentication($level){
-	if (isset($_SESSION['LAST_ACTIVITY'])){
+		if (skipLogin() == SDCERR_SUCCESS){
+			return SDCERR_SUCCESS;
+		}
+		if (isset($_SESSION['LAST_ACTIVITY'])){
 			if (time() - $_SESSION['LAST_ACTIVITY'] > 60) {
 				// last request was more than 30 minutes ago
 				session_unset();     // unset $_SESSION variable for the run-time
@@ -25,11 +32,9 @@
 				if ($level){
 					$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
 				}
-				syslog(LOG_WARNING, "success");
 				return SDCERR_SUCCESS;
 			}
 		}
-		syslog(LOG_WARNING, "fail");
 		return SDCERR_FAIL;
 	}
 
