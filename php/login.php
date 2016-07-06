@@ -15,15 +15,18 @@
 		'SDCERR' => SDCERR_FAIL,
 	];
 
-	syslog(LOG_WARNING, $result);
 	if ($result == true){
-		$lines = file('/etc/lighttpd/webLCM.password');
-		if (password_verify( $creds->{'username'},trim($lines[0])) == true && password_verify($creds->{'password'},trim($lines[1])) == true){
-			$returnedResult['SDCERR'] = SDCERR_SUCCESS;
-			if (!isset($_SESSION['LAST_ACTIVITY'])){
-				$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+		if (!isset($_SESSION['passwordFile'])){
+			readINI();
+		}
+		$lines = file($_SESSION['passwordFile']);
+		if ($lines != false){
+			if (password_verify( $creds->{'username'},trim($lines[0])) == true && password_verify($creds->{'password'},trim($lines[1])) == true){
+				$returnedResult['SDCERR'] = SDCERR_SUCCESS;
+				if (!isset($_SESSION['LAST_ACTIVITY'])){
+					$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+				}
 			}
-			$returnedResult['LAST_ACTIVITY'] = $_SESSION['LAST_ACTIVITY'];
 		}
 	}
 

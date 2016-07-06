@@ -53,11 +53,12 @@
 			success:  function(data) {
 				console.log(data);
 				sdcsdk = data;
-				if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+				if (sdcsdk.IGNORE_SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS && sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
 					$("#loggin").addClass("hidden");
-					if (sdcsdk.IGNORE_SESSION != sdcsdk.SDCERR.SDCERR_SUCCESS){
-						$("#loggout").removeClass("hidden");
-					}
+					$(".locked").removeClass("hidden");
+				} else if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+					$("#loggin").addClass("hidden");
+					$("#loggout").removeClass("hidden");
 					$(".locked").removeClass("hidden");
 				}
 				clickStatusPage();

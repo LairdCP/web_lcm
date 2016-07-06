@@ -422,8 +422,9 @@
 		'SESSION' => SDCERR_FAIL,
 		'IGNORE_SESSION' => SDCERR_FAIL,
 	);
-	$returnedResult['SESSION'] = verifyAuthentication(false);
+	readINI();
 	$returnedResult['IGNORE_SESSION'] = skipLogin();
+	$returnedResult['SESSION'] = verifyAuthentication(false);
 
 	echo json_encode($returnedResult);
 

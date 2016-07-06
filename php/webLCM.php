@@ -10,12 +10,28 @@
 	session_start();
 	header("Content-Type: application/json");
 
+	define("WebLCM_INI","/var/www/docs/webLCM.ini");
+
 	$returnedResult = [
 		'SDCERR' => SDCERR_FAIL,
 		'SESSION' => SDCERR_FAIL,
 	];
+
+	function readINI(){
+		$settings = parse_ini_file(WebLCM_INI,false,INI_SCANNER_TYPED);
+		foreach ($settings as $key => $value) {
+			$_SESSION[$key] = $value;
+		}
+	}
+
 	function skipLogin(){
-		// return SDCERR_SUCCESS;
+		if (!isset($_SESSION['ignoreLogin'])){
+			readINI();
+		}
+		if ($_SESSION['ignoreLogin'] == true){
+			return SDCERR_SUCCESS;
+		}
+
 		return SDCERR_FAIL;
 	}
 
@@ -24,8 +40,10 @@
 			return SDCERR_SUCCESS;
 		}
 		if (isset($_SESSION['LAST_ACTIVITY'])){
-			if (time() - $_SESSION['LAST_ACTIVITY'] > 60) {
-				// last request was more than 30 minutes ago
+			if (!isset($_SESSION['timeoutLogin'])){
+				readINI();
+			}
+			if (time() - $_SESSION['LAST_ACTIVITY'] > $_SESSION['timeoutLogin']) {
 				session_unset();     // unset $_SESSION variable for the run-time
 				session_destroy();   // destroy session data in storage
 			} else {
