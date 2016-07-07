@@ -18,10 +18,11 @@
 	];
 
 	function readINI(){
-		$settings = parse_ini_file(WebLCM_INI,false,INI_SCANNER_TYPED);
-		foreach ($settings as $key => $value) {
+		$iniFile = parse_ini_file(WebLCM_INI,true,INI_SCANNER_TYPED);
+		foreach ($iniFile["settings"] as $key => $value) {
 			$_SESSION[$key] = $value;
 		}
+		return $iniFile;
 	}
 
 	function skipLogin(){
@@ -56,4 +57,26 @@
 		return SDCERR_FAIL;
 	}
 
+	function generateCredentials(){
+		$iniFile = readINI();
+		if ($iniFile["settings"]["passwordFile"] && $iniFile["default_credentials"]["userName"] && $iniFile["default_credentials"]["passWord"]){
+			if (!file_exists($iniFile["settings"]["passwordFile"])){
+				$userName = password_hash($iniFile["default_credentials"]["userName"],PASSWORD_DEFAULT);
+				$passWord = password_hash($iniFile["default_credentials"]["passWord"],PASSWORD_DEFAULT);
+				if ($userName && $passWord){
+					$credentialFile = fopen($iniFile["settings"]["passwordFile"], "w");
+					if ($credentialFile != false){
+						fwrite($credentialFile, $userName . "\n");
+						fwrite($credentialFile, $passWord . "\n");
+						fclose($credentialFile);
+
+						return SDCERR_SUCCESS;
+					}
+				}
+			}
+			return SDCERR_FAIL;
+		} else {
+			return SDCERR_INVALID_PARAMETER;
+		}
+	}
 ?>
