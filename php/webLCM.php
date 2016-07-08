@@ -11,6 +11,7 @@
 	header("Content-Type: application/json");
 
 	define("WebLCM_INI","/var/www/docs/webLCM.ini");
+	define("FW_TM_File","/etc/default/fw_update.test");
 
 	$returnedResult = [
 		'SDCERR' => SDCERR_FAIL,

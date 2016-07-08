@@ -19,6 +19,11 @@
 	$returnedResult['driverDebugLevel'] = LRD_WF_DRV_DEBUGp_value($driverLogLevel);
 	delete_LRD_WF_DRV_DEBUGp($driverLogLevel);
 
+	$returnedResult['fwUpdateTM'] = 0;
+	if(file_exists(FW_TM_File)){
+		$returnedResult['fwUpdateTM'] = 1;
+	}
+
 	$returnedResult['SDCERR'] = $result;
 
 	echo json_encode($returnedResult);

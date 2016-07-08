@@ -1485,6 +1485,7 @@
 			var AdvancedData = {
 				suppDebugLevel: parseInt(document.getElementById("suppDebugLevel").value),
 				driverDebugLevel: parseInt(document.getElementById("driverDebugLevel").value),
+				fwUpdateTM: parseInt(document.getElementById("fwUpdateTM").value),
 			}
 			$.ajax({
 				url: "php/setAdvanced.php",
@@ -1529,6 +1530,7 @@
 				}
 				document.getElementById("suppDebugLevel").value = msg.suppDebugLevel;
 				document.getElementById("driverDebugLevel").value = msg.driverDebugLevel;
+				document.getElementById("fwUpdateTM").value = msg.fwUpdateTM;
 				setIntervalUpdate(checkLog);
 			})
 			.fail(function() {
