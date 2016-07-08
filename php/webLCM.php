@@ -12,6 +12,8 @@
 
 	define("WebLCM_INI","/var/www/docs/webLCM.ini");
 	define("FW_TM_File","/etc/default/fw_update.test");
+	define("FW_LOGFILE","/tmp/fw_update_log.txt");
+	define("FW_LOGFILE_LOCK","/tmp/fw_update_log.lock");
 
 	$returnedResult = [
 		'SDCERR' => SDCERR_FAIL,

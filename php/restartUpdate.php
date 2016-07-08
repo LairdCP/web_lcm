@@ -8,7 +8,8 @@
 		echo json_encode($returnedResult);
 		return;
 	}
-	exec('rm /tmp/fw_update_log.txt');
+	unlink(FW_LOGFILE);
+	unlink(FW_LOGFILE_LOCK);
 
 	$returnedResult['SDCERR'] = $result;
 

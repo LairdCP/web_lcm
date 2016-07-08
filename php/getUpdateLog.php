@@ -4,12 +4,16 @@
 
 	require("webLCM.php");
 
-	$log_file = '/tmp/fw_update_log.txt';
-
-	if (file_exists ($log_file)){
-		$returnedResult['log'] = file($log_file);
+	if (file_exists(FW_LOGFILE)){
+		$returnedResult['log'] = file(FW_LOGFILE);
 	} else {
 		$returnedResult['SDCERR'] = SDCERR_FAIL;
+	}
+
+	if (trim(end($returnedResult['log'])) == "Done." && !file_exists(FW_LOGFILE_LOCK)){
+		$logToSyslogLock = fopen(FW_LOGFILE_LOCK, "w");
+		fclose($logToSyslogLock);
+		exec("logger -t webLCM -f " . FW_LOGFILE);
 	}
 
 	echo json_encode($returnedResult);
