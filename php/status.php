@@ -12,6 +12,9 @@
 			}else{
 				$macChar[$x]= strval($mac[$x]);
 			}
+			if (strlen($macChar[$x]) == 1){
+				$macChar[$x] = "0" . $macChar[$x];
+			}
 		}
 		$MAC = implode(':', $macChar);
 		return $MAC;

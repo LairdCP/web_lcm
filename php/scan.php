@@ -50,7 +50,10 @@
 				}
 				unset($bssidVal);
 				for ($y = 0; $y < LRD_WF_MAC_ADDR_LEN; $y++){
-					$bssidVal[$y]= dechex(uchar_array_getitem($item->bssidMac,$y));
+					$bssidVal[$y] = dechex(uchar_array_getitem($item->bssidMac,$y));
+					if (strlen($bssidVal[$y]) == 1){
+						$bssidVal[$y] = "0" . $bssidVal[$y];
+					}
 				}
 				unset($ssidValFinal);
 				$bssidValFinal = implode(':', $bssidVal);
