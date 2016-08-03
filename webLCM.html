@@ -441,6 +441,7 @@
 						$("#progressbar").addClass("progress-bar-success");
 						$("#progressbar").css('width',rssiWidth);
 					}
+					document.getElementById("progressbar").innerHTML = rssi + " dBm";
 				}
 			})
 			.fail(function(data) {
@@ -1726,7 +1727,7 @@
 					</form>
 					<ul class="nav navbar-nav navbar-right" id="mini_menu">
 						<li id="LiWifiMini" class="hidden-sm hidden-md hidden-lg"><a href="#" data-toggle="collapse" data-target="#submenu1mini" aria-expanded="false">WiFi ▼</a></li>
-							<ul class="nav nav-submenu collapse in" id="submenu1mini" role="menu" aria-labelledby="LiWifiMini">
+							<ul class="nav nav-submenu collapse" id="submenu1mini" role="menu" aria-labelledby="LiWifiMini">
 								<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickStatusPage()" href="#">Status</a></li>
 								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
 								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
