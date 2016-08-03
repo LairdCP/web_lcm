@@ -2,7 +2,7 @@
 # Copyright (c) 2016, Laird
 # Contact: ews-support@lairdtech.com
 
-	require("webLCM.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
 	$returnedResult['SESSION'] = verifyAuthentication(true);
 	if ($returnedResult['SESSION'] != SDCERR_SUCCESS){
 		echo json_encode($returnedResult);
