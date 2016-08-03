@@ -2,7 +2,7 @@
 # Copyright (c) 2016, Laird
 # Contact: ews-support@lairdtech.com
 
-	require("../lrd_php_sdk.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/lrd_php_sdk.php");
 
 	if(!extension_loaded('lrd_php_sdk')){
 		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
@@ -11,9 +11,6 @@
 	header("Content-Type: application/json");
 
 	define("WebLCM_INI","/var/www/docs/webLCM.ini");
-	define("FW_TM_File","/etc/default/fw_update.test");
-	define("FW_LOGFILE","/tmp/fw_update_log.txt");
-	define("FW_LOGFILE_LOCK","/tmp/fw_update_log.lock");
 
 	$returnedResult = [
 		'SDCERR' => SDCERR_FAIL,
@@ -26,6 +23,22 @@
 			$_SESSION[$key] = $value;
 		}
 		return $iniFile;
+	}
+
+	function generatePlugins($parsedINI){
+		if (!$parsedINI["plugins"]){
+			syslog(LOG_WARNING, "NO PLUGINS TO PARSE");
+			$parsedINI = parse_ini_file(WebLCM_INI,true,INI_SCANNER_TYPED);
+		}
+		foreach ($parsedINI["plugins"] as $key => $value) {
+			$plugins['list'][$key] = $value;
+			if ($value == true){
+				$pluginPath = "../plugins/" . $key . "/php/" . $key . ".php";
+				require($pluginPath);
+				$plugins[$key] = $key();
+			}
+		}
+		return $plugins;
 	}
 
 	function skipLogin(){

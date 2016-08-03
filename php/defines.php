@@ -421,11 +421,12 @@
 		),
 		'SESSION' => SDCERR_FAIL,
 		'IGNORE_SESSION' => SDCERR_FAIL,
+		'PLUGINS' => null,
 	);
-	readINI();
+	$iniFile = readINI();
+	$returnedResult['PLUGINS'] = generatePlugins($iniFile);
 	$returnedResult['IGNORE_SESSION'] = skipLogin();
 	$returnedResult['SESSION'] = verifyAuthentication(false);
-
 	echo json_encode($returnedResult);
 
 ?>

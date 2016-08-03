@@ -55,14 +55,12 @@
 			success:  function(data) {
 				console.log(data);
 				sdcsdk = data;
-				if (sdcsdk.IGNORE_SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS && sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
-					$("#loggin").addClass("hidden");
-					$(".locked").removeClass("hidden");
-				} else if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
-					$("#loggin").addClass("hidden");
-					$("#loggout").removeClass("hidden");
-					$(".locked").removeClass("hidden");
+				for (var key in sdcsdk.PLUGINS.list) {
+					if (sdcsdk.PLUGINS.list[key] == true){
+						addPlugin(0, key);
+					}
 				}
+				checkLocks();
 				clickStatusPage();
 			},
 			error: function(){
@@ -73,6 +71,56 @@
 				}
 			}
 		});
+
+		function checkLocks(){
+			if (sdcsdk.IGNORE_SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS && sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+				$("#loggin").addClass("hidden");
+				$(".locked").removeClass("hidden");
+			} else if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+				$("#loggin").addClass("hidden");
+				$("#loggout").removeClass("hidden");
+				$(".locked").removeClass("hidden");
+			}
+		}
+
+		function loadjscssfile(filename, filetype){
+			if (filetype=="js"){ //if filename is a external JavaScript file
+			var fileref=document.createElement('script');
+				fileref.setAttribute("type","text/javascript");
+				fileref.setAttribute("src", filename);
+			}
+			if (typeof fileref!="undefined"){
+				document.getElementsByTagName("head")[0].appendChild(fileref);
+			}
+		}
+
+		function addPlugin(retry, key){
+			var pluginPath = "../plugins/" + key + "/" + key + ".html";
+			var jsPath = "../plugins/" + key + "/" + key + ".js";
+			$.ajax({
+				url: pluginPath,
+				data: {},
+				type: "GET",
+				dataType: "html",
+			})
+			.done(function( data ) {
+				loadjscssfile(jsPath,"js");
+				$("#main_menu").append(data);
+				var mini_menu = $(data);
+				$(mini_menu).addClass("hidden-sm hidden-md hidden-lg");
+				$("#mini_menu").append(mini_menu);
+				checkLocks();
+			})
+			.fail(function() {
+				console.log("Error, couldn't get " + pluginPath + ".. retrying");
+				if (retry < 5){
+					retry++;
+					addPlugin(retry,pluginPath);
+				} else {
+					console.log("Retry max attempt reached");
+				}
+			});
+		}
 
 		function clearReturnData(){
 			$("[id^='return']").removeClass();
@@ -349,7 +397,6 @@
 
 		function updateStatus(){
 			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
-				console.log(data);
 				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
 					$("#loggout").addClass("hidden");
 					$("#loggin").removeClass("hidden");
@@ -1578,191 +1625,6 @@
 			});
 		}
 
-		function restartUpdate(retry){
-			$.ajax({
-				url: "php/restartUpdate.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				clickAdvancedRemoteUpdate(0)
-			})
-			.fail(function() {
-				console.log("Failed to restart update, retrying");
-				if (retry < 5){
-					retry++;
-					restartUpdate(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function rebootDevice(retry){
-			$.ajax({
-				url: "php/reboot.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				$("#updateLogDisplay").addClass("hidden");
-				$("#updateLogTextDisplay").addClass("hidden");
-				$("#updateProgressDisplay").removeClass("hidden");
-				$("#helpText").html("Device is now rebooting. The page will attempt to redirect in 20 seconds if IP address remains the same.");
-				setTimeout("location.reload(true);", 20000);
-			})
-			.fail(function() {
-				console.log("Failed to reboot device, retrying");
-				if (retry < 5){
-					retry++;
-					rebootDevice(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function startUpdate(retry){
-			var updateData = {
-				remoteUpdate: document.getElementById("remoteUpdate").value,
-			}
-			console.log(updateData);
-			$.ajax({
-				url: "php/startUpdate.php",
-				type: "POST",
-				data: JSON.stringify(updateData),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				checkUpdateStarted(0);
-			})
-			.fail(function() {
-				console.log("Failed to send update data, retrying");
-				if (retry < 5){
-					retry++;
-					startUpdate(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function showUpdateLog(retry){
-			$.ajax({
-				url: "php/getUpdateLog.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function( data ) {
-				var logLength = Object.keys(data.log).length;
-				document.getElementById("updateLogText").rows = logLength + 3;
-				$("#updateProgressDisplay").addClass("hidden");
-				$("#updateLogDisplay").removeClass("hidden");
-				$("#updateLogTextDisplay").removeClass("hidden");
-				$("#updateLogText").html(data.log);
-				if (data.log[logLength - 1].trim() == "Done."){
-					if (intervalId){
-							clearInterval(intervalId);
-							intervalId = 0;
-					}
-					if (data.log[logLength - 2].trim().substring(0,7) == "Errors:"){
-						$("#startOverButtonDisplay").removeClass("hidden");
-					}else{
-						$("#rebootButtonDisplay").removeClass("hidden");
-					}
-				}else{
-					if (!intervalId){
-						setIntervalUpdate(showUpdateLog);
-					}
-				}
-			})
-			.fail(function() {
-				console.log("Error, couldn't get update log..");
-				if (retry < 5){
-					retry++;
-					clickAdvancedRemoteUpdate(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function checkUpdateStarted(retry){
-			$.ajax({
-				url: "php/verifyUpdate.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function( data ) {
-				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				if (data.fwUpdate == "running"){
-					$("#remoteUpdateDisplay").addClass("hidden");
-					$("#submitButton").addClass("hidden");
-					showUpdateLog(0);
-				}else{
-					$("#updateProgressDisplay").addClass("hidden");
-					$("#remoteUpdateDisplay").removeClass("hidden");
-					$("#submitButton").removeClass("hidden");
-				}
-			})
-			.fail(function() {
-				console.log("Error, couldn't get verifyUpdate.php.. retrying");
-				if (retry < 5){
-					retry++;
-					checkUpdateStarted(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickAdvancedRemoteUpdate(retry){
-			$.ajax({
-				url: "html/remoteUpdate.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("li").removeClass("active");
-					$("#submenuRemoteUpdate").addClass("active");
-					$("#helpText").html("Remotely update device");
-				},
-			})
-			.done(function( data ) {
-				checkUpdateStarted(0);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get remoteUpdate.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickAdvancedRemoteUpdate(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
 		function modifyInterface(option,retry){
 			var InterfaceSelect = document.getElementById("InterfaceSelect");
 			var InterfaceData = {
@@ -2314,14 +2176,17 @@
 							<a type="button" onclick="logout(0)" class="btn btn-default" href="#">Log out</a>
 						</div>
 					</form>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickStatusPage()" href="#">WiFi Status</a></li>
-						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
-						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
-						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickGlobalsPage(0)" href="#">WiFi Globals</a></li>
-						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickScanPage(0)" href="#">WiFi Scan</a></li>
-						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedPage(0)" href="#">WiFi Advanced</a></li>
-						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedRemoteUpdate(0)" href="#">Remote Update</a></li>
+					<ul class="nav navbar-nav navbar-right" id="mini_menu">
+						<li id="LiWifiMini" class="hidden-sm hidden-md hidden-lg"><a href="#" data-toggle="collapse" data-target="#submenu1mini" aria-expanded="false">WiFi ▼</a></li>
+							<ul class="nav nav-submenu collapse in" id="submenu1mini" role="menu" aria-labelledby="LiWifiMini">
+								<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickStatusPage()" href="#">Status</a></li>
+								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
+								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
+								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickGlobalsPage(0)" href="#">WiFi Globals</a></li>
+								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickScanPage(0)" href="#">WiFi Scan</a></li>
+								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedPage(0)" href="#">WiFi Advanced</a></li>
+							</ul>
+						<!-- <li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedRemoteUpdate(0)" href="#">Remote Update</a></li> -->
 						<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickInterfacePage(0)" href="#">Interface Configuration</a></li>
 						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickVersionPage(0)" href="#">System Version</a></li>
 						<li class="hidden"><a href="#">Settings</a></li>
@@ -2333,21 +2198,16 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-3 col-sm-3 col-md-2 sidebar hidden-xs">
-					<ul class="nav nav-sidebar">
-						<li id="LiStatus"><a onclick="clickStatusPage()" href="#">WiFi Status <span class="sr-only">(current)</span></a></li>
-						<li id="LiProfile" class="locked hidden"><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi Profiles ▼</a></li>
-							<ul class="nav nav-submenu collapse in locked hidden" id="submenu1" role="menu" aria-labelledby="LiProfile">
-								<li id="submenuEdit"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
-								<li id="submenuAdd"><a href="#" onclick="clickAddProfilePage(0)">Add profile</a></li>
+					<ul class="nav nav-sidebar" id="main_menu">
+						<li id="LiWifi" class=""><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi ▼</a></li>
+							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiWifi">
+								<li id="LiStatus"><a href="#" onclick="clickStatusPage()">Status</a></li>
+								<li id="submenuEdit" class="locked hidden"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
+								<li id="submenuAdd" class="locked hidden"><a href="#" onclick="clickAddProfilePage(0)">Add profile</a></li>
+								<li id="LiGlobal" class="locked hidden"><a href="#" onclick="clickGlobalsPage(0)">Globals</a></li>
+								<li id="LiScan" class="locked hidden" onclick="clickScanPage(0)"><a href="#">Scan</a></li>
+								<li id="LiAdvanced" class="locked hidden" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">Advanced</a></li>
 							</ul>
-						<li id="LiGlobal" class="locked hidden"><a href="#" onclick="clickGlobalsPage(0)">WiFi Globals</a></li>
-						<li id="LiScan" class="locked hidden" onclick="clickScanPage(0)"><a href="#">WiFi Scan</a></li>
-						<li id="LiAdvanced" class="locked hidden" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">WiFi Advanced</a></li>
-							<ul class="nav nav-submenu collapse locked hidden" id="submenu2" role="menu" aria-labelledby="LiAdvanced">
-								<li id="submenuRemoteUpdate"><a href="#" onclick="clickAdvancedRemoteUpdate(0)">Remote Update</a></li>
-							</ul>
-					</ul>
-					<ul class="nav nav-sidebar">
 						<li id="LiInterface" class="locked hidden" onclick="clickInterfacePage(0)"><a href="#">Interface Configuration</a></li>
 						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>

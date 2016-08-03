@@ -2,7 +2,8 @@
 # Copyright (c) 2016, Laird
 # Contact: ews-support@lairdtech.com
 
-	require("webLCM.php");
+	require("../../../php/webLCM.php");
+	require("remote_update.php");
 
 	if (file_exists(FW_LOGFILE)){
 		$returnedResult['log'] = file(FW_LOGFILE);
