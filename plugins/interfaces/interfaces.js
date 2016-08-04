@@ -19,7 +19,7 @@ function modifyInterface(option,retry){
 		})
 		.done(function( msg ) {
 			console.log(msg);
-			if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+			if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 				expiredSession();
 				return;
 			}
@@ -79,7 +79,7 @@ function submitInterface(retry){
 	})
 	.done(function( msg ) {
 		console.log(msg);
-		if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
@@ -104,7 +104,7 @@ function updateGetInterfacePage(interfaceName,retry){
 		contentType: "application/json",
 	})
 	.done(function( data ) {
-		if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
@@ -214,7 +214,7 @@ function setInterfaceState(ev,retry){
 			},
 		})
 		.done(function( data ) {
-			if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+			if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 				expiredSession();
 				return;
 			}
@@ -277,7 +277,7 @@ function modifySpecialInterface(retry){
 		},
 	})
 	.done(function( data ) {
-		if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
@@ -308,7 +308,7 @@ function updateSelectInterfacePage(retry){
 		},
 	})
 	.done(function( data ) {
-		if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}

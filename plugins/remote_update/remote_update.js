@@ -8,7 +8,7 @@ function restartUpdate(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
@@ -32,7 +32,7 @@ function rebootDevice(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
@@ -65,7 +65,7 @@ function startUpdate(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
@@ -129,7 +129,7 @@ function checkUpdateStarted(retry){
 		contentType: "application/json",
 	})
 	.done(function( data ) {
-		if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
+		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}

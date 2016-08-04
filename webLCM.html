@@ -46,37 +46,38 @@
 		<script type="text/javascript" src="assets/js/jquery.tablesorter.min.js"></script>
 		<script>
 		var intervalId;
-		var sdcsdk = [];
+		var defines = [];
 		$.ajax({
 			url: "php/defines.php",
 			type: "POST",
 			contentType: "application/json",
 			retry: 1,
-			success:  function(data) {
-				console.log(data);
-				sdcsdk = data;
-				for (var key in sdcsdk.PLUGINS.list) {
-					if (sdcsdk.PLUGINS.list[key] == true){
-						addPlugin(0, key);
-					}
-				}
-				checkLocks();
-				clickStatusPage();
-			},
 			error: function(){
 				if (this.retry < 5){
 					this.retry++;
 					$.ajax(this);
 					return;
 				}
+			},
+		})
+		.done(function( data ) {
+			console.log(data);
+			defines = data;
+			for (var key in defines.PLUGINS.list) {
+				if (defines.PLUGINS.list[key] == true){
+					var jsPath = "../plugins/" + key + "/" + key + ".js";
+					loadjscssfile(jsPath, "js");
+					addPlugin(0, key);
+				}
 			}
+			checkLocks();
 		});
 
 		function checkLocks(){
-			if (sdcsdk.IGNORE_SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS && sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+			if (defines.IGNORE_SESSION == defines.SDCERR.SDCERR_SUCCESS && defines.SESSION == defines.SDCERR.SDCERR_SUCCESS){
 				$("#loggin").addClass("hidden");
 				$(".locked").removeClass("hidden");
-			} else if (sdcsdk.SESSION == sdcsdk.SDCERR.SDCERR_SUCCESS){
+			} else if (defines.SESSION == defines.SDCERR.SDCERR_SUCCESS){
 				$("#loggin").addClass("hidden");
 				$("#loggout").removeClass("hidden");
 				$(".locked").removeClass("hidden");
@@ -91,12 +92,12 @@
 			}
 			if (typeof fileref!="undefined"){
 				document.getElementsByTagName("head")[0].appendChild(fileref);
+				console.log("Loaded:" + filename);
 			}
 		}
 
 		function addPlugin(retry, key){
 			var pluginPath = "../plugins/" + key + "/" + key + ".html";
-			var jsPath = "../plugins/" + key + "/" + key + ".js";
 			$.ajax({
 				url: pluginPath,
 				data: {},
@@ -104,11 +105,11 @@
 				dataType: "html",
 			})
 			.done(function( data ) {
-				loadjscssfile(jsPath,"js");
-				$("#main_menu").append(data);
+				$("#main_menu").append($(data)[1]);
 				var mini_menu = $(data);
 				$(mini_menu).addClass("hidden-sm hidden-md hidden-lg");
-				$("#mini_menu").append(mini_menu);
+				console.log(mini_menu);
+				$("#mini_menu").append(mini_menu[3]);
 				checkLocks();
 			})
 			.fail(function() {
@@ -130,59 +131,59 @@
 		function SDCERRtoString(SDCERR){
 			$("[id^='return']").removeClass();
 			switch(parseInt(SDCERR)) {
-				case sdcsdk.SDCERR.SDCERR_SUCCESS:
+				case defines.SDCERR.SDCERR_SUCCESS:
 					$("[id^='return']").addClass("alert alert-success");
 					$("[id^='return']").html("Success");
 					break;
-				case sdcsdk.SDCERR.SDCERR_FAIL:
+				case defines.SDCERR.SDCERR_FAIL:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Failure");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_NAME:
+				case defines.SDCERR.SDCERR_INVALID_NAME:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid Name");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_CONFIG:
+				case defines.SDCERR.SDCERR_INVALID_CONFIG:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid Config");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_DELETE:
+				case defines.SDCERR.SDCERR_INVALID_DELETE:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid Delete");
 					break;
-				case sdcsdk.SDCERR.SDCERR_POWERCYCLE_REQUIRED:
+				case defines.SDCERR.SDCERR_POWERCYCLE_REQUIRED:
 					$("[id^='return']").addClass("alert alert-info");
 					$("[id^='return']").html("Power Cycle Required");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_PARAMETER:
+				case defines.SDCERR.SDCERR_INVALID_PARAMETER:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid Parameter");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_EAP_TYPE:
+				case defines.SDCERR.SDCERR_INVALID_EAP_TYPE:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid EAP TYPE");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_WEP_TYPE:
+				case defines.SDCERR.SDCERR_INVALID_WEP_TYPE:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid WEP TYPE");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_FILE:
+				case defines.SDCERR.SDCERR_INVALID_FILE:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid File");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INSUFFICIENT_MEMORY:
+				case defines.SDCERR.SDCERR_INSUFFICIENT_MEMORY:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Insufficient Memory");
 					break;
-				case sdcsdk.SDCERR.SDCERR_NOT_IMPLEMENTED:
+				case defines.SDCERR.SDCERR_NOT_IMPLEMENTED:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Not Implemented");
 					break;
-				case sdcsdk.SDCERR.SDCERR_NO_HARDWARE:
+				case defines.SDCERR.SDCERR_NO_HARDWARE:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("No Hardware");
 					break;
-				case sdcsdk.SDCERR.SDCERR_INVALID_VALUE:
+				case defines.SDCERR.SDCERR_INVALID_VALUE:
 					$("[id^='return']").addClass("alert alert-danger");
 					$("[id^='return']").html("Invalid Value");
 					break;
@@ -201,31 +202,6 @@
 			$("[id^='return']").html(message);
 		}
 
-		function CARDSTATEtoString(CARDSTATE){
-			switch(CARDSTATE) {
-				case sdcsdk.CARDSTATE.CARDSTATE_NOT_INSERTED:
-					return "Not Inserted";
-				case sdcsdk.CARDSTATE.CARDSTATE_NOT_ASSOCIATED:
-					return "Not Associated";
-				case sdcsdk.CARDSTATE.CARDSTATE_ASSOCIATED:
-					return "Associated";
-				case sdcsdk.CARDSTATE.CARDSTATE_AUTHENTICATED:
-					return "Authenticated";
-				case sdcsdk.CARDSTATE.CARDSTATE_FCCTEST:
-					return "FCC Test";
-				case sdcsdk.CARDSTATE.CARDSTATE_NOT_SDC:
-					return "Not Laird";
-				case sdcsdk.CARDSTATE.CARDSTATE_DISABLED:
-					return "Disabled";
-				case sdcsdk.CARDSTATE.CARDSTATE_ERROR:
-					return "Error";
-				case sdcsdk.CARDSTATE.CARDSTATE_AP_MODE:
-					return "AP Mode";
-				default:
-					return "Unknown card state";
-			}
-		}
-
 		function login(retry){
 			var creds = {
 				username: document.getElementById("username").value,
@@ -239,7 +215,7 @@
 			})
 			.done(function( data ) {
 				console.log(data);
-				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_SUCCESS){
+				if (data.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
 					$("#loggin").addClass("hidden");
 					$("#loggout").removeClass("hidden");
 					$(".locked").removeClass("hidden");
@@ -269,7 +245,7 @@
 				contentType: "application/json",
 			})
 			.done(function( data ) {
-				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_SUCCESS){
+				if (data.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
 					$("#loggout").addClass("hidden");
 					$("#loggin").removeClass("hidden");
 					$(".locked").addClass("hidden");
@@ -294,1399 +270,6 @@
 			$("#loggin").removeClass("hidden");
 			$(".locked").addClass("hidden");
 			clickStatusPage();
-		}
-
-		function onChangeSubmit(){
-			$("#submitButton").removeClass("disabled");
-		}
-
-		function onChangePowersave(){
-			var powerSave = parseInt(document.getElementById("powerSave").value);
-			switch (powerSave){
-				case sdcsdk.POWERSAVE.POWERSAVE_OFF:
-				case sdcsdk.POWERSAVE.POWERSAVE_MAX:
-					$("#pspDelayDisplay").addClass("hidden");
-					break;
-				case sdcsdk.POWERSAVE.POWERSAVE_FAST:
-					$("#pspDelayDisplay").removeClass("hidden");
-					break;
-				default:
-					$("#pspDelayDisplay").removeClass("hidden");
-					break;
-			}
-		}
-
-		function onChangeSecurity(){
-			var wepType = parseInt(document.getElementById("wepType").value);
-			var eapType = parseInt(document.getElementById("eapType").value);
-			function clearCredsDisplay(){
-				$("#eapTypeDisplay").addClass("hidden");
-				$("#wepIndexDisplay").addClass("hidden");
-				$("#wepTypeOnDisplay").addClass("hidden");
-				$("#pskDisplay").addClass("hidden");
-				$("#userNameDisplay").addClass("hidden");
-				$("#passWordDisplay").addClass("hidden");
-				$("#userCertDisplay").addClass("hidden");
-				$("#userCertPasswordDisplay").addClass("hidden");
-				$("#CACertDisplay").addClass("hidden");
-				$("#PACFilenameDisplay").addClass("hidden");
-				$("#PACPasswordDisplay").addClass("hidden");
-			}
-			function displayProperEAPCreds(){
-				$("#eapTypeDisplay").removeClass("hidden");
-				$("#userNameDisplay").removeClass("hidden");
-				if (!(eapType == sdcsdk.EAPTYPE.EAP_EAPTLS || eapType == sdcsdk.EAPTYPE.EAP_PEAPTLS)){
-					$("#passWordDisplay").removeClass("hidden");
-				} else {
-					$("#userCertDisplay").removeClass("hidden");
-					$("#userCertPasswordDisplay").removeClass("hidden");
-				}
-				if (eapType > sdcsdk.EAPTYPE.EAP_EAPFAST && eapType < sdcsdk.EAPTYPE.EAP_WAPI_CERT){
-					$("#CACertDisplay").removeClass("hidden");
-				}
-				if (eapType == sdcsdk.EAPTYPE.EAP_EAPFAST){
-					$("#PACFilenameDisplay").removeClass("hidden");
-					$("#PACPasswordDisplay").removeClass("hidden");
-				}
-			}
-			switch (wepType){
-				case sdcsdk.WEPTYPE.WEP_OFF:
-					clearCredsDisplay();
-					break;
-				case sdcsdk.WEPTYPE.WEP_ON:
-					clearCredsDisplay();
-					$("#wepIndexDisplay").removeClass("hidden");
-					$("#wepTypeOnDisplay").removeClass("hidden");
-					break;
-				case sdcsdk.WEPTYPE.WEP_AUTO:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
-				case sdcsdk.WEPTYPE.WPA_PSK:
-					clearCredsDisplay();
-					$("#pskDisplay").removeClass("hidden");
-					break;
-				case sdcsdk.WEPTYPE.WPA_TKIP:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
-				case sdcsdk.WEPTYPE.WPA2_PSK:
-					clearCredsDisplay();
-					$("#pskDisplay").removeClass("hidden");
-					break;
-				case sdcsdk.WEPTYPE.WPA2_AES:
-				case sdcsdk.WEPTYPE.CCKM_TKIP:
-				case sdcsdk.WEPTYPE.WEP_CKIP:
-				case sdcsdk.WEPTYPE.WEP_AUTO_CKIP:
-				case sdcsdk.WEPTYPE.CCKM_AES:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
-				case sdcsdk.WEPTYPE.WPA_PSK_AES:
-					clearCredsDisplay();
-					$("#pskDisplay").removeClass("hidden");
-					break;
-				case sdcsdk.WEPTYPE.WPA_AES:
-					clearCredsDisplay();
-					displayProperEAPCreds();
-					break;
-				default:
-					break;
-			}
-		}
-
-		function updateStatus(){
-			var getStatusJSON = $.getJSON( "php/status.php", function( data ) {
-				if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					$("#loggout").addClass("hidden");
-					$("#loggin").removeClass("hidden");
-					$(".locked").addClass("hidden");
-				}
-				$("#updateProgressDisplay").addClass("hidden");
-				if (data.SDCERR == sdcsdk.SDCERR.SDCERR_NO_HARDWARE){
-					$("#status-success").addClass("hidden");
-					$("#status-hardware").removeClass("hidden");
-				} else {
-					$("#status-success").removeClass("hidden");
-					var rssi = data.rssi;
-					var rssiMeter = rssi + 120;
-					$('#cardState').html(CARDSTATEtoString(data.cardState));
-					$('#configName').html(data.configName);
-					$('#ssid').html(data.ssid);
-					$('#channel').html(data.channel);
-					$('#rssi').html(rssi);
-					$('#clientName').html(data.clientName);
-					$('#client_MAC').html(data.client_MAC);
-					$('#client_IP').html(data.client_IP);
-					$('#APName').html(data.APName);
-					$('#AP_MAC').html(data.AP_MAC);
-					$('#AP_IP').html(data.AP_IP);
-					$('#bitRate').html(data.bitRate);
-					$('#txPower').html(data.txPower);
-					$('#beaconPeriod').html(data.beaconPeriod);
-					$('#DTIM').html(data.DTIM);
-
-					$("#progressbar").removeClass("progress-bar-danger progress-bar-warning progress-bar-success");
-					var rssiWidth = rssiMeter.toString().concat("%");
-					if (rssi == 0){ //Not connected
-						$("#progressbar").addClass("progress-bar-danger");
-						$("#progressbar").css('width',rssiWidth);
-					} else if (rssi < -90){ //red
-						$("#progressbar").addClass("progress-bar-danger");
-						$("#progressbar").css('width',rssiWidth);
-					} else if (rssi < -70){ //yellow
-						$("#progressbar").addClass("progress-bar-warning");
-						$("#progressbar").css('width',rssiWidth);
-					} else { //green
-						$("#progressbar").addClass("progress-bar-success");
-						$("#progressbar").css('width',rssiWidth);
-					}
-					document.getElementById("progressbar").innerHTML = rssi + " dBm";
-				}
-			})
-			.fail(function(data) {
-				console.log(data);
-				console.log("Failed to get status.php, retrying.");
-				setIntervalUpdate(updateStatus);
-			});
-		}
-
-		function setIntervalUpdate(functionName){
-			if (!intervalId){
-				intervalId = setInterval(functionName, 1000);
-			} else {
-				console.log("Interval already set");
-			}
-		}
-
-		function clickStatusPage() {
-			if ($("#LiStatus").hasClass("active")){
-				console.log("Status already active");
-			} else {
-				$("li").removeClass("active");
-				$("#LiStatus").addClass("active");
-				clearReturnData();
-				$("#helpText").html("This page shows the current state of WiFi");
-				$.ajax({
-					url: "html/status.html",
-					data: {},
-					type: "GET",
-					dataType: "html",
-					success: function (data) {
-						$('#main_section').html(data);
-						setIntervalUpdate(updateStatus);
-					},
-					error: function (xhr, status) {
-						if (intervalId){
-							clearInterval(intervalId);
-							intervalId = 0;
-						}
-						console.log("Error, couldn't get status.html.. retrying");
-						$("#LiStatus").removeClass("active")
-						clickStatusPage();
-					},
-				});
-			}
-		}
-
-		function submitProfile(retry){
-			var profileData = {
-				profileName: document.getElementById("profileName").value,
-				SSID: document.getElementById("SSID").value,
-				clientName: document.getElementById("clientName").value,
-				txPower: parseInt($('#txSlider').val()),
-				authType: parseInt(document.getElementById("authType").value),
-				eapType: parseInt(document.getElementById("eapType").value),
-				wepType: parseInt(document.getElementById("wepType").value),
-				radioMode: parseInt(document.getElementById("radioMode").value),
-				powerSave: parseInt(document.getElementById("powerSave").value),
-				pspDelay: parseInt($('#pspDelaySlider').val()),
-				wepIndex: parseInt(document.getElementById("wepIndex").value),
-				index1: document.getElementById("index1").value,
-				index2: document.getElementById("index2").value,
-				index3: document.getElementById("index3").value,
-				index4: document.getElementById("index4").value,
-				psk: document.getElementById("psk").value,
-				userName: document.getElementById("userName").value,
-				passWord: document.getElementById("passWord").value,
-				userCert: document.getElementById("userCert").value,
-				userCertPassword: document.getElementById("userCertPassword").value,
-				CACert: document.getElementById("CACert").value,
-				PACFilename: document.getElementById("PACFilename").value,
-				PACPassword: document.getElementById("PACPassword").value,
-			}
-			console.log(profileData);
-			$.ajax({
-				url: "php/setProfile.php",
-				type: "POST",
-				data: JSON.stringify(profileData),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				SDCERRtoString(msg.SDCERR);
-				$("#submitButton").addClass("disabled");
-			})
-			.fail(function() {
-				console.log("Failed to get profile data, retrying");
-				if (retry < 5){
-					retry++;
-					submitProfile(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function SelectedIndex(sel, val) {
-			for(var i = 0, j = sel.options.length; i < j; ++i) {
-				if(sel.options[i].value == val) {
-				sel.selectedIndex = i;
-				break;
-				}
-			}
-		}
-
-		function updateGetProfilePage(profileName,retry){
-			var data = {
-					profileName: profileName,
-				}
-			$.ajax({
-				url: "php/getProfile.php",
-				type: "POST",
-				data: JSON.stringify(data),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				document.getElementById("profileName").value = msg.configName;
-				document.getElementById("SSID").value = msg.SSID;
-				document.getElementById("clientName").value = msg.clientName;
-				$('#txSlider').slider('setValue', msg.txPower);
-				document.getElementById("authType").selectedIndex =  msg.authType;
-				//If index does not start at 0 and run contiguously we must check against options value
-				SelectedIndex(document.getElementById("wepType"),msg.wepType);
-				SelectedIndex(document.getElementById("eapType"),msg.eapType);
-				SelectedIndex(document.getElementById("radioMode"),msg.radioMode);
-				document.getElementById("powerSave").selectedIndex =  msg.powerSave;
-				if (msg.powerSave == sdcsdk.POWERSAVE.POWERSAVE_FAST){
-					$("#pspDelayDisplay").removeClass("hidden");
-					$('#pspDelaySlider').slider('setValue', msg.pspDelay);
-				}
-				if (msg.wepType == sdcsdk.WEPTYPE.WEP_ON){
-					$("#wepIndexDisplay").removeClass("hidden");
-					document.getElementById("wepIndex").selectedIndex =  msg.wepIndex - 1;
-					$("#wepTypeOnDisplay").removeClass("hidden");
-					document.getElementById("index1").value =  msg.WEPKey1;
-					document.getElementById("index2").value =  msg.WEPKey2;
-					document.getElementById("index3").value =  msg.WEPKey3;
-					document.getElementById("index4").value =  msg.WEPKey4;
-				} else if (msg.wepType == sdcsdk.WEPTYPE.WPA_PSK || msg.wepType == sdcsdk.WEPTYPE.WPA2_PSK || msg.wepType == sdcsdk.WEPTYPE.WPA_PSK_AES || msg.wepType == sdcsdk.WEPTYPE.WPA2_PSK_TKIP){
-					$("#pskDisplay").removeClass("hidden");
-					document.getElementById("psk").value =  msg.PSK;
-				} else if (msg.eapType >= sdcsdk.EAPTYPE.EAP_LEAP){
-					$("#eapTypeDisplay").removeClass("hidden");
-					$("#userNameDisplay").removeClass("hidden");
-					document.getElementById("userName").value =  msg.userName;
-					if (!(msg.eapType == sdcsdk.EAPTYPE.EAP_EAPTLS || msg.eapType == sdcsdk.EAPTYPE.EAP_PEAPTLS)){
-						$("#passWordDisplay").removeClass("hidden");
-						document.getElementById("passWord").value =  msg.passWord;
-					} else {
-						$("#userCertDisplay").removeClass("hidden");
-						document.getElementById("userCert").value =  msg.userCert;
-						$("#userCertPasswordDisplay").removeClass("hidden");
-						document.getElementById("userCertPassword").value =  msg.userCertPassword;
-					}
-					if (msg.eapType > sdcsdk.EAPTYPE.EAP_EAPFAST && msg.eapType < sdcsdk.EAPTYPE.EAP_WAPI_CERT){
-						$("#CACertDisplay").removeClass("hidden");
-						document.getElementById("CACert").value =  msg.CACert;
-					}
-					if (msg.eapType == sdcsdk.EAPTYPE.EAP_EAPFAST){
-						$("#PACFilenameDisplay").removeClass("hidden");
-						document.getElementById("PACFilename").value =  msg.PACFileName;
-						$("#PACPasswordDisplay").removeClass("hidden");
-						document.getElementById("PACPassword").value =  msg.PACPassword;
-					}
-				}
-			})
-			.fail(function() {
-				console.log("Failed to get profile data, retrying");
-				if (retry < 5){
-					retry++;
-					updateGetProfilePage(profileName,retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function selectedProfile(selectedProfile,retry){
-			if(!selectedProfile){
-				var selectedProfile = document.getElementById("profileSelect").value;
-			}
-			$.ajax({
-				url: "html/getProfile.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("#helpText").html("Adjust profile settings.");
-				},
-				error: function (xhr, status) {
-					console.log("Error, couldn't get getProfile.html");
-				},
-			})
-			.done(function( msg ) {
-				console.log("Now try to get profile from PHP");
-				updateGetProfilePage(selectedProfile,0);
-				$('#txSlider').slider({
-					formatter: function(value) {
-						if (value != 0){
-							return 'Current value: ' + value;
-						} else {
-							return 'Current value: Auto';
-						}
-					}
-				});
-				$('#pspDelaySlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-			})
-			.fail(function() {
-				console.log("Failed to get get Profile, retrying");
-				if (retry < 5){
-					retry++;
-					selectedProfile(selectedProfile,retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function enableAutoProfileSubmit(){
-			$("#applyAutoProfile").removeClass("disabled");
-		}
-
-		function updateSelectProfilePage(retry){
-			$.ajax({
-				url: "php/listProfile.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				var x = document.getElementById("profileSelect");
-				x.size = String(msg.NumConfigs);
-				for (i = 0; i < msg.NumConfigs; i++) {
-					var option = document.createElement("option");
-					option.text = msg.profiles[i];
-					x.add(option);
-					if (msg.profiles[i] == msg.currentConfig){
-						x.selectedIndex = i;
-						option.id = "activeProfile";
-						var helpText = document.getElementById("helpText").innerHTML;
-						$("#helpText").html(helpText + " Profile " + msg.currentConfig + " is the active profile.");
-					}
-				}
-				if (msg.autoProfiles){
-					var table = document.getElementById("autoProfileTable").getElementsByTagName('tbody')[0];
-					var row, cell1, cell2, checkbox,button,buttonText;
-					for (var profile in msg.autoProfiles){
-						row = table.insertRow(-1);
-						cell1 = row.insertCell(0);
-						cell2 = row.insertCell(1);
-						checkbox = document.createElement('input');
-						cell1.innerHTML = profile;
-						checkbox.type = "checkbox";
-						checkbox.name = profile;
-						checkbox.value = profile;
-						checkbox.setAttribute("onchange","enableAutoProfileSubmit()");
-						if (msg.autoProfiles[profile] == true){
-							checkbox.checked = true;
-						}
-						cell2.appendChild(checkbox);
-					}
-					row.style.borderBottom="1px solid rgb(211, 211, 211)";
-					$("#activateButton").addClass("hidden");
-					$("#autoProfileDisplay").removeClass("hidden");
-				}
-			})
-			.fail(function() {
-				console.log("Failed to get profiles, retrying");
-				if (retry < 5){
-					retry++;
-					updateSelectProfilePage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function activateProfile(retry){
-			var data = {
-					profileName: document.getElementById("profileSelect").value,
-			}
-			console.log("Activating profile " + data.profileName);
-			$.ajax({
-				url: "php/activateProfile.php",
-				type: "POST",
-				data: JSON.stringify(data),
-				contentType: "application/json",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-				},
-				error: function (xhr, status) {
-					console.log("Error, couldn't get activateProfile.php");
-				},
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				SDCERRtoString(msg.SDCERR);
-			})
-			.fail(function() {
-				console.log("Failed to activate profile, retrying");
-				if (retry < 5){
-					retry++;
-					activateProfile(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function renameProfile(retry){
-			var profileSelect = document.getElementById("profileSelect");
-			var selectedProfile = profileSelect.options[profileSelect.selectedIndex].text;
-			var profileName = {
-					currentName: selectedProfile,
-					newName: document.getElementById("newProfileName").value,
-			}
-			$.ajax({
-				url: "php/renameProfile.php",
-				type: "POST",
-				data: JSON.stringify(profileName),
-				contentType: "application/json",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-				},
-				error: function (xhr, status) {
-					console.log("Error, couldn't get renameProfile.php");
-				},
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				SDCERRtoString(msg.SDCERR);
-				if (document.getElementById("returnDataNav").innerHTML == "Success"){
-					for(var i = 0; i < profileSelect.options.length; i++) {
-						if (profileName.currentName == profileSelect.options[i].text){
-							profileSelect.options[i].text = profileName.newName;
-						}
-					}
-					$("#newProfileNameDisplay").addClass("hidden");
-				}
-			})
-			.fail(function() {
-				console.log("Failed to rename profile, retrying");
-				if (retry < 5){
-					retry++;
-					renameProfile(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function showRenameProfile(){
-			$("#newProfileNameDisplay").removeClass("hidden");
-		}
-
-		function removeProfile(){
-			var profileSelect = document.getElementById("profileSelect");
-			var activeProfile = document.getElementById("activeProfile");
-			var oldProfile = {
-				profileName: profileSelect.value
-			}
-			if (oldProfile.profileName != activeProfile.text){
-				$.ajax({
-					url: "php/removeProfile.php",
-					type: "POST",
-					data: JSON.stringify(oldProfile),
-					contentType: "application/json",
-				})
-				.done(function( msg ) {
-					if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-						expiredSession();
-						return;
-					}
-					SDCERRtoString(msg.SDCERR);
-					if (document.getElementById("returnDataNav").innerHTML == "Success"){
-						for(var i = 0; i < profileSelect.options.length; i++) {
-							if (oldProfile.profileName == profileSelect.options[i].text){
-								profileSelect.options.remove(i);
-								profileSelect.size = profileSelect.size - 1;
-							}
-						}
-					}
-				});
-			} else {
-				CustomErrMsg("Cant delete active profile");
-			}
-		};
-
-		function submitAutoProfile(retry){
-			var rows,index,profile,value;
-			autoProfileList = {};
-			rows = document.getElementById("autoProfileTable").rows;
-			for (index = 1; index < rows.length; index++){
-				profile = rows[index].cells[0].innerHTML;
-				value = rows[index].cells[1].children[0].checked;
-				autoProfileList[profile] = value;
-			}
-			console.log(autoProfileList);
-			$.ajax({
-				url: "php/setAutoProfileList.php",
-				type: "POST",
-				data: JSON.stringify(autoProfileList),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				SDCERRtoString(msg.SDCERR);
-				$("#applyAutoProfile").addClass("disabled");
-			});
-		}
-
-		function clickProfileEditPage(retry) {
-			$.ajax({
-				url: "html/selectProfile.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$("li").removeClass("active");
-					$("#submenuEdit").addClass("active");
-					$('#main_section').html(data);
-					clearReturnData();
-					$("#helpText").html("These are the current WiFi profiles.");
-					setTimeout(updateSelectProfilePage(retry),1000);
-				},
-			})
-			.fail(function() {
-				console.log("Error, couldn't get selectProfile.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickProfileEditPage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickAddProfilePage(retry) {
-			$.ajax({
-				url: "html/addProfile.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("li").removeClass("active");
-					$("#submenuAdd").addClass("active");
-					$("#helpText").html("Enter the name of the profile you would like to add.");
-					$('#txSlider').slider({
-						formatter: function(value) {
-							if (value != 0){
-								return 'Current value: ' + value;
-							} else {
-								return 'Current value: Auto';
-							}
-						}
-					});
-					$('#pspDelaySlider').slider({
-						formatter: function(value) {
-							return 'Current value: ' + value;
-						}
-					});
-				},
-			})
-			.fail(function() {
-				console.log("Error, couldn't get addProfile.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickAddProfilePage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function updateAddProfileSlider(){
-			//https://github.com/seiyria/bootstrap-slider/issues/523
-			setTimeout(function() {
-				$('#pspDelaySlider').slider("relayout");
-				$('#txSlider').slider("relayout");
-			}, 500);
-		}
-
-		function addProfile(){
-			if (profileName != ""){
-				var newProfile = {
-					profileName: document.getElementById("profileName").value,
-					SSID: document.getElementById("SSID").value,
-					clientName: document.getElementById("clientName").value,
-					txPower: parseInt($('#txSlider').val()),
-					authType: parseInt(document.getElementById("authType").value),
-					eapType: parseInt(document.getElementById("eapType").value),
-					wepType: parseInt(document.getElementById("wepType").value),
-					radioMode: parseInt(document.getElementById("radioMode").value),
-					powerSave: parseInt(document.getElementById("powerSave").value),
-					pspDelay: parseInt($('#pspDelaySlider').val()),
-					wepIndex: parseInt(document.getElementById("wepIndex").value),
-					index1: document.getElementById("index1").value,
-					index2: document.getElementById("index2").value,
-					index3: document.getElementById("index3").value,
-					index4: document.getElementById("index4").value,
-					psk: document.getElementById("psk").value,
-					userName: document.getElementById("userName").value,
-					passWord: document.getElementById("passWord").value,
-					userCert: document.getElementById("userCert").value,
-					userCertPassword: document.getElementById("userCertPassword").value,
-					CACert: document.getElementById("CACert").value,
-					PACFilename: document.getElementById("PACFilename").value,
-					PACPassword: document.getElementById("PACPassword").value,
-				}
-				console.log(newProfile);
-				$.ajax({
-					url: "php/addProfile.php",
-					type: "POST",
-					data: JSON.stringify(newProfile),
-					contentType: "application/json",
-				})
-				.done(function( msg ) {
-					console.log(msg);
-					console.log(msg.SDCERR);
-					if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-						expiredSession();
-						return;
-					}
-					SDCERRtoString(msg.SDCERR);
-				});
-			} else {
-				console.log("Name is null");
-			}
-		};
-
-		function getSupportedGlobals(retry){
-			$.ajax({
-				url: "php/supportedGlobals.php",
-				type: "GET",
-				contentType: "application/json",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					console.log(data);
-					if (data.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-						expiredSession();
-						return;
-					}
-					for (var key in data) {
-						if (data[key] != 0 && key != "SDCERR"){
-							$("#" + key + "Display").removeClass("hidden");
-						}
-						$("#submitButton").removeClass("hidden");
-					}
-				},
-			})
-			.fail(function() {
-				console.log("Error, couldn't get supportedGlobals.php.. retrying");
-				if (retry < 5){
-					retry++;
-					getSupportedGlobals(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function isSlider(id){
-			switch(id){
-				case "BeaconMissTimeout":
-				case "fragThreshold":
-				case "probeDelay":
-				case "roamPeriodms":
-				case "roamTrigger":
-				case "RTSThreshold":
-				case "scanDFSTime":
-					return true;
-					break;
-				default:
-					return false
-					break;
-			}
-		}
-
-		function getGlobals(retry){
-			$.ajax({
-				url: "php/getGlobals.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function(msg) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				for (var key in msg) {
-					if (key != "SDCERR" && key != "SESSION"){
-						if (isSlider(key)){
-							$("#" + key + "Slider").slider('setValue', msg[key]);
-						} else{
-							if (key != "suppInfo"){
-								if (key == "aLRS"){
-									for (var aChannel in msg[key]){
-										document.getElementById("channel" + msg[key][aChannel]).checked = true;
-									}
-								}else if(key == "bLRS"){
-									for (var bChannel in msg[key]){
-										document.getElementById("channel" + msg[key][bChannel]).checked = true;
-									}
-								}else if(key == "fipsStatus"){
-									switch (msg[key])
-									{
-										case 0: //FIPS_INACTIVE
-											document.getElementById("fipsStatus").innerHTML = "FIPS disabled and inactive:";
-											break;
-										case 1: //FIPS_INACTIVE_ENABLED
-											document.getElementById("fipsStatus").innerHTML =  "FIPS Mode inactive, enabled on next start:";
-											break;
-										case 2: //FIPS_ACTIVE_DISABLED
-											document.getElementById("fipsStatus").innerHTML =  "FIPS Mode active, disabled on next start:";
-											break;
-										case 3: //FIPS_ACTIVE
-											document.getElementById("fipsStatus").innerHTML =  "FIPS Mode enabled and active:";
-											break;
-										default:
-											break;
-									}
-								}else{
-									document.getElementById(key).value = msg[key];
-								}
-							}
-						}
-					}
-				}
-			})
-			.fail(function() {
-				console.log("Error, couldn't get getGlobals.php.. retrying");
-				if (retry < 5){
-					retry++;
-					getGlobals(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickGlobalsPage(retry){
-			$.ajax({
-				url: "html/getGlobals.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("li").removeClass("active");
-					$("#LiGlobal").addClass("active");
-					$("#helpText").html("Here are the global configuration options for WiFi");
-				},
-			})
-			.done(function( data ) {
-				getGlobals(0);
-				getSupportedGlobals(0);
-				$('#BeaconMissTimeoutSlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-				$('#fragThresholdSlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-				$('#probeDelaySlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-				$('#roamPeriodmsSlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-				$('#roamTriggerSlider').slider({
-					formatter: function(value) {
-						return 'Current value: -' + value;
-					}
-				});
-				$('#RTSThresholdSlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-				$('#scanDFSTimeSlider').slider({
-					formatter: function(value) {
-						return 'Current value: ' + value;
-					}
-				});
-				//https://github.com/seiyria/bootstrap-slider/issues/523
-				setTimeout(function() {
-					$('#BeaconMissTimeoutSlider').slider("relayout");
-					$('#fragThresholdSlider').slider("relayout");
-					$('#probeDelaySlider').slider("relayout");
-					$('#roamPeriodmsSlider').slider("relayout");
-					$('#roamTriggerSlider').slider("relayout");
-					$('#RTSThresholdSlider').slider("relayout");
-					$('#scanDFSTimeSlider').slider("relayout");
-				}, 500);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get getGlobals.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickGlobalsPage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function submitGlobals(retry){
-			var totalAChannelValue = 0;
-			AchannelArray = [36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165];
-			for (var channel in AchannelArray){
-				if(document.getElementById('channel' + AchannelArray[channel]).checked){
-					totalAChannelValue += parseInt(document.getElementById('channel' + AchannelArray[channel]).value);
-				}
-			}
-			var totalBGChannelValue = 0;
-			for (j = 1; j <= 14; j++){
-				if(document.getElementById('channel' + j).checked){
-					totalBGChannelValue += parseInt(document.getElementById('channel' + j).value);
-				}
-			}
-			var globalData = {
-				aLRS: totalAChannelValue,
-				authServerType: document.getElementById("authServerType").value,
-				autoProfile: document.getElementById("autoProfile").value,
-				bLRS: totalBGChannelValue,
-				BeaconMissTimeout: parseInt($('#BeaconMissTimeoutSlider').val()),
-				BTcoexist: document.getElementById("BTcoexist").value,
-				CCXfeatures: document.getElementById("CCXfeatures").value,
-				certPath: document.getElementById("certPath").value,
-// 				suppInfo: document.getElementById("suppInfo").value,
-				defAdhocChannel: document.getElementById("defAdhocChannel").value,
-				DFSchannels: document.getElementById("DFSchannels").value,
-				fragThreshold: parseInt($('#fragThresholdSlider').val()),
-				PMKcaching: document.getElementById("PMKcaching").value,
-				probeDelay: parseInt($('#probeDelaySlider').val()),
-				regDomain: document.getElementById("regDomain").value,
-				roamPeriodms: parseInt($('#roamPeriodmsSlider').val()),
-				roamTrigger: parseInt($('#roamTriggerSlider').val()),
-				RTSThreshold: parseInt($('#RTSThresholdSlider').val()),
-				scanDFSTime: parseInt($('#scanDFSTimeSlider').val()),
-				TTLSInnerMethod: document.getElementById("TTLSInnerMethod").value,
-				uAPSD: document.getElementById("uAPSD").value,
-				WMEenabled: document.getElementById("WMEenabled").value,
-				suppInfoDateCheck: document.getElementById("suppInfoDateCheck").value,
-				fips: document.getElementById("fips").value,
-			}
-			console.log(globalData);
-			$.ajax({
-				url: "php/setGlobals.php",
-				type: "POST",
-				data: JSON.stringify(globalData),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				SDCERRtoString(msg.SDCERR);
-				$("#submitButton").addClass("disabled");
-			})
-			.fail(function() {
-				console.log("Failed to send global data, retrying");
-				if (retry < 5){
-					retry++;
-					submitGlobals(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-		function scanToProfile(){
-			var profileName = document.getElementById("profileNameHidden").value;
-			selectedProfile(profileName,0);
-			$("li").removeClass("active");
-			$("#submenuEdit").addClass("active");
-
-		}
-
-		function addScanProfile(){
-			var newProfile = {
-				profileName: document.getElementById("profileName").value,
-				SSID: document.getElementById("newSSID").value,
-				wepType: document.getElementById("security").value,
-			}
-			if (newProfile.profileName == ""){
-				$("#profileNameDisplay").addClass("has-error");
-				$("#profileName").popover({content:'Please enter profile name',placement:'bottom'});
-				$("#profileName").popover('show')
-				return;
-			}
-			$.ajax({
-				url: "php/addProfile.php",
-				type: "POST",
-				data: JSON.stringify(newProfile),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				console.log(msg);
-				console.log(msg.SDCERR);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				SDCERRtoString(msg.SDCERR);
-				if (document.getElementById("returnDataNav").innerHTML == "Success"){
-					document.getElementById("goToProfile").textContent = "Edit Profile " + newProfile.profileName;
-					$("#goToProfileDisplay").removeClass("hidden");
-					document.getElementById("profileNameHidden").value = newProfile.profileName;
-					document.getElementById("addTable").reset();
-				}
-			});
-		}
-
-		function allowDrop(ev){
-			ev.preventDefault();
-		}
-
-		function drag(ev){
-			var table = document.getElementById("scanTable");
-			var index = $(ev.currentTarget).index() + 1;
-			if (index > 1){
-				ev.dataTransfer.setData("ssid", table.rows[index].cells[0].innerHTML);
-				ev.dataTransfer.setData("security",table.rows[index].cells[4].innerHTML);
-			}
-		}
-
-		function drop(ev){
-			ev.preventDefault();
-			var table = document.getElementById("addTable");
-			document.getElementById("newSSID").value = ev.dataTransfer.getData("ssid");
-			document.getElementById("security").value = ev.dataTransfer.getData("security");
-			$("#profileNameDisplay").removeClass("has-error");
-			$("#addScanDisplay").removeClass("hidden");
-		}
-
-		function getScan(retry){
-			$.ajax({
-				url: "php/scan.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function(msg) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				if (msg.SDCERR == 12){
-					$("#updateProgressDisplay").addClass("hidden");
-					$("#status-hardware").removeClass("hidden");
-				} else {
-					var table = document.getElementById("scanTable");
-					for (var scanItem in msg["scanList"]){
-						var row = table.insertRow(-1);
-						row.setAttribute('draggable', true);
-						row.setAttribute('ondragstart', 'drag(event)');
-						var cell0 = row.insertCell(0);
-						var cell1 = row.insertCell(1);
-						var cell2 = row.insertCell(2);
-						var cell3 = row.insertCell(3);
-						var cell4 = row.insertCell(4);
-						cell0.innerHTML = msg["scanList"][scanItem].SSID;
-						cell1.innerHTML = msg["scanList"][scanItem].BSSID;
-						cell2.innerHTML = msg["scanList"][scanItem].channel;
-						cell3.innerHTML = msg["scanList"][scanItem].RSSI;
-						cell4.innerHTML = msg["scanList"][scanItem].security[0];
-						row.onclick=function(){
-							document.getElementById("newSSID").value = this.cells[0].innerHTML;
-							document.getElementById("security").value = this.cells[4].innerHTML;
-							$("#profileNameDisplay").removeClass("has-error");
-							$("#addScanDisplay").removeClass("hidden");
-						};
-					}
-					$("#updateProgressDisplay").addClass("hidden");
-					$("#scanTableDisplay").removeClass("hidden");
-					$(function(){
-						$("#scanTable").tablesorter( {sortList: [[0,0], [1,0]]} );
-					});
-				}
-			})
-			.fail(function() {
-				console.log("Error, couldn't get scan.php.. retrying");
-				if (retry < 5){
-					retry++;
-					getScan(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickScanPage(retry){
-			$.ajax({
-				url: "html/scan.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("li").removeClass("active");
-					$("#LiScan").addClass("active");
-					$("#helpText").html("Scan for wireless networks");
-				},
-			})
-			.done(function( data ) {
-				getScan(0);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get scan.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickScanPage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function uploadCert(retry){
-			var file_data = $('#fileToUpload').prop('files')[0];
-			var form_data = new FormData();
-			form_data.append('file', file_data);
-			$.ajax({
-				url: 'php/upload.php', // point to server-side PHP script
-				cache: false,
-				contentType: false,
-				processData: false,
-				data: form_data,
-				type: 'POST',
-			})
-			.done(function( data ) {
-				console.log(data);
-				SDCERRtoString(data.SDCERR);
-			})
-		}
-
-		function generateLog(retry){
-			$.ajax({
-				url: "php/generateLog.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function(msg) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				setIntervalUpdate(checkLog);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get generateLog.php.. retrying");
-				if (retry < 5){
-					retry++;
-					generateLog(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function removeLog(retry){
-			$.ajax({
-				url: "php/removeLog.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function(msg) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				document.getElementById("generateLog").textContent = "Generate";
-				$("#generateLog").removeClass("disabled");
-				$("#downloadLog").addClass("disabled");
-			})
-			.fail(function() {
-				console.log("Error, couldn't get removeLog.php.. retrying");
-				if (retry < 5){
-					retry++;
-					removeLog(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function checkLog(){
-			var getStatusJSON = $.getJSON( "php/checkLog.php", function( data ) {
-				if (data.state == "finished"){
-					$("#generateLog").addClass("disabled");
-					$("#downloadLog").removeClass("disabled");
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-				} else if (data.state == "stopped"){
-					$("#generateLog").removeClass("disabled");
-					$("#downloadLog").addClass("disabled");
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-				} else if (data.state == "running"){
-					document.getElementById("generateLog").textContent = "Generating";
-					$("#generateLog").addClass("disabled");
-					$("#downloadLog").addClass("disabled");
-				}
-			})
-			.fail(function(data) {
-				console.log("Error, couldn't get checkLog.php.. retrying");
-				setIntervalUpdate(checkLog);
-			});
-		}
-
-		function submitAdvanced(retry){
-			var AdvancedData = {
-				suppDebugLevel: parseInt(document.getElementById("suppDebugLevel").value),
-				driverDebugLevel: parseInt(document.getElementById("driverDebugLevel").value),
-				fwUpdateTM: parseInt(document.getElementById("fwUpdateTM").value),
-			}
-			$.ajax({
-				url: "php/setAdvanced.php",
-				type: "POST",
-				data: JSON.stringify(AdvancedData),
-				contentType: "application/json",
-			})
-			.done(function( msg ) {
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				SDCERRtoString(msg.SDCERR);
-				$("#submitButton").addClass("disabled");
-			})
-			.fail(function() {
-				console.log("Failed to send advanced data, retrying");
-				if (retry < 5){
-					retry++;
-					submitAdvanced(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function getAdvanced(retry){
-			$.ajax({
-				url: "php/getAdvanced.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function(msg) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				console.log(msg);
-				if (msg.SESSION == sdcsdk.SDCERR.SDCERR_FAIL){
-					expiredSession();
-					return;
-				}
-				document.getElementById("suppDebugLevel").value = msg.suppDebugLevel;
-				document.getElementById("driverDebugLevel").value = msg.driverDebugLevel;
-				document.getElementById("fwUpdateTM").value = msg.fwUpdateTM;
-				setIntervalUpdate(checkLog);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get getAdvanced.php.. retrying");
-				if (retry < 5){
-					retry++;
-					getAdvanced(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickAdvancedPage(retry){
-			$.ajax({
-				url: "html/advanced.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("li").removeClass("active");
-					$("#LiAdvanced").addClass("active");
-					$("#helpText").html("Advanced configuration options");
-				},
-			})
-			.done(function( data ) {
-				$('input[type=file]').bootstrapFileInput();
-				$('.file-inputs').bootstrapFileInput();
-				getAdvanced(0);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get advanced.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickAdvancedPage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function getVersion(retry){
-			$.ajax({
-				url: "php/version.php",
-				type: "POST",
-				contentType: "application/json",
-			})
-			.done(function(msg) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				console.log(msg);
-				document.getElementById("sdk").innerHTML = msg.sdk;
-				document.getElementById("chipset").innerHTML = msg.chipset;
-				document.getElementById("driver").innerHTML = msg.driver;
-				document.getElementById("firmware").innerHTML = msg.firmware;
-				document.getElementById("supplicant").innerHTML = msg.supplicant;
-				document.getElementById("php_sdk").innerHTML = msg.php_sdk;
-				document.getElementById("build").innerHTML = msg.build;
-			})
-			.fail(function() {
-				console.log("Error, couldn't get version.php.. retrying");
-				if (retry < 5){
-					retry++;
-					getVersion(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
-		}
-
-		function clickVersionPage(retry){
-			$.ajax({
-				url: "html/version.html",
-				data: {},
-				type: "GET",
-				dataType: "html",
-				success: function (data) {
-					if (intervalId){
-						clearInterval(intervalId);
-						intervalId = 0;
-					}
-					$('#main_section').html(data);
-					clearReturnData();
-					$("li").removeClass("active");
-					$("#LiVersion").addClass("active");
-					$("#helpText").html("System version information");
-				},
-			})
-			.done(function( data ) {
-				getVersion(0);
-			})
-			.fail(function() {
-				console.log("Error, couldn't get version.html.. retrying");
-				if (retry < 5){
-					retry++;
-					clickGlobalsPage(retry);
-				} else {
-					console.log("Retry max attempt reached");
-				}
-			});
 		}
 		</script>
 
@@ -1726,16 +309,6 @@
 						</div>
 					</form>
 					<ul class="nav navbar-nav navbar-right" id="mini_menu">
-						<li id="LiWifiMini" class="hidden-sm hidden-md hidden-lg"><a href="#" data-toggle="collapse" data-target="#submenu1mini" aria-expanded="false">WiFi ▼</a></li>
-							<ul class="nav nav-submenu collapse" id="submenu1mini" role="menu" aria-labelledby="LiWifiMini">
-								<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickStatusPage()" href="#">Status</a></li>
-								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickProfileEditPage(0)" href="#">WiFi Edit Profiles</a></li>
-								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAddProfilePage(0)" href="#">WiFi Add profile</a></li>
-								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickGlobalsPage(0)" href="#">WiFi Globals</a></li>
-								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickScanPage(0)" href="#">WiFi Scan</a></li>
-								<li class="hidden-sm hidden-md hidden-lg locked hidden"><a onclick="clickAdvancedPage(0)" href="#">WiFi Advanced</a></li>
-							</ul>
-						<li class="hidden-sm hidden-md hidden-lg"><a onclick="clickVersionPage(0)" href="#">System Version</a></li>
 						<li class="hidden"><a href="#">Settings</a></li>
 					</ul>
 				</div>
@@ -1746,16 +319,6 @@
 			<div class="row">
 				<div class="col-xs-3 col-sm-3 col-md-2 sidebar hidden-xs">
 					<ul class="nav nav-sidebar" id="main_menu">
-						<li id="LiWifi" class=""><a href="#" data-toggle="collapse" data-target="#submenu1" aria-expanded="false">WiFi ▼</a></li>
-							<ul class="nav nav-submenu collapse in" id="submenu1" role="menu" aria-labelledby="LiWifi">
-								<li id="LiStatus"><a href="#" onclick="clickStatusPage()">Status</a></li>
-								<li id="submenuEdit" class="locked hidden"><a href="#" onclick="clickProfileEditPage(0)">Edit Profiles</a></li>
-								<li id="submenuAdd" class="locked hidden"><a href="#" onclick="clickAddProfilePage(0)">Add profile</a></li>
-								<li id="LiGlobal" class="locked hidden"><a href="#" onclick="clickGlobalsPage(0)">Globals</a></li>
-								<li id="LiScan" class="locked hidden" onclick="clickScanPage(0)"><a href="#">Scan</a></li>
-								<li id="LiAdvanced" class="locked hidden" onclick="clickAdvancedPage(0)" data-toggle="collapse" data-target="#submenu2" aria-expanded="true"><a href="#">Advanced</a></li>
-							</ul>
-						<li id="LiVersion" onclick="clickVersionPage(0)"><a href="#">System Version</a></li>
 					</ul>
 				</div>
 				<div class="col-xs-12 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

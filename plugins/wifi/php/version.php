@@ -2,7 +2,8 @@
 # Copyright (c) 2016, Laird
 # Contact: ews-support@lairdtech.com
 
-	require("../lrd_php_sdk.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
+	require("wifi.php");
 	if(!extension_loaded('lrd_php_sdk')){
 		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
 	}
