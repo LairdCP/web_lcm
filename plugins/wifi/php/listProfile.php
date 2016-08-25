@@ -48,7 +48,7 @@
 	if (($gcfgs->autoProfile & ~1) or ($gcfgs->autoProfile & 1)){
 		$returnedResult['autoProfiles'] = $autoProfileList;
 	}
-	$returnedResult['SDCERR'] = $result;
+	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 
 	delete_RADIOCHIPSETp($rcs);
 	delete_ulongp($Count);

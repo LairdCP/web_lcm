@@ -15,12 +15,12 @@ function restartUpdate(retry){
 		clickAdvancedRemoteUpdate(0)
 	})
 	.fail(function() {
-		console.log("Failed to restart update, retrying");
+		consoleLog("Failed to restart update, retrying");
 		if (retry < 5){
 			retry++;
 			restartUpdate(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -43,12 +43,12 @@ function rebootDevice(retry){
 		setTimeout("location.reload(true);", 20000);
 	})
 	.fail(function() {
-		console.log("Failed to reboot device, retrying");
+		consoleLog("Failed to reboot device, retrying");
 		if (retry < 5){
 			retry++;
 			rebootDevice(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -58,7 +58,7 @@ function startUpdate(retry){
 		remoteUpdate: document.getElementById("remoteUpdate").value,
 		fwUpdateTM: parseInt(document.getElementById("fwUpdateTM").value),
 	}
-	console.log(updateData);
+	consoleLog(updateData);
 	$.ajax({
 		url: "plugins/remote_update/php/startUpdate.php",
 		type: "POST",
@@ -73,12 +73,12 @@ function startUpdate(retry){
 		checkUpdateStarted(0);
 	})
 	.fail(function() {
-		console.log("Failed to send update data, retrying");
+		consoleLog("Failed to send update data, retrying");
 		if (retry < 5){
 			retry++;
 			startUpdate(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -113,12 +113,12 @@ function showUpdateLog(retry){
 		}
 	})
 	.fail(function() {
-		console.log("Error, couldn't get update log..");
+		consoleLog("Error, couldn't get update log..");
 		if (retry < 5){
 			retry++;
 			clickAdvancedRemoteUpdate(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -142,16 +142,17 @@ function checkUpdateStarted(retry){
 		}else{
 			$("#updateProgressDisplay").addClass("hidden");
 			$("#remoteUpdateDisplay").removeClass("hidden");
+			$("#fwUpdateTMDisplay").removeClass("hidden");
 			$("#submitButton").removeClass("hidden");
 		}
 	})
 	.fail(function() {
-		console.log("Error, couldn't get verifyUpdate.php.. retrying");
+		consoleLog("Error, couldn't get verifyUpdate.php.. retrying");
 		if (retry < 5){
 			retry++;
 			checkUpdateStarted(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -167,7 +168,7 @@ function getRemoteUpdate(retry){
 			clearInterval(intervalId);
 			intervalId = 0;
 		}
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -175,12 +176,12 @@ function getRemoteUpdate(retry){
 		document.getElementById("fwUpdateTM").value = msg.fwUpdateTM;
 	})
 	.fail(function() {
-		console.log("Error, couldn't get getRemoteUpdate.php.. retrying");
+		consoleLog("Error, couldn't get getRemoteUpdate.php.. retrying");
 		if (retry < 5){
 			retry++;
 			getRemoteUpdate(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -208,12 +209,12 @@ function clickAdvancedRemoteUpdate(retry){
 		getRemoteUpdate(0);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get remoteUpdate.html.. retrying");
+		consoleLog("Error, couldn't get remoteUpdate.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickAdvancedRemoteUpdate(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }

@@ -25,6 +25,13 @@
 		return $iniFile;
 	}
 
+	function debugLevel(){
+		if (!isset($_SESSION['debug'])){
+			readINI();
+		}
+		return $_SESSION['debug'];
+	}
+
 	function generatePlugins($parsedINI){
 		if (!$parsedINI["plugins"]){
 			syslog(LOG_WARNING, "NO PLUGINS TO PARSE");
@@ -94,5 +101,61 @@
 		} else {
 			return SDCERR_INVALID_PARAMETER;
 		}
+	}
+
+	function SDCERRtoString($SDCERR){
+		switch($SDCERR) {
+			case SDCERR_SUCCESS:
+				return "SDCERR_SUCCESS";
+				break;
+			case SDCERR_FAIL:
+				return "SDCERR_FAIL";
+				break;
+			case SDCERR_INVALID_NAME:
+				return "SDCERR_INVALID_NAME";;
+				break;
+			case SDCERR_INVALID_CONFIG:
+				return "SDCERR_INVALID_CONFIG";;
+				break;
+			case SDCERR_INVALID_DELETE:
+				return "SDCERR_INVALID_DELETE";;
+				break;
+			case SDCERR_POWERCYCLE_REQUIRED:
+				return "SDCERR_POWERCYCLE_REQUIRED";;
+				break;
+			case SDCERR_INVALID_PARAMETER:
+				return "SDCERR_INVALID_PARAMETER";;
+				break;
+			case SDCERR_INVALID_EAP_TYPE:
+				return "SDCERR_INVALID_EAP_TYPE";;
+				break;
+			case SDCERR_INVALID_WEP_TYPE:
+				return "SDCERR_INVALID_WEP_TYPE";;
+				break;
+			case SDCERR_INVALID_FILE:
+				return "SDCERR_INVALID_FILE";;
+				break;
+			case SDCERR_INSUFFICIENT_MEMORY:
+				return "SDCERR_INSUFFICIENT_MEMORY";;
+				break;
+			case SDCERR_NOT_IMPLEMENTED:
+				return "SDCERR_NOT_IMPLEMENTED";;
+				break;
+			case SDCERR_NO_HARDWARE:
+				return "SDCERR_NO_HARDWARE";;
+				break;
+			case SDCERR_INVALID_VALUE:
+				return "SDCERR_INVALID_VALUE";;
+				break;
+			default:
+				return "UNKNOWN VALUE";
+		}
+	}
+
+	function REPORT_RETURN_DBG($dir, $file, $line, $returnCode){
+		if ($_SESSION['debug'] >= 2){
+			syslog(LOG_WARNING, str_replace($dir . "/", '', $file) . ":" . $line . " returned " . SDCERRtoString($returnCode));
+		}
+		return $returnCode;
 	}
 ?>

@@ -178,8 +178,8 @@ function updateStatus(){
 		}
 	})
 	.fail(function(data) {
-		console.log(data);
-		console.log("Failed to get status.php, retrying.");
+		consoleLog(data);
+		consoleLog("Failed to get status.php, retrying.");
 		setIntervalUpdate(updateStatus);
 	});
 }
@@ -188,13 +188,13 @@ function setIntervalUpdate(functionName){
 	if (!intervalId){
 		intervalId = setInterval(functionName, 1000);
 	} else {
-		console.log("Interval already set");
+		consoleLog("Interval already set");
 	}
 }
 
 function clickStatusPage() {
 	if ($("#wifi_status").hasClass("active")){
-		console.log("Status already active");
+		consoleLog("Status already active");
 	} else {
 		$("li").removeClass("active");
 		$("#wifi_status").addClass("active");
@@ -214,7 +214,7 @@ function clickStatusPage() {
 					clearInterval(intervalId);
 					intervalId = 0;
 				}
-				console.log("Error, couldn't get status.html.. retrying");
+				consoleLog("Error, couldn't get status.html.. retrying");
 				$("#wifi_status").removeClass("active")
 				clickStatusPage();
 			},
@@ -248,7 +248,7 @@ function submitProfile(retry){
 		PACFilename: document.getElementById("PACFilename").value,
 		PACPassword: document.getElementById("PACPassword").value,
 	}
-	console.log(profileData);
+	consoleLog(profileData);
 	$.ajax({
 		url: "plugins/wifi/php/setProfile.php",
 		type: "POST",
@@ -256,17 +256,17 @@ function submitProfile(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		SDCERRtoString(msg.SDCERR);
 		$("#submitButton").addClass("disabled");
 	})
 	.fail(function() {
-		console.log("Failed to get profile data, retrying");
+		consoleLog("Failed to get profile data, retrying");
 		if (retry < 5){
 			retry++;
 			submitProfile(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -291,7 +291,7 @@ function updateGetProfilePage(profileName,retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		document.getElementById("profileName").value = msg.configName;
 		document.getElementById("SSID").value = msg.SSID;
 		document.getElementById("clientName").value = msg.clientName;
@@ -343,12 +343,12 @@ function updateGetProfilePage(profileName,retry){
 		}
 	})
 	.fail(function() {
-		console.log("Failed to get profile data, retrying");
+		consoleLog("Failed to get profile data, retrying");
 		if (retry < 5){
 			retry++;
 			updateGetProfilePage(profileName,retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -372,7 +372,7 @@ function selectedProfile(selectedProfile,retry){
 			$("#helpText").html("Adjust profile settings.");
 		},
 		error: function (xhr, status) {
-			console.log("Error, couldn't get getProfile.html");
+			consoleLog("Error, couldn't get getProfile.html");
 		},
 	})
 	.done(function( msg ) {
@@ -393,12 +393,12 @@ function selectedProfile(selectedProfile,retry){
 		});
 	})
 	.fail(function() {
-		console.log("Failed to get get Profile, retrying");
+		consoleLog("Failed to get get Profile, retrying");
 		if (retry < 5){
 			retry++;
 			selectedProfile(selectedProfile,retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -414,7 +414,7 @@ function updateSelectProfilePage(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -456,12 +456,12 @@ function updateSelectProfilePage(retry){
 		}
 	})
 	.fail(function() {
-		console.log("Failed to get profiles, retrying");
+		consoleLog("Failed to get profiles, retrying");
 		if (retry < 5){
 			retry++;
 			updateSelectProfilePage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -470,7 +470,7 @@ function activateProfile(retry){
 	var data = {
 			profileName: document.getElementById("profileSelect").value,
 	}
-	console.log("Activating profile " + data.profileName);
+	consoleLog("Activating profile " + data.profileName);
 	$.ajax({
 		url: "plugins/wifi/php/activateProfile.php",
 		type: "POST",
@@ -483,11 +483,11 @@ function activateProfile(retry){
 			}
 		},
 		error: function (xhr, status) {
-			console.log("Error, couldn't get activateProfile.php");
+			consoleLog("Error, couldn't get activateProfile.php");
 		},
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -495,12 +495,12 @@ function activateProfile(retry){
 		SDCERRtoString(msg.SDCERR);
 	})
 	.fail(function() {
-		console.log("Failed to activate profile, retrying");
+		consoleLog("Failed to activate profile, retrying");
 		if (retry < 5){
 			retry++;
 			activateProfile(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -524,11 +524,11 @@ function renameProfile(retry){
 			}
 		},
 		error: function (xhr, status) {
-			console.log("Error, couldn't get renameProfile.php");
+			consoleLog("Error, couldn't get renameProfile.php");
 		},
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -544,12 +544,12 @@ function renameProfile(retry){
 		}
 	})
 	.fail(function() {
-		console.log("Failed to rename profile, retrying");
+		consoleLog("Failed to rename profile, retrying");
 		if (retry < 5){
 			retry++;
 			renameProfile(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -600,7 +600,7 @@ function submitAutoProfile(retry){
 		value = rows[index].cells[1].children[0].checked;
 		autoProfileList[profile] = value;
 	}
-	console.log(autoProfileList);
+	consoleLog(autoProfileList);
 	$.ajax({
 		url: "plugins/wifi/php/setAutoProfileList.php",
 		type: "POST",
@@ -608,7 +608,7 @@ function submitAutoProfile(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -638,12 +638,12 @@ function clickProfileEditPage(retry) {
 		},
 	})
 	.fail(function() {
-		console.log("Error, couldn't get selectProfile.html.. retrying");
+		consoleLog("Error, couldn't get selectProfile.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickProfileEditPage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -681,12 +681,12 @@ function clickAddProfilePage(retry) {
 		},
 	})
 	.fail(function() {
-		console.log("Error, couldn't get addProfile.html.. retrying");
+		consoleLog("Error, couldn't get addProfile.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickAddProfilePage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -726,7 +726,7 @@ function addProfile(){
 			PACFilename: document.getElementById("PACFilename").value,
 			PACPassword: document.getElementById("PACPassword").value,
 		}
-		console.log(newProfile);
+		consoleLog(newProfile);
 		$.ajax({
 			url: "plugins/wifi/php/addProfile.php",
 			type: "POST",
@@ -734,8 +734,8 @@ function addProfile(){
 			contentType: "application/json",
 		})
 		.done(function( msg ) {
-			console.log(msg);
-			console.log(msg.SDCERR);
+			consoleLog(msg);
+			consoleLog(msg.SDCERR);
 			if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 				expiredSession();
 				return;
@@ -743,7 +743,7 @@ function addProfile(){
 			SDCERRtoString(msg.SDCERR);
 		});
 	} else {
-		console.log("Name is null");
+		consoleLog("Name is null");
 	}
 };
 
@@ -757,7 +757,7 @@ function getSupportedGlobals(retry){
 				clearInterval(intervalId);
 				intervalId = 0;
 			}
-			console.log(data);
+			consoleLog(data);
 			if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 				expiredSession();
 				return;
@@ -771,12 +771,12 @@ function getSupportedGlobals(retry){
 		},
 	})
 	.fail(function() {
-		console.log("Error, couldn't get supportedGlobals.php.. retrying");
+		consoleLog("Error, couldn't get supportedGlobals.php.. retrying");
 		if (retry < 5){
 			retry++;
 			getSupportedGlobals(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -809,7 +809,7 @@ function getGlobals(retry){
 			clearInterval(intervalId);
 			intervalId = 0;
 		}
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -855,12 +855,12 @@ function getGlobals(retry){
 		}
 	})
 	.fail(function() {
-		console.log("Error, couldn't get getGlobals.php.. retrying");
+		consoleLog("Error, couldn't get getGlobals.php.. retrying");
 		if (retry < 5){
 			retry++;
 			getGlobals(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -933,12 +933,12 @@ function clickGlobalsPage(retry){
 		}, 500);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get getGlobals.html.. retrying");
+		consoleLog("Error, couldn't get getGlobals.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickGlobalsPage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -983,7 +983,7 @@ function submitGlobals(retry){
 		suppInfoDateCheck: document.getElementById("suppInfoDateCheck").value,
 		fips: document.getElementById("fips").value,
 	}
-	console.log(globalData);
+	consoleLog(globalData);
 	$.ajax({
 		url: "plugins/wifi/php/setGlobals.php",
 		type: "POST",
@@ -991,7 +991,7 @@ function submitGlobals(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -1000,12 +1000,12 @@ function submitGlobals(retry){
 		$("#submitButton").addClass("disabled");
 	})
 	.fail(function() {
-		console.log("Failed to send global data, retrying");
+		consoleLog("Failed to send global data, retrying");
 		if (retry < 5){
 			retry++;
 			submitGlobals(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1036,8 +1036,8 @@ function addScanProfile(){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
-		console.log(msg.SDCERR);
+		consoleLog(msg);
+		consoleLog(msg.SDCERR);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -1123,12 +1123,12 @@ function getScan(retry){
 		}
 	})
 	.fail(function() {
-		console.log("Error, couldn't get scan.php.. retrying");
+		consoleLog("Error, couldn't get scan.php.. retrying");
 		if (retry < 5){
 			retry++;
 			getScan(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1155,12 +1155,12 @@ function clickScanPage(retry){
 		getScan(0);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get scan.html.. retrying");
+		consoleLog("Error, couldn't get scan.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickScanPage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1178,7 +1178,7 @@ function uploadCert(retry){
 		type: 'POST',
 	})
 	.done(function( data ) {
-		console.log(data);
+		consoleLog(data);
 		SDCERRtoString(data.SDCERR);
 	})
 }
@@ -1197,12 +1197,12 @@ function generateLog(retry){
 		setIntervalUpdate(checkLog);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get generateLog.php.. retrying");
+		consoleLog("Error, couldn't get generateLog.php.. retrying");
 		if (retry < 5){
 			retry++;
 			generateLog(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1223,12 +1223,12 @@ function removeLog(retry){
 		$("#downloadLog").addClass("disabled");
 	})
 	.fail(function() {
-		console.log("Error, couldn't get removeLog.php.. retrying");
+		consoleLog("Error, couldn't get removeLog.php.. retrying");
 		if (retry < 5){
 			retry++;
 			removeLog(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1256,7 +1256,7 @@ function checkLog(){
 		}
 	})
 	.fail(function(data) {
-		console.log("Error, couldn't get checkLog.php.. retrying");
+		consoleLog("Error, couldn't get checkLog.php.. retrying");
 		setIntervalUpdate(checkLog);
 	});
 }
@@ -1281,12 +1281,12 @@ function submitAdvanced(retry){
 		$("#submitButton").addClass("disabled");
 	})
 	.fail(function() {
-		console.log("Failed to send advanced data, retrying");
+		consoleLog("Failed to send advanced data, retrying");
 		if (retry < 5){
 			retry++;
 			submitAdvanced(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1302,7 +1302,7 @@ function getAdvanced(retry){
 			clearInterval(intervalId);
 			intervalId = 0;
 		}
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -1312,12 +1312,12 @@ function getAdvanced(retry){
 		setIntervalUpdate(checkLog);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get getAdvanced.php.. retrying");
+		consoleLog("Error, couldn't get getAdvanced.php.. retrying");
 		if (retry < 5){
 			retry++;
 			getAdvanced(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1346,12 +1346,12 @@ function clickAdvancedPage(retry){
 		getAdvanced(0);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get advanced.html.. retrying");
+		consoleLog("Error, couldn't get advanced.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickAdvancedPage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1367,7 +1367,7 @@ function getVersion(retry){
 			clearInterval(intervalId);
 			intervalId = 0;
 		}
-		console.log(msg);
+		consoleLog(msg);
 		document.getElementById("sdk").innerHTML = msg.sdk;
 		document.getElementById("chipset").innerHTML = msg.chipset;
 		document.getElementById("driver").innerHTML = msg.driver;
@@ -1377,12 +1377,12 @@ function getVersion(retry){
 		document.getElementById("build").innerHTML = msg.build;
 	})
 	.fail(function() {
-		console.log("Error, couldn't get version.php.. retrying");
+		consoleLog("Error, couldn't get version.php.. retrying");
 		if (retry < 5){
 			retry++;
 			getVersion(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -1409,12 +1409,12 @@ function clickVersionPage(retry){
 		getVersion(0);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get version.html.. retrying");
+		consoleLog("Error, couldn't get version.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickGlobalsPage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }

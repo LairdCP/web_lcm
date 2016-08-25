@@ -73,7 +73,7 @@
 		}
 	}
 
-	$returnedResult['SDCERR'] = SDCERRp_value($result);
+	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, SDCERRp_value($result));
 	$returnedResult['scanList'] = $scanList;
 
 	echo json_encode($returnedResult);

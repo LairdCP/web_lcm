@@ -26,6 +26,7 @@
 		'PLUGINS' => null,
 	);
 	$iniFile = readINI();
+	$returnedResult['DEBUG'] = debugLevel();
 	$returnedResult['PLUGINS'] = generatePlugins($iniFile);
 	$returnedResult['IGNORE_SESSION'] = skipLogin();
 	$returnedResult['SESSION'] = verifyAuthentication(false);

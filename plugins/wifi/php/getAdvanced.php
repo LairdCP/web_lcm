@@ -20,7 +20,7 @@
 	$returnedResult['driverDebugLevel'] = LRD_WF_DRV_DEBUGp_value($driverLogLevel);
 	delete_LRD_WF_DRV_DEBUGp($driverLogLevel);
 
-	$returnedResult['SDCERR'] = $result;
+	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 
 	echo json_encode($returnedResult);
 ?>

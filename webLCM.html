@@ -61,8 +61,8 @@
 			},
 		})
 		.done(function( data ) {
-			console.log(data);
 			defines = data;
+			consoleLog(data);
 			for (var key in defines.PLUGINS.list) {
 				if (defines.PLUGINS.list[key] == true){
 					var jsPath = "../plugins/" + key + "/" + key + ".js";
@@ -72,6 +72,12 @@
 			}
 			checkLocks();
 		});
+
+		function consoleLog(message){
+			if (defines.DEBUG == 1 | defines.DEBUG == 3){
+				console.log(message);
+			}
+		}
 
 		function checkLocks(){
 			if (defines.IGNORE_SESSION == defines.SDCERR.SDCERR_SUCCESS && defines.SESSION == defines.SDCERR.SDCERR_SUCCESS){
@@ -92,7 +98,7 @@
 			}
 			if (typeof fileref!="undefined"){
 				document.getElementsByTagName("head")[0].appendChild(fileref);
-				console.log("Loaded:" + filename);
+				consoleLog("Loaded:" + filename);
 			}
 		}
 
@@ -108,17 +114,17 @@
 				$("#main_menu").append($(data)[1]);
 				var mini_menu = $(data);
 				$(mini_menu).addClass("hidden-sm hidden-md hidden-lg");
-				console.log(mini_menu);
+				consoleLog(mini_menu);
 				$("#mini_menu").append(mini_menu[3]);
 				checkLocks();
 			})
 			.fail(function() {
-				console.log("Error, couldn't get " + pluginPath + ".. retrying");
+				consoleLog("Error, couldn't get " + pluginPath + ".. retrying");
 				if (retry < 5){
 					retry++;
 					addPlugin(retry,key);
 				} else {
-					console.log("Retry max attempt reached");
+					consoleLog("Retry max attempt reached");
 				}
 			});
 		}
@@ -214,7 +220,7 @@
 				contentType: "application/json",
 			})
 			.done(function( data ) {
-				console.log(data);
+				consoleLog(data);
 				if (data.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
 					$("#loggin").addClass("hidden");
 					$("#loggout").removeClass("hidden");
@@ -227,12 +233,12 @@
 				document.getElementById("password").value = null;
 			})
 			.fail(function() {
-				console.log("Error, couldn't get startSession.php.. retrying");
+				consoleLog("Error, couldn't get startSession.php.. retrying");
 				if (retry < 5){
 					retry++;
 					login(retry);
 				} else {
-					console.log("Retry max attempt reached");
+					consoleLog("Retry max attempt reached");
 				}
 			});
 		}
@@ -255,12 +261,12 @@
 				document.getElementById("password").value = null;
 			})
 			.fail(function() {
-				console.log("Error, couldn't get stopSession.php.. retrying");
+				consoleLog("Error, couldn't get stopSession.php.. retrying");
 				if (retry < 5){
 					retry++;
 					loggout(retry);
 				} else {
-					console.log("Retry max attempt reached");
+					consoleLog("Retry max attempt reached");
 				}
 			});
 		}

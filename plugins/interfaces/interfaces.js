@@ -18,7 +18,7 @@ function modifyInterface(option,retry){
 			contentType: "application/json",
 		})
 		.done(function( msg ) {
-			console.log(msg);
+			consoleLog(msg);
 			if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 				expiredSession();
 				return;
@@ -42,12 +42,12 @@ function modifyInterface(option,retry){
 			}
 		})
 		.fail(function() {
-			console.log("Failed to set interface data, retrying");
+			consoleLog("Failed to set interface data, retrying");
 			if (retry < 5){
 				retry++;
 				modifyInterface(option,retry)
 			} else {
-				console.log("Retry max attempt reached");
+				consoleLog("Retry max attempt reached");
 			}
 		});
 	}
@@ -70,7 +70,7 @@ function submitInterface(retry){
 		broadcast: document.getElementById("broadcast").value,
 		nameserver: document.getElementById("nameserver").value,
 	}
-	console.log(InterfaceData);
+	consoleLog(InterfaceData);
 	$.ajax({
 		url: "plugins/interfaces/php/setInterfaces.php",
 		type: "POST",
@@ -78,7 +78,7 @@ function submitInterface(retry){
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
-		console.log(msg);
+		consoleLog(msg);
 		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -87,12 +87,12 @@ function submitInterface(retry){
 		$("#submitButton").addClass("disabled");
 	})
 	.fail(function() {
-		console.log("Failed to set interface data, retrying");
+		consoleLog("Failed to set interface data, retrying");
 		if (retry < 5){
 			retry++;
 			submitInterface(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -147,12 +147,12 @@ function updateGetInterfacePage(interfaceName,retry){
 		}
 	})
 	.fail(function() {
-		console.log("Failed to get interface data, retrying");
+		consoleLog("Failed to get interface data, retrying");
 		if (retry < 5){
 			retry++;
 			updateGetInterfacePage(interfaceName,retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -177,19 +177,19 @@ function selectedInterface(retry){
 			$("#helpText").html("Adjust interface settings.");
 		},
 		error: function (xhr, status) {
-			console.log("Error, couldn't get getInterface.html");
+			consoleLog("Error, couldn't get getInterface.html");
 		},
 	})
 	.done(function( msg ) {
 		updateGetInterfacePage(selectedInterface,0);
 	})
 	.fail(function() {
-		console.log("Failed to get get interface, retrying");
+		consoleLog("Failed to get get interface, retrying");
 		if (retry < 5){
 			retry++;
 			selectedInterface(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -232,12 +232,12 @@ function setInterfaceState(ev,retry){
 			}
 		})
 		.fail(function() {
-			console.log("Error, couldn't get setInterfaceState.php.. retrying");
+			consoleLog("Error, couldn't get setInterfaceState.php.. retrying");
 			if (retry < 5){
 				retry++;
 				setInterfaceState(ev,retry);
 			} else {
-				console.log("Retry max attempt reached");
+				consoleLog("Retry max attempt reached");
 			}
 		});
 	}
@@ -284,12 +284,12 @@ function modifySpecialInterface(retry){
 		SDCERRtoString(data.SDCERR);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get setSpecialInterfaces.php.. retrying");
+		consoleLog("Error, couldn't get setSpecialInterfaces.php.. retrying");
 		if (retry < 5){
 			retry++;
 			modifySpecialInterface(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -410,12 +410,12 @@ function updateSelectInterfacePage(retry){
 		}
 	})
 	.fail(function() {
-		console.log("Error, couldn't get getInterfaces.php.. retrying");
+		consoleLog("Error, couldn't get getInterfaces.php.. retrying");
 		if (retry < 5){
 			retry++;
 			updateSelectInterfacePage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }
@@ -442,12 +442,12 @@ function clickInterfacePage(retry){
 		updateSelectInterfacePage(0);
 	})
 	.fail(function() {
-		console.log("Error, couldn't get getInterfaces.php.. retrying");
+		consoleLog("Error, couldn't get getInterfaces.php.. retrying");
 		if (retry < 5){
 			retry++;
 			clickInterfacePage(retry);
 		} else {
-			console.log("Retry max attempt reached");
+			consoleLog("Retry max attempt reached");
 		}
 	});
 }

@@ -20,7 +20,7 @@
 					$result = LRD_ENI_RemoveInterface($interface->{'interfaceName'});
 					break;
 			}
-			$returnedResult['SDCERR'] = $result;
+			$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 			echo json_encode($returnedResult);
 			return;
 		}
@@ -68,7 +68,7 @@
 		}
 	}
 
-	$returnedResult['SDCERR'] = $result;
+	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 
 	echo json_encode($returnedResult);
 

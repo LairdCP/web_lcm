@@ -242,7 +242,7 @@
 		$result = ModifyConfig(trim($Profile->{'profileName'}),$cfgs);
 	}
 
-	$returnedResult['SDCERR'] = $result;
+	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 
 	echo json_encode($returnedResult);
 

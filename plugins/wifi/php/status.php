@@ -22,11 +22,11 @@
 	}
 
 	$status = new CF10G_STATUS();
-	$rval = GetCurrentStatus( $status );
+	$result = GetCurrentStatus( $status );
 
 	$profileName = str_repeat(" ",CONFIG_NAME_SZ);
 
-	if($rval == SDCERR_SUCCESS){
+	if($result == SDCERR_SUCCESS){
 		$ssid = new LRD_WF_SSID();
 		LRD_WF_GetSSID($ssid);
 		if ($ssid->len){
@@ -66,7 +66,7 @@
 			$IP = implode('.', $ipAddress);
 		}
 
-		$returnedResult['SDCERR'] = $rval;
+		$returnedResult['SDCERR'] = $result;
 		$returnedResult['cardState'] = $status->cardState;
 		$returnedResult['configName'] = $status->configName;
 		$returnedResult['client_MAC'] = $MAC;
@@ -87,7 +87,7 @@
 		echo json_encode($returnedResult);
 
 	} else{
-		$returnedResult['SDCERR'] = $rval;
+		$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 		$returnedResult['cardState'] = $status->cardState;
 		echo json_encode($returnedResult);
 	}
