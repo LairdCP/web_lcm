@@ -56,6 +56,7 @@ function rebootDevice(retry){
 function startUpdate(retry){
 	var updateData = {
 		remoteUpdate: document.getElementById("remoteUpdate").value,
+		fwUpdateTM: parseInt(document.getElementById("fwUpdateTM").value),
 	}
 	console.log(updateData);
 	$.ajax({
@@ -135,6 +136,7 @@ function checkUpdateStarted(retry){
 		}
 		if (data.fwUpdate == "running"){
 			$("#remoteUpdateDisplay").addClass("hidden");
+			$("#fwUpdateTMDisplay").addClass("hidden");
 			$("#submitButton").addClass("hidden");
 			showUpdateLog(0);
 		}else{
@@ -148,6 +150,35 @@ function checkUpdateStarted(retry){
 		if (retry < 5){
 			retry++;
 			checkUpdateStarted(retry);
+		} else {
+			console.log("Retry max attempt reached");
+		}
+	});
+}
+
+function getRemoteUpdate(retry){
+	$.ajax({
+		url: "plugins/remote_update/php/getRemoteUpdate.php",
+		type: "POST",
+		contentType: "application/json",
+	})
+	.done(function(msg) {
+		if (intervalId){
+			clearInterval(intervalId);
+			intervalId = 0;
+		}
+		console.log(msg);
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
+			expiredSession();
+			return;
+		}
+		document.getElementById("fwUpdateTM").value = msg.fwUpdateTM;
+	})
+	.fail(function() {
+		console.log("Error, couldn't get getRemoteUpdate.php.. retrying");
+		if (retry < 5){
+			retry++;
+			getRemoteUpdate(retry);
 		} else {
 			console.log("Retry max attempt reached");
 		}
@@ -174,6 +205,7 @@ function clickAdvancedRemoteUpdate(retry){
 	})
 	.done(function( data ) {
 		checkUpdateStarted(0);
+		getRemoteUpdate(0);
 	})
 	.fail(function() {
 		console.log("Error, couldn't get remoteUpdate.html.. retrying");

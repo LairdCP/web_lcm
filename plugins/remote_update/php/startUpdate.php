@@ -11,9 +11,27 @@
 	}
 	$update = json_decode(stripslashes(file_get_contents("php://input")));
 
-	exec('fw_update -f -xnr ' . escapeshellcmd($update->{'remoteUpdate'}) . ' &> ' . FW_LOGFILE . ' &');
-	syslog(LOG_INFO, "fw_update started from WebLCM with options: -f -xnr");
-	syslog(LOG_INFO, "fw_update update path: " . escapeshellcmd($update->{'remoteUpdate'}));
+	if($update->{'fwUpdateTM'} == 1){
+		$fwTMFile = fopen(FW_TM_File, "w");
+		if ($fwTMFile != false){
+			fwrite($fwTMFile,"on \n");
+			fclose($fwTMFile);
+			$result = SDCERR_SUCCESS;
+		}
+	} else if ($update->{'fwUpdateTM'} == 0){
+		$result = SDCERR_FAIL;
+		if (unlink(FW_TM_File)){
+			$result = SDCERR_SUCCESS;
+		}
+	}
+
+	if ($result == SDCERR_SUCCESS){
+		if ($update->{'remoteUpdate'} != null){
+			exec('fw_update -f -xnr ' . escapeshellcmd($update->{'remoteUpdate'}) . ' &> ' . FW_LOGFILE . ' &');
+			syslog(LOG_INFO, "fw_update started from WebLCM with options: -f -xnr");
+			syslog(LOG_INFO, "fw_update update path: " . escapeshellcmd($update->{'remoteUpdate'}));
+		}
+	}
 
 	$returnedResult['SDCERR'] = $result;
 

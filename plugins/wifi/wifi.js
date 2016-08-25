@@ -1265,7 +1265,6 @@ function submitAdvanced(retry){
 	var AdvancedData = {
 		suppDebugLevel: parseInt(document.getElementById("suppDebugLevel").value),
 		driverDebugLevel: parseInt(document.getElementById("driverDebugLevel").value),
-		fwUpdateTM: parseInt(document.getElementById("fwUpdateTM").value),
 	}
 	$.ajax({
 		url: "plugins/wifi/php/setAdvanced.php",
@@ -1310,7 +1309,6 @@ function getAdvanced(retry){
 		}
 		document.getElementById("suppDebugLevel").value = msg.suppDebugLevel;
 		document.getElementById("driverDebugLevel").value = msg.driverDebugLevel;
-		document.getElementById("fwUpdateTM").value = msg.fwUpdateTM;
 		setIntervalUpdate(checkLog);
 	})
 	.fail(function() {
@@ -1326,7 +1324,7 @@ function getAdvanced(retry){
 
 function clickAdvancedPage(retry){
 	$.ajax({
-		url: "html/advanced.html",
+		url: "plugins/wifi/html/advanced.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
