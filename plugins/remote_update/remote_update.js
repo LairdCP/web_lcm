@@ -199,7 +199,7 @@ function clickAdvancedRemoteUpdate(retry){
 			$('#main_section').html(data);
 			clearReturnData();
 			$("li").removeClass("active");
-			$("#submenuRemoteUpdate").addClass("active");
+			$("#remote_update_main_menu").addClass("active");
 			$("#helpText").html("Remotely update device");
 		},
 	})

@@ -434,7 +434,7 @@ function clickInterfacePage(retry){
 			$('#main_section').html(data);
 			clearReturnData();
 			$("li").removeClass("active");
-			$("#LiInterface").addClass("active");
+			$("#interfaces_main_menu").addClass("active");
 			$("#helpText").html("Interface information");
 		},
 	})
