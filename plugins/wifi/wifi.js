@@ -201,7 +201,7 @@ function clickStatusPage() {
 		clearReturnData();
 		$("#helpText").html("This page shows the current state of WiFi");
 		$.ajax({
-			url: "html/status.html",
+			url: "plugins/wifi/html/status.html",
 			data: {},
 			type: "GET",
 			dataType: "html",
@@ -358,7 +358,7 @@ function selectedProfile(selectedProfile,retry){
 		var selectedProfile = document.getElementById("profileSelect").value;
 	}
 	$.ajax({
-		url: "html/getProfile.html",
+		url: "plugins/wifi/html/getProfile.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
@@ -620,7 +620,7 @@ function submitAutoProfile(retry){
 
 function clickProfileEditPage(retry) {
 	$.ajax({
-		url: "html/selectProfile.html",
+		url: "plugins/wifi/html/selectProfile.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
@@ -650,7 +650,7 @@ function clickProfileEditPage(retry) {
 
 function clickAddProfilePage(retry) {
 	$.ajax({
-		url: "html/addProfile.html",
+		url: "plugins/wifi/html/addProfile.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
@@ -867,7 +867,7 @@ function getGlobals(retry){
 
 function clickGlobalsPage(retry){
 	$.ajax({
-		url: "html/getGlobals.html",
+		url: "plugins/wifi/html/getGlobals.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
@@ -1135,7 +1135,7 @@ function getScan(retry){
 
 function clickScanPage(retry){
 	$.ajax({
-		url: "html/scan.html",
+		url: "plugins/wifi/html/scan.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
@@ -1389,7 +1389,7 @@ function getVersion(retry){
 
 function clickVersionPage(retry){
 	$.ajax({
-		url: "html/version.html",
+		url: "plugins/wifi/html/version.html",
 		data: {},
 		type: "GET",
 		dataType: "html",
