@@ -37,8 +37,10 @@
 			syslog(LOG_WARNING, "NO PLUGINS TO PARSE");
 			$parsedINI = parse_ini_file(WebLCM_INI,true,INI_SCANNER_TYPED);
 		}
+		$plugins['count'] = 0;
 		foreach ($parsedINI["plugins"] as $key => $value) {
 			$plugins['list'][$key] = $value;
+			$plugins['count']++;
 			if ($value == true){
 				$pluginPath = "../plugins/" . $key . "/php/" . $key . ".php";
 				require($pluginPath);

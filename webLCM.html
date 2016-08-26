@@ -47,6 +47,8 @@
 		<script>
 		var intervalId;
 		var defines = [];
+		var main_menu_list = [];
+		var mini_menu_list = [];
 		$.ajax({
 			url: "php/defines.php",
 			type: "POST",
@@ -62,12 +64,14 @@
 		})
 		.done(function( data ) {
 			defines = data;
+			var index = 0;
 			consoleLog(data);
 			for (var key in defines.PLUGINS.list) {
 				if (defines.PLUGINS.list[key] == true){
 					var jsPath = "../plugins/" + key + "/" + key + ".js";
 					loadjscssfile(jsPath, "js");
-					addPlugin(0, key);
+					addPlugin(0, key, index);
+					index++;
 				}
 			}
 			checkLocks();
@@ -92,7 +96,7 @@
 
 		function loadjscssfile(filename, filetype){
 			if (filetype=="js"){ //if filename is a external JavaScript file
-			var fileref=document.createElement('script');
+				var fileref=document.createElement('script');
 				fileref.setAttribute("type","text/javascript");
 				fileref.setAttribute("src", filename);
 			}
@@ -102,7 +106,7 @@
 			}
 		}
 
-		function addPlugin(retry, key){
+		function addPlugin(retry, key, index){
 			var pluginPath = "../plugins/" + key + "/" + key + ".html";
 			$.ajax({
 				url: pluginPath,
@@ -111,18 +115,21 @@
 				dataType: "html",
 			})
 			.done(function( data ) {
-				$("#main_menu").append($(data)[1]);
-				var mini_menu = $(data);
-				$(mini_menu).addClass("hidden-sm hidden-md hidden-lg");
-				consoleLog(mini_menu);
-				$("#mini_menu").append(mini_menu[3]);
+				main_menu_list[index] = $(data)[1];
+				mini_menu_list[index] = $(data)[3];
+				if (defines.PLUGINS.count == main_menu_list.length){
+					$("#main_menu").append(main_menu_list);
+					$("#mini_menu").append(mini_menu_list);
+					consoleLog(main_menu_list);
+					consoleLog(mini_menu_list);
+				}
 				checkLocks();
 			})
 			.fail(function() {
 				consoleLog("Error, couldn't get " + pluginPath + ".. retrying");
 				if (retry < 5){
 					retry++;
-					addPlugin(retry,key);
+					addPlugin(retry, key, index);
 				} else {
 					consoleLog("Retry max attempt reached");
 				}
