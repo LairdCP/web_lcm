@@ -334,6 +334,14 @@
 						</script>
 						<?php
 					}
+					elseif (preg_match('/\s/',$NewProfile))
+					{
+						?>
+						<script>
+						alert("Failed to add profile:\nProfile name must be contiguous.");
+						</script>
+						<?php
+					}
 					else
 					{
 						exec("sdc_cli profile list", $prolist);
@@ -545,6 +553,14 @@
 				?>
 				<script>
 				alert("Failed to add profile:\nProfile name must contain\nat least one character.");
+				</script>
+				<?php
+			}
+			elseif (preg_match('/\s/',$NewProfile))
+			{
+				?>
+				<script>
+				alert("Failed to add profile:\nProfile name must be contiguous.");
 				</script>
 				<?php
 			}
