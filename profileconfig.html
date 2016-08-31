@@ -343,7 +343,11 @@
 						{
 							if (strpos($rawprofile,"ACTIVE") != false)
 							{
-							  $rawprofile=trim(chop($prolisted,"ACTIVE"));
+								$rawprofile=trim(chop($prolisted,"ACTIVE"));
+							}
+							else
+							{
+								$rawprofile=trim($prolisted);
 							}
 							if (strcasecmp(trim($rawprofile),trim($NewProfile)) != 0)
 							{
@@ -553,7 +557,11 @@
 				{
 					if (strpos($rawprofile,"ACTIVE") != false)
 					{
-					  $rawprofile=trim(chop($prolisted,"ACTIVE"));
+						$rawprofile=trim(chop($prolisted,"ACTIVE"));
+					}
+					else
+					{
+						$rawprofile=trim($prolisted);
 					}
 					if (strcasecmp($rawprofile,$NewProfile) != 0)
 					{
