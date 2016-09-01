@@ -1,7 +1,7 @@
 // Copyright (c) 2016, Laird
 // Contact: ews-support@lairdtech.com
 
-clickStatusPage();
+clickStatusPage(0);
 // setTimeout(clickStatusPage(),5000);
 
 function CARDSTATEtoString(CARDSTATE){
@@ -192,7 +192,7 @@ function setIntervalUpdate(functionName){
 	}
 }
 
-function clickStatusPage() {
+function clickStatusPage(retry) {
 	if ($("#wifi_status").hasClass("active")){
 		consoleLog("Status already active");
 	} else {
@@ -205,19 +205,24 @@ function clickStatusPage() {
 			data: {},
 			type: "GET",
 			dataType: "html",
-			success: function (data) {
-				$('#main_section').html(data);
-				setIntervalUpdate(updateStatus);
-			},
-			error: function (xhr, status) {
-				if (intervalId){
-					clearInterval(intervalId);
-					intervalId = 0;
-				}
-				consoleLog("Error, couldn't get status.html.. retrying");
-				$("#wifi_status").removeClass("active")
-				clickStatusPage();
-			},
+		})
+		.done(function( data ) {
+			$('#main_section').html(data);
+			setIntervalUpdate(updateStatus);
+		})
+		.fail(function() {
+			consoleLog("Error, couldn't get status.html.. retrying");
+			if (intervalId){
+				clearInterval(intervalId);
+				intervalId = 0;
+			}
+			if (retry < 5){
+				retry++;
+				$("#wifi_status").removeClass("active");
+				clickStatusPage(retry);
+			} else {
+				consoleLog("Retry max attempt reached");
+			}
 		});
 	}
 }
