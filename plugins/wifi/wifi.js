@@ -803,6 +803,39 @@ function isSlider(id){
 	}
 }
 
+function regDomainToString(regDomain){
+	switch(regDomain) {
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_FCC:
+			return "FCC";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_ETSI:
+			return "ETSI";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_TELEC:
+			return "TELEC";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_WW:
+			return "WW";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_KCC:
+			return "KCC";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_CA:
+			return "CA";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_FR:
+			return "FR";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_GB:
+			return "GB";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_AU:
+			return "AU";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_NZ:
+			return "NZ";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_CN:
+			return "CN";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_BR:
+			return "BR";
+		case defines.PLUGINS.wifi.REG_DOMAIN.REG_RU:
+			return "RU";
+		default:
+			return "Unknown Regulatory Domain";
+	}
+}
+
 function getGlobals(retry){
 	$.ajax({
 		url: "plugins/wifi/php/getGlobals.php",
@@ -851,6 +884,8 @@ function getGlobals(retry){
 								default:
 									break;
 							}
+						}else if(key == "regDomain"){
+							document.getElementById(key).value = regDomainToString(msg[key]);
 						}else{
 							document.getElementById(key).value = msg[key];
 						}
