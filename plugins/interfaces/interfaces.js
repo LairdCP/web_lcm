@@ -1,6 +1,10 @@
 // Copyright (c) 2016, Laird
 // Contact: ews-support@lairdtech.com
 
+function interfacesAUTORUN(retry){
+	return;
+}
+
 function modifyInterface(option,retry){
 	var InterfaceSelect = document.getElementById("InterfaceSelect");
 	var InterfaceData = {

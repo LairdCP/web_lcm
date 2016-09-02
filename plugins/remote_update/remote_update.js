@@ -1,6 +1,10 @@
 // Copyright (c) 2016, Laird
 // Contact: ews-support@lairdtech.com
 
+function remote_updateAUTORUN(retry){
+	return;
+}
+
 function restartUpdate(retry){
 	$.ajax({
 		url: "plugins/remote_update/php/restartUpdate.php",

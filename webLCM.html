@@ -68,8 +68,7 @@
 			consoleLog(data);
 			for (var key in defines.PLUGINS.list) {
 				if (defines.PLUGINS.list[key] == true){
-					var jsPath = "../plugins/" + key + "/" + key + ".js";
-					loadjscssfile(jsPath, "js");
+					loadjscssfile(key, "js");
 					addPlugin(0, key, index);
 					index++;
 				}
@@ -94,15 +93,19 @@
 			}
 		}
 
-		function loadjscssfile(filename, filetype){
-			if (filetype=="js"){ //if filename is a external JavaScript file
+		function loadjscssfile(key, filetype){
+			var jsPath = "../plugins/" + key + "/" + key + "." + filetype;
+			if (filetype=="js"){ //if jsPath is a external JavaScript file
 				var fileref=document.createElement('script');
 				fileref.setAttribute("type","text/javascript");
-				fileref.setAttribute("src", filename);
+				fileref.setAttribute("src", jsPath);
 			}
 			if (typeof fileref!="undefined"){
 				document.getElementsByTagName("head")[0].appendChild(fileref);
-				consoleLog("Loaded:" + filename);
+				consoleLog("Loaded:" + jsPath);
+				fileref.onload = function(){
+					window[key + "AUTORUN"](0);
+				}
 			}
 		}
 

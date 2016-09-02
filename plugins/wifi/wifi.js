@@ -1,8 +1,9 @@
 // Copyright (c) 2016, Laird
 // Contact: ews-support@lairdtech.com
 
-clickStatusPage(0);
-// setTimeout(clickStatusPage(),5000);
+function wifiAUTORUN(retry){
+	clickStatusPage(0);
+}
 
 function CARDSTATEtoString(CARDSTATE){
 	switch(CARDSTATE) {
