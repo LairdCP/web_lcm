@@ -11,11 +11,11 @@
 				<label class="pull-left" for="profileName">Profile Name:</label>
 				<input type="text" class="form-control" id="profileName">
 			</div>
-			<div class="collapse" id="collapseAdvanced">
 			<div class="form-group">
 				<label class="pull-left" for="SSID">SSID:</label>
 				<input type="text" class="form-control" id="SSID">
 			</div>
+			<div class="collapse" id="collapseAdvanced">
 			<div class="form-group">
 				<label class="pull-left" for="clientName">Client Name:</label>
 				<input type="text" class="form-control" id="clientName">
@@ -143,7 +143,7 @@
 			</div>
 		</div>
 		<div>
-			<button onclick="updateAddProfileSlider()" id="d" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseAdvanced" aria-expanded="false" aria-controls="collapseAdvanced">
+			<button onclick="updateAddProfile()" id="advancedOptions" type="button" class="btn btn-primary" data-toggle="collapse" data-target="#collapseAdvanced" aria-expanded="false" aria-controls="collapseAdvanced">
 				Show advanced options</button>
 			<button onclick="addProfile()" type="button" class="btn btn-primary">Add</button>
 		</div>

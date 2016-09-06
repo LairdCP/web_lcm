@@ -697,7 +697,12 @@ function clickAddProfilePage(retry) {
 	});
 }
 
-function updateAddProfileSlider(){
+function updateAddProfile(){
+	if ($('#advancedOptions').attr('aria-expanded') == "false"){
+		document.getElementById("advancedOptions").innerHTML = "Hide advanced options";
+	} else {
+		document.getElementById("advancedOptions").innerHTML = "Show advanced options";
+	}
 	//https://github.com/seiyria/bootstrap-slider/issues/523
 	setTimeout(function() {
 		$('#pspDelaySlider').slider("relayout");
