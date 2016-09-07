@@ -40,8 +40,8 @@
 		$plugins['count'] = 0;
 		foreach ($parsedINI["plugins"] as $key => $value) {
 			$plugins['list'][$key] = $value;
-			$plugins['count']++;
 			if ($value == true){
+				$plugins['count']++;
 				$pluginPath = "../plugins/" . $key . "/php/" . $key . ".php";
 				require($pluginPath);
 				$plugins[$key] = $key();
