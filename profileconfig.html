@@ -1965,13 +1965,13 @@
 				{
 					exec("sdc_cli profile $editprofile set authtype $AuthType", $error);
 				}
-				if ($WepType != $getWEP && strlen($WepType) > 0)
-				{
-					exec("sdc_cli profile $editprofile set weptype $WepType", $error);
-				}
 				if (strtolower($EapType) != $getEAP)
 				{
 					exec("sdc_cli profile $editprofile set eaptype " . strtolower($EapType), $error);
+				}
+				if ($WepType != $getWEP && strlen($WepType) > 0)
+				{
+					exec("sdc_cli profile $editprofile set weptype $WepType", $error);
 				}
 				if ($Mode != $getMODE)
 				{
