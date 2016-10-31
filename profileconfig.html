@@ -1210,12 +1210,12 @@
 				$getWEP=strtolower(substr($ProfilePrint[6],14));
 				if ($getWEP == "none")
 				{
-					$getWEP="off";
+					$getWEP="OFF";
 				?>
 					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
-					<option value='off' selected>None</option>
-					<option value='on' >WEP</option>
-					<option value='auto' >WEP-EAP</option>
+					<option value='OFF' selected>None</option>
+					<option value='WEP' >WEP</option>
+					<option value='AUTO' >WEP-EAP</option>
 					<option value='WPA_PSK' >WPA_PSK</option>
 					<option value='WPA_TKIP' >WPA_TKIP</option>
 					<option value='WPA2_PSK' >WPA2_PSK</option>
@@ -1226,67 +1226,16 @@
 					<option value='WPA_AES' >WPA_AES</option>
 					</select>
 					<br>
-					<script>
-					function showEAP()
-					{
-					var x=document.getElementById("showWep");
-
-					if (x.value == "off")
-					  {
-					  document.getElementById("dynamicEAP").innerHTML="";
-					  }
-					else if (x.value == "on")
-					  {
-					  document.getElementById("dynamicEAP").innerHTML="Index 1:<br><input class='form-control input-sm' type='password' name='WepKey1'><br>Index 2:<br><input class='form-control input-sm' type='password' name='WepKey2'><br>Index 3:<br><input class='form-control input-sm' type='password' name='WepKey3'><br>Index 4:<br><input class='form-control input-sm' type='password' name='WepKey4'><br>";
-					  }
-					else if (x.value == "auto")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="EAP Type:<br><select class='form-control input-sm' name='EapType'><option>LEAP</option><option>EAP-FAST</option><option selected>PEAP-MSCHAPv2</option><option>PEAP-GTC</option><option>EAP-TLS</option><option>EAP-TTLS</option><option>PEAP-TLS</option></select><br>";
-					  }
-					else if (x.value == "WPA_PSK")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
-					  }
-					else if (x.value == "WPA_TKIP")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="EAP Type:<br><select class='form-control input-sm' name='EapType'><option>LEAP</option><option>EAP-FAST</option><option selected>PEAP-MSCHAPv2</option><option>PEAP-GTC</option><option>EAP-TLS</option><option>EAP-TTLS</option><option>PEAP-TLS</option></select><br>";
-					  }
-					else if (x.value == "WPA2_PSK")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
-					  }
-					else if (x.value == "WPA2_AES")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="EAP Type:<br><select class='form-control input-sm' name='EapType'><option>LEAP</option><option>EAP-FAST</option><option selected>PEAP-MSCHAPv2</option><option>PEAP-GTC</option><option>EAP-TLS</option><option>EAP-TTLS</option><option>PEAP-TLS</option></select><br>";
-					  }
-					else if (x.value == "CCKM_TKIP")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="EAP Type:<br><select class='form-control input-sm' name='EapType'><option>LEAP</option><option>EAP-FAST</option><option selected>PEAP-MSCHAPv2</option><option>PEAP-GTC</option><option>EAP-TLS</option><option>EAP-TTLS</option><option>PEAP-TLS</option></select><br>";
-					  }
-					else if (x.value == "CCKM_TKIP")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="EAP Type:<br><select class='form-control input-sm' name='EapType'><option>LEAP</option><option>EAP-FAST</option><option selected>PEAP-MSCHAPv2</option><option>PEAP-GTC</option><option>EAP-TLS</option><option>EAP-TTLS</option><option>PEAP-TLS</option></select><br>";
-					  }
-					else if (x.value == "WPA_PSK_AES")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
-					  }
-					else if (x.value == "WPA_AES")
-					  {
-					   document.getElementById("dynamicEAP").innerHTML="EAP Type:<br><select class='form-control input-sm' name='EapType'><option>LEAP</option><option>EAP-FAST</option><option selected>PEAP-MSCHAPv2</option><option>PEAP-GTC</option><option>EAP-TLS</option><option>EAP-TTLS</option><option>PEAP-TLS</option></select><br>";
-					  }
-					}
-					</script>
 				<?php
 				}
 				elseif ($getWEP == "wep")
 				{
-					$getWEP="wep";
+					$getWEP="WEP";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off' >None</option>
-					<option value='wep' selected>WEP</option>
-					<option value='auto' >WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF' >None</option>
+					<option value='WEP' selected>WEP</option>
+					<option value='AUTO' >WEP-EAP</option>
 					<option value='WPA_PSK' >WPA_PSK</option>
 					<option value='WPA_TKIP' >WPA_TKIP</option>
 					<option value='WPA2_PSK' >WPA2_PSK</option>
@@ -1301,12 +1250,12 @@
 				}
 				elseif ($getWEP == "wep-eap")
 				{
-					$getWEP="auto";
+					$getWEP="AUTO";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off' >None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto' selected>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF' >None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO' selected>WEP-EAP</option>
 					<option value='WPA_PSK' >WPA_PSK</option>
 					<option value='WPA_TKIP' >WPA_TKIP</option>
 					<option value='WPA2_PSK' >WPA2_PSK</option>
@@ -1323,10 +1272,10 @@
 				{
 					$getWEP="WPA_PSK";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK' selected>WPA_PSK</option>
 					<option value='WPA_TKIP' >WPA_TKIP</option>
 					<option value='WPA2_PSK' >WPA2_PSK</option>
@@ -1343,10 +1292,10 @@
 				{
 					$getWEP="WPA_TKIP";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP' selected>WPA_TKIP</option>
 					<option value='WPA2_PSK' >WPA2_PSK</option>
@@ -1363,10 +1312,10 @@
 				{
 					$getWEP="WPA2_PSK";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK' selected>WPA2_PSK</option>
@@ -1383,10 +1332,10 @@
 				{
 					$getWEP="WPA2_AES";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1403,10 +1352,10 @@
 				{
 					$getWEP="CCKM_TKIP";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1423,10 +1372,10 @@
 				{
 					$getWEP="CCKM_AES";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1443,10 +1392,10 @@
 				{
 					$getWEP="WPA_PSK_AES";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1463,10 +1412,10 @@
 				{
 					$getWEP="WPA_AES";
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1482,11 +1431,11 @@
 				elseif ($getWEP == "wpa2-tkip")
 				{
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
 					<option value='' selected>Unsupported WEP Type</option>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1501,11 +1450,11 @@
 				elseif ($getWEP == "wpa2-psk-tkip")
 				{
 				?>
-					WEP Type:<br><select class='form-control input-sm' name='WepType'>
+					WEP Type:<br><select class='form-control input-sm' name='WepType' id="showWep" onchange="showEAP()">
 					<option value='' selected>Unsupported WEP Type</option>
-					<option value='off'>None</option>
-					<option value='wep'>WEP</option>
-					<option value='auto'>WEP-EAP</option>
+					<option value='OFF'>None</option>
+					<option value='WEP'>WEP</option>
+					<option value='AUTO'>WEP-EAP</option>
 					<option value='WPA_PSK'>WPA_PSK</option>
 					<option value='WPA_TKIP'>WPA_TKIP</option>
 					<option value='WPA2_PSK'>WPA2_PSK</option>
@@ -1524,14 +1473,14 @@
 				<?php
 				}
 				?>
-				<div id="dynamicEAP"></div>
+				<div id="dynamicEAP">
 				<?php
 				$getEAP=strtolower(substr($ProfilePrint[5],14));
 				if ($getEAP == "leap")
 				{
 					$getEAP="leap";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option selected>LEAP</option>
 					<option>EAP-FAST</option>
 					<option>PEAP-MSCHAPv2</option>
@@ -1547,7 +1496,7 @@
 				{
 					$getEAP="eap-fast";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option>LEAP</option>
 					<option selected>EAP-FAST</option>
 					<option>PEAP-MSCHAPv2</option>
@@ -1563,7 +1512,7 @@
 				{
 					$getEAP="peap-mschapv2";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option>LEAP</option>
 					<option>EAP-FAST</option>
 					<option selected>PEAP-MSCHAPv2</option>
@@ -1579,7 +1528,7 @@
 				{
 					$getEAP="peap-gtc";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option>LEAP</option>
 					<option>EAP-FAST</option>
 					<option>PEAP-MSCHAPv2</option>
@@ -1595,7 +1544,7 @@
 				{
 					$getEAP="eap-tls";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option>LEAP</option>
 					<option>EAP-FAST</option>
 					<option>PEAP-MSCHAPv2</option>
@@ -1611,7 +1560,7 @@
 				{
 					$getEAP="eap-ttls";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option>LEAP</option>
 					<option>EAP-FAST</option>
 					<option>PEAP-MSCHAPv2</option>
@@ -1627,7 +1576,7 @@
 				{
 					$getEAP="peap-tls";
 				?>
-					EAP Type:<br><select class='form-control input-sm' name='EapType'>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
 					<option>LEAP</option>
 					<option>EAP-FAST</option>
 					<option>PEAP-MSCHAPv2</option>
@@ -1639,269 +1588,274 @@
 					<br>
 				<?php
 				}
-
+				else
+				{
+					$getEAP="";
+				?>
+					EAP Type:<br><select class='form-control input-sm' name='EapType' onchange='showCreds()'>
+					<option>LEAP</option>
+					<option>EAP-FAST</option>
+					<option selected>PEAP-MSCHAPv2</option>
+					<option>PEAP-GTC</option>
+					<option>EAP-TLS</option>
+					<option>EAP-TTLS</option>
+					<option>PEAP-TLS</option>
+					</select>
+					<br>
+				<?php
+				}
+				?>
+				</div>
+				<?php
 				//Figure out what creds are needed
-
-				if ($getEAP == "leap")  //leap
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-					}
-					$getPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
-					echo "<br>";
-				}
-				elseif ($getEAP == "eap-fast") //eap-fast
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-						$getPacFile=substr($ProfilePrint[11],18);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-						$getPacFile=substr($ProfilePrint[12],18);
-					}
-					$getPass="";
-					$getPacPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
-					echo "<br>";
-					echo "PAC Filename:<br><input class='form-control input-sm' type='text' name='PacFileName' value='$getPacFile'>";
-					echo "<br>";
-					echo "PAC Password:<br><input class='form-control input-sm' type='password' name='PacPassword' placeholder='********'>";
-					echo "<br>";
-				}
-				elseif ($getEAP == "peap-mschapv2") //peap-mschap
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-						$getCAFile=substr($ProfilePrint[11],13);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-						$getCAFile=substr($ProfilePrint[12],13);
-					}
-					$getPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
-					echo "<br>";
-					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";
-				}
-				elseif ($getEAP == "peap-gtc") //peap-gtc
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-						$getCAFile=substr($ProfilePrint[11],13);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-						$getCAFile=substr($ProfilePrint[12],13);
-					}
-					$getPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
-					echo "<br>";
-					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";
-				}
-				elseif ($getEAP == "eap-tls") //eap-tls
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-						$getUserCertFile=substr($ProfilePrint[11],15);
-						$getCAFile=substr($ProfilePrint[13],13);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-						$getUserCertFile=substr($ProfilePrint[12],15);
-						$getCAFile=substr($ProfilePrint[14],13);
-					}
-					$getUserCertPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
-					echo "<br>";
-					echo "Usercert Password:<br><input class='form-control input-sm' type='password' name='UserCertPass' placeholder='********'>";
-					echo "<br>";
-					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";
-				}
-				elseif ($getEAP == "eap-ttls") //eap-ttls
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-						$getCAFile=substr($ProfilePrint[11],13);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-						$getCAFile=substr($ProfilePrint[12],13);
-					}
-					$getPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
-					echo "<br>";
-					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";
-				}
-				elseif ($getEAP == "peap-tls") //peap-tls
-				{
-					if ($getPower != "fast"){
-						$getUser=substr($ProfilePrint[9],14);
-						$getUserCertFile=substr($ProfilePrint[11],15);
-						$getCAFile=substr($ProfilePrint[13],13);
-					}
-					else{
-						$getUser=substr($ProfilePrint[10],14);
-						$getUserCertFile=substr($ProfilePrint[12],15);
-						$getCAFile=substr($ProfilePrint[14],13);
-					}
-					$getUserCertPass="";
-					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
-					echo "<br>";
-					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
-					echo "<br>";
-					echo "Usercert Password:<br><input class='form-control input-sm' type='password' name='UserCertPass' placeholder='********'>";
-					echo "<br>";
-					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
-					echo "<br>";
-				}
-				else //Must be PSK/WEP
-				{
-					// Prompt for PSK/WEP if required
-					if ($getWEP == "off") //off
-					{
-
-					}
-					elseif ($getWEP == "wep") //on
+				if ($getWEP != "WEP" and $getWEP != "WPA_PSK" and $getWEP != "WPA2_PSK" and $getWEP != "WPA_AES_PSK"){
+					if ($getEAP == "leap")  //leap
 					{
 						if ($getPower != "fast"){
-							$getWEPKey1=substr($ProfilePrint[9],14);
-							$getWEPKey2=substr($ProfilePrint[10],14);
-							$getWEPKey3=substr($ProfilePrint[11],14);
-							$getWEPKey4=substr($ProfilePrint[12],14);
+							$getUser=substr($ProfilePrint[9],14);
 						}
 						else{
-							$getWEPKey1=substr($ProfilePrint[10],14);
-							$getWEPKey2=substr($ProfilePrint[11],14);
-							$getWEPKey3=substr($ProfilePrint[12],14);
-							$getWEPKey4=substr($ProfilePrint[13],14);
+							$getUser=substr($ProfilePrint[10],14);
 						}
-
-						if (str_word_count($getWEPKey1) == 1)
-						{
-							$getWEPKey1="";
-							$GetActiveKey=1;
-						}
-						if (str_word_count($getWEPKey2) == 1)
-						{
-							$getWEPKey2="";
-							$GetActiveKey=2;
-						}
-						if (str_word_count($getWEPKey3) == 1)
-						{
-							$getWEPKey3="";
-							$GetActiveKey=3;
-						}
-						if (str_word_count($getWEPKey4) == 1)
-						{
-							$getWEPKey4="";
-							$GetActiveKey=4;
-						}
-
-						echo "Index 1:<br><input class='form-control input-sm' type='password' name='WepKey1' placeholder='********'>";
-						echo "<br>";
-
-						echo "Index 2:<br><input class='form-control input-sm' type='password' name='WepKey2' placeholder='********'>";
-						echo "<br>";
-
-						echo "Index 3:<br><input class='form-control input-sm' type='password' name='WepKey3' placeholder='********'>";
-						echo "<br>";
-
-						echo "Index 4:<br><input class='form-control input-sm' type='password' name='WepKey4' placeholder='********'>";
-						echo "<br>";
-
-						if ($GetActiveKey == 1)
-						{
-						?>
-							Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
-							<option selected>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							</select>
-							<br>
-						<?php
-						}
-						else if ($GetActiveKey == 2)
-						{
-						?>
-							Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
-							<option>1</option>
-							<option selected>2</option>
-							<option>3</option>
-							<option>4</option>
-							</select>
-							<br>
-						<?php
-						}
-						else if ($GetActiveKey == 3)
-						{
-						?>
-							Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
-							<option>1</option>
-							<option>2</option>
-							<option selected>3</option>
-							<option>4</option>
-							</select>
-							<br>
-						<?php
-						}
-						else if ($GetActiveKey == 4)
-						{
-						?>
-							Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option selected>4</option>
-							</select>
-							<br>
-						<?php
-						}
+						$getPass="";
 					}
-					elseif ($getWEP == "WPA_PSK") //wpa_psk
+					elseif ($getEAP == "eap-fast") //eap-fast
 					{
-						$getPSK="";
-						echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
+						if ($getPower != "fast"){
+							$getUser=substr($ProfilePrint[9],14);
+							$getPacFile=substr($ProfilePrint[11],18);
+						}
+						else{
+							$getUser=substr($ProfilePrint[10],14);
+							$getPacFile=substr($ProfilePrint[12],18);
+						}
+						$getPass="";
+						$getPacPass="";
 					}
-					elseif ($getWEP == "WPA2_PSK") //wpa2_psk
+					elseif ($getEAP == "peap-mschapv2") //peap-mschap
 					{
-						$getPSK="";
-						echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
+						if ($getPower != "fast"){
+							$getUser=substr($ProfilePrint[9],14);
+							$getCAFile=substr($ProfilePrint[11],13);
+						}
+						else{
+							$getUser=substr($ProfilePrint[10],14);
+							$getCAFile=substr($ProfilePrint[12],13);
+						}
+						$getPass="";
 					}
-					elseif ($getWEP == "WPA_PSK_AES") //wpa_psk_aes
+					elseif ($getEAP == "peap-gtc") //peap-gtc
 					{
-						$getPSK="";
-						echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
+						if ($getPower != "fast"){
+							$getUser=substr($ProfilePrint[9],14);
+							$getCAFile=substr($ProfilePrint[11],13);
+						}
+						else{
+							$getUser=substr($ProfilePrint[10],14);
+							$getCAFile=substr($ProfilePrint[12],13);
+						}
+						$getPass="";
 					}
-					elseif ($getWEP == "WPA_TKIP" || $getWEP == "WPA_AES" || $getWEP == "WPA2_AES" || $getWEP == "CCKM_TKIP" || $getWEP == "CCKM_AES" || $getWEP == "wpa2-psk-tkip" || $getWEP == "wpa2-tkip")
+					elseif ($getEAP == "eap-tls") //eap-tls
 					{
+						if ($getPower != "fast"){
+							$getUser=substr($ProfilePrint[9],14);
+							$getUserCertFile=substr($ProfilePrint[11],15);
+							$getCAFile=substr($ProfilePrint[13],13);
+						}
+						else{
+							$getUser=substr($ProfilePrint[10],14);
+							$getUserCertFile=substr($ProfilePrint[12],15);
+							$getCAFile=substr($ProfilePrint[14],13);
+						}
+						$getUserCertPass="";
 					}
-					else
+					elseif ($getEAP == "eap-ttls") //eap-ttls
 					{
-						echo "WEP on/Preshared key error";
+						if ($getPower != "fast"){
+							$getUser=substr($ProfilePrint[9],14);
+							$getCAFile=substr($ProfilePrint[11],13);
+						}
+						else{
+							$getUser=substr($ProfilePrint[10],14);
+							$getCAFile=substr($ProfilePrint[12],13);
+						}
+						$getPass="";
+					}
+					elseif ($getEAP == "peap-tls") //peap-tls
+					{
+						if ($getPower != "fast"){
+							$getUser=substr($ProfilePrint[9],14);
+							$getUserCertFile=substr($ProfilePrint[11],15);
+							$getCAFile=substr($ProfilePrint[13],13);
+						}
+						else{
+							$getUser=substr($ProfilePrint[10],14);
+							$getUserCertFile=substr($ProfilePrint[12],15);
+							$getCAFile=substr($ProfilePrint[14],13);
+						}
+						$getUserCertPass="";
 					}
 				}
+				// Prompt for PSK/WEP if required
+				if ($getWEP == "OFF") //off
+				{
+
+				}
+				elseif ($getWEP == "WEP") //on
+				{
+					if ($getPower != "fast"){
+						$getWEPKey1=substr($ProfilePrint[9],14);
+						$getWEPKey2=substr($ProfilePrint[10],14);
+						$getWEPKey3=substr($ProfilePrint[11],14);
+						$getWEPKey4=substr($ProfilePrint[12],14);
+					}
+					else{
+						$getWEPKey1=substr($ProfilePrint[10],14);
+						$getWEPKey2=substr($ProfilePrint[11],14);
+						$getWEPKey3=substr($ProfilePrint[12],14);
+						$getWEPKey4=substr($ProfilePrint[13],14);
+					}
+
+					if (str_word_count($getWEPKey1) == 1)
+					{
+						$getWEPKey1="";
+						$GetActiveKey=1;
+					}
+					if (str_word_count($getWEPKey2) == 1)
+					{
+						$getWEPKey2="";
+						$GetActiveKey=2;
+					}
+					if (str_word_count($getWEPKey3) == 1)
+					{
+						$getWEPKey3="";
+						$GetActiveKey=3;
+					}
+					if (str_word_count($getWEPKey4) == 1)
+					{
+						$getWEPKey4="";
+						$GetActiveKey=4;
+					}
+					?>
+					<div id="wepIndexDisplay">
+					<?php
+					if ($GetActiveKey == 1)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option selected>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						</select>
+						<br>
+					<?php
+					}
+					else if ($GetActiveKey == 2)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option>1</option>
+						<option selected>2</option>
+						<option>3</option>
+						<option>4</option>
+						</select>
+						<br>
+					<?php
+					}
+					else if ($GetActiveKey == 3)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option>1</option>
+						<option>2</option>
+						<option selected>3</option>
+						<option>4</option>
+						</select>
+						<br>
+					<?php
+					}
+					else if ($GetActiveKey == 4)
+					{
+					?>
+						Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option selected>4</option>
+						</select>
+						<br>
+					<?php
+					}
+					?>
+					</div>
+					<?php
+				}
+				elseif ($getWEP == "WPA_PSK") //wpa_psk
+				{
+					$getPSK="";
+				}
+				elseif ($getWEP == "WPA2_PSK") //wpa2_psk
+				{
+					$getPSK="";
+				}
+				elseif ($getWEP == "WPA_PSK_AES") //wpa_psk_aes
+				{
+					$getPSK="";
+				}
+
+				echo "<div id='wepIndexDisplay' class='hidden'>";
+					echo "Set Active Key:<br><select class='form-control input-sm' name='KeyIndex'>";
+						echo "<option selected>1</option>";
+						echo "<option>2</option>";
+						echo "<option>3</option>";
+						echo "<option>4</option>";
+					echo "</select>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='wepTypeOnDisplay' class='hidden'>";
+					echo "Index 1:<br><input class='form-control input-sm' type='password' name='WepKey1' placeholder='********'>";
+					echo "<br>";
+					echo "Index 2:<br><input class='form-control input-sm' type='password' name='WepKey2' placeholder='********'>";
+					echo "<br>";
+					echo "Index 3:<br><input class='form-control input-sm' type='password' name='WepKey3' placeholder='********'>";
+					echo "<br>";
+					echo "Index 4:<br><input class='form-control input-sm' type='password' name='WepKey4' placeholder='********'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='pskDisplay' class='hidden'>";
+					echo "PreShared Key:<br><input class='form-control input-sm' type='password' name='PSK' placeholder='********'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='userNameDisplay' class='hidden'>";
+					echo "User Name:<br><input class='form-control input-sm' type='text' name='UserName' value='$getUser'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='passWordDisplay' class='hidden'>";
+					echo "Password:<br><input class='form-control input-sm' type='password' name='PassWord' placeholder='********'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='PACFilenameDisplay' class='hidden'>";
+					echo "PAC Filename:<br><input class='form-control input-sm' type='text' name='PacFileName' value='$getPacFile'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='PACPasswordDisplay' class='hidden'>";
+					echo "PAC Password:<br><input class='form-control input-sm' type='password' name='PacPassword' placeholder='********'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='userCertDisplay' class='hidden'>";
+					echo "Usercert File:<br><input class='form-control input-sm' type='text' name='UserCert' value='$getUserCertFile'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='userCertPasswordDisplay' class='hidden'>";
+					echo "Usercert Password:<br><input class='form-control input-sm' type='password' name='UserCertPass' placeholder='********'>";
+					echo "<br>";
+				echo "</div>";
+				echo "<div id='CACertDisplay' class='hidden'>";
+					echo "CAcert File:<br><input class='form-control input-sm' type='text' name='CaCert' value='$getCAFile'>";
+					echo "<br>";
+				echo "</div>";
 			?>
 				<input class='form-control input-sm' type = "hidden" name = "wbprofiles" value = "<?php echo $_POST['wbprofiles']; ?>"/>
 				<input class='form-control input-sm' type = "hidden" name = "formEdit" value = "<?php echo $_POST['formEdit']; ?>"/>
@@ -1965,7 +1919,7 @@
 				{
 					exec("sdc_cli profile $editprofile set authtype $AuthType", $error);
 				}
-				if (strtolower($EapType) != $getEAP)
+				if (strtolower($EapType) != $getEAP and $getWEP != "WEP" and $getWEP != "WPA_PSK" and $getWEP != "WPA2_PSK" and $getWEP != "WPA_AES_PSK")
 				{
 					exec("sdc_cli profile $editprofile set eaptype " . strtolower($EapType), $error);
 				}
@@ -2001,8 +1955,9 @@
 				{
 					exec("sdc_cli profile $editprofile set cacert $CaCert", $error);
 				}
-				if ($UserName != $getUser)
-				{
+				if ($UserName != $getUser) {
+					exec("sdc_cli profile $editprofile set user $UserName", $error);
+				} elseif ($getWEP != "WEP" and $getWEP != "WPA_PSK" and $getWEP != "WPA2_PSK" and $getWEP != "WPA_AES_PSK") {
 					exec("sdc_cli profile $editprofile set user $UserName", $error);
 				}
 				if ($PassWord != $getPass)
@@ -2094,7 +2049,7 @@
 					}
 				}
 
-				if ($KeyIndex != $GetActiveKey)
+				if ($KeyIndex != $GetActiveKey and $getWEP == "WEP")
 				{
 					exec("sdc_cli profile $editprofile set wep tx $KeyIndex", $error);
 				}
@@ -2131,6 +2086,91 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+	<script>
+	if ($('#showWep').length){
+		showEAP();
+	};
+
+	function clearCredsDisplay(){
+		$("#wepIndexDisplay").addClass("hidden");
+		$("#wepTypeOnDisplay").addClass("hidden");
+		$("#pskDisplay").addClass("hidden");
+		$("#userNameDisplay").addClass("hidden");
+		$("#passWordDisplay").addClass("hidden");
+		$("#userCertDisplay").addClass("hidden");
+		$("#userCertPasswordDisplay").addClass("hidden");
+		$("#CACertDisplay").addClass("hidden");
+		$("#PACFilenameDisplay").addClass("hidden");
+		$("#PACPasswordDisplay").addClass("hidden");
+	}
+
+	function showCreds(){
+		var y=document.getElementsByName("EapType");
+		clearCredsDisplay();
+
+		switch (y[0].value){
+			case "LEAP":
+				$("#userNameDisplay").removeClass("hidden");
+				$("#passWordDisplay").removeClass("hidden");
+				break;
+			case "EAP-FAST":
+				$("#userNameDisplay").removeClass("hidden");
+				$("#passWordDisplay").removeClass("hidden");
+				$("#PACFilenameDisplay").removeClass("hidden");
+				$("#PACPasswordDisplay").removeClass("hidden");
+				break;
+			case "PEAP-MSCHAPv2":
+			case "PEAP-GTC":
+			case "EAP-TTLS":
+				$("#userNameDisplay").removeClass("hidden");
+				$("#passWordDisplay").removeClass("hidden");
+				$("#CACertDisplay").removeClass("hidden");
+				break;
+			case "EAP-TLS":
+			case "PEAP-TLS":
+				$("#userNameDisplay").removeClass("hidden");
+				$("#userCertDisplay").removeClass("hidden");
+				$("#userCertPasswordDisplay").removeClass("hidden");
+				$("#CACertDisplay").removeClass("hidden");
+				break;
+			default:
+				break;
+		}
+	}
+
+	function showEAP(){
+		var x=document.getElementById("showWep");
+
+		clearCredsDisplay();
+		switch (x.value){
+			case "OFF":
+				$("#dynamicEAP").addClass("hidden");
+				break;
+			case "WEP":
+				$("#dynamicEAP").addClass("hidden");
+				$("#wepIndexDisplay").removeClass("hidden");
+				$("#wepTypeOnDisplay").removeClass("hidden");
+				break;
+			case "AUTO":
+			case "WPA_TKIP":
+			case "WPA2_AES":
+			case "CCKM_TKIP":
+			case "CCKM_AES":
+			case "WPA_AES":
+				$("#dynamicEAP").removeClass("hidden");
+				showCreds();
+				break;
+			case "WPA_PSK":
+			case "WPA2_PSK":
+			case "WPA_PSK_AES":
+				$("#dynamicEAP").addClass("hidden");
+				$("#pskDisplay").removeClass("hidden");
+				break;
+			default:
+				break;
+		}
+	}
+	</script>
 	<script src="../assets/js/bootstrap.min.js"></script>
 
 
