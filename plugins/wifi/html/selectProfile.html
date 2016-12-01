@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+  Copyright (c) 2016, Laird
+  Contact: ews-support@lairdtech.com
+-->
+
+<html>
+	<form class="col-xs-12 col-sm-12 placeholder">
+		<div class="panel panel-default" id="">
+			<div class="panel-heading">Profile List</div>
+			<div class="panel-body">
+				<select class="form-control" id="profileSelect">
+				</select>
+				<br>
+				<div class="btn-group btn-group-justified" role="group" aria-label="...">
+					<div class="btn-group" role="group">
+						<button onclick="activateProfile(0)" type="button" class="btn btn-default" id="activateButton" >Activate</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button onclick="selectedProfile(null,0)" type="button" class="btn btn-default">Edit</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							more <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a href="#" onclick="showRenameProfile()">Rename profile</a></li>
+							<li><a href="#" onclick="removeProfile()">Delete profile</a></li>
+						</ul>
+					</div>
+				</div>
+				<br>
+				<div class="input-group hidden" id="newProfileNameDisplay">
+					<input type="text" class="form-control" id="newProfileName"  placeholder="Rename profile to...">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button" onclick="renameProfile(0)">rename</button>
+					</span>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="panel panel-default hidden" id="autoProfileDisplay">
+			<div class="panel-heading">Auto Profile List</div>
+			<div class="panel-body">
+				<table class="table table-condensed" id="autoProfileTable">
+					<thead>
+						<tr>
+							<th style="text-align:center">Profile</th>
+							<th style="text-align:center">State</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<div>
+					<a onclick="submitAutoProfile(0)" role="button" class="btn btn-default disabled" id="applyAutoProfile" >Apply</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</html>
