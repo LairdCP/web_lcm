@@ -37,11 +37,11 @@ function onChangeSubmit(){
 function onChangePowersave(){
 	var powerSave = parseInt(document.getElementById("powerSave").value);
 	switch (powerSave){
-		case defines.PLUGINS.wifi.PLUGINS.wifi.POWERSAVE.POWERSAVE_OFF:
-		case defines.PLUGINS.wifi.PLUGINS.wifi.POWERSAVE.POWERSAVE_MAX:
+		case defines.PLUGINS.wifi.POWERSAVE.POWERSAVE_OFF:
+		case defines.PLUGINS.wifi.POWERSAVE.POWERSAVE_MAX:
 			$("#pspDelayDisplay").addClass("hidden");
 			break;
-		case defines.PLUGINS.wifi.PLUGINS.wifi.POWERSAVE.POWERSAVE_FAST:
+		case defines.PLUGINS.wifi.POWERSAVE.POWERSAVE_FAST:
 			$("#pspDelayDisplay").removeClass("hidden");
 			break;
 		default:
@@ -69,34 +69,34 @@ function onChangeSecurity(){
 	function displayProperEAPCreds(){
 		$("#eapTypeDisplay").removeClass("hidden");
 		$("#userNameDisplay").removeClass("hidden");
-		if (!(eapType == defines.PLUGINS.wifi.PLUGINS.wifi.EAPTYPE.EAP_EAPTLS || eapType == defines.PLUGINS.wifi.PLUGINS.wifi.EAPTYPE.EAP_PEAPTLS)){
+		if (!(eapType == defines.PLUGINS.wifi.EAPTYPE.EAP_EAPTLS || eapType == defines.PLUGINS.wifi.EAPTYPE.EAP_PEAPTLS)){
 			$("#passWordDisplay").removeClass("hidden");
 		} else {
 			$("#userCertDisplay").removeClass("hidden");
 			$("#userCertPasswordDisplay").removeClass("hidden");
 		}
-		if (eapType > defines.PLUGINS.wifi.PLUGINS.wifi.EAPTYPE.EAP_EAPFAST && eapType < defines.PLUGINS.wifi.PLUGINS.wifi.EAPTYPE.EAP_WAPI_CERT){
+		if (eapType > defines.PLUGINS.wifi.EAPTYPE.EAP_EAPFAST && eapType < defines.PLUGINS.wifi.EAPTYPE.EAP_WAPI_CERT){
 			$("#CACertDisplay").removeClass("hidden");
 		}
-		if (eapType == defines.PLUGINS.wifi.PLUGINS.wifi.EAPTYPE.EAP_EAPFAST){
+		if (eapType == defines.PLUGINS.wifi.EAPTYPE.EAP_EAPFAST){
 			$("#PACFilenameDisplay").removeClass("hidden");
 			$("#PACPasswordDisplay").removeClass("hidden");
 		}
 	}
 	switch (wepType){
-		case defines.PLUGINS.wifi.PLUGINS.wifi.WEPTYPE.WEP_OFF:
+		case defines.PLUGINS.wifi.WEPTYPE.WEP_OFF:
 			clearCredsDisplay();
 			break;
-		case defines.PLUGINS.wifi.PLUGINS.wifi.WEPTYPE.WEP_ON:
+		case defines.PLUGINS.wifi.WEPTYPE.WEP_ON:
 			clearCredsDisplay();
 			$("#wepIndexDisplay").removeClass("hidden");
 			$("#wepTypeOnDisplay").removeClass("hidden");
 			break;
-		case defines.PLUGINS.wifi.PLUGINS.wifi.WEPTYPE.WEP_AUTO:
+		case defines.PLUGINS.wifi.WEPTYPE.WEP_AUTO:
 			clearCredsDisplay();
 			displayProperEAPCreds();
 			break;
-		case defines.PLUGINS.wifi.PLUGINS.wifi.WEPTYPE.WPA_PSK:
+		case defines.PLUGINS.wifi.WEPTYPE.WPA_PSK:
 			clearCredsDisplay();
 			$("#pskDisplay").removeClass("hidden");
 			break;
