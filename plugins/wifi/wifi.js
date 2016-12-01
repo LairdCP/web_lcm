@@ -1163,6 +1163,7 @@ function getScan(retry){
 			}
 			$("#updateProgressDisplay").addClass("hidden");
 			$("#scanTableDisplay").removeClass("hidden");
+			$("#emptyNode").remove();
 			$(function(){
 				$("#scanTable").tablesorter( {sortList: [[0,0], [1,0]]} );
 			});
