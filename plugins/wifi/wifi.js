@@ -595,6 +595,7 @@ function removeProfile(){
 	} else {
 		CustomErrMsg("Cant delete active profile");
 	}
+	profileSelect.selectedIndex = activeProfile.index;
 };
 
 function submitAutoProfile(retry){
