@@ -655,6 +655,34 @@ function clickProfileEditPage(retry) {
 	});
 }
 
+function getAddProfileList(retry){
+	$.ajax({
+		url: "plugins/wifi/php/listProfile.php",
+		type: "POST",
+		contentType: "application/json",
+	})
+	.done(function( msg ) {
+		consoleLog(msg);
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
+			expiredSession();
+			return;
+		}
+		if (msg.NumConfigs == defines.PLUGINS.wifi.DEFINES.MAX_CFGS){
+			document.getElementById("addNewProfile").innerHTML = "Max number of profiles exist";
+			document.getElementById("addNewProfile").disabled=true;
+		}
+	})
+	.fail(function() {
+		consoleLog("Failed to get number of profiles, retrying");
+		if (retry < 5){
+			retry++;
+			getAddProfileList(retry);
+		} else {
+			consoleLog("Retry max attempt reached");
+		}
+	});
+}
+
 function clickAddProfilePage(retry) {
 	$.ajax({
 		url: "plugins/wifi/html/addProfile.html",
@@ -686,6 +714,13 @@ function clickAddProfilePage(retry) {
 				}
 			});
 		},
+	})
+	.done(function( msg ) {
+		if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
+			expiredSession();
+			return;
+		}
+		getAddProfileList(0);
 	})
 	.fail(function() {
 		consoleLog("Error, couldn't get addProfile.html.. retrying");
@@ -753,6 +788,7 @@ function addProfile(){
 				return;
 			}
 			SDCERRtoString(msg.SDCERR);
+			getAddProfileList(0);
 		});
 	} else {
 		consoleLog("Name is null");
