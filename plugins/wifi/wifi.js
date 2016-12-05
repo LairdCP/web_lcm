@@ -1212,22 +1212,28 @@ function clickScanPage(retry){
 	});
 }
 
+function allowCertUpload(){
+	$("#submitCertButton").removeClass("disabled");
+}
+
 function uploadCert(retry){
 	var file_data = $('#fileToUpload').prop('files')[0];
-	var form_data = new FormData();
-	form_data.append('file', file_data);
-	$.ajax({
-		url: 'plugins/wifi/php/upload.php', // point to server-side PHP script
-		cache: false,
-		contentType: false,
-		processData: false,
-		data: form_data,
-		type: 'POST',
-	})
-	.done(function( data ) {
-		consoleLog(data);
-		SDCERRtoString(data.SDCERR);
-	})
+	if (file_data != null){
+		var form_data = new FormData();
+		form_data.append('file', file_data);
+		$.ajax({
+			url: 'plugins/wifi/php/upload.php', // point to server-side PHP script
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: form_data,
+			type: 'POST',
+		})
+		.done(function( data ) {
+			consoleLog(data);
+			SDCERRtoString(data.SDCERR);
+		})
+	}
 }
 
 function generateLog(retry){
@@ -1283,6 +1289,7 @@ function removeLog(retry){
 function checkLog(){
 	var getStatusJSON = $.getJSON( "plugins/wifi/php/checkLog.php", function( data ) {
 		if (data.state == "finished"){
+			document.getElementById("generateLog").textContent = "Finished";
 			$("#generateLog").addClass("disabled");
 			$("#downloadLog").removeClass("disabled");
 			if (intervalId){
