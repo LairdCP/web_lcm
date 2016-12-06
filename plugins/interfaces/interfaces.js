@@ -205,6 +205,7 @@ function setInterfaceState(ev,retry){
 		action: ev.target.value.toLowerCase(),
 	}
 	if (!$("#" + ev.target.id).hasClass("disabled")){
+		$("#" + ev.target.id).val("Working");
 		$.ajax({
 			url: "plugins/interfaces/php/setInterfaceState.php",
 			type: "POST",
@@ -227,9 +228,11 @@ function setInterfaceState(ev,retry){
 				var startID = $("#" + actionFromID[0] + "-Start");
 				var stopID = $("#" + actionFromID[0] + "-Stop");
 				if (actionFromID[1] == "Start"){
+					startID.val("Start");
 					startID.addClass("disabled active");
 					stopID.removeClass("disabled active");
 				} else {
+					stopID.val("Stop");
 					stopID.addClass("disabled active");
 					startID.removeClass("disabled active");
 				}
