@@ -407,4 +407,15 @@ function wifi(){
 	return $wifi_defines;
 }
 
+function nullTrim($string){
+	for( $i = 0; $i <= strlen(trim($string)); $i++ ) {
+		$char = substr($string,$i,1);
+		if ($char == "\0"){
+			break;
+		}
+		$return_string .= $char;
+	}
+	return $return_string;
+}
+
 ?>

@@ -15,9 +15,9 @@
 	$result = GetConfig($oldProfile->{'profileName'},$cfgs);
 
 	if($result == SDCERR_SUCCESS){
-		$returnedResult['configName'] = $cfgs->configName;
+		$returnedResult['configName'] = nullTrim($cfgs->configName);
 		$returnedResult['SSID'] = $cfgs->SSID;
-		$returnedResult['clientName'] = $cfgs->clientName;
+		$returnedResult['clientName'] = nullTrim($cfgs->clientName);
 		$returnedResult['txPower'] = $cfgs->txPower;
 		$returnedResult['authType'] = $cfgs->authType;
 		$returnedResult['eapType'] = $cfgs->eapType;
@@ -122,7 +122,7 @@
 					$passWord = str_repeat(" ",USER_PWD_SZ);
 					$result = GetLEAPCred($cfgs,$userName,$passWord);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
+						$returnedResult['userName'] = nullTrim($userName);
 						$returnedResult['passWord'] = "********";
 					}
 					break;
@@ -133,9 +133,9 @@
 					$PACPassWord = str_repeat(" ",CRED_PFILE_SZ);
 					$result = GetEAPFASTCred($cfgs,$userName,$passWord,$PACFileName,$PACPassWord);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
+						$returnedResult['userName'] = nullTrim($userName);
 						$returnedResult['passWord'] = "********";
-						$returnedResult['PACFileName'] = $PACFileName;
+						$returnedResult['PACFileName'] = nullTrim($PACFileName);
 						$returnedResult['PACPassWord'] = "********";
 					}
 					break;
@@ -146,9 +146,9 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPMSCHAPCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
+						$returnedResult['userName'] = nullTrim($userName);
 						$returnedResult['passWord'] = "********";
-						$returnedResult['CACert'] = trim($caCert);
+						$returnedResult['CACert'] = nullTrim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -159,9 +159,9 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPGTCCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
+						$returnedResult['userName'] = nullTrim($userName);
 						$returnedResult['passWord'] = "********";
-						$returnedResult['CACert'] = trim($caCert);
+						$returnedResult['CACert'] = nullTrim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -173,11 +173,11 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
-						$returnedResult['userCert'] = trim($userCert);
+						$returnedResult['userName'] = nullTrim($userName);
+						$returnedResult['userCert'] = nullTrim($userCert);
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
 						$returnedResult['userCertPassword'] = "********";
-						$returnedResult['CACert'] = trim($caCert);
+						$returnedResult['CACert'] = nullTrim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -188,9 +188,9 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetEAPTTLSCred($cfgs,$userName,$passWord,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
+						$returnedResult['userName'] = nullTrim($userName);
 						$returnedResult['passWord'] = "********";
-						$returnedResult['CACert'] = trim($caCert);
+						$returnedResult['CACert'] = nullTrim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
@@ -202,11 +202,11 @@
 					$caCert = str_repeat(" ",CRED_CERT_SZ);
 					$result = GetPEAPTLSCred($cfgs,$userName,$userCert,$certLocation,$caCert);
 					if($result == SDCERR_SUCCESS){
-						$returnedResult['userName'] = trim($userName);
-						$returnedResult['userCert'] = trim($userCert);
+						$returnedResult['userName'] = nullTrim($userName);
+						$returnedResult['userCert'] = nullTrim($userCert);
 						$result = GetUserCertPassword($cfgs,$userCertPassword);
 						$returnedResult['userCertPassword'] = "********";
-						$returnedResult['CACert'] = trim($caCert);
+						$returnedResult['CACert'] = nullTrim($caCert);
 					}
 					delete_CERTLOCATIONp($certLocation);
 					break;
