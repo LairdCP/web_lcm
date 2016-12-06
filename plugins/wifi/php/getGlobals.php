@@ -45,7 +45,7 @@
 			$returnedResult['BeaconMissTimeout'] = $cfgs->BeaconMissTimeout;
 			$returnedResult['BTcoexist'] = $cfgs->BTcoexist;
 			$returnedResult['CCXfeatures'] = $cfgs->CCXfeatures;
-			$returnedResult['certPath'] = $cfgs->certPath;
+			$returnedResult['certPath'] = nullTrim($cfgs->certPath);
 			$returnedResult['suppInfo'] = $cfgs->suppInfo;
 			$returnedResult['defAdhocChannel'] = $cfgs->defAdhocChannel;
 			$returnedResult['DFSchannels'] = $cfgs->DFSchannels;
