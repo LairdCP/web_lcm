@@ -28,38 +28,73 @@
 			break;
 		case WEP_ON:
 			$cfgs->eapType = EAP_NONE;
-			function getWepLength($wepKey){
-				if (strlen($wepKey) == 5){
-					return WEPLEN_40BIT;
-				} else if (strlen($wepKey) == 13){
-					return WEPLEN_128BIT;
-				}
-				return WEPLEN_NOT_SET;
-			}
-			function strToHex($key,$string)
-			{
-				for ($i=0; $i < 27; $i++)
-				{
-					uchar_array_setitem($key,$i,dechex(ord($string[$i])));
+
+			function strToHex($key,$string,$length){
+				for ($i=0; $i < $length; $i++) {
+					uchar_array_setitem($key,$i,ord($string[$i]));
 				}
 			}
-			$wepKey1 = new_uchar_array(27);
-			$wepKey2 = new_uchar_array(27);
-			$wepKey3 = new_uchar_array(27);
-			$wepKey4 = new_uchar_array(27);
-			strToHex($wepKey1,$Profile->{'index1'});
-			strToHex($wepKey2,$Profile->{'index2'});
-			strToHex($wepKey3,$Profile->{'index3'});
-			strToHex($wepKey4,$Profile->{'index4'});
-			$result = SetMultipleWEPKeys($cfgs,$Profile->{'wepIndex'},
-				getWepLength($Profile->{'index1'}),$wepKey1,
-				getWepLength($Profile->{'index2'}),$wepKey2,
-				getWepLength($Profile->{'index3'}),$wepKey3,
-				getWepLength($Profile->{'index4'}),$wepKey4);
-			delete_uchar_array($wepKey1);
-			delete_uchar_array($wepKey2);
-			delete_uchar_array($wepKey3);
-			delete_uchar_array($wepKey4);
+
+			function setKey($config,$index,$key,$txKey){
+				$wepKey = new_uchar_array(27);
+
+				if ($index == $txKey){
+					$setTX = 1;
+				}
+
+				if ((substr_count($key,"*") == strlen($key)) and (strlen($key))){
+					if ($setTX){
+						$currentKey = new_uchar_array(27);
+						$wepLen = new_WEPLENp();
+						$result = GetWEPKey($config,$index,$wepLen,$currentKey,NULL);
+						if ($result == SDCERR_SUCCESS){
+							$result = SetWEPKey($config,$index,WEPLENp_value($wepLen),$currentKey,$setTX);
+						}
+						delete_uchar_array($currentKey);
+						delete_WEPLENp($wepLen);
+
+						return $result;
+					} else {
+						return SDCERR_SUCCESS;
+					}
+				}
+
+				switch (strlen($key)){
+					case 0:
+						$length = WEPLEN_NOT_SET;
+						break;
+					case 5:
+						$length = WEPLEN_40BIT;
+						strToHex($wepKey,$key,5);
+						break;
+					case 10:
+						$length = WEPLEN_40BIT;
+						$hexToString = pack('H*',$key);
+						strToHex($wepKey,$hexToString,5);
+						break;
+					case 13:
+						$length = WEPLEN_128BIT;
+						strToHex($wepKey,$key,13);
+						break;
+					case 26:
+						$length = WEPLEN_128BIT;
+						$hexToString = pack('H*',$key);
+						strToHex($wepKey,$hexToString,13);
+						break;
+					default:
+						return SDCERR_FAIL;
+						break;
+				}
+				$result = SetWEPKey($config,$index,$length,$wepKey,$setTX);
+				delete_uchar_array($wepKey);
+
+				return $result;
+			}
+
+			$result = setKey($cfgs,1,$Profile->{'index1'},$Profile->{'wepIndex'});
+			$result = setKey($cfgs,2,$Profile->{'index2'},$Profile->{'wepIndex'});
+			$result = setKey($cfgs,3,$Profile->{'index3'},$Profile->{'wepIndex'});
+			$result = setKey($cfgs,4,$Profile->{'index4'},$Profile->{'wepIndex'});
 			break;
 		case WPA_PSK:
 		case WPA2_PSK:
