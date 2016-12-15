@@ -747,9 +747,10 @@ function updateAddProfile(){
 }
 
 function addProfile(){
+	var profileName = document.getElementById("profileName").value;
 	if (profileName != ""){
 		var newProfile = {
-			profileName: document.getElementById("profileName").value,
+			profileName: profileName,
 			SSID: document.getElementById("SSID").value,
 			clientName: document.getElementById("clientName").value,
 			txPower: parseInt($('#txSlider').val()),
