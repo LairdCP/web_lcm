@@ -65,14 +65,24 @@ function submitInterface(retry){
 	var InterfaceData = {
 		interfaceName: document.getElementById("interfaceName").value,
 		auto: document.getElementById("auto").value,
-		method: document.getElementById("method").value,
-		br_port_1: document.getElementById("br_port_1").value,
-		br_port_2: document.getElementById("br_port_2").value,
-		address: document.getElementById("address").value,
-		netmask: document.getElementById("netmask").value,
-		gateway: document.getElementById("gateway").value,
-		broadcast: document.getElementById("broadcast").value,
-		nameserver: document.getElementById("nameserver").value,
+		IPv4: {
+			state: document.getElementById("stateIPv4").value,
+			method: document.getElementById("method").value,
+			address: document.getElementById("address").value,
+			netmask: document.getElementById("netmask").value,
+			gateway: document.getElementById("gateway").value,
+			broadcast: document.getElementById("broadcast").value,
+			nameserver: document.getElementById("nameserver").value,
+		},
+		IPv6: {
+			state: document.getElementById("stateIPv6").value,
+			method: document.getElementById("method6").value,
+			address: document.getElementById("address6").value,
+			netmask: document.getElementById("netmask6").value,
+			gateway: document.getElementById("gateway6").value,
+			nameserver: document.getElementById("nameserver6").value,
+			dhcp: document.getElementById("DHCP6").value,
+		},
 	}
 	consoleLog(InterfaceData);
 	$.ajax({
@@ -108,17 +118,26 @@ function updateGetInterfacePage(interfaceName,retry){
 		contentType: "application/json",
 	})
 	.done(function( data ) {
+		consoleLog(data);
 		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
 		for (var iface in data.Interfaces){
 			if (iface == interfaceName){
+				//Hide IPv6 for bridge interface
+				if (interfaceName == "br0"){
+					$("#IPv6List").addClass("hidden");
+				}
 				document.getElementById("interfaceName").value = iface;
 				if (data.AutoInterfaces[iface]){
 					document.getElementById("auto").selectedIndex = 1;
 				}
-				switch (data.Interfaces[iface].inet){
+				//IPv4
+				if (data.Interfaces[iface].IPv4.state){
+					document.getElementById("stateIPv4").value = data.Interfaces[iface].IPv4.state;
+				}
+				switch (data.Interfaces[iface].IPv4.inet){
 					case "dhcp":
 						document.getElementById("method").selectedIndex = 0;
 						break;
@@ -129,23 +148,58 @@ function updateGetInterfacePage(interfaceName,retry){
 						document.getElementById("method").selectedIndex = 2;
 						break;
 					default:
-						$("#methodDisplay").addClass("hidden");
 						break;
 				}
-				if (data.Interfaces[iface].address){
-					document.getElementById("address").value = data.Interfaces[iface].address;
+				if (data.Interfaces[iface].IPv4.address){
+					document.getElementById("address").value = data.Interfaces[iface].IPv4.address;
 				}
-				if (data.Interfaces[iface].netmask){
-					document.getElementById("netmask").value = data.Interfaces[iface].netmask;
+				if (data.Interfaces[iface].IPv4.netmask){
+					document.getElementById("netmask").value = data.Interfaces[iface].IPv4.netmask;
 				}
-				if (data.Interfaces[iface].gateway){
-					document.getElementById("gateway").value = data.Interfaces[iface].gateway;
+				if (data.Interfaces[iface].IPv4.gateway){
+					document.getElementById("gateway").value = data.Interfaces[iface].IPv4.gateway;
 				}
-				if (data.Interfaces[iface].broadcast){
-					document.getElementById("broadcast").value = data.Interfaces[iface].broadcast;
+				if (data.Interfaces[iface].IPv4.broadcast){
+					document.getElementById("broadcast").value = data.Interfaces[iface].IPv4.broadcast;
 				}
-				if (data.Interfaces[iface].nameserver){
-					document.getElementById("nameserver").value = data.Interfaces[iface].nameserver;
+				if (data.Interfaces[iface].IPv4.nameserver){
+					document.getElementById("nameserver").value = data.Interfaces[iface].IPv4.nameserver;
+				}
+				//IPv6
+				if (data.Interfaces[iface].IPv6.state){
+					document.getElementById("stateIPv6").value = data.Interfaces[iface].IPv6.state;
+				}
+				switch (data.Interfaces[iface].IPv6.inet6){
+					case "auto":
+						document.getElementById("method6").selectedIndex = 0;
+						break;
+					case "static":
+						document.getElementById("method6").selectedIndex = 1;
+						break;
+					default:
+						break;
+				}
+				switch (data.Interfaces[iface].IPv6.dhcp){
+					case "0":
+						document.getElementById("DHCP6").selectedIndex = 0;
+						break;
+					case "1":
+						document.getElementById("DHCP6").selectedIndex = 1;
+						break;
+					default:
+						break;
+				}
+				if (data.Interfaces[iface].IPv6.address){
+					document.getElementById("address6").value = data.Interfaces[iface].IPv6.address;
+				}
+				if (data.Interfaces[iface].IPv6.netmask){
+					document.getElementById("netmask6").value = data.Interfaces[iface].IPv6.netmask;
+				}
+				if (data.Interfaces[iface].IPv6.gateway){
+					document.getElementById("gateway6").value = data.Interfaces[iface].IPv6.gateway;
+				}
+				if (data.Interfaces[iface].IPv6.nameserver){
+					document.getElementById("nameserver6").value = data.Interfaces[iface].IPv6.nameserver;
 				}
 			}
 		}
@@ -219,6 +273,7 @@ function setInterfaceState(ev,retry){
 			},
 		})
 		.done(function( data ) {
+			consoleLog(data);
 			if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 				expiredSession();
 				return;
@@ -315,6 +370,7 @@ function updateSelectInterfacePage(retry){
 		},
 	})
 	.done(function( data ) {
+		consoleLog(data);
 		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -332,10 +388,10 @@ function updateSelectInterfacePage(retry){
 			x.add(option);
 
 			//Special Interface setInterface
-			if (iface == "br0"){
+			if (iface == "br0" && data.InterfaceState[iface]){
 				isBridged = true;
 			}
-			if (data.Interfaces[iface]["post-cfg-do"] && data.Interfaces[iface]["pre-dcfg-do"]){
+			if (data.Interfaces[iface].IPv4["post-cfg-do"] && data.Interfaces[iface].IPv4["pre-dcfg-do"]){
 				isNAT = iface;
 			}
 
@@ -395,10 +451,10 @@ function updateSelectInterfacePage(retry){
 					br_port_2.text = Autoiface;
 					z.add(br_port_2);
 				}
-				if (br_port_1.text == data.Interfaces[iface].br_port_1){
+				if (br_port_1.text == data.Interfaces[iface].IPv4.br_port_1){
 					y.selectedIndex = br_port_1.index;
 				}
-				if (br_port_2.text == data.Interfaces[iface].br_port_2){
+				if (br_port_2.text == data.Interfaces[iface].IPv4.br_port_2){
 					z.selectedIndex = br_port_2.index;
 				}else if (isNAT == Autoiface){
 					z.selectedIndex = br_port_2.index;
@@ -449,7 +505,7 @@ function clickInterfacePage(retry){
 		updateSelectInterfacePage(0);
 	})
 	.fail(function() {
-		consoleLog("Error, couldn't get getInterfaces.php.. retrying");
+		consoleLog("Error, couldn't get selectInterface.html.. retrying");
 		if (retry < 5){
 			retry++;
 			clickInterfacePage(retry);

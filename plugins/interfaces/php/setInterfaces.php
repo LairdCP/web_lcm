@@ -33,37 +33,77 @@
 			}
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->{'method'})){
-			$result = LRD_ENI_SetMethod($interface->{'interfaceName'},$interface->{'method'});
+		//IPv4
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'state'})){
+			if ($interface->IPv4->{'state'} == '1'){
+				$result = LRD_ENI_AddInterface($interface->{'interfaceName'});
+				$result = LRD_ENI_EnableInterface($interface->{'interfaceName'});
+			}
+			else {
+				$result = LRD_ENI_AddInterface($interface->{'interfaceName'});
+				$result = LRD_ENI_DisableInterface($interface->{'interfaceName'});
+			}
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->{'address'})){
-			$result == LRD_ENI_SetAddress($interface->{'interfaceName'},$interface->{'address'});
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'method'})){
+			$result = LRD_ENI_SetMethod($interface->{'interfaceName'},$interface->IPv4->{'method'});
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->{'netmask'})){
-			$result == LRD_ENI_SetNetmask($interface->{'interfaceName'},$interface->{'netmask'});
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'address'})){
+			$result == LRD_ENI_SetAddress($interface->{'interfaceName'},$interface->IPv4->{'address'});
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->{'gateway'})){
-			$result == LRD_ENI_SetGateway($interface->{'interfaceName'},$interface->{'gateway'});
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'netmask'})){
+			$result == LRD_ENI_SetNetmask($interface->{'interfaceName'},$interface->IPv4->{'netmask'});
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->{'broadcast'})){
-			$result == LRD_ENI_SetBroadcastAddress($interface->{'interfaceName'},$interface->{'broadcast'});
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'gateway'})){
+			$result == LRD_ENI_SetGateway($interface->{'interfaceName'},$interface->IPv4->{'gateway'});
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->{'nameserver'})){
-			$result == LRD_ENI_SetNameserver($interface->{'interfaceName'},$interface->{'nameserver'});
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'broadcast'})){
+			$result == LRD_ENI_SetBroadcastAddress($interface->{'interfaceName'},$interface->IPv4->{'broadcast'});
 		}
 
-		if (isset($interface->{'br_port_1'}) && isset($interface->{'br_port_2'})){
-			if ($interface->{'br_port_1'} && $interface->{'br_port_2'}){
-				if ($interface->{'br_port_1'} != $interface->{'br_port_2'}){
-					$result == LRD_ENI_SetBridgePorts($interface->{'interfaceName'}, $interface->{'br_port_1'} . " " . $interface->{'br_port_2'});
-				}else{
-					$result = SDCERR_INVALID_PARAMETER;
+		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'nameserver'})){
+			$result == LRD_ENI_SetNameserver($interface->{'interfaceName'},$interface->IPv4->{'nameserver'});
+		}
+
+		//IPv6
+		if ($interface->{'interfaceName'} != "br0"){
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'state'})){
+				if ($interface->IPv6->{'state'} == '1'){
+					$result = LRD_ENI_AddInterface6($interface->{'interfaceName'});
+					$result = LRD_ENI_EnableInterface6($interface->{'interfaceName'});
 				}
+				else {
+					$result = LRD_ENI_AddInterface6($interface->{'interfaceName'});
+					$result = LRD_ENI_DisableInterface6($interface->{'interfaceName'});
+				}
+			}
+
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'method'})){
+				$result = LRD_ENI_SetMethod6($interface->{'interfaceName'},$interface->IPv6->{'method'});
+			}
+
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'address'})){
+				$result == LRD_ENI_SetAddress6($interface->{'interfaceName'},$interface->IPv6->{'address'});
+			}
+
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'netmask'})){
+				$result == LRD_ENI_SetNetmask6($interface->{'interfaceName'},$interface->IPv6->{'netmask'});
+			}
+
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'gateway'})){
+				$result == LRD_ENI_SetGateway6($interface->{'interfaceName'},$interface->IPv6->{'gateway'});
+			}
+
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'nameserver'})){
+				$result == LRD_ENI_SetNameserver6($interface->{'interfaceName'},$interface->IPv6->{'nameserver'});
+			}
+
+			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'dhcp'})){
+				$result == LRD_ENI_SetDhcp6($interface->{'interfaceName'},$interface->IPv6->{'dhcp'});
 			}
 		}
 	}

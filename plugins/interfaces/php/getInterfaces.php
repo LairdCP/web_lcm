@@ -37,7 +37,10 @@
 		if ($handle) {
 			while (($line = fgets($handle)) !== false) {
 				$pos = strpos($line, 'iface');
-				if((checkLine($line) == $ENABLE) && ($pos !== FALSE)){
+				if ($pos > 1){
+					$pos = FALSE;
+				}
+				if($pos !== FALSE){
 					$strArray = explode(' ',trim($line));
 					$Interface = $strArray[1];
 					if(file_exists('/sys/class/net/' . $Interface . '/uevent')){
@@ -51,24 +54,63 @@
 							}
 						}
 					}
-					$InterfaceList[$Interface][$strArray[2]] = $strArray[3];
-					while ((($line = fgets($handle)) !== false) && (checkLine($line) != $EMPTY)) {
-						if(checkLine($line) == $DISABLE){
-						}else {
-							$strArray = explode(' ',trim($line));
-							if ($strArray[0] == 'bridge_ports'){
-								$InterfaceList[$Interface]['br_port_1'] = $strArray[1];
-								$InterfaceList[$Interface]['br_port_2'] = $strArray[2];
-							}else{
-								$InterfaceList[$Interface][$strArray[0]] = $strArray[1];
-							}
-							if ($strArray[0] == 'post-cfg-do'){
-								$InterfaceList[$Interface]['post-cfg-do'] = $strArray[2];
-							}
-							if ($strArray[0] == 'pre-dcfg-do'){
-								$InterfaceList[$Interface]['pre-dcfg-do'] = $strArray[2];
+					//IPv4
+					if ($strArray[2] == "inet"){
+						$InterfaceList[$Interface]["IPv4"]["state"] = "0";
+						if ($pos == 0){
+								$InterfaceList[$Interface]["IPv4"]["state"] = "1";
+						}
+						$InterfaceList[$Interface]["IPv4"][$strArray[2]] = $strArray[3];
+						while ((($line = fgets($handle)) !== false) && (checkLine($line) != $EMPTY)) {
+							if(checkLine($line) == $DISABLE){
+							}else {
+								$strArray = explode(' ',trim($line));
+								if ($strArray[0] == 'bridge_ports'){
+									$InterfaceList[$Interface]["IPv4"]['br_port_1'] = $strArray[1];
+									$InterfaceList[$Interface]["IPv4"]['br_port_2'] = $strArray[2];
+								}else{
+									$InterfaceList[$Interface]["IPv4"][$strArray[0]] = $strArray[1];
+								}
+								if ($strArray[0] == 'post-cfg-do'){
+									$InterfaceList[$Interface]["IPv4"]['post-cfg-do'] = $strArray[1];
+								}
+								if ($strArray[0] == 'pre-dcfg-do'){
+									$InterfaceList[$Interface]["IPv4"]['pre-dcfg-do'] = $strArray[1];
+								}
 							}
 						}
+					}
+					if (!isset($InterfaceList[$Interface]["IPv4"]["state"])){
+						$InterfaceList[$Interface]["IPv4"]["state"] = "0";
+					}
+					//IPv6
+					if ($strArray[2] == "inet6"){
+						$InterfaceList[$Interface]["IPv6"]["state"] = "0";
+						if ($pos == 0){
+								$InterfaceList[$Interface]["IPv6"]["state"] = "1";
+						}
+						$InterfaceList[$Interface]["IPv6"][$strArray[2]] = $strArray[3];
+						while ((($line = fgets($handle)) !== false) && (checkLine($line) != $EMPTY)) {
+							if(checkLine($line) == $DISABLE){
+							}else {
+								$strArray = explode(' ',trim($line));
+								if ($strArray[0] == 'bridge_ports'){
+									$InterfaceList[$Interface]["IPv6"]['br_port_1'] = $strArray[1];
+									$InterfaceList[$Interface]["IPv6"]['br_port_2'] = $strArray[2];
+								}else{
+									$InterfaceList[$Interface]["IPv6"][$strArray[0]] = $strArray[1];
+								}
+								if ($strArray[0] == 'post-cfg-do'){
+									$InterfaceList[$Interface]["IPv6"]['post-cfg-do'] = $strArray[1];
+								}
+								if ($strArray[0] == 'pre-dcfg-do'){
+									$InterfaceList[$Interface]["IPv6"]['pre-dcfg-do'] = $strArray[1];
+								}
+							}
+						}
+					}
+					if (!isset($InterfaceList[$Interface]["IPv6"]["state"])){
+						$InterfaceList[$Interface]["IPv6"]["state"] = "0";
 					}
 				}
 			}
@@ -78,6 +120,10 @@
 				while (($line = fgets($handle)) !== false) {
 					$line = trim($line);
 					$pos = strpos($line, 'auto');
+					//Ignore iface [interface] inet6 auto lines
+					if ($pos > 1){
+						$pos = FALSE;
+					}
 					if((checkLine($line) == $ENABLE) && ($pos !== FALSE)){
 						$autoInterfaces[substr($line,5)] = 1;
 					}elseif($pos !== FALSE){
