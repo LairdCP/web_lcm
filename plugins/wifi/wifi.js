@@ -144,9 +144,17 @@ function updateStatus(){
 			$("#status-success").removeClass("hidden");
 			var rssi = data.rssi;
 			var rssiMeter = rssi + 120;
+			var SSID_Array = [];
+
+			if (data.ssid != null){
+				for(var i = 0; i < data.ssid.length; i++) {
+					SSID_Array.push(String.fromCharCode(data.ssid[i]));
+				}
+				$('#ssid').html(SSID_Array.join(''));
+			}
+
 			$('#cardState').html(CARDSTATEtoString(data.cardState));
 			$('#configName').html(data.configName);
-			$('#ssid').html(data.ssid);
 			$('#channel').html(data.channel);
 			$('#rssi').html(rssi);
 			$('#clientName').html(data.clientName);
@@ -229,9 +237,14 @@ function clickStatusPage(retry) {
 }
 
 function submitProfile(retry){
+	SSID_Value = document.getElementById("SSID").value;
+	var CharCode_Array = [];
+	for (var i = 0, len = SSID_Value.length; i < len; i++) {
+		CharCode_Array[i] = SSID_Value.charCodeAt(i);
+	}
 	var profileData = {
 		profileName: document.getElementById("profileName").value,
-		SSID: document.getElementById("SSID").value,
+		SSID: CharCode_Array,
 		clientName: document.getElementById("clientName").value,
 		txPower: parseInt($('#txSlider').val()),
 		authType: parseInt(document.getElementById("authType").value),
@@ -300,6 +313,13 @@ function updateGetProfilePage(profileName,retry){
 		consoleLog(msg);
 		document.getElementById("profileName").value = msg.configName;
 		document.getElementById("SSID").value = msg.SSID;
+		var SSID_Array = [];
+		if (msg.SSID != null){
+			for(var i = 0; i < msg.SSID.length; i++) {
+				SSID_Array.push(String.fromCharCode(msg.SSID[i]));
+			}
+			document.getElementById("SSID").value = SSID_Array.join('');
+		}
 		document.getElementById("clientName").value = msg.clientName;
 		$('#txSlider').slider('setValue', msg.txPower);
 		document.getElementById("authType").selectedIndex =  msg.authType;

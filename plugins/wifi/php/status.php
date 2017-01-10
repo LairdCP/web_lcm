@@ -31,9 +31,8 @@
 		LRD_WF_GetSSID($ssid);
 		if ($ssid->len){
 			for ($x = 0; $x <= ($ssid->len); $x++){
-				$ssidVal[$x]= chr(uchar_array_getitem($ssid->val,$x));
+				$SSID_Array[$x] = uchar_array_getitem($ssid->val,$x);
 			}
-			$ssidValFinal = implode('', $ssidVal);
 		}
 
 		if(GetCurrentConfig(NULL, $profileName)==SDCERR_SUCCESS){
@@ -81,7 +80,7 @@
 		$returnedResult['txPower'] = $status->txPower;
 		$returnedResult['DTIM'] = $status->DTIM;
 		$returnedResult['beaconPeriod'] = $status->beaconPeriod;
-		$returnedResult['ssid'] = $ssidValFinal; //Custom item not in CF10G_STATUS structure.
+		$returnedResult['ssid'] = $SSID_Array; //Custom item not in CF10G_STATUS structure.
 		$returnedResult['currentRadioMode'] = $cconfig->radioMode; //Custom item not in CF10G_STATUS structure.
 
 		echo json_encode($returnedResult);
