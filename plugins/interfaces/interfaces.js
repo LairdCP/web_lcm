@@ -305,26 +305,75 @@ function setInterfaceState(ev,retry){
 	}
 }
 
-function modifySpecialInterface(retry){
-	var SpecialState,int_1,int_2,previousNAT;
-	if (document.getElementById("SpecialInterfaceNone").checked){
-		SpecialState = document.getElementById("SpecialInterfaceNone").value;
-	} else if (document.getElementById("SpecialInterfaceBridge").checked){
-		SpecialState = document.getElementById("SpecialInterfaceBridge").value;
-	} else if (document.getElementById("SpecialInterfaceNAT").checked){
-		SpecialState = document.getElementById("SpecialInterfaceNAT").value;
-	} else {
-		return;
+function onChangeSPLInterface(mode){
+	var nat6 = document.getElementById("SpecialInterfaceNAT6");
+	var bridge = document.getElementById("SpecialInterfaceBridge");
+
+	switch (mode){
+		case "None_IPv4":
+			nat6.disabled = false;
+			break;
+		case "Bridge":
+			nat6.disabled = true;
+			break;
+		case "NAT_IPv4":
+			nat6.disabled = false;
+			break;
+		case "None_IPv6":
+			bridge.disabled = false;
+			break;
+		case "NAT_IPv6":
+			bridge.disabled = true;
+			break;
+		default:
+			break;
 	}
-	int_1 = document.getElementById("br_port_1").value;
-	int_2 = document.getElementById("br_port_2").value;
-	previousNAT = document.getElementById("submitButton").getAttribute("data-previous-nat");
+}
+
+function modifySpecialInterface(retry){
+	var submitButton = $("#submitButton");
+	var SpecialState_IPv4,int_1_IPv4,int_2_IPv4,previousNAT_IPv4;
+	var SpecialState_IPv6,int_1_IPv6,int_2_IPv6,previousNAT_IPv6;
+
+	if (document.getElementById("SpecialInterfaceNone").checked){
+		SpecialState_IPv4 = document.getElementById("SpecialInterfaceNone").value;
+	} else if (document.getElementById("SpecialInterfaceBridge").checked){
+		SpecialState_IPv4 = document.getElementById("SpecialInterfaceBridge").value;
+	} else if (document.getElementById("SpecialInterfaceNAT").checked){
+		SpecialState_IPv4 = document.getElementById("SpecialInterfaceNAT").value;
+	}
+
+	int_1_IPv4 = document.getElementById("br_port_1").value;
+	int_2_IPv4 = document.getElementById("br_port_2").value;
+	previousNAT_IPv4 = document.getElementById("submitButton").getAttribute("data-previous-nat-ipv4");
+
+	if (document.getElementById("SpecialInterfaceNone6").checked){
+		SpecialState_IPv6 = document.getElementById("SpecialInterfaceNone6").value;
+	} else if (document.getElementById("SpecialInterfaceNAT6").checked){
+		SpecialState_IPv6 = document.getElementById("SpecialInterfaceNAT6").value;
+	}
+
+	int_1_IPv6 = document.getElementById("br_port_1_IPv6").value;
+	int_2_IPv6 = document.getElementById("br_port_2_IPv6").value;
+	previousNAT_IPv6 = document.getElementById("submitButton").getAttribute("data-previous-nat-ipv6");
+
+	var PreviousButtonText = submitButton.text();
+	submitButton.text("Working");
+	submitButton.addClass("disabled");
 
 	var InterfaceData = {
-		state: SpecialState,
-		int_1: int_1,
-		int_2: int_2,
-		previousNAT: previousNAT,
+		IPv4: {
+			state: SpecialState_IPv4,
+			int_1: int_1_IPv4,
+			int_2: int_2_IPv4,
+			previousNAT: previousNAT_IPv4,
+		},
+		IPv6: {
+			state: SpecialState_IPv6,
+			int_1: int_1_IPv6,
+			int_2: int_2_IPv6,
+			previousNAT: previousNAT_IPv6,
+		},
 	}
 	$.ajax({
 		url: "plugins/interfaces/php/setSpecialInterfaces.php",
@@ -339,6 +388,8 @@ function modifySpecialInterface(retry){
 		},
 	})
 	.done(function( data ) {
+		console.log(data);
+		submitButton.text(PreviousButtonText);
 		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
@@ -377,6 +428,7 @@ function updateSelectInterfacePage(retry){
 		}
 		var isBridged = false;
 		var isNAT = false;
+		var isNAT6 = false;
 		var x = document.getElementById("InterfaceSelect");
 		x.size = Object.keys(data.Interfaces).length;
 		var table = document.getElementById("interfaceStateTable").getElementsByTagName('tbody')[0];
@@ -393,6 +445,10 @@ function updateSelectInterfacePage(retry){
 			}
 			if (data.Interfaces[iface].IPv4["post-cfg-do"] && data.Interfaces[iface].IPv4["pre-dcfg-do"]){
 				isNAT = iface;
+			}
+
+			if (data.Interfaces[iface].IPv6["post-cfg6-do"] && data.Interfaces[iface].IPv6["pre-dcfg6-do"] && data.Interfaces[iface].IPv6["state"] == "1"){
+				isNAT6 = iface;
 			}
 
 			//Interface State table
@@ -458,7 +514,35 @@ function updateSelectInterfacePage(retry){
 					z.selectedIndex = br_port_2.index;
 				}else if (isNAT == Autoiface){
 					z.selectedIndex = br_port_2.index;
-					document.getElementById("submitButton").setAttribute("data-previous-nat", Autoiface);
+					document.getElementById("submitButton").setAttribute("data-previous-nat-ipv4", Autoiface);
+				}
+			}
+		}
+		$("#br_port_1_Display6").removeClass("hidden");
+		$("#br_port_2_Display6").removeClass("hidden");
+		var j = document.getElementById("br_port_1_IPv6");
+		var k = document.getElementById("br_port_2_IPv6");
+		for (var Autoiface in data.AutoInterfaces) {
+			if (Autoiface != "br0" && Autoiface != "lo"){
+				var br_port_1_IPv6 = document.createElement("option");
+				var br_port_2_IPv6 = document.createElement("option");
+				if (Autoiface == "wlan0"){
+					br_port_1_IPv6.text = Autoiface;
+					j.add(br_port_1_IPv6);
+					j.selectedIndex = br_port_1.index;
+				}
+				if (Autoiface != "wlan0"){
+					br_port_2_IPv6.text = Autoiface;
+					k.add(br_port_2_IPv6);
+				}
+				if (br_port_1_IPv6.text == data.Interfaces[iface].IPv4.br_port_1){
+					j.selectedIndex = br_port_1_IPv6.index;
+				}
+				if (br_port_2_IPv6.text == data.Interfaces[iface].IPv4.br_port_2){
+					k.selectedIndex = br_port_2_IPv6.index;
+				}else if (isNAT6 == Autoiface){
+					k.selectedIndex = br_port_2_IPv6.index;
+					document.getElementById("submitButton").setAttribute("data-previous-nat-ipv6", Autoiface);
 				}
 			}
 		}
@@ -468,8 +552,12 @@ function updateSelectInterfacePage(retry){
 			document.getElementById("SpecialInterfaceBridge").checked = true;
 		} else if (!isBridged && isNAT){
 			document.getElementById("SpecialInterfaceNAT").checked = true;
+		}
+
+		if(isNAT6){
+			document.getElementById("SpecialInterfaceNAT6").checked = true;
 		} else {
-			$("#SpecialInterface").addClass("hidden");
+			document.getElementById("SpecialInterfaceNone6").checked = true;
 		}
 	})
 	.fail(function() {
