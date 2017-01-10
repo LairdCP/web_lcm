@@ -15,8 +15,13 @@
 	$result = GetConfig($oldProfile->{'profileName'},$cfgs);
 
 	if($result == SDCERR_SUCCESS){
+		$offset = 0;
+		while ($offset >= 0) {
+			$code = ordutf8($cfgs->SSID, $offset);
+			$SSID_ARRAY_CHAR[] = $code;
+		}
 		$returnedResult['configName'] = nullTrim($cfgs->configName);
-		$returnedResult['SSID'] = $cfgs->SSID;
+		$returnedResult['SSID'] = $SSID_ARRAY_CHAR;
 		$returnedResult['clientName'] = nullTrim($cfgs->clientName);
 		$returnedResult['txPower'] = $cfgs->txPower;
 		$returnedResult['authType'] = $cfgs->authType;

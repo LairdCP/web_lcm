@@ -13,8 +13,7 @@
 
 	$cfgs = new SDCConfig();
 	$result = GetConfig($Profile->{'profileName'},$cfgs);
-
-	$cfgs->SSID = $Profile->{'SSID'};
+	$cfgs->SSID = uchr($Profile->{'SSID'});
 	$cfgs->clientName = $Profile->{'clientName'};
 	$cfgs->txPower = $Profile->{'txPower'};
 	$cfgs->authType = $Profile->{'authType'};
