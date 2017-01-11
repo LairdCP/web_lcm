@@ -246,13 +246,13 @@ function submitProfile(retry){
 		profileName: document.getElementById("profileName").value,
 		SSID: CharCode_Array,
 		clientName: document.getElementById("clientName").value,
-		txPower: parseInt($('#txSlider').val()),
+		txPower: parseInt(document.getElementById("txPower").value),
 		authType: parseInt(document.getElementById("authType").value),
 		eapType: parseInt(document.getElementById("eapType").value),
 		wepType: parseInt(document.getElementById("wepType").value),
 		radioMode: parseInt(document.getElementById("radioMode").value),
 		powerSave: parseInt(document.getElementById("powerSave").value),
-		pspDelay: parseInt($('#pspDelaySlider').val()),
+		pspDelay: parseInt(document.getElementById("pspDelay").value),
 		wepIndex: parseInt(document.getElementById("wepIndex").value),
 		index1: document.getElementById("index1").value,
 		index2: document.getElementById("index2").value,
@@ -321,7 +321,7 @@ function updateGetProfilePage(profileName,retry){
 			document.getElementById("SSID").value = SSID_Array.join('');
 		}
 		document.getElementById("clientName").value = msg.clientName;
-		$('#txSlider').slider('setValue', msg.txPower);
+		document.getElementById("txPower").value = msg.txPower;
 		document.getElementById("authType").selectedIndex =  msg.authType;
 		//If index does not start at 0 and run contiguously we must check against options value
 		SelectedIndex(document.getElementById("wepType"),msg.wepType);
@@ -330,7 +330,7 @@ function updateGetProfilePage(profileName,retry){
 		document.getElementById("powerSave").selectedIndex =  msg.powerSave;
 		if (msg.powerSave == defines.PLUGINS.wifi.POWERSAVE.POWERSAVE_FAST){
 			$("#pspDelayDisplay").removeClass("hidden");
-			$('#pspDelaySlider').slider('setValue', msg.pspDelay);
+			document.getElementById("pspDelay").value = msg.pspDelay;
 		}
 		if (msg.wepType == defines.PLUGINS.wifi.WEPTYPE.WEP_ON){
 			$("#wepIndexDisplay").removeClass("hidden");
@@ -403,20 +403,6 @@ function selectedProfile(selectedProfile,retry){
 	})
 	.done(function( msg ) {
 		updateGetProfilePage(selectedProfile,0);
-		$('#txSlider').slider({
-			formatter: function(value) {
-				if (value != 0){
-					return 'Current value: ' + value;
-				} else {
-					return 'Current value: Auto';
-				}
-			}
-		});
-		$('#pspDelaySlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
 	})
 	.fail(function() {
 		consoleLog("Failed to get get Profile, retrying");
@@ -719,20 +705,6 @@ function clickAddProfilePage(retry) {
 			$("li").removeClass("active");
 			$("#wifi_Add").addClass("active");
 			$("#helpText").html("Enter the name of the profile you would like to add.");
-			$('#txSlider').slider({
-				formatter: function(value) {
-					if (value != 0){
-						return 'Current value: ' + value;
-					} else {
-						return 'Current value: Auto';
-					}
-				}
-			});
-			$('#pspDelaySlider').slider({
-				formatter: function(value) {
-					return 'Current value: ' + value;
-				}
-			});
 		},
 	})
 	.done(function( msg ) {
@@ -759,11 +731,6 @@ function updateAddProfile(){
 	} else {
 		document.getElementById("advancedOptions").innerHTML = "Show advanced options";
 	}
-	//https://github.com/seiyria/bootstrap-slider/issues/523
-	setTimeout(function() {
-		$('#pspDelaySlider').slider("relayout");
-		$('#txSlider').slider("relayout");
-	}, 500);
 }
 
 function addProfile(){
@@ -773,13 +740,13 @@ function addProfile(){
 			profileName: profileName,
 			SSID: document.getElementById("SSID").value,
 			clientName: document.getElementById("clientName").value,
-			txPower: parseInt($('#txSlider').val()),
+			txPower: parseInt(document.getElementById("txPower").value),
 			authType: parseInt(document.getElementById("authType").value),
 			eapType: parseInt(document.getElementById("eapType").value),
 			wepType: parseInt(document.getElementById("wepType").value),
 			radioMode: parseInt(document.getElementById("radioMode").value),
 			powerSave: parseInt(document.getElementById("powerSave").value),
-			pspDelay: parseInt($('#pspDelaySlider').val()),
+			pspDelay: parseInt(document.getElementById("pspDelay").value),
 			wepIndex: parseInt(document.getElementById("wepIndex").value),
 			index1: document.getElementById("index1").value,
 			index2: document.getElementById("index2").value,
@@ -850,23 +817,6 @@ function getSupportedGlobals(retry){
 	});
 }
 
-function isSlider(id){
-	switch(id){
-		case "BeaconMissTimeout":
-		case "fragThreshold":
-		case "probeDelay":
-		case "roamPeriodms":
-		case "roamTrigger":
-		case "RTSThreshold":
-		case "scanDFSTime":
-			return true;
-			break;
-		default:
-			return false
-			break;
-	}
-}
-
 function regDomainToString(regDomain){
 	switch(regDomain) {
 		case defines.PLUGINS.wifi.REG_DOMAIN.REG_FCC:
@@ -918,41 +868,37 @@ function getGlobals(retry){
 		}
 		for (var key in msg) {
 			if (key != "SDCERR" && key != "SESSION"){
-				if (isSlider(key)){
-					$("#" + key + "Slider").slider('setValue', msg[key]);
-				} else{
-					if (key != "suppInfo"){
-						if (key == "aLRS"){
-							for (var aChannel in msg[key]){
-								document.getElementById("channel" + msg[key][aChannel]).checked = true;
-							}
-						}else if(key == "bLRS"){
-							for (var bChannel in msg[key]){
-								document.getElementById("channel" + msg[key][bChannel]).checked = true;
-							}
-						}else if(key == "fipsStatus"){
-							switch (msg[key])
-							{
-								case 0: //FIPS_INACTIVE
-									document.getElementById("fipsStatus").innerHTML = "FIPS disabled and inactive:";
-									break;
-								case 1: //FIPS_INACTIVE_ENABLED
-									document.getElementById("fipsStatus").innerHTML =  "FIPS Mode inactive, enabled on next start:";
-									break;
-								case 2: //FIPS_ACTIVE_DISABLED
-									document.getElementById("fipsStatus").innerHTML =  "FIPS Mode active, disabled on next start:";
-									break;
-								case 3: //FIPS_ACTIVE
-									document.getElementById("fipsStatus").innerHTML =  "FIPS Mode enabled and active:";
-									break;
-								default:
-									break;
-							}
-						}else if(key == "regDomain"){
-							document.getElementById(key).value = regDomainToString(msg[key]);
-						}else{
-							document.getElementById(key).value = msg[key];
+				if (key != "suppInfo"){
+					if (key == "aLRS"){
+						for (var aChannel in msg[key]){
+							document.getElementById("channel" + msg[key][aChannel]).checked = true;
 						}
+					}else if(key == "bLRS"){
+						for (var bChannel in msg[key]){
+							document.getElementById("channel" + msg[key][bChannel]).checked = true;
+						}
+					}else if(key == "fipsStatus"){
+						switch (msg[key])
+						{
+							case 0: //FIPS_INACTIVE
+								document.getElementById("fipsStatus").innerHTML = "FIPS disabled and inactive:";
+								break;
+							case 1: //FIPS_INACTIVE_ENABLED
+								document.getElementById("fipsStatus").innerHTML =  "FIPS Mode inactive, enabled on next start:";
+								break;
+							case 2: //FIPS_ACTIVE_DISABLED
+								document.getElementById("fipsStatus").innerHTML =  "FIPS Mode active, disabled on next start:";
+								break;
+							case 3: //FIPS_ACTIVE
+								document.getElementById("fipsStatus").innerHTML =  "FIPS Mode enabled and active:";
+								break;
+							default:
+								break;
+						}
+					}else if(key == "regDomain"){
+						document.getElementById(key).value = regDomainToString(msg[key]);
+					}else{
+						document.getElementById(key).value = msg[key];
 					}
 				}
 			}
@@ -990,51 +936,6 @@ function clickGlobalsPage(retry){
 	.done(function( data ) {
 		getGlobals(0);
 		getSupportedGlobals(0);
-		$('#BeaconMissTimeoutSlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
-		$('#fragThresholdSlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
-		$('#probeDelaySlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
-		$('#roamPeriodmsSlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
-		$('#roamTriggerSlider').slider({
-			formatter: function(value) {
-				return 'Current value: -' + value;
-			}
-		});
-		$('#RTSThresholdSlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
-		$('#scanDFSTimeSlider').slider({
-			formatter: function(value) {
-				return 'Current value: ' + value;
-			}
-		});
-		//https://github.com/seiyria/bootstrap-slider/issues/523
-		setTimeout(function() {
-			$('#BeaconMissTimeoutSlider').slider("relayout");
-			$('#fragThresholdSlider').slider("relayout");
-			$('#probeDelaySlider').slider("relayout");
-			$('#roamPeriodmsSlider').slider("relayout");
-			$('#roamTriggerSlider').slider("relayout");
-			$('#RTSThresholdSlider').slider("relayout");
-			$('#scanDFSTimeSlider').slider("relayout");
-		}, 500);
 	})
 	.fail(function() {
 		consoleLog("Error, couldn't get getGlobals.html.. retrying");
@@ -1066,21 +967,21 @@ function submitGlobals(retry){
 		authServerType: document.getElementById("authServerType").value,
 		autoProfile: document.getElementById("autoProfile").value,
 		bLRS: totalBGChannelValue,
-		BeaconMissTimeout: parseInt($('#BeaconMissTimeoutSlider').val()),
+		BeaconMissTimeout: parseInt( document.getElementById("BeaconMissTimeout").value),
 		BTcoexist: document.getElementById("BTcoexist").value,
 		CCXfeatures: document.getElementById("CCXfeatures").value,
 		certPath: document.getElementById("certPath").value,
 // 				suppInfo: document.getElementById("suppInfo").value,
 		defAdhocChannel: document.getElementById("defAdhocChannel").value,
 		DFSchannels: document.getElementById("DFSchannels").value,
-		fragThreshold: parseInt($('#fragThresholdSlider').val()),
+		fragThreshold: parseInt( document.getElementById("fragThreshold").value),
 		PMKcaching: document.getElementById("PMKcaching").value,
-		probeDelay: parseInt($('#probeDelaySlider').val()),
+		probeDelay: parseInt( document.getElementById("probeDelay").value),
 		regDomain: document.getElementById("regDomain").value,
-		roamPeriodms: parseInt($('#roamPeriodmsSlider').val()),
-		roamTrigger: parseInt($('#roamTriggerSlider').val()),
-		RTSThreshold: parseInt($('#RTSThresholdSlider').val()),
-		scanDFSTime: parseInt($('#scanDFSTimeSlider').val()),
+		roamPeriodms: parseInt( document.getElementById("roamPeriodms").value),
+		roamTrigger: parseInt( document.getElementById("roamTrigger").value),
+		RTSThreshold: parseInt( document.getElementById("RTSThreshold").value),
+		scanDFSTime: parseInt( document.getElementById("scanDFSTime").value),
 		TTLSInnerMethod: document.getElementById("TTLSInnerMethod").value,
 		uAPSD: document.getElementById("uAPSD").value,
 		WMEenabled: document.getElementById("WMEenabled").value,

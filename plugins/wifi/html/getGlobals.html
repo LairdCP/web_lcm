@@ -142,8 +142,8 @@
 				</label>
 			</div>
 			<div class="form-group hidden" id="BeaconMissTimeoutDisplay">
-				<label class="pull-left" for="BeaconMissTimeoutSlider">Beacon Miss Time:</label>
-				<input onchange="onChangeSubmit()" id="BeaconMissTimeoutSlider" data-slider-id="Slider" type="text" data-slider-min="1000" data-slider-max="5000" data-slider-step="1" data-slider-value="3000"/>
+				<label class="pull-left" for="BeaconMissTimeout">Beacon Miss Time:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="BeaconMissTimeout" min="1000" max="5000" value="3000">
 			</div>
 			<div class="form-group hidden" id="BTcoexistDisplay">
 				<label class="pull-left" for="BTcoexist">BT Coexist:</label>
@@ -202,9 +202,9 @@
 					<option value="2">Optimized</option>
 				</select>
 			</div>
-			<div class="form-group hidden" id="FragThresholdDisplay">
-				<label class="pull-left" for="FragThresholdSlider">Fragmentation Threshold:</label>
-				<input onchange="onChangeSubmit()" id="FragThresholdSlider" data-slider-id="Slider" type="text" data-slider-min="256" data-slider-max="2346" data-slider-step="1" data-slider-value="2346"/>
+			<div class="form-group hidden" id="fragThresholdDisplay">
+				<label class="pull-left" for="fragThreshold">Fragmentation Threshold:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="fragThreshold" min="256" max="2346" value="2346">
 			</div>
 			<div class="form-group hidden" id="fipsDisplay">
 				<label class="pull-left" id="fipsStatus" for="fips">FIPS Mode:</label>
@@ -221,28 +221,28 @@
 				</select>
 			</div>
 			<div class="form-group hidden" id="probeDelayDisplay">
-				<label class="pull-left" for="probeDelaySlider">Probe Delay:</label>
-				<input onchange="onChangeSubmit()" id="probeDelaySlider" data-slider-id="Slider" type="text" data-slider-min="2" data-slider-max="120" data-slider-step="1" data-slider-value="10"/>
+				<label class="pull-left" for="probeDelay">Probe Delay:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="probeDelay" min="2" max="120" value="10">
 			</div>
 			<div class="form-group hidden" id="regDomainDisplay">
 				<label class="pull-left" for="regDomain">Regulatory Domain:</label>
 				<input onchange="onChangeSubmit()" type="text" class="form-control" id="regDomain" readonly>
 			</div>
 			<div class="form-group hidden" id="roamPeriodmsDisplay">
-				<label class="pull-left" for="roamPeriodmsSlider">Roam Period ms:</label>
-				<input onchange="onChangeSubmit()" id="roamPeriodmsSlider" data-slider-id="Slider" type="text" data-slider-min="10" data-slider-max="60000" data-slider-step="1" data-slider-value="60000"/>
+				<label class="pull-left" for="roamPeriodms">Roam Period ms:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="roamPeriodms" min="10" max="60000" value="60000">
 			</div>
 			<div class="form-group hidden" id="roamTriggerDisplay">
-				<label class="pull-left" for="roamTriggerSlider">Roam Trigger:</label>
-				<input onchange="onChangeSubmit()" id="roamTriggerSlider" data-slider-id="Slider" type="text" data-slider-min="50" data-slider-max="90" data-slider-step="1" data-slider-value="70"/>
+				<label class="pull-left" for="roamTrigger">Roam Trigger:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="roamTrigger" min="50" max="90" value="70">
 			</div>
 			<div class="form-group hidden" id="RTSThresholdDisplay">
-				<label class="pull-left" for="RTSThresholdSlider">RTS Threshold:</label>
-				<input onchange="onChangeSubmit()" id="RTSThresholdSlider" data-slider-id="Slider" type="text" data-slider-min="0" data-slider-max="2347" data-slider-step="1" data-slider-value="2347"/>
+				<label class="pull-left" for="RTSThreshold">RTS Threshold:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="RTSThreshold" min="0" max="2347" value="2347">
 			</div>
 			<div class="form-group hidden" id="scanDFSTimeDisplay">
-				<label class="pull-left" for="scanDFSTimeSlider">Scan DFS Time:</label>
-				<input onchange="onChangeSubmit()" id="scanDFSTimeSlider" data-slider-id="Slider" type="text" data-slider-min="20" data-slider-max="500" data-slider-step="1" data-slider-value="120"/>
+				<label class="pull-left" for="scanDFSTime">Scan DFS Time:</label>
+				<input onchange="onChangeSubmit()" type="number" class="form-control" id="scanDFSTime" min="20" max="500" value="120">
 			</div>
 			<div class="form-group hidden" id="TTLSInnerMethodDisplay">
 				<label class="pull-left" for="TTLSInnerMethod">TTLS Inner Method:</label>
