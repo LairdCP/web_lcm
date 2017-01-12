@@ -32,8 +32,18 @@
 	$scanList = array();
 	$result = new_SDCERRp();
 	$numElements = new_intp();
-	intp_assign($numElements,150);
+	$numEntries = 150;
+	intp_assign($numElements,$numEntries);
 	$list = lrd_php_sdk::new_LRD_WF_PHP_GetBSSIDList($numElements,$result);
+	if (SDCERRp_value($result) == SDCERR_INSUFFICIENT_MEMORY){ //  make one more try at scan
+		lrd_php_sdk::delete_LRD_WF_PHP_GetBSSIDList($list);
+		$numEntries += 25;
+		intp_assign($numElements,$numEntries);
+		$list = lrd_php_sdk::new_LRD_WF_PHP_GetBSSIDList($numElements,$result);
+		if (SDCERRp_value($result) == SDCERR_INSUFFICIENT_MEMORY){
+			SDCERRp_assign($result,SDCERR_SUCCESS); // override SDCERR_INSUFFICIENT_MEMORY, not trying again, list what we've got
+		}
+	}
 	if (SDCERRp_value($result) == SDCERR_SUCCESS){
 		for($h = 0; $h < intp_value($numElements); $h++){
 			$scanListItem = array();
