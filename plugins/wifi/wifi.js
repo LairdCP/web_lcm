@@ -30,10 +30,6 @@ function CARDSTATEtoString(CARDSTATE){
 	}
 }
 
-function onChangeSubmit(){
-	$("#submitButton").removeClass("disabled");
-}
-
 function onChangePowersave(){
 	var powerSave = parseInt(document.getElementById("powerSave").value);
 	switch (powerSave){

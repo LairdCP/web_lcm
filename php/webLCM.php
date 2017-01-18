@@ -105,6 +105,50 @@
 		}
 	}
 
+	function updateCredentials($currentUserName, $currentPassWord, $newUserName, $newPassWord){
+		if (file_exists($_SESSION['passwordFile'])){
+			$lines = file($_SESSION['passwordFile']);
+			if ($lines == false){
+				return SDCERR_FAIL;
+			}
+			if ($currentUserName == null && $currentPassWord == null){
+				return SDCERR_INVALID_PARAMETER;
+			} else {
+				if ($currentUserName != null){
+					if (password_verify($currentUserName,trim($lines[0])) != true){
+						return SDCERR_FAIL;
+					}
+				}
+				if ($currentPassWord != null){
+					if (password_verify($currentPassWord,trim($lines[1])) != true){
+						return SDCERR_FAIL;
+					}
+				}
+				$credentialFile = fopen($_SESSION['passwordFile'], "w");
+				if ($credentialFile != false){
+					if ($newUserName != null){
+						$userName = password_hash($newUserName,PASSWORD_DEFAULT);
+						fwrite($credentialFile, $userName . "\n");
+					} else {
+						fwrite($credentialFile, trim($lines[0]) . "\n");
+					}
+					if ($newPassWord != null){
+						$userName = password_hash($newPassWord,PASSWORD_DEFAULT);
+						fwrite($credentialFile, $userName . "\n");
+					} else {
+						fwrite($credentialFile, trim($lines[1]) . "\n");
+					}
+					fclose($credentialFile);
+
+					return SDCERR_SUCCESS;
+				}
+			}
+		}
+		else {
+			return SDCERR_INVALID_FILE;
+		}
+	}
+
 	function SDCERRtoString($SDCERR){
 		switch($SDCERR) {
 			case SDCERR_SUCCESS:
