@@ -731,10 +731,15 @@ function updateAddProfile(){
 
 function addProfile(){
 	var profileName = document.getElementById("profileName").value;
+	SSID_Value = document.getElementById("SSID").value;
+	var CharCode_Array = [];
+	for (var i = 0, len = SSID_Value.length; i < len; i++) {
+		CharCode_Array[i] = SSID_Value.charCodeAt(i);
+	}
 	if (profileName != ""){
 		var newProfile = {
 			profileName: profileName,
-			SSID: document.getElementById("SSID").value,
+			SSID: CharCode_Array,
 			clientName: document.getElementById("clientName").value,
 			txPower: parseInt(document.getElementById("txPower").value),
 			authType: parseInt(document.getElementById("authType").value),

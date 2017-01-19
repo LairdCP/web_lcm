@@ -21,7 +21,7 @@
 			$cfgs->configName = $newProfile->{'profileName'};
 		}
 		if (isset($newProfile->{'SSID'})){
-			$cfgs->SSID = $newProfile->{'SSID'};
+			$cfgs->SSID = uchr($newProfile->{'SSID'});
 		}
 		if (isset($newProfile->{'clientName'})){
 			$cfgs->clientName = $newProfile->{'clientName'};
