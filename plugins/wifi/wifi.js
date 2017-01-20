@@ -238,11 +238,22 @@ function submitProfile(retry){
 	for (var i = 0, len = SSID_Value.length; i < len; i++) {
 		CharCode_Array[i] = SSID_Value.charCodeAt(i);
 	}
+	var txPower_value = document.getElementById("txPower").value;
+	var txPower = parseInt(txPower_value);
+	if (txPower_value.toLowerCase() == "auto" || txPower < 0){
+		txPower = 0;
+		document.getElementById("txPower").value = "Auto";
+	} else if (txPower > defines.PLUGINS.wifi.MAX_TX_POWER.MAX_MW) {
+		if (defines.PLUGINS.wifi.MAX_TX_POWER.MAX_MW != 0){
+			CustomErrMsg("TX Power is out of range");
+			return;
+		}
+	}
 	var profileData = {
 		profileName: document.getElementById("profileName").value,
 		SSID: CharCode_Array,
 		clientName: document.getElementById("clientName").value,
-		txPower: parseInt(document.getElementById("txPower").value),
+		txPower: txPower,
 		authType: parseInt(document.getElementById("authType").value),
 		eapType: parseInt(document.getElementById("eapType").value),
 		wepType: parseInt(document.getElementById("wepType").value),
@@ -317,7 +328,11 @@ function updateGetProfilePage(profileName,retry){
 			document.getElementById("SSID").value = SSID_Array.join('');
 		}
 		document.getElementById("clientName").value = msg.clientName;
-		document.getElementById("txPower").value = msg.txPower;
+		if (msg.txPower == 0){
+			document.getElementById("txPower").value = "Auto";
+		} else {
+			document.getElementById("txPower").value = msg.txPower;
+		}
 		document.getElementById("authType").selectedIndex =  msg.authType;
 		//If index does not start at 0 and run contiguously we must check against options value
 		SelectedIndex(document.getElementById("wepType"),msg.wepType);
@@ -736,12 +751,23 @@ function addProfile(){
 	for (var i = 0, len = SSID_Value.length; i < len; i++) {
 		CharCode_Array[i] = SSID_Value.charCodeAt(i);
 	}
+	var txPower_value = document.getElementById("txPower").value;
+	var txPower = parseInt(txPower_value);
+	if (txPower_value.toLowerCase() == "auto" || txPower < 0){
+		txPower = 0;
+		document.getElementById("txPower").value = "Auto";
+	} else if (txPower > defines.PLUGINS.wifi.MAX_TX_POWER.MAX_MW) {
+		if (defines.PLUGINS.wifi.MAX_TX_POWER.MAX_MW != 0){
+			CustomErrMsg("TX Power is out of range");
+			return;
+		}
+	}
 	if (profileName != ""){
 		var newProfile = {
 			profileName: profileName,
 			SSID: CharCode_Array,
 			clientName: document.getElementById("clientName").value,
-			txPower: parseInt(document.getElementById("txPower").value),
+			txPower: txPower,
 			authType: parseInt(document.getElementById("authType").value),
 			eapType: parseInt(document.getElementById("eapType").value),
 			wepType: parseInt(document.getElementById("wepType").value),
