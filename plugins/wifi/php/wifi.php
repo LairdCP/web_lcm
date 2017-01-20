@@ -3,6 +3,27 @@
 # Contact: ews-support@lairdtech.com
 
 function wifi(){
+	$rcs = new_RADIOCHIPSETp();
+	$result = LRD_WF_GetRadioChipSet($rcs);
+	if($result == SDCERR_SUCCESS){
+		switch (RADIOCHIPSETp_value($rcs)) {
+			case RADIOCHIPSET_SDC40L:
+			case RADIOCHIPSET_SDC40NBT:
+				$MAX_TX_POWER = 50;
+				break;
+			case RADIOCHIPSET_SDC45:
+				$MAX_TX_POWER = 40;
+				break;
+			case RADIOCHIPSET_SDC50:
+				$MAX_TX_POWER = 63;
+				break;
+			default:
+				$MAX_TX_POWER = 0;
+				break;
+		}
+	}
+	delete_RADIOCHIPSETp($rcs);
+
 	$wifi_defines = array(
 		'DEFINES' => array(
 			'CONFIG_NAME_SZ' => CONFIG_NAME_SZ,
@@ -401,6 +422,9 @@ function wifi(){
 			'ATH6KL_DBG_USB_BULK' => ATH6KL_DBG_USB_BULK,
 			'ATH6KL_DBG_RECOVERY' => ATH6KL_DBG_RECOVERY,
 			'ATH6KL_DBG_ANY' => ATH6KL_DBG_ANY,
+		),
+		'MAX_TX_POWER' => array(
+			'MAX_MW' => $MAX_TX_POWER,
 		),
 	);
 
