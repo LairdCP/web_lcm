@@ -462,13 +462,13 @@ function updateSelectInterfacePage(retry){
 			startBtn.className = "btn btn-default";
 			startBtn.value = "Start";
 			startBtn.id = iface + "-" + startBtn.value;
-			startBtn.onclick=function(){setInterfaceState(event,0)};
+			startBtn.onclick=function(event){setInterfaceState(event,0)};
 			stopBtn = document.createElement('input');
 			stopBtn.type = "button";
 			stopBtn.className = "btn btn-default";
 			stopBtn.value = "Stop";
 			stopBtn.id = iface + "-" + stopBtn.value;
-			stopBtn.onclick=function(){setInterfaceState(event,0)};
+			stopBtn.onclick=function(event){setInterfaceState(event,0)};
 			cell2.appendChild(startBtn);
 			cell3.appendChild(stopBtn);
 			for (var ifaceState in data.InterfaceState) {
