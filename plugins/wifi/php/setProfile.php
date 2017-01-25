@@ -35,7 +35,14 @@
 			}
 
 			function setKey($config,$index,$key,$txKey){
-				$wepKey = new_uchar_array(27);
+				define("KEYLENGTH_NOT_SET", 0);
+				define("KEYLENGTH_ASCII_64BIT", 5);
+				define("KEYLENGTH_ASCII_128BIT", 13);
+				define("KEYLENGTH_HEX_64BIT", 10);
+				define("KEYLENGTH_HEX_128BIT",26);
+
+				//Array to hold largest possible key
+				$wepKey = new_uchar_array(KEYLENGTH_HEX_128BIT + 1);
 
 				if ($index == $txKey){
 					$setTX = 1;
@@ -43,7 +50,7 @@
 
 				if ((substr_count($key,"*") == strlen($key)) and (strlen($key))){
 					if ($setTX){
-						$currentKey = new_uchar_array(27);
+						$currentKey = new_uchar_array(KEYLENGTH_HEX_128BIT + 1);
 						$wepLen = new_WEPLENp();
 						$result = GetWEPKey($config,$index,$wepLen,$currentKey,NULL);
 						if ($result == SDCERR_SUCCESS){
@@ -59,26 +66,26 @@
 				}
 
 				switch (strlen($key)){
-					case 0:
+					case KEYLENGTH_NOT_SET:
 						$length = WEPLEN_NOT_SET;
 						break;
-					case 5:
+					case KEYLENGTH_ASCII_64BIT:
 						$length = WEPLEN_40BIT;
-						strToHex($wepKey,$key,5);
+						strToHex($wepKey,$key,KEYLENGTH_ASCII_64BIT);
 						break;
-					case 10:
+					case KEYLENGTH_HEX_64BIT:
 						$length = WEPLEN_40BIT;
 						$hexToString = pack('H*',$key);
-						strToHex($wepKey,$hexToString,5);
+						strToHex($wepKey,$hexToString,KEYLENGTH_ASCII_64BIT);
 						break;
-					case 13:
+					case KEYLENGTH_ASCII_128BIT:
 						$length = WEPLEN_128BIT;
-						strToHex($wepKey,$key,13);
+						strToHex($wepKey,$key,KEYLENGTH_ASCII_128BIT);
 						break;
-					case 26:
+					case KEYLENGTH_HEX_128BIT:
 						$length = WEPLEN_128BIT;
 						$hexToString = pack('H*',$key);
-						strToHex($wepKey,$hexToString,13);
+						strToHex($wepKey,$hexToString,KEYLENGTH_ASCII_128BIT);
 						break;
 					default:
 						return SDCERR_FAIL;
