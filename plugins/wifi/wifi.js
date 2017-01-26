@@ -240,7 +240,7 @@ function submitProfile(retry){
 	}
 	var txPower_value = document.getElementById("txPower").value;
 	var txPower = parseInt(txPower_value);
-	if (txPower_value.toLowerCase() == "auto" || txPower < 0){
+	if (txPower_value.toLowerCase() == "auto" || txPower <= 0){
 		txPower = 0;
 		document.getElementById("txPower").value = "Auto";
 	} else if (txPower > defines.PLUGINS.wifi.MAX_TX_POWER.MAX_MW) {
@@ -753,7 +753,7 @@ function addProfile(){
 	}
 	var txPower_value = document.getElementById("txPower").value;
 	var txPower = parseInt(txPower_value);
-	if (txPower_value.toLowerCase() == "auto" || txPower < 0){
+	if (txPower_value.toLowerCase() == "auto" || txPower <= 0){
 		txPower = 0;
 		document.getElementById("txPower").value = "Auto";
 	} else if (txPower > defines.PLUGINS.wifi.MAX_TX_POWER.MAX_MW) {
