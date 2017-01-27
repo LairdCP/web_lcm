@@ -1081,10 +1081,15 @@ function scanToProfile(){
 
 }
 
-function addScanProfile(){
+function addScanProfile(retry){
+	SSID_Value = document.getElementById("newSSID").value;
+	var CharCode_Array = [];
+	for (var i = 0, len = SSID_Value.length; i < len; i++) {
+		CharCode_Array[i] = SSID_Value.charCodeAt(i);
+	}
 	var newProfile = {
 		profileName: document.getElementById("profileName").value,
-		SSID: document.getElementById("newSSID").value,
+		SSID: CharCode_Array,
 		wepType: document.getElementById("security").value,
 	}
 	if (newProfile.profileName == ""){
@@ -1113,6 +1118,15 @@ function addScanProfile(){
 			document.getElementById("profileNameHidden").value = newProfile.profileName;
 			document.getElementById("addTable").reset();
 		}
+	})
+	.fail(function() {
+		consoleLog("Error, couldn't get addProfile.php.. retrying");
+		if (retry < 5){
+			retry++;
+			getScan(retry);
+		} else {
+			consoleLog("Retry max attempt reached");
+		}
 	});
 }
 
@@ -1123,8 +1137,8 @@ function allowDrop(ev){
 function drag(ev){
 	var table = document.getElementById("scanTable");
 	var index = $(ev.currentTarget).index() + 1;
-	if (index > 1){
-		ev.dataTransfer.setData("ssid", table.rows[index].cells[0].innerHTML);
+	if (index > 0){
+		ev.dataTransfer.setData("ssid", table.rows[index].cells[0].innerText);
 		ev.dataTransfer.setData("security",table.rows[index].cells[4].innerHTML);
 	}
 }
@@ -1153,12 +1167,13 @@ function getScan(retry){
 			expiredSession();
 			return;
 		}
-		if (msg.SDCERR == 12){
+		if (msg.SDCERR == defines.SDCERR.SDCERR_NO_HARDWARE){
 			$("#updateProgressDisplay").addClass("hidden");
 			$("#status-hardware").removeClass("hidden");
 		} else {
 			var table = document.getElementById("scanTable");
 			for (var scanItem in msg["scanList"]){
+				var SSID_Array = [];
 				var row = table.insertRow(-1);
 				row.setAttribute('draggable', true);
 				row.setAttribute('ondragstart', 'drag(event)');
@@ -1167,13 +1182,18 @@ function getScan(retry){
 				var cell2 = row.insertCell(2);
 				var cell3 = row.insertCell(3);
 				var cell4 = row.insertCell(4);
-				cell0.innerHTML = msg["scanList"][scanItem].SSID;
+				if (msg["scanList"][scanItem].SSID != null){
+					for(var i = 0; i < msg["scanList"][scanItem].SSID.length; i++) {
+						SSID_Array.push(String.fromCharCode(msg["scanList"][scanItem].SSID[i]));
+					}
+					cell0.innerHTML = SSID_Array.join('');
+				}
 				cell1.innerHTML = msg["scanList"][scanItem].BSSID;
 				cell2.innerHTML = msg["scanList"][scanItem].channel;
 				cell3.innerHTML = msg["scanList"][scanItem].RSSI;
 				cell4.innerHTML = msg["scanList"][scanItem].security[0];
 				row.onclick=function(){
-					document.getElementById("newSSID").value = this.cells[0].innerHTML;
+					document.getElementById("newSSID").value = this.cells[0].innerText;
 					document.getElementById("security").value = this.cells[4].innerHTML;
 					$("#profileNameDisplay").removeClass("has-error");
 					$("#addScanDisplay").removeClass("hidden");
