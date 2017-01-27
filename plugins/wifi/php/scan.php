@@ -50,14 +50,12 @@
 			unset($item);
 			$item = lrd_php_sdk::LRD_WF_PHP_GetBSSIDList_get($list,$h);
 			if ((1 <= $item->channel) && ($item->channel <= 165)){
-				unset($ssidVal);
+				unset($SSID_Array);
 				if ($item->ssid->len){
-					for ($x = 0; $x < ($item->ssid->len); $x++){
-						$ssidVal[$x]= chr(uchar_array_getitem($item->ssid->val,$x));
+					for ($x = 0; $x <= ($item->ssid->len); $x++){
+						$SSID_Array[$x] = uchar_array_getitem($item->ssid->val,$x);
 					}
-					unset($ssidValFinal);
-					$ssidValFinal = implode('', $ssidVal);
-					$scanListItem["SSID"] = $ssidValFinal;
+					$scanListItem["SSID"] = $SSID_Array;
 				}
 				unset($bssidVal);
 				for ($y = 0; $y < LRD_WF_MAC_ADDR_LEN; $y++){
