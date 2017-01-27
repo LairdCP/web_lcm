@@ -1,8 +1,35 @@
-// Copyright (c) 2016, Laird
+// Copyright (c) 2017, Laird
 // Contact: ews-support@lairdtech.com
 
 function wifiAUTORUN(retry){
 	clickStatusPage(0);
+}
+
+function updateInfoText(option,retry){
+	$.ajax({
+		url: "plugins/wifi/html/info.html",
+		data: {},
+		type: "GET",
+		dataType: "html",
+	})
+	.done(function( data ) {
+		$('#infoText').html(data);
+		$("#" + option + "-text").removeClass("hidden");
+	})
+	.fail(function() {
+		consoleLog("Error, couldn't get info.html.. retrying");
+		if (intervalId){
+			clearInterval(intervalId);
+			intervalId = 0;
+		}
+		if (retry < 5){
+			retry++;
+			$("#wifi_status").removeClass("active");
+			clickStatusPage(retry);
+		} else {
+			consoleLog("Retry max attempt reached");
+		}
+	});
 }
 
 function CARDSTATEtoString(CARDSTATE){
@@ -205,6 +232,7 @@ function clickStatusPage(retry) {
 		$("#wifi_status").addClass("active");
 		clearReturnData();
 		$("#helpText").html("This page shows the current state of WiFi");
+		$(".infoText").addClass("hidden");
 		$.ajax({
 			url: "plugins/wifi/html/status.html",
 			data: {},
@@ -407,6 +435,7 @@ function selectedProfile(selectedProfile,retry){
 			$('#main_section').html(data);
 			clearReturnData();
 			$("#helpText").html("Adjust profile settings.");
+			$(".infoText").addClass("hidden");
 		},
 		error: function (xhr, status) {
 			consoleLog("Error, couldn't get getProfile.html");
@@ -658,6 +687,7 @@ function clickProfileEditPage(retry) {
 			$('#main_section').html(data);
 			clearReturnData();
 			$("#helpText").html("These are the current WiFi profiles.");
+			$(".infoText").addClass("hidden");
 			setTimeout(updateSelectProfilePage(retry),1000);
 		},
 	})
@@ -716,6 +746,7 @@ function clickAddProfilePage(retry) {
 			$("li").removeClass("active");
 			$("#wifi_Add").addClass("active");
 			$("#helpText").html("Enter the name of the profile you would like to add.");
+			$(".infoText").addClass("hidden");
 		},
 	})
 	.done(function( msg ) {
@@ -958,6 +989,7 @@ function clickGlobalsPage(retry){
 			$("li").removeClass("active");
 			$("#wifi_global").addClass("active");
 			$("#helpText").html("Here are the global configuration options for WiFi");
+			$(".infoText").addClass("hidden");
 		},
 	})
 	.done(function( data ) {
@@ -1182,6 +1214,7 @@ function clickScanPage(retry){
 			$("li").removeClass("active");
 			$("#wifi_scan").addClass("active");
 			$("#helpText").html("Scan for wireless networks");
+			$(".infoText").addClass("hidden");
 		},
 	})
 	.done(function( data ) {
@@ -1378,6 +1411,7 @@ function clickAdvancedPage(retry){
 			$("li").removeClass("active");
 			$("#wifi_advanced").addClass("active");
 			$("#helpText").html("Advanced configuration options");
+			$(".infoText").addClass("hidden");
 		},
 	})
 	.done(function( data ) {
@@ -1443,6 +1477,7 @@ function clickVersionPage(retry){
 			$("li").removeClass("active");
 			$("#wifi_version").addClass("active");
 			$("#helpText").html("System version information");
+			$(".infoText").addClass("hidden");
 		},
 	})
 	.done(function( data ) {
