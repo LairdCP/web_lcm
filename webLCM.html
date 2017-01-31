@@ -140,78 +140,139 @@
 			$("[id^='return']").html("");
 		}
 
+		function notificationPermission(){
+			//Ask for notification permission
+			Notification.requestPermission();
+		}
+
+		function checkNotifyPermission(){
+			if (Notification.permission === "granted"){
+				$("#enableNotify").html("Enabled");
+				$("#enableNotify").addClass("disabled");
+				$("#disableNotify").removeClass("hidden");
+			}
+		}
+
+		function sendNotification(title, message){
+			if (Notification.permission === "granted"){
+				var mobile = document.getElementById("mobileMenu");
+				//Dont show notifications on mobile
+				if (mobile.offsetParent === null){
+					var notification = new Notification(title, {
+						icon: 'assets/img/logo.png',
+						body: message,
+					});
+					setTimeout(notification.close.bind(notification), 3000);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		function SDCERRtoString(SDCERR){
 			$("[id^='return']").removeClass();
 			switch(parseInt(SDCERR)) {
 				case defines.SDCERR.SDCERR_SUCCESS:
-					$("[id^='return']").addClass("alert alert-success");
-					$("[id^='return']").html("Success");
+					if (!sendNotification("Success", "")){
+						$("[id^='return']").addClass("alert alert-success");
+						$("[id^='return']").html("Success");
+					}
 					break;
 				case defines.SDCERR.SDCERR_FAIL:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Failure");
+					if (!sendNotification("Failure", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Failure");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_NAME:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid Name");
+					if (!sendNotification("Invalid Name", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid Name");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_CONFIG:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid Config");
+					if (!sendNotification("Invalid Config", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid Config");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_DELETE:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid Delete");
+					if (!sendNotification("Invalid Delete", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid Delete");
+					}
 					break;
 				case defines.SDCERR.SDCERR_POWERCYCLE_REQUIRED:
-					$("[id^='return']").addClass("alert alert-info");
-					$("[id^='return']").html("Power Cycle Required");
+					if (!sendNotification("Power Cycle Required", "")){
+						$("[id^='return']").addClass("alert alert-info");
+						$("[id^='return']").html("Power Cycle Required");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_PARAMETER:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid Parameter");
+					if (!sendNotification("Invalid Parameter", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid Parameter");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_EAP_TYPE:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid EAP TYPE");
+					if (!sendNotification("Invalid EAP TYPE", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid EAP TYPE");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_WEP_TYPE:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid WEP TYPE");
+					if (!sendNotification("Invalid WEP TYPE", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid WEP TYPE");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_FILE:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid File");
+					if (!sendNotification("Invalid File", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid File");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INSUFFICIENT_MEMORY:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Insufficient Memory");
+					if (!sendNotification("Insufficient Memory", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Insufficient Memory");
+					}
 					break;
 				case defines.SDCERR.SDCERR_NOT_IMPLEMENTED:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Not Implemented");
+					if (!sendNotification("Not Implemented", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Not Implemented");
+					}
 					break;
 				case defines.SDCERR.SDCERR_NO_HARDWARE:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("No Hardware");
+					if (!sendNotification("No Hardware", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("No Hardware");
+					}
 					break;
 				case defines.SDCERR.SDCERR_INVALID_VALUE:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Invalid Value");
+					if (!sendNotification("Invalid Value", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Invalid Value");
+					}
 					break;
 				default:
-					$("[id^='return']").addClass("alert alert-danger");
-					$("[id^='return']").html("Unknown Data");
+					if (!sendNotification("Unknown Data", "")){
+						$("[id^='return']").addClass("alert alert-danger");
+						$("[id^='return']").html("Unknown Data");
+					}
 			}
 		}
 
 		function CustomErrMsg(message){
-			if (message.length >= 20){
-				$("#returnDataNav").css( "fontSize", "12px" );
+			if (!sendNotification("Failure", message)){
+				if (message.length >= 20){
+					$("#returnDataNav").css( "fontSize", "12px" );
+				}
+				$("[id^='return']").removeClass();
+				$("[id^='return']").addClass("alert alert-danger");
+				$("[id^='return']").html(message);
 			}
-			$("[id^='return']").removeClass();
-			$("[id^='return']").addClass("alert alert-danger");
-			$("[id^='return']").html(message);
 		}
 
 		function login(retry){
@@ -293,6 +354,7 @@
 				$('#main_section').html(data);
 				clearReturnData();
 				$("#helpText").html("Password must be 8 to 20 characters, and contain at least one numeric digit, one uppercase and one lowercase letter");
+				checkNotifyPermission();
 			})
 			.fail(function() {
 				consoleLog("Error, couldn't get settings.html.. retrying");
@@ -397,7 +459,7 @@
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<button id="mobileMenu" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
