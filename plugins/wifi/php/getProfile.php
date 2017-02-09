@@ -20,6 +20,9 @@
 			$code = ordutf8($cfgs->SSID, $offset);
 			$SSID_ARRAY_CHAR[] = $code;
 		}
+		if ((count($SSID_ARRAY_CHAR) == 1) && ($SSID_ARRAY_CHAR[0] == 0)){
+			$SSID_ARRAY_CHAR = null;
+		}
 		$returnedResult['configName'] = nullTrim($cfgs->configName);
 		$returnedResult['SSID'] = $SSID_ARRAY_CHAR;
 		$returnedResult['clientName'] = nullTrim($cfgs->clientName);
