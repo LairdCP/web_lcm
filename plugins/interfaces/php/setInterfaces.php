@@ -65,8 +65,12 @@
 			$result == LRD_ENI_SetBroadcastAddress($interface->{'interfaceName'},$interface->IPv4->{'broadcast'});
 		}
 
-		if ($result == SDCERR_SUCCESS && isset($interface->IPv4->{'nameserver'})){
-			$result == LRD_ENI_SetNameserver($interface->{'interfaceName'},$interface->IPv4->{'nameserver'});
+		if ($result == SDCERR_SUCCESS && (isset($interface->IPv4->{'nameserver_1'}) || isset($interface->IPv4->{'nameserver_2'}))){
+			$result == LRD_ENI_SetNameserver($interface->{'interfaceName'},"");
+			if ($result == SDCERR_SUCCESS){
+				$nameserver = $interface->IPv4->{'nameserver_1'} . " " . $interface->IPv4->{'nameserver_2'};
+				$result == LRD_ENI_SetNameserver($interface->{'interfaceName'},$nameserver);
+			}
 		}
 
 		//IPv6
@@ -98,8 +102,12 @@
 				$result == LRD_ENI_SetGateway6($interface->{'interfaceName'},$interface->IPv6->{'gateway'});
 			}
 
-			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'nameserver'})){
-				$result == LRD_ENI_SetNameserver6($interface->{'interfaceName'},$interface->IPv6->{'nameserver'});
+			if ($result == SDCERR_SUCCESS && (isset($interface->IPv6->{'nameserver_1'}) || isset($interface->IPv6->{'nameserver_2'}))){
+				$result == LRD_ENI_SetNameserver6($interface->{'interfaceName'},"");
+				if ($result == SDCERR_SUCCESS){
+					$nameserver = $interface->IPv6->{'nameserver_1'} . " " . $interface->IPv6->{'nameserver_2'};
+					$result == LRD_ENI_SetNameserver6($interface->{'interfaceName'},$nameserver);
+				}
 			}
 
 			if ($result == SDCERR_SUCCESS && isset($interface->IPv6->{'dhcp'})){
