@@ -72,7 +72,8 @@ function submitInterface(retry){
 			netmask: document.getElementById("netmask").value,
 			gateway: document.getElementById("gateway").value,
 			broadcast: document.getElementById("broadcast").value,
-			nameserver: document.getElementById("nameserver").value,
+			nameserver_1: document.getElementById("nameserver_1").value,
+			nameserver_2: document.getElementById("nameserver_2").value,
 		},
 		IPv6: {
 			state: document.getElementById("stateIPv6").value,
@@ -80,7 +81,8 @@ function submitInterface(retry){
 			address: document.getElementById("address6").value,
 			netmask: document.getElementById("netmask6").value,
 			gateway: document.getElementById("gateway6").value,
-			nameserver: document.getElementById("nameserver6").value,
+			nameserver_1: document.getElementById("nameserver6_1").value,
+			nameserver_2: document.getElementById("nameserver6_2").value,
 			dhcp: document.getElementById("DHCP6").value,
 		},
 	}
@@ -162,8 +164,11 @@ function updateGetInterfacePage(interfaceName,retry){
 				if (data.Interfaces[iface].IPv4.broadcast){
 					document.getElementById("broadcast").value = data.Interfaces[iface].IPv4.broadcast;
 				}
-				if (data.Interfaces[iface].IPv4.nameserver){
-					document.getElementById("nameserver").value = data.Interfaces[iface].IPv4.nameserver;
+				if (data.Interfaces[iface].IPv4.nameserver_1){
+					document.getElementById("nameserver_1").value = data.Interfaces[iface].IPv4.nameserver_1;
+				}
+				if (data.Interfaces[iface].IPv4.nameserver_2){
+					document.getElementById("nameserver_2").value = data.Interfaces[iface].IPv4.nameserver_2;
 				}
 				//IPv6
 				if (data.Interfaces[iface].IPv6.state){
@@ -198,8 +203,11 @@ function updateGetInterfacePage(interfaceName,retry){
 				if (data.Interfaces[iface].IPv6.gateway){
 					document.getElementById("gateway6").value = data.Interfaces[iface].IPv6.gateway;
 				}
-				if (data.Interfaces[iface].IPv6.nameserver){
-					document.getElementById("nameserver6").value = data.Interfaces[iface].IPv6.nameserver;
+				if (data.Interfaces[iface].IPv6.nameserver_1){
+					document.getElementById("nameserver6_1").value = data.Interfaces[iface].IPv6.nameserver_1;
+				}
+				if (data.Interfaces[iface].IPv6.nameserver_2){
+					document.getElementById("nameserver6_2").value = data.Interfaces[iface].IPv6.nameserver_2;
 				}
 			}
 		}

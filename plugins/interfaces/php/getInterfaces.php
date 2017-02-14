@@ -68,14 +68,18 @@
 								if ($strArray[0] == 'bridge_ports'){
 									$InterfaceList[$Interface]["IPv4"]['br_port_1'] = $strArray[1];
 									$InterfaceList[$Interface]["IPv4"]['br_port_2'] = $strArray[2];
+								} elseif ($strArray[0] == 'post-cfg-do'){
+									$InterfaceList[$Interface]["IPv4"]['post-cfg-do'] = $strArray[1];
+								} elseif ($strArray[0] == 'pre-dcfg-do'){
+									$InterfaceList[$Interface]["IPv4"]['pre-dcfg-do'] = $strArray[1];
+								} elseif ($strArray[0] == 'nameserver'){
+									if (empty($InterfaceList[$Interface]["IPv4"]['nameserver_1'])){
+										$InterfaceList[$Interface]["IPv4"]['nameserver_1'] = $strArray[1];
+									} else {
+										$InterfaceList[$Interface]["IPv4"]['nameserver_2'] = $strArray[1];
+									}
 								}else{
 									$InterfaceList[$Interface]["IPv4"][$strArray[0]] = $strArray[1];
-								}
-								if ($strArray[0] == 'post-cfg-do'){
-									$InterfaceList[$Interface]["IPv4"]['post-cfg-do'] = $strArray[1];
-								}
-								if ($strArray[0] == 'pre-dcfg-do'){
-									$InterfaceList[$Interface]["IPv4"]['pre-dcfg-do'] = $strArray[1];
 								}
 							}
 						}
@@ -97,14 +101,18 @@
 								if ($strArray[0] == 'bridge_ports'){
 									$InterfaceList[$Interface]["IPv6"]['br_port_1'] = $strArray[1];
 									$InterfaceList[$Interface]["IPv6"]['br_port_2'] = $strArray[2];
+								} elseif ($strArray[0] == 'post-cfg-do'){
+									$InterfaceList[$Interface]["IPv6"]['post-cfg-do'] = $strArray[1];
+								} elseif ($strArray[0] == 'pre-dcfg-do'){
+									$InterfaceList[$Interface]["IPv6"]['pre-dcfg-do'] = $strArray[1];
+								} elseif ($strArray[0] == 'nameserver'){
+									if (empty($InterfaceList[$Interface]["IPv6"]['nameserver_1'])){
+										$InterfaceList[$Interface]["IPv6"]['nameserver_1'] = $strArray[1];
+									} else {
+										$InterfaceList[$Interface]["IPv6"]['nameserver_2'] = $strArray[1];
+									}
 								}else{
 									$InterfaceList[$Interface]["IPv6"][$strArray[0]] = $strArray[1];
-								}
-								if ($strArray[0] == 'post-cfg-do'){
-									$InterfaceList[$Interface]["IPv6"]['post-cfg-do'] = $strArray[1];
-								}
-								if ($strArray[0] == 'pre-dcfg-do'){
-									$InterfaceList[$Interface]["IPv6"]['pre-dcfg-do'] = $strArray[1];
 								}
 							}
 						}
