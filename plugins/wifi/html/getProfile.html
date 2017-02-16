@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Copyright (c) 2016, Laird
+  Copyright (c) 2017, Laird
   Contact: ews-support@lairdtech.com
 -->
 
@@ -13,19 +13,19 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="SSID">SSID:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="SSID">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('SSID',0)" type="text" class="form-control" id="SSID">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="clientName">Client Name:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="clientName">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('clientName',0)" type="text" class="form-control" id="clientName">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="txPower">TX Power:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="txPower">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('txPower',0)" type="text" class="form-control" id="txPower">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="authType">Auth Type:</label>
-				<select onchange="onChangeSubmit()" class="form-control" id="authType">
+				<select onchange="onChangeSubmit()" onfocus="updateInfoText('authType',0)" class="form-control" id="authType">
 					<option value="0">Open</option>
 					<option value="1">Shared</option>
 					<option value="2">EAP</option>
@@ -33,7 +33,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="radioMode">Radio Mode:</label>
-				<select onchange="onChangeSubmit()" class="form-control" id="radioMode">
+				<select onchange="onChangeSubmit()" onfocus="updateInfoText('radioMode',0)" class="form-control" id="radioMode">
 					<option value="0">B</option>
 					<option value="1">BG</option>
 					<option value="2">G</option>
@@ -50,7 +50,7 @@
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="powerSave">Power Save:</label>
-				<select onchange="onChangeSubmit();onChangePowersave()" class="form-control" id="powerSave">
+				<select onchange="onChangeSubmit();onChangePowersave()" onfocus="updateInfoText('powerSave',0)" class="form-control" id="powerSave">
 					<option value="0">Off</option>
 					<option value="1">Max</option>
 					<option value="2">Fast</option>
@@ -58,11 +58,11 @@
 			</div>
 			<div class="form-group hidden" id="pspDelayDisplay">
 				<label class="pull-left" for="pspDelay">PSP Delay:</label>
-				<input onchange="onChangeSubmit()" type="number" class="form-control" id="pspDelay" min="10" max="500" value="200">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('pspDelay',0)" type="number" class="form-control" id="pspDelay" min="10" max="500" value="200">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="wepType">Security Type:</label>
-				<select class="form-control" id="wepType" onchange="onChangeSubmit();onChangeSecurity()">
+				<select class="form-control" id="wepType" onchange="onChangeSubmit();onChangeSecurity()" onfocus="updateInfoText('wepType',0)">
 					<option value="0">None</option>
 					<option value="1">WEP</option>
 					<option value="2">WEP-EAP</option>
@@ -78,7 +78,7 @@
 			</div>
 			<div class="form-group hidden" id="eapTypeDisplay">
 				<label class="pull-left" for="eapType">EAP Type:</label>
-				<select class="form-control" id="eapType" onchange="onChangeSubmit();onChangeSecurity()">
+				<select class="form-control" id="eapType" onchange="onChangeSubmit();onChangeSecurity()" onfocus="updateInfoText('eapType',0)">
 					<option value="1">LEAP</option>
 					<option value="2">EAP-FAST</option>
 					<option value="3" selected>PEAP-MSCHAPv2</option>
@@ -90,7 +90,7 @@
 			</div>
 			<div class="form-group hidden" id="wepIndexDisplay">
 				<label class="pull-left" for="wepIndex">WEP Key Index:</label>
-				<select onchange="onChangeSubmit()" class="form-control" id="wepIndex">
+				<select onchange="onChangeSubmit()" onfocus="updateInfoText('wepIndex',0)" class="form-control" id="wepIndex">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
@@ -99,45 +99,45 @@
 			</div>
 			<div class="form-group hidden" id="wepTypeOnDisplay">
 				<label class="pull-left" for="index1">Index 1:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index1">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('index1',0)" type="text" class="form-control" id="index1">
 				<label class="pull-left" for="index2">Index 2:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index2">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('index2',0)" type="text" class="form-control" id="index2">
 				<label class="pull-left" for="index3">Index 3:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index3">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('index3',0)" type="text" class="form-control" id="index3">
 				<label class="pull-left" for="index4">Index 4:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="index4">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('index4',0)" type="text" class="form-control" id="index4">
 			</div>
 			<div class="form-group hidden" id="pskDisplay">
 				<label class="pull-left" for="psk">PreShared Key:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="psk">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('psk',0)" type="text" class="form-control" id="psk">
 			</div>
 			<div class="form-group hidden" id="userNameDisplay">
 				<label class="pull-left" for="userName">Username:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="userName">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('userName',0)" type="text" class="form-control" id="userName">
 			</div>
 			<div class="form-group hidden" id="passWordDisplay">
 				<label class="pull-left" for="passWord">Password:</label>
-				<input onchange="onChangeSubmit()" type="password" class="form-control" id="passWord">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('passWord',0)" type="password" class="form-control" id="passWord">
 			</div>
 			<div class="form-group hidden" id="userCertDisplay">
 				<label class="pull-left" for="userCert">User Cert:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="userCert">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('userCert',0)" type="text" class="form-control" id="userCert">
 			</div>
 			<div class="form-group hidden" id="userCertPasswordDisplay">
 				<label class="pull-left" for="userCertPassword">User Cert Password:</label>
-				<input onchange="onChangeSubmit()" type="password" class="form-control" id="userCertPassword">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('userCertPassword',0)" type="password" class="form-control" id="userCertPassword">
 			</div>
 			<div class="form-group hidden" id="CACertDisplay">
 				<label class="pull-left" for="CACert">CA Cert:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="CACert">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('CACert',0)" type="text" class="form-control" id="CACert">
 			</div>
 			<div class="form-group hidden" id="PACFilenameDisplay">
 				<label class="pull-left" for="PACFilename">PAC Filename:</label>
-				<input onchange="onChangeSubmit()" type="text" class="form-control" id="PACFilename">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('PACFilename',0)" type="text" class="form-control" id="PACFilename">
 			</div>
 			<div class="form-group hidden" id="PACPasswordDisplay">
 				<label class="pull-left" for="PACPassword">PAC Password:</label>
-				<input onchange="onChangeSubmit()" type="password" class="form-control" id="PACPassword">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('PACPassword',0)" type="password" class="form-control" id="PACPassword">
 			</div>
 		</form>
 			<a id="submitButton" onclick="submitProfile()" class="btn btn-primary disabled" role="button">Submit</a>
