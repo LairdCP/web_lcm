@@ -119,6 +119,20 @@
 				<label class="pull-left" for="passWord">Password:</label>
 				<input onchange="onChangeSubmit()" onfocus="updateInfoText('passWord',0)" type="password" class="form-control" id="passWord">
 			</div>
+			<div id="certDisplay" class="hidden">
+				<div class="form-group">
+					<label class="pull-left">Upload Certificate to device:</label>
+				</div>
+				<div class="form-group col-lg-12">
+					<label class="btn btn-default btn-file">Select Certificate
+						<input id="fileToUpload" type="file" onchange="allowCertUpload($(this).val());" style="display:none;" hidden>
+					</label>
+					<span class="" id="upload-file-info"></span>
+					<a id="submitCertButton" onclick="uploadCert(0)" role="button" class="btn btn-default disabled">Upload</a>
+					<span id="certSuccess" class="glyphicon glyphicon-ok hidden" aria-hidden="true"></span>
+					<span id="certFail" class="glyphicon glyphicon-remove hidden" aria-hidden="true"></span>
+				</div>
+			</div>
 			<div class="form-group hidden" id="userCertDisplay">
 				<label class="pull-left" for="userCert">User Cert:</label>
 				<input onchange="onChangeSubmit()" onfocus="updateInfoText('userCert',0)" type="text" class="form-control" id="userCert">

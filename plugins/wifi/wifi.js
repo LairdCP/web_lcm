@@ -77,6 +77,7 @@ function onChangeSecurity(){
 	var wepType = parseInt(document.getElementById("wepType").value);
 	var eapType = parseInt(document.getElementById("eapType").value);
 	function clearCredsDisplay(){
+		$("#certDisplay").addClass("hidden");
 		$("#eapTypeDisplay").addClass("hidden");
 		$("#wepIndexDisplay").addClass("hidden");
 		$("#wepTypeOnDisplay").addClass("hidden");
@@ -99,9 +100,11 @@ function onChangeSecurity(){
 			$("#userCertPasswordDisplay").removeClass("hidden");
 		}
 		if (eapType > defines.PLUGINS.wifi.EAPTYPE.EAP_EAPFAST && eapType < defines.PLUGINS.wifi.EAPTYPE.EAP_WAPI_CERT){
+			$("#certDisplay").removeClass("hidden");
 			$("#CACertDisplay").removeClass("hidden");
 		}
 		if (eapType == defines.PLUGINS.wifi.EAPTYPE.EAP_EAPFAST){
+			$("#certDisplay").removeClass("hidden");
 			$("#PACFilenameDisplay").removeClass("hidden");
 			$("#PACPasswordDisplay").removeClass("hidden");
 		}
@@ -384,6 +387,7 @@ function updateGetProfilePage(profileName,retry){
 			$("#pskDisplay").removeClass("hidden");
 			document.getElementById("psk").value =  msg.PSK;
 		} else if (msg.eapType >= defines.PLUGINS.wifi.EAPTYPE.EAP_LEAP){
+			$("#certDisplay").removeClass("hidden");
 			$("#eapTypeDisplay").removeClass("hidden");
 			$("#userNameDisplay").removeClass("hidden");
 			document.getElementById("userName").value =  msg.userName;
@@ -1327,7 +1331,9 @@ function clickScanPage(retry){
 	});
 }
 
-function allowCertUpload(){
+function allowCertUpload(filepath){
+	var fileName = filepath.replace(/^.*\\/, "")
+	document.getElementById("submitCertButton").innerHTML = "Upload " + fileName;
 	$("#submitCertButton").removeClass("disabled");
 }
 
@@ -1347,6 +1353,16 @@ function uploadCert(retry){
 		.done(function( data ) {
 			consoleLog(data);
 			SDCERRtoString(data.SDCERR);
+			if (data.SDCERR ==  defines.SDCERR.SDCERR_SUCCESS){
+				clearReturnData();
+				$("#submitCertButton").addClass("disabled");
+				$("#certFail").addClass("hidden");
+				$("#certSuccess").removeClass("hidden");
+			} else {
+				SDCERRtoString(data.SDCERR);
+				$("#certSuccess").addClass("hidden");
+				$("#certFail").removeClass("hidden");
+			}
 		})
 	}
 }
