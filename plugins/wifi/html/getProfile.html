@@ -135,7 +135,9 @@
 			</div>
 			<div class="form-group hidden" id="userCertDisplay">
 				<label class="pull-left" for="userCert">User Cert:</label>
-				<input onchange="onChangeSubmit()" onfocus="updateInfoText('userCert',0)" type="text" class="form-control" id="userCert">
+				<select onchange="onChangeSubmit()" onfocus="updateInfoText('userCert',0)" class="form-control" id="userCert">
+					<option value="" selected>None</option>
+				</select>
 			</div>
 			<div class="form-group hidden" id="userCertPasswordDisplay">
 				<label class="pull-left" for="userCertPassword">User Cert Password:</label>
@@ -143,11 +145,15 @@
 			</div>
 			<div class="form-group hidden" id="CACertDisplay">
 				<label class="pull-left" for="CACert">CA Cert:</label>
-				<input onchange="onChangeSubmit()" onfocus="updateInfoText('CACert',0)" type="text" class="form-control" id="CACert">
+				<select onchange="onChangeSubmit()" onfocus="updateInfoText('CACert',0)" class="form-control" id="CACert">
+					<option value="" selected>None</option>
+				</select>
 			</div>
 			<div class="form-group hidden" id="PACFilenameDisplay">
 				<label class="pull-left" for="PACFilename">PAC Filename:</label>
-				<input onchange="onChangeSubmit()" onfocus="updateInfoText('PACFilename',0)" type="text" class="form-control" id="PACFilename">
+				<select onchange="onChangeSubmit()" onfocus="updateInfoText('PACFilename',0)" class="form-control" id="PACFilename">
+					<option value="" selected>None</option>
+				</select>
 			</div>
 			<div class="form-group hidden" id="PACPasswordDisplay">
 				<label class="pull-left" for="PACPassword">PAC Password:</label>

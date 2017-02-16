@@ -410,6 +410,7 @@ function updateGetProfilePage(profileName,retry){
 				$("#PACPasswordDisplay").removeClass("hidden");
 				document.getElementById("PACPassword").value =  msg.PACPassword;
 			}
+			getCerts(msg,0);
 		}
 	})
 	.fail(function() {
@@ -748,6 +749,12 @@ function clickAddProfilePage(retry) {
 			}
 			$('#main_section').html(data);
 			clearReturnData();
+			var profile = {
+				userCert:"",
+				CACert:"",
+				PACFileName:"",
+			}
+			getCerts(profile,0);
 			$("li").removeClass("active");
 			$("#wifi_Add").addClass("active");
 			$("#helpText").html("Enter the name of the profile you would like to add.");
@@ -1358,6 +1365,15 @@ function uploadCert(retry){
 				$("#submitCertButton").addClass("disabled");
 				$("#certFail").addClass("hidden");
 				$("#certSuccess").removeClass("hidden");
+				var profile = {
+					userCert:"",
+					CACert:"",
+					PACFileName:"",
+				}
+				var certs = {
+					0:file_data.name,
+				};
+				generateCertList(profile,certs);
 			} else {
 				SDCERRtoString(data.SDCERR);
 				$("#certSuccess").addClass("hidden");
@@ -1365,6 +1381,85 @@ function uploadCert(retry){
 			}
 		})
 	}
+}
+
+function generateCertList(profile,certs){
+	var userCert_id = document.getElementById("userCert");
+	var CAcert_id = document.getElementById("CACert");
+	var PACFilename_id = document.getElementById("PACFilename");
+	var userCert_index = userCert_id.length;
+	var CAcert_index = CAcert_id.length;
+	var PACFilename_index = PACFilename_id.length;
+
+	function exists(id,option){
+		var exists = false;
+		$("#" + id + " option").each(function(){
+			if (this.text === option) {
+				exists = true;
+				return false;
+			}
+		});
+		if (exists == true){
+			return true;
+		}
+		return false;
+	}
+
+	for (var key in certs) {
+		var option_userCert = document.createElement("option");
+		var option_CACert = document.createElement("option");
+		var option_PACFile = document.createElement("option");
+		option_userCert.text = certs[key];
+		option_CACert.text = certs[key];
+		option_PACFile.text = certs[key];
+		// Add unique certs
+		if (!exists("userCert",certs[key])){
+			userCert_id.add(option_userCert);
+			if(option_userCert.text === profile.userCert) {
+				userCert_id.selectedIndex = userCert_index;
+			}
+			userCert_index++;
+		}
+		if (!exists("CACert",certs[key])){
+			CAcert_id.add(option_CACert);
+			if(option_CACert.text === profile.CACert) {
+				CAcert_id.selectedIndex = CAcert_index;
+			}
+			CAcert_index++;
+		}
+		if (!exists("PACFilename",certs[key])){
+			PACFilename_id.add(option_PACFile);
+			if(option_PACFile.text === profile.PACFileName) {
+				PACFilename_id.selectedIndex = PACFilename_index;
+			}
+			PACFilename_index++;
+		}
+	}
+}
+
+function getCerts(profile,retry){
+	$.ajax({
+		url: "plugins/wifi/php/getCerts.php",
+		type: "POST",
+		contentType: "application/json",
+	})
+	.done(function(msg) {
+		if (intervalId){
+			clearInterval(intervalId);
+			intervalId = 0;
+		}
+		consoleLog(msg);
+		generateCertList(profile,msg.certs);
+	})
+	.fail(function() {
+		consoleLog("Error, couldn't get getCerts.php.. retrying");
+		if (retry < 5){
+			retry++;
+			getCerts(retry);
+		} else {
+			consoleLog("Retry max attempt reached");
+		}
+	});
 }
 
 function generateLog(retry){
