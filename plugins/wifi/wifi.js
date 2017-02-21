@@ -1010,6 +1010,72 @@ function clickGlobalsPage(retry){
 	});
 }
 
+function checkGlobalInts(){
+	var result = true;
+	BeaconMissTimeout = document.getElementById("BeaconMissTimeout");
+	fragThreshold = document.getElementById("fragThreshold");
+	probeDelay = document.getElementById("probeDelay");
+	roamPeriodms = document.getElementById("roamPeriodms");
+	roamTrigger = document.getElementById("roamTrigger");
+	RTSThreshold = document.getElementById("RTSThreshold");
+	scanDFSTime = document.getElementById("scanDFSTime");
+
+	if (!(parseInt(BeaconMissTimeout.value) >= BeaconMissTimeout.min && parseInt(BeaconMissTimeout.value) <= BeaconMissTimeout.max)){
+		$("#BeaconMissTimeoutDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#BeaconMissTimeoutDisplay").removeClass("has-error");
+	}
+	if (!(parseInt(fragThreshold.value) >= fragThreshold.min && parseInt(fragThreshold.value) <= fragThreshold.max)){
+		$("#fragThresholdDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#fragThresholdDisplay").removeClass("has-error");
+	}
+	if (!(parseInt(probeDelay.value) >= probeDelay.min && parseInt(probeDelay.value) <= probeDelay.max)){
+		$("#probeDelayDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#probeDelayDisplay").removeClass("has-error");
+	}
+	if (!(parseInt(roamPeriodms.value) >= roamPeriodms.min && parseInt(roamPeriodms.value) <= roamPeriodms.max)){
+		$("#roamPeriodmsDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#roamPeriodmsDisplay").removeClass("has-error");
+	}
+	if (!(-Math.abs(parseInt(roamTrigger.value)) >= roamTrigger.min && -Math.abs(parseInt(roamTrigger.value)) <= roamTrigger.max)){
+		$("#roamTriggerDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#roamTriggerDisplay").removeClass("has-error");
+	}
+	if (!(parseInt(RTSThreshold.value) >= RTSThreshold.min && parseInt(RTSThreshold.value) <= RTSThreshold.max)){
+		$("#RTSThresholdDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#RTSThresholdDisplay").removeClass("has-error");
+	}
+	if (!(parseInt(scanDFSTime.value) >= scanDFSTime.min && parseInt(scanDFSTime.value) <= scanDFSTime.max)){
+		$("#scanDFSTimeDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#scanDFSTimeDisplay").removeClass("has-error");
+	}
+
+	return result;
+}
+
+function clearGlobalInts(){
+	$("#BeaconMissTimeoutDisplay").removeClass("has-error");
+	$("#fragThresholdDisplay").removeClass("has-error");
+	$("#probeDelayDisplay").removeClass("has-error");
+	$("#roamPeriodmsDisplay").removeClass("has-error");
+	$("#roamTriggerDisplay").removeClass("has-error");
+	$("#RTSThresholdDisplay").removeClass("has-error");
+	$("#scanDFSTimeDisplay").removeClass("has-error");
+}
+
 function submitGlobals(retry){
 	var totalAChannelValue = 0;
 	AchannelArray = [36,40,44,48,52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,149,153,157,161,165];
@@ -1051,6 +1117,10 @@ function submitGlobals(retry){
 		fips: document.getElementById("fips").value,
 	}
 	consoleLog(globalData);
+	if (!checkGlobalInts()){
+		CustomErrMsg("Invalid Value");
+		return;
+	}
 	$.ajax({
 		url: "plugins/wifi/php/setGlobals.php",
 		type: "POST",
@@ -1065,6 +1135,9 @@ function submitGlobals(retry){
 		}
 		SDCERRtoString(msg.SDCERR);
 		$("#submitButton").addClass("disabled");
+		if (msg.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
+			clearGlobalInts();
+		}
 	})
 	.fail(function() {
 		consoleLog("Failed to send global data, retrying");
