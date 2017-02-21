@@ -160,11 +160,12 @@ function updateStatus(){
 			$(".locked").addClass("hidden");
 		}
 		$("#updateProgressDisplay").addClass("hidden");
-		if (data.SDCERR == defines.SDCERR.SDCERR_NO_HARDWARE){
+		if (data.SDCERR == defines.SDCERR.SDCERR_NO_HARDWARE || data.SDCERR == defines.SDCERR.SDCERR_FAIL){
 			$("#status-success").addClass("hidden");
 			$("#status-hardware").removeClass("hidden");
 		} else {
 			$("#status-success").removeClass("hidden");
+			$("#status-hardware").addClass("hidden");
 			var rssi = data.rssi;
 			var rssiMeter = rssi + 120;
 			var SSID_Array = [];
