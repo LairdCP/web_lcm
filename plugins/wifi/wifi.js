@@ -956,6 +956,8 @@ function getGlobals(retry){
 						}
 					}else if(key == "regDomain"){
 						document.getElementById(key).value = regDomainToString(msg[key]);
+					}else if(key == "roamTrigger"){
+						document.getElementById(key).value = -Math.abs(msg[key]);
 					}else{
 						document.getElementById(key).value = msg[key];
 					}
@@ -1039,7 +1041,7 @@ function submitGlobals(retry){
 		probeDelay: parseInt( document.getElementById("probeDelay").value),
 		regDomain: document.getElementById("regDomain").value,
 		roamPeriodms: parseInt( document.getElementById("roamPeriodms").value),
-		roamTrigger: parseInt( document.getElementById("roamTrigger").value),
+		roamTrigger: Math.abs(parseInt( document.getElementById("roamTrigger").value)),
 		RTSThreshold: parseInt( document.getElementById("RTSThreshold").value),
 		scanDFSTime: parseInt( document.getElementById("scanDFSTime").value),
 		TTLSInnerMethod: document.getElementById("TTLSInnerMethod").value,
