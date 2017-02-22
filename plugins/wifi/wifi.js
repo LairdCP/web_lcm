@@ -264,6 +264,24 @@ function clickStatusPage(retry) {
 	}
 }
 
+function checkProfileInts(){
+	var result = true;
+	pspDelay = document.getElementById("pspDelay");
+
+	if (!(parseInt(pspDelay.value) >= pspDelay.min && parseInt(pspDelay.value) <= pspDelay.max)){
+		$("#pspDelayDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#pspDelayDisplay").removeClass("has-error");
+	}
+
+	return result;
+}
+
+function clearProfileInts(){
+	$("#pspDelayDisplay").removeClass("has-error");
+}
+
 function submitProfile(retry){
 	SSID_Value = document.getElementById("SSID").value;
 	var CharCode_Array = [];
@@ -307,6 +325,10 @@ function submitProfile(retry){
 		PACPassword: document.getElementById("PACPassword").value,
 	}
 	consoleLog(profileData);
+	if (!checkProfileInts()){
+		CustomErrMsg("Invalid Value");
+		return;
+	}
 	$.ajax({
 		url: "plugins/wifi/php/setProfile.php",
 		type: "POST",
@@ -317,6 +339,9 @@ function submitProfile(retry){
 		consoleLog(msg);
 		SDCERRtoString(msg.SDCERR);
 		$("#submitButton").addClass("disabled");
+		if (msg.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
+			clearProfileInts();
+		}
 	})
 	.fail(function() {
 		consoleLog("Failed to get profile data, retrying");
@@ -832,6 +857,10 @@ function addProfile(){
 			PACPassword: document.getElementById("PACPassword").value,
 		}
 		consoleLog(newProfile);
+		if (!checkProfileInts()){
+			CustomErrMsg("Invalid Value");
+			return;
+		}
 		$.ajax({
 			url: "plugins/wifi/php/addProfile.php",
 			type: "POST",
@@ -847,6 +876,9 @@ function addProfile(){
 			}
 			SDCERRtoString(msg.SDCERR);
 			getAddProfileList(0);
+			if (msg.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
+				clearProfileInts();
+			}
 		});
 	} else {
 		consoleLog("Name is null");
