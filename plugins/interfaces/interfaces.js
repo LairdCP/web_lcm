@@ -113,6 +113,30 @@ function submitInterface(retry){
 	});
 }
 
+function displayDHCPv4(method){
+	switch (method){
+		case "dhcp":
+			$("#addressDisplay").addClass("hidden");
+			$("#netmaskDisplay").addClass("hidden");
+			$("#gatewayDisplay").addClass("hidden");
+			$("#broadcastDisplay").addClass("hidden");
+			$("#nameserver_1Display").addClass("hidden");
+			$("#nameserver_2Display").addClass("hidden");
+			break;
+		case "static":
+		case "manual":
+			$("#addressDisplay").removeClass("hidden");
+			$("#netmaskDisplay").removeClass("hidden");
+			$("#gatewayDisplay").removeClass("hidden");
+			$("#broadcastDisplay").removeClass("hidden");
+			$("#nameserver_1Display").removeClass("hidden");
+			$("#nameserver_2Display").removeClass("hidden");
+			break;
+		default:
+			break;
+	}
+}
+
 function updateGetInterfacePage(interfaceName,retry){
 	$.ajax({
 		url: "plugins/interfaces/php/getInterfaces.php",
@@ -139,6 +163,7 @@ function updateGetInterfacePage(interfaceName,retry){
 				if (data.Interfaces[iface].IPv4.state){
 					document.getElementById("stateIPv4").value = data.Interfaces[iface].IPv4.state;
 				}
+				displayDHCPv4(data.Interfaces[iface].IPv4.inet);
 				switch (data.Interfaces[iface].IPv4.inet){
 					case "dhcp":
 						document.getElementById("method").selectedIndex = 0;

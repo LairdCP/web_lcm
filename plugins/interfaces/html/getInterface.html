@@ -35,33 +35,33 @@
 						</div>
 						<div class="form-group" id="methodDisplay">
 							<label class="pull-left" for="method">Address Acquisition:</label>
-							<select onchange="onChangeSubmit()" class="form-control" id="method">
+							<select onchange="onChangeSubmit(); displayDHCPv4(this.value)" class="form-control" id="method">
 								<option value="dhcp">DHCP</option>
 								<option value="static">Static</option>
 								<option value="manual">Manual</option>
 							</select>
 						</div>
-						<div class="form-group">
+						<div class="form-group hidden" id="addressDisplay">
 							<label class="pull-left" for="address">Address:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="address">
 						</div>
-						<div class="form-group">
+						<div class="form-group hidden" id="netmaskDisplay">
 							<label class="pull-left" for="netmask">Netmask:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="netmask">
 						</div>
-						<div class="form-group">
+						<div class="form-group hidden" id="gatewayDisplay">
 							<label class="pull-left" for="gateway">Gateway:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="gateway">
 						</div>
-						<div class="form-group">
+						<div class="form-group hidden" id="broadcastDisplay">
 							<label class="pull-left" for="broadcast">Broadcast:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="broadcast">
 						</div>
-						<div class="form-group">
+						<div class="form-group hidden" id="nameserver_1Display">
 							<label class="pull-left" for="nameserver">Nameserver:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="nameserver_1">
 						</div>
-						<div class="form-group">
+						<div class="form-group hidden" id="nameserver_2Display">
 							<label class="pull-left" for="nameserver">Nameserver:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="nameserver_2">
 						</div>
