@@ -421,13 +421,21 @@ function modifySpecialInterface(retry){
 		},
 	})
 	.done(function( data ) {
-		console.log(data);
 		submitButton.text(PreviousButtonText);
 		if (data.SESSION == defines.SDCERR.SDCERR_FAIL){
 			expiredSession();
 			return;
 		}
 		SDCERRtoString(data.SDCERR);
+		if (data.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
+			if (InterfaceData.IPv4.state == "NAT"){
+				document.getElementById("submitButton").setAttribute("data-previous-nat-ipv4", InterfaceData.IPv4.int_2);
+			}
+			if (InterfaceData.IPv6.state == "NAT"){
+				document.getElementById("submitButton").setAttribute("data-previous-nat-ipv6", InterfaceData.IPv6.int_2);
+			}
+		}
+
 	})
 	.fail(function() {
 		consoleLog("Error, couldn't get setSpecialInterfaces.php.. retrying");
@@ -473,8 +481,12 @@ function updateSelectInterfacePage(retry){
 			x.add(option);
 
 			//Special Interface setInterface
-			if (iface == "br0" && data.InterfaceState[iface]){
-				isBridged = true;
+			if (iface == "br0"){
+				for (var iface_num in data.InterfaceState){
+					if (data.InterfaceState[iface_num] == iface){
+						isBridged = true;
+					}
+				}
 			}
 			if (data.Interfaces[iface].IPv4["post-cfg-do"] && data.Interfaces[iface].IPv4["pre-dcfg-do"]){
 				isNAT = iface;
@@ -540,12 +552,10 @@ function updateSelectInterfacePage(retry){
 					br_port_2.text = Autoiface;
 					z.add(br_port_2);
 				}
-				if (br_port_1.text == data.Interfaces[iface].IPv4.br_port_1){
+				if (isBridged == true){
 					y.selectedIndex = br_port_1.index;
-				}
-				if (br_port_2.text == data.Interfaces[iface].IPv4.br_port_2){
 					z.selectedIndex = br_port_2.index;
-				}else if (isNAT == Autoiface){
+				} else if (isNAT == Autoiface){
 					z.selectedIndex = br_port_2.index;
 					document.getElementById("submitButton").setAttribute("data-previous-nat-ipv4", Autoiface);
 				}
