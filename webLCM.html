@@ -370,23 +370,29 @@
 		function onclickSetUserPass(field,current,attempt,check){
 			if (field.id == "userName"){
 				if (field.checked == true){
-					current.disabled=false;
-					attempt.disabled=false;
-					check.disabled=false;
+					current.disabled = false;
+					attempt.disabled = false;
+					check.disabled = false;
 				} else {
-					current.disabled=true;
-					attempt.disabled=true;
-					check.disabled=true;
+					current.disabled = true;
+					attempt.disabled = true;
+					check.disabled = true;
+					current.value = "";
+					attempt.value = "";
+					check.value = "";
 				}
 			} else if (field.id == "passWord"){
 				if (field.checked == true){
-					current.disabled=false;
-					attempt.disabled=false;
-					check.disabled=false;
+					current.disabled = false;
+					attempt.disabled = false;
+					check.disabled = false;
 				} else {
-					current.disabled=true;
-					attempt.disabled=true;
-					check.disabled=true;
+					current.disabled = true;
+					attempt.disabled = true;
+					check.disabled = true;
+					current.value = "";
+					attempt.value = "";
+					check.value = "";
 				}
 			}
 		}
@@ -396,6 +402,10 @@
 		}
 
 		function submitSetUserPass(retry,userName,passWord){
+			var credentials = {
+				currentUserName: document.getElementById("currentUserName").value,
+				currentPassWord: document.getElementById("currentPassWord").value,
+			}
 			var newUserName = document.getElementById("newUserName").value;
 			var newPassWord = document.getElementById("newPassWord").value;
 			if (userName.checked == true){
@@ -403,25 +413,21 @@
 					CustomErrMsg("New username does not match");
 					return;
 				}
+				credentials.newUserName = newUserName;
 			}
 			else if (passWord.checked == true){
 				var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
 				if (newPassWord != document.getElementById("checkPassWord").value){
-					CustomErrMsg("New username does not match");
+					CustomErrMsg("New password does not match");
 					return;
 				}
 				if(!newPassWord.match(passw)){
 					CustomErrMsg("Password not strong enough");
 					return;
 				}
+				credentials.newPassWord = newPassWord;
 			} else {
 				return;
-			}
-			var credentials = {
-				currentUserName: document.getElementById("currentUserName").value,
-				currentPassWord: document.getElementById("currentPassWord").value,
-				newUserName: newUserName,
-				newPassWord: newPassWord,
 			}
 			$.ajax({
 				url: "/php/setUserPass.php",
@@ -430,6 +436,10 @@
 				contentType: "application/json",
 			})
 			.done(function( msg ) {
+				if (msg.SESSION == defines.SDCERR.SDCERR_FAIL){
+					expiredSession();
+					return;
+				}
 				consoleLog(msg);
 				SDCERRtoString(msg.SDCERR);
 				$("#submitButton").addClass("disabled");
