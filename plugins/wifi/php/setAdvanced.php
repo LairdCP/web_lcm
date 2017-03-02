@@ -16,20 +16,6 @@
 			$result = LRD_WF_Driver_set_debug($advanced->{'driverDebugLevel'}, null);
 	}
 
-	if($advanced->{'fwUpdateTM'} == 1){
-		$fwTMFile = fopen(FW_TM_File, "w");
-		if ($fwTMFile != false){
-			fwrite($fwTMFile,"on \n");
-			fclose($fwTMFile);
-			$result = SDCERR_SUCCESS;
-		}
-	} else if ($advanced->{'fwUpdateTM'} == 0){
-		$result = SDCERR_FAIL;
-		if (unlink(FW_TM_File)){
-			$result = SDCERR_SUCCESS;
-		}
-	}
-
 	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);
 
 	echo json_encode($returnedResult);
