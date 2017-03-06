@@ -110,6 +110,18 @@ function showUpdateLog(retry){
 			}else{
 				$("#rebootButtonDisplay").removeClass("hidden");
 			}
+		}else if (data.log[logLength - 1].trim().substring(0,7) == "failed:"){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().search("o_ping: not found") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
 		}else{
 			if (!intervalId){
 				setIntervalUpdate(showUpdateLog);
