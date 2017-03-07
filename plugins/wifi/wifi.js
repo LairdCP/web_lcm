@@ -299,6 +299,11 @@ function submitProfile(retry){
 			return;
 		}
 	}
+	PSK_Value = document.getElementById("psk").value;
+	var PSK_Array = [];
+	for (var i = 0, len = PSK_Value.length; i < len; i++) {
+		PSK_Array[i] = PSK_Value.charCodeAt(i);
+	}
 	var profileData = {
 		profileName: document.getElementById("profileName").value,
 		SSID: CharCode_Array,
@@ -315,7 +320,7 @@ function submitProfile(retry){
 		index2: document.getElementById("index2").value,
 		index3: document.getElementById("index3").value,
 		index4: document.getElementById("index4").value,
-		psk: document.getElementById("psk").value,
+		psk: PSK_Array,
 		userName: document.getElementById("userName").value,
 		passWord: document.getElementById("passWord").value,
 		userCert: document.getElementById("userCert").value,
@@ -830,6 +835,11 @@ function addProfile(){
 			return;
 		}
 	}
+	PSK_Value = document.getElementById("psk").value;
+	var PSK_Array = [];
+	for (var i = 0, len = PSK_Value.length; i < len; i++) {
+		PSK_Array[i] = PSK_Value.charCodeAt(i);
+	}
 	if (profileName != ""){
 		var newProfile = {
 			profileName: profileName,
@@ -847,7 +857,7 @@ function addProfile(){
 			index2: document.getElementById("index2").value,
 			index3: document.getElementById("index3").value,
 			index4: document.getElementById("index4").value,
-			psk: document.getElementById("psk").value,
+			psk: PSK_Array,
 			userName: document.getElementById("userName").value,
 			passWord: document.getElementById("passWord").value,
 			userCert: document.getElementById("userCert").value,
