@@ -150,7 +150,7 @@
 				case WPA_PSK_AES:
 				case WPA2_PSK_TKIP:
 					$cfgs->eapType = EAP_NONE;
-					$result = SetPSK($cfgs,$newProfile->{'psk'});
+					$result = SetPSK($cfgs,uchr($newProfile->{'psk'}));
 					break;
 				case WEP_AUTO:
 				case WPA_TKIP:

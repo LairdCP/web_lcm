@@ -114,7 +114,7 @@
 					$psk = $Profile->{'psk'};
 				}
 			}
-			$result = SetPSK($cfgs,$psk);
+			$result = SetPSK($cfgs,uchr($psk));
 			break;
 		case WEP_AUTO:
 		case WPA_TKIP:
