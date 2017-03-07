@@ -213,10 +213,10 @@ function updateGetInterfacePage(interfaceName,retry){
 						break;
 				}
 				switch (data.Interfaces[iface].IPv6.dhcp){
-					case "0":
+					case "stateless":
 						document.getElementById("DHCP6").selectedIndex = 0;
 						break;
-					case "1":
+					case "slaac":
 						document.getElementById("DHCP6").selectedIndex = 1;
 						break;
 					default:
