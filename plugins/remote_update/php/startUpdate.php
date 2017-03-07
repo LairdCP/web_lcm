@@ -28,9 +28,19 @@
 
 	if ($result == SDCERR_SUCCESS){
 		if ($update->{'remoteUpdate'} != null){
-			exec('fw_update -f -xnr ' . escapeshellcmd($update->{'remoteUpdate'}) . ' &> ' . FW_LOGFILE . ' &');
-			syslog(LOG_INFO, "fw_update started from WebLCM with options: -f -xnr");
-			syslog(LOG_INFO, "fw_update update path: " . escapeshellcmd($update->{'remoteUpdate'}));
+			$fwTRANSFile = fopen(FW_TRANSFER_LIST, "w");
+			if (isset($_SESSION["passwordFile"])){
+				fwrite($fwTRANSFile,$_SESSION["passwordFile"] . " \n");
+			}
+			fwrite($fwTRANSFile,WebLCM_INI . " \n");
+			fclose($fwTRANSFile);
+			if (file_exists(FW_TRANSFER_LIST)){
+				exec('fw_update -f -xnr ' . escapeshellcmd($update->{'remoteUpdate'}) . ' &> ' . FW_LOGFILE . ' &');
+				syslog(LOG_INFO, "fw_update started from WebLCM with options: -f -xnr");
+				syslog(LOG_INFO, "fw_update update path: " . escapeshellcmd($update->{'remoteUpdate'}));
+			} else {
+				$result = SDCERR_FAIL;
+			}
 		}
 	}
 
