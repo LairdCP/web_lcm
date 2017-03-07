@@ -200,11 +200,14 @@ function updateGetInterfacePage(interfaceName,retry){
 					document.getElementById("stateIPv6").value = data.Interfaces[iface].IPv6.state;
 				}
 				switch (data.Interfaces[iface].IPv6.inet6){
-					case "auto":
+					case "dhcp":
 						document.getElementById("method6").selectedIndex = 0;
 						break;
-					case "static":
+					case "auto":
 						document.getElementById("method6").selectedIndex = 1;
+						break;
+					case "static":
+						document.getElementById("method6").selectedIndex = 2;
 						break;
 					default:
 						break;
