@@ -78,7 +78,7 @@
 						</div>
 						<div class="form-group" id="method6Display">
 							<label class="pull-left" for="method6">Address Acquisition:</label>
-							<select onchange="onChangeSubmit()" class="form-control" id="method6">
+							<select onchange="onChangeSubmit(); displayDHCPv6(this.value)" class="form-control" id="method6">
 								<option value="dhcp">DHCP</option>
 								<option value="auto">Auto</option>
 								<option value="static">Static</option>
@@ -91,24 +91,24 @@
 								<option value="slaac">SLAAC</option>
 							</select>
 						</div>
-						<div class="form-group">
+						<div class="form-group" id="address6Display">
 							<label class="pull-left" for="address6">Address:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="address6">
 						</div>
-						<div class="form-group">
+						<div class="form-group" id="netmask6Display">
 							<label class="pull-left" for="netmask6">Netmask:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="netmask6">
 						</div>
-						<div class="form-group">
+						<div class="form-group" id="gateway6Display">
 							<label class="pull-left" for="gateway6">Gateway:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="gateway6">
 						</div>
-						<div class="form-group">
-							<label class="pull-left" for="nameserver6">Nameserver:</label>
+						<div class="form-group" id="nameserver6_1Display">
+							<label class="pull-left" for="nameserver6_1">Nameserver:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="nameserver6_1">
 						</div>
-						<div class="form-group">
-							<label class="pull-left" for="nameserver6">Nameserver:</label>
+						<div class="form-group" id="nameserver6_2Display">
+							<label class="pull-left" for="nameserver6_2">Nameserver:</label>
 							<input onchange="onChangeSubmit()" type="text" class="form-control" id="nameserver6_2">
 						</div>
 					</div>
