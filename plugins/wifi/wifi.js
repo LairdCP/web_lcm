@@ -264,15 +264,22 @@ function clickStatusPage(retry) {
 	}
 }
 
-function checkProfileInts(){
+function checkProfileValues(){
 	var result = true;
 	pspDelay = document.getElementById("pspDelay");
+	psk = document.getElementById("psk");
 
 	if (!(parseInt(pspDelay.value) >= pspDelay.min && parseInt(pspDelay.value) <= pspDelay.max)){
 		$("#pspDelayDisplay").addClass("has-error");
 		result = false;
 	} else {
 		$("#pspDelayDisplay").removeClass("has-error");
+	}
+	if (!(psk.value.length >= 8 && psk.value.length <= 64)){
+		$("#pskDisplay").addClass("has-error");
+		result = false;
+	} else {
+		$("#pskDisplay").removeClass("has-error");
 	}
 
 	return result;
@@ -330,7 +337,7 @@ function submitProfile(retry){
 		PACPassword: document.getElementById("PACPassword").value,
 	}
 	consoleLog(profileData);
-	if (!checkProfileInts()){
+	if (!checkProfileValues()){
 		CustomErrMsg("Invalid Value");
 		return;
 	}
@@ -867,7 +874,7 @@ function addProfile(){
 			PACPassword: document.getElementById("PACPassword").value,
 		}
 		consoleLog(newProfile);
-		if (!checkProfileInts()){
+		if (!checkProfileValues()){
 			CustomErrMsg("Invalid Value");
 			return;
 		}

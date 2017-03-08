@@ -11,13 +11,13 @@
 				<label class="pull-left" for="profileName">Profile Name:</label>
 				<input onchange="onChangeSubmit()" type="text" class="form-control" id="profileName" readonly>
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="SSIDDisplay">
 				<label class="pull-left" for="SSID">SSID:</label>
-				<input onchange="onChangeSubmit()" onfocus="updateInfoText('SSID',0)" type="text" class="form-control" id="SSID">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('SSID',0)" type="text" class="form-control" id="SSID" maxlength="32">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="clientName">Client Name:</label>
-				<input onchange="onChangeSubmit()" onfocus="updateInfoText('clientName',0)" type="text" class="form-control" id="clientName">
+				<input onchange="onChangeSubmit()" onfocus="updateInfoText('clientName',0)" type="text" class="form-control" id="clientName" maxlength="16">
 			</div>
 			<div class="form-group">
 				<label class="pull-left" for="txPower">TX Power:</label>
