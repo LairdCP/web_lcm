@@ -65,11 +65,38 @@
 			$IP = implode('.', $ipAddress);
 		}
 
+		$resultp = new_SDCERRp();
+		$numElements = new_size_tp();
+		$numEntries = 0;
+		size_tp_assign($numElements,$numEntries);
+		$list = lrd_php_sdk::new_LRD_WF_PHP_GetIpV6Address($numElements,$resultp);
+		$max_insufficient_rtns = 5;
+		while (SDCERRp_value($resultp)==SDCERR_INSUFFICIENT_MEMORY && $max_insufficient_rtns--)
+		{
+			lrd_php_sdk::delete_LRD_WF_PHP_GetIpV6Address($list);
+			$numEntries += 1;
+			size_tp_assign($numElements,$numEntries);
+			$list = lrd_php_sdk::new_LRD_WF_PHP_GetIpV6Address($numElements,$resultp);
+		}
+		if (SDCERRp_value($resultp) == SDCERR_SUCCESS){
+			for($h = 0; $h < size_tp_value($numElements); $h++){
+				unset($item);
+				$item = lrd_php_sdk::LRD_WF_PHP_GetIpV6Address_get($list,$h);
+				$IPv6Array[$h] = $item;
+			}
+			$IPv6Array['size'] = $numEntries;
+		}
+
+		lrd_php_sdk::delete_LRD_WF_PHP_GetIpV6Address($list);
+		delete_size_tp($numElements);
+		delete_SDCERRp($resultp);
+
 		$returnedResult['SDCERR'] = $result;
 		$returnedResult['cardState'] = $status->cardState;
 		$returnedResult['configName'] = $status->configName;
 		$returnedResult['client_MAC'] = $MAC;
 		$returnedResult['client_IP'] = $IP;
+		$returnedResult['IPv6'] = $IPv6Array;
 		$returnedResult['clientName'] = $status->clientName;
 		$returnedResult['AP_MAC'] = $APMAC;
 		$returnedResult['AP_IP'] = $APIP;
