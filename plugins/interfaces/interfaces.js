@@ -137,6 +137,37 @@ function displayDHCPv4(method){
 	}
 }
 
+function displayDHCPv6(method){
+	switch (method){
+		case "dhcp":
+			$("#DHCP6Display").addClass("hidden");
+			$("#address6Display").addClass("hidden");
+			$("#netmask6Display").addClass("hidden");
+			$("#gateway6Display").addClass("hidden");
+			$("#nameserver6_1Display").addClass("hidden");
+			$("#nameserver6_2Display").addClass("hidden");
+			break;
+		case "auto":
+			$("#DHCP6Display").removeClass("hidden");
+			$("#address6Display").addClass("hidden");
+			$("#netmask6Display").addClass("hidden");
+			$("#gateway6Display").addClass("hidden");
+			$("#nameserver6_1Display").addClass("hidden");
+			$("#nameserver6_2Display").addClass("hidden");
+			break;
+		case "static":
+			$("#DHCP6Display").addClass("hidden");
+			$("#address6Display").removeClass("hidden");
+			$("#netmask6Display").removeClass("hidden");
+			$("#gateway6Display").removeClass("hidden");
+			$("#nameserver6_1Display").removeClass("hidden");
+			$("#nameserver6_2Display").removeClass("hidden");
+			break;
+		default:
+			break;
+	}
+}
+
 function updateGetInterfacePage(interfaceName,retry){
 	$.ajax({
 		url: "plugins/interfaces/php/getInterfaces.php",
@@ -199,6 +230,7 @@ function updateGetInterfacePage(interfaceName,retry){
 				if (data.Interfaces[iface].IPv6.state){
 					document.getElementById("stateIPv6").value = data.Interfaces[iface].IPv6.state;
 				}
+				displayDHCPv6(data.Interfaces[iface].IPv6.inet6);
 				switch (data.Interfaces[iface].IPv6.inet6){
 					case "dhcp":
 						document.getElementById("method6").selectedIndex = 0;
