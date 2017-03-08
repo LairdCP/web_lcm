@@ -190,6 +190,27 @@ function updateStatus(){
 			$('#APName').html(data.APName);
 			$('#AP_MAC').html(data.AP_MAC);
 			$('#AP_IP').html(data.AP_IP);
+
+			var IPv6 = document.getElementById("IPv6");
+			while (IPv6.hasChildNodes()) {
+				IPv6.removeChild(IPv6.lastChild);
+			}
+			if (data.IPv6.size > 0){
+				for (var i = 0; i < data.IPv6.size; i++) {
+					var divAddress = document.createElement("div");
+					divAddress.className = "col-xs-6 col-sm-6 placeholder text-left";
+					var divStrong = document.createElement("strong");
+					var strongText = document.createTextNode("IPv6: ");
+					var divSpan = document.createElement("span");
+					var spanText = document.createTextNode(data.IPv6[i]);
+					divAddress.appendChild(divStrong);
+					divStrong.appendChild(strongText);
+					divAddress.appendChild(divSpan);
+					divSpan.appendChild(spanText);
+					IPv6.appendChild(divAddress);
+				}
+			}
+
 			$('#bitRate').html(data.bitRate);
 			$('#txPower').html(data.txPower);
 			$('#beaconPeriod').html(data.beaconPeriod);
