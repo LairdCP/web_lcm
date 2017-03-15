@@ -288,6 +288,7 @@ function clickStatusPage(retry) {
 function checkProfileValues(){
 	var result = true;
 	pspDelay = document.getElementById("pspDelay");
+	wepType = document.getElementById("wepType");
 	psk = document.getElementById("psk");
 
 	if (!(parseInt(pspDelay.value) >= pspDelay.min && parseInt(pspDelay.value) <= pspDelay.max)){
@@ -296,11 +297,21 @@ function checkProfileValues(){
 	} else {
 		$("#pspDelayDisplay").removeClass("has-error");
 	}
-	if (!(psk.value.length >= 8 && psk.value.length <= 64)){
-		$("#pskDisplay").addClass("has-error");
-		result = false;
-	} else {
-		$("#pskDisplay").removeClass("has-error");
+	switch(parseInt(wepType.value)) {
+		case defines.PLUGINS.wifi.WEPTYPE.WPA_PSK:
+		case defines.PLUGINS.wifi.WEPTYPE.WPA2_PSK:
+		case defines.PLUGINS.wifi.WEPTYPE.WPA_PSK_AES:
+		case defines.PLUGINS.wifi.WEPTYPE.WPA2_PSK_TKIP:
+			if (!(psk.value.length >= 8 && psk.value.length <= 64)){
+				$("#pskDisplay").addClass("has-error");
+				result = false;
+			} else {
+				$("#pskDisplay").removeClass("has-error");
+			}
+			break;
+		default:
+			$("#pskDisplay").removeClass("has-error");
+			break;
 	}
 
 	return result;
