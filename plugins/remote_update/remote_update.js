@@ -122,6 +122,12 @@ function showUpdateLog(retry){
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().search("ERROR 404: Not Found.") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
 		}else{
 			if (!intervalId){
 				setIntervalUpdate(showUpdateLog);
