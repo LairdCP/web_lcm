@@ -1259,6 +1259,7 @@ function addScanProfile(retry){
 		profileName: document.getElementById("profileName").value,
 		SSID: CharCode_Array,
 		wepType: document.getElementById("security").value,
+		psk: "        ",
 	}
 	if (newProfile.profileName == ""){
 		$("#profileNameDisplay").addClass("has-error");
