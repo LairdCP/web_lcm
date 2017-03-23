@@ -594,8 +594,10 @@ function updateSelectProfilePage(retry){
 }
 
 function activateProfile(retry){
+	currentActiveProfile = document.getElementById("activeProfile");
+	newActiveProfile = document.getElementById("profileSelect");
 	var data = {
-			profileName: document.getElementById("profileSelect").value,
+			profileName: newActiveProfile.value,
 	}
 	consoleLog("Activating profile " + data.profileName);
 	$.ajax({
@@ -620,6 +622,10 @@ function activateProfile(retry){
 			return;
 		}
 		SDCERRtoString(msg.SDCERR);
+		if (msg.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
+			currentActiveProfile.removeAttribute("id");
+			newActiveProfile[newActiveProfile.selectedIndex].setAttribute("id", "activeProfile");
+		}
 	})
 	.fail(function() {
 		consoleLog("Failed to activate profile, retrying");
@@ -714,7 +720,7 @@ function removeProfile(){
 			}
 		});
 	} else {
-		CustomErrMsg("Cant delete active profile");
+		CustomErrMsg("Can't delete active profile");
 	}
 	profileSelect.selectedIndex = activeProfile.index;
 };
