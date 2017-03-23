@@ -62,6 +62,9 @@ function startUpdate(retry){
 		remoteUpdate: document.getElementById("remoteUpdate").value,
 		fwUpdateTM: parseInt(document.getElementById("fwUpdateTM").value),
 	}
+	if (updateData.fwUpdateTM == 1){
+		$("#updateLogMessage").text("Device Updating - Test Mode");
+	}
 	consoleLog(updateData);
 	$.ajax({
 		url: "plugins/remote_update/php/startUpdate.php",
@@ -107,7 +110,9 @@ function showUpdateLog(retry){
 			}
 			if (data.log[logLength - 2].trim().substring(0,7) == "Errors:"){
 				$("#startOverButtonDisplay").removeClass("hidden");
-			}else{
+			} else if (data.log[logLength - 2].trim().search("[testmode]") != -1){
+				$("#startOverButtonDisplay").removeClass("hidden");
+			} else{
 				$("#rebootButtonDisplay").removeClass("hidden");
 			}
 		}else if (data.log[logLength - 1].trim().substring(0,7) == "failed:"){
