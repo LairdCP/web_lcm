@@ -384,6 +384,9 @@
 		}
 
 		function onclickSetUserPass(field,current,attempt,check){
+			var userName = document.getElementById("userName");
+			var passWord = document.getElementById("passWord");
+
 			if (field.id == "userName"){
 				if (field.checked == true){
 					current.disabled = false;
@@ -411,6 +414,10 @@
 					check.value = "";
 				}
 			}
+
+			if (userName.checked != true && passWord.checked != true){
+				$("#submitButton").addClass("disabled");
+			}
 		}
 
 		function onChangeSubmit(){
@@ -431,7 +438,7 @@
 				}
 				credentials.newUserName = newUserName;
 			}
-			else if (passWord.checked == true){
+			if (passWord.checked == true){
 				var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
 				if (newPassWord != document.getElementById("checkPassWord").value){
 					CustomErrMsg("New password does not match");
@@ -442,8 +449,6 @@
 					return;
 				}
 				credentials.newPassWord = newPassWord;
-			} else {
-				return;
 			}
 			$.ajax({
 				url: "/php/setUserPass.php",
