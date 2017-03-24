@@ -11,7 +11,7 @@
 
 	$creds = json_decode(stripslashes(file_get_contents("php://input")));
 
-	$returnedResult['SDCERR'] = updateCredentials($creds->{'currentUserName'}, $creds->{'currentPassWord'}, $creds->{'newUserName'}, $creds->{'newPassWord'});
+	$returnedResult['SDCERR'] = updateCredentials($creds->{'currentUserName'}, $creds->{'currentPassWord'}, trim($creds->{'newUserName'}), trim($creds->{'newPassWord'}));
 
 	echo json_encode($returnedResult);
 ?>
