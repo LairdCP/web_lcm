@@ -442,6 +442,10 @@
 					CustomErrMsg("New username does not match");
 					return;
 				}
+				if (newUserName.trim().length <= 0){
+					CustomErrMsg("New username cannot be blank");
+					return;
+				}
 				credentials.newUserName = newUserName;
 			}
 			if (passWord.checked == true){
