@@ -250,7 +250,7 @@ function setIntervalUpdate(functionName){
 }
 
 function clickStatusPage(retry) {
-	if ($("#wifi_status").hasClass("active")){
+	if (intervalId){
 		consoleLog("Status already active");
 	} else {
 		$("li").removeClass("active");
