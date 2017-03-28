@@ -1052,6 +1052,26 @@ function getGlobals(retry){
 							default:
 								break;
 						}
+					}else if(key == "uAPSD"){
+						if (msg[key] == 0){
+							document.getElementById("VO").checked = false;
+							document.getElementById("VI").checked = false;
+							document.getElementById("BK").checked = false;
+							document.getElementById("BE").checked = false;
+						} else {
+							if (msg[key] & defines.PLUGINS.wifi.uAPSD.UAPSD_AC_VO){
+								document.getElementById("VO").checked = true;
+							}
+							if (msg[key] & defines.PLUGINS.wifi.uAPSD.UAPSD_AC_VI){
+								document.getElementById("VI").checked = true;
+							}
+							if (msg[key] & defines.PLUGINS.wifi.uAPSD.UAPSD_AC_BK){
+								document.getElementById("BK").checked = true;
+							}
+							if (msg[key] & defines.PLUGINS.wifi.uAPSD.UAPSD_AC_BE){
+								document.getElementById("BE").checked = true
+							}
+						}
 					}else if(key == "regDomain"){
 						document.getElementById(key).value = regDomainToString(msg[key]);
 					}else if(key == "roamTrigger"){
@@ -1188,6 +1208,21 @@ function submitGlobals(retry){
 			totalBGChannelValue += parseInt(document.getElementById('channel' + j).value);
 		}
 	}
+
+	var totalUAPSD_value = 0;
+	if(document.getElementById('VO').checked){
+		totalUAPSD_value += parseInt(document.getElementById('VO').value);
+	}
+	if(document.getElementById('VI').checked){
+		totalUAPSD_value += parseInt(document.getElementById('VI').value);
+	}
+	if(document.getElementById('BK').checked){
+		totalUAPSD_value += parseInt(document.getElementById('BK').value);
+	}
+	if(document.getElementById('BE').checked){
+		totalUAPSD_value += parseInt(document.getElementById('BE').value);
+	}
+
 	var globalData = {
 		aLRS: totalAChannelValue,
 		authServerType: document.getElementById("authServerType").value,
@@ -1209,7 +1244,7 @@ function submitGlobals(retry){
 		RTSThreshold: parseInt( document.getElementById("RTSThreshold").value),
 		scanDFSTime: parseInt( document.getElementById("scanDFSTime").value),
 		TTLSInnerMethod: document.getElementById("TTLSInnerMethod").value,
-		uAPSD: document.getElementById("uAPSD").value,
+		uAPSD: totalUAPSD_value,
 		WMEenabled: document.getElementById("WMEenabled").value,
 		suppInfoDateCheck: document.getElementById("suppInfoDateCheck").value,
 		fips: document.getElementById("fips").value,
