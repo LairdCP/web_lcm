@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2017, Laird
 # Contact: ews-support@lairdtech.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
@@ -12,12 +12,12 @@
 	$Profile = json_decode(stripslashes(file_get_contents("php://input")));
 
 	$cfgs = new SDCConfig();
-	$result = GetConfig($Profile->{'currentName'},$cfgs);
+	$result = GetConfig(uchr($Profile->{'currentName'}),$cfgs);
 
-	$cfgs->configName = $Profile->{'newName'};
+	$cfgs->configName = uchr($Profile->{'newName'});
 
 	if ($result == SDCERR_SUCCESS){
-		$result = ModifyConfig(trim($Profile->{'currentName'}),$cfgs);
+		$result = ModifyConfig(uchr($Profile->{'currentName'}),$cfgs);
 	}
 
 	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);

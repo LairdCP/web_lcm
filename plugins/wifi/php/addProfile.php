@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2017, Laird
 # Contact: ews-support@lairdtech.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
@@ -18,7 +18,7 @@
 
 	if ($result == SDCERR_SUCCESS){
 		if (isset($newProfile->{'profileName'})){
-			$cfgs->configName = $newProfile->{'profileName'};
+			$cfgs->configName = uchr($newProfile->{'profileName'});
 		}
 		if (isset($newProfile->{'SSID'})){
 			$cfgs->SSID = uchr($newProfile->{'SSID'});

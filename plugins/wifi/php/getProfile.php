@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2017, Laird
 # Contact: ews-support@lairdtech.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
@@ -12,7 +12,7 @@
 	$oldProfile = json_decode(stripslashes(file_get_contents("php://input")));
 
 	$cfgs = new SDCConfig();
-	$result = GetConfig($oldProfile->{'profileName'},$cfgs);
+	$result = GetConfig(uchr($oldProfile->{'profileName'}),$cfgs);
 
 	if($result == SDCERR_SUCCESS){
 		$offset = 0;
@@ -23,7 +23,12 @@
 		if ((count($SSID_ARRAY_CHAR) == 1) && ($SSID_ARRAY_CHAR[0] == 0)){
 			$SSID_ARRAY_CHAR = null;
 		}
-		$returnedResult['configName'] = nullTrim($cfgs->configName);
+		$offset = 0;
+		while ($offset >= 0) {
+			$code = ordutf8(nullTrim($cfgs->configName), $offset);
+			$configName_ARRAY_CHAR[] = $code;
+		}
+		$returnedResult['configName'] = $configName_ARRAY_CHAR;
 		$returnedResult['SSID'] = $SSID_ARRAY_CHAR;
 		$returnedResult['clientName'] = nullTrim($cfgs->clientName);
 		$returnedResult['txPower'] = $cfgs->txPower;

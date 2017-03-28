@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2017, Laird
 # Contact: ews-support@lairdtech.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
@@ -12,7 +12,7 @@
 	$Profile = json_decode(stripslashes(file_get_contents("php://input")));
 
 	$cfgs = new SDCConfig();
-	$result = GetConfig($Profile->{'profileName'},$cfgs);
+	$result = GetConfig(uchr($Profile->{'profileName'}),$cfgs);
 	$cfgs->SSID = uchr($Profile->{'SSID'});
 	$cfgs->clientName = $Profile->{'clientName'};
 	$cfgs->txPower = $Profile->{'txPower'};
@@ -280,7 +280,7 @@
 	$cfgs->radioMode = $Profile->{'radioMode'};
 
 	if ($result == SDCERR_SUCCESS){
-		$result = ModifyConfig(trim($Profile->{'profileName'}),$cfgs);
+		$result = ModifyConfig(trim(uchr($Profile->{'profileName'})),$cfgs);
 	}
 
 	$returnedResult['SDCERR'] = REPORT_RETURN_DBG(__DIR__, __FILE__ ,__LINE__, $result);

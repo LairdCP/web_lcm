@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2017, Laird
 # Contact: ews-support@lairdtech.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
@@ -13,9 +13,9 @@
 
 	$cconfig = new SDCConfig();
 
-	$result = GetConfig($oldProfile->{'profileName'}, $cconfig);
+	$result = GetConfig(uchr($oldProfile->{'profileName'}), $cconfig);
 	if ($result == SDCERR_SUCCESS){
-		$result = DeleteConfig(trim($oldProfile->{'profileName'}));
+		$result = DeleteConfig(trim(uchr($oldProfile->{'profileName'})));
 	}
 
 	$returnedResult = [

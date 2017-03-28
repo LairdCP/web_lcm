@@ -1,5 +1,5 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2017, Laird
 # Contact: ews-support@lairdtech.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
@@ -25,16 +25,14 @@
 				$nBit = 1;
 				for($i = 1;$i <= ulongp_value($Count);$i++) {
 					$singleCFG = lrd_php_sdk::SDCConfig_array_getitem($cfgs,$i - 1);
-					foreach ($profileList as $key => $value){
-						if ($key == $singleCFG->configName && $value == true){
-							$nProfileEnabled = 1;
-							$nBit = 1 << $i;
-							$autoProfile |= $nBit;
-						} else if ($key == $singleCFG->configName && $value == false) {
-							$nProfileDisabled = 1;
-							$nBit = 1 << $i;
-							$autoProfile &= ~$nBit;
-						}
+					if (uchr($profileList->profileList[$i]) == $singleCFG->configName && $profileList->profileValues[$i] == true){
+						$nProfileEnabled = 1;
+						$nBit = 1 << $i;
+						$autoProfile |= $nBit;
+					} else if (uchr($profileList->profileList[$i]) == $singleCFG->configName && $profileList->profileValues[$i] == false) {
+						$nProfileDisabled = 1;
+						$nBit = 1 << $i;
+						$autoProfile &= ~$nBit;
 					}
 				}
 			}
