@@ -322,6 +322,11 @@ function clearProfileInts(){
 }
 
 function submitProfile(retry){
+	profileName_Value = document.getElementById("profileName").value;
+	var profileName_Array = [];
+	for (var i = 0, len = profileName_Value.length; i < len; i++) {
+		profileName_Array[i] = profileName_Value.charCodeAt(i);
+	}
 	SSID_Value = document.getElementById("SSID").value;
 	var CharCode_Array = [];
 	for (var i = 0, len = SSID_Value.length; i < len; i++) {
@@ -344,7 +349,7 @@ function submitProfile(retry){
 		PSK_Array[i] = PSK_Value.charCodeAt(i);
 	}
 	var profileData = {
-		profileName: document.getElementById("profileName").value,
+		profileName: profileName_Array,
 		SSID: CharCode_Array,
 		clientName: document.getElementById("clientName").value,
 		txPower: txPower,
@@ -420,6 +425,13 @@ function updateGetProfilePage(profileName,retry){
 	.done(function( msg ) {
 		consoleLog(msg);
 		document.getElementById("profileName").value = msg.configName;
+		var profileName_Array = [];
+		if (msg.configName != null){
+			for(var i = 0; i < msg.configName.length; i++) {
+				profileName_Array.push(String.fromCharCode(msg.configName[i]));
+			}
+			document.getElementById("profileName").value = profileName_Array.join('');
+		}
 		document.getElementById("SSID").value = msg.SSID;
 		var SSID_Array = [];
 		if (msg.SSID != null){
@@ -495,7 +507,12 @@ function updateGetProfilePage(profileName,retry){
 
 function selectedProfile(selectedProfile,retry){
 	if(!selectedProfile){
-		var selectedProfile = document.getElementById("profileSelect").value;
+		var selectedProfile_value = document.getElementById("profileSelect").value;
+		var selectedProfile_Array = [];
+		for (var i = 0, len = selectedProfile_value.length; i < len; i++) {
+			selectedProfile_Array[i] = selectedProfile_value.charCodeAt(i);
+		}
+		var selectedProfile = selectedProfile_Array;
 	}
 	$.ajax({
 		url: "plugins/wifi/html/getProfile.html",
@@ -594,12 +611,16 @@ function updateSelectProfilePage(retry){
 }
 
 function activateProfile(retry){
-	currentActiveProfile = document.getElementById("activeProfile");
-	newActiveProfile = document.getElementById("profileSelect");
-	var data = {
-			profileName: newActiveProfile.value,
+	var currentActiveProfile = document.getElementById("activeProfile");
+	var newActiveProfile = document.getElementById("profileSelect");
+	var newActiveProfile_Array = [];
+	for (var i = 0, len = newActiveProfile.value.length; i < len; i++) {
+		newActiveProfile_Array[i] = newActiveProfile.value.charCodeAt(i);
 	}
-	consoleLog("Activating profile " + data.profileName);
+	var data = {
+			profileName: newActiveProfile_Array,
+	}
+	consoleLog("Activating profile " + newActiveProfile.value);
 	$.ajax({
 		url: "plugins/wifi/php/activateProfile.php",
 		type: "POST",
@@ -625,6 +646,7 @@ function activateProfile(retry){
 		if (msg.SDCERR == defines.SDCERR.SDCERR_SUCCESS){
 			currentActiveProfile.removeAttribute("id");
 			newActiveProfile[newActiveProfile.selectedIndex].setAttribute("id", "activeProfile");
+			$("#helpText").html("These are the current WiFi profiles. Profile " + newActiveProfile.value + " is the active profile.");
 		}
 	})
 	.fail(function() {
@@ -641,9 +663,18 @@ function activateProfile(retry){
 function renameProfile(retry){
 	var profileSelect = document.getElementById("profileSelect");
 	var selectedProfile = profileSelect.options[profileSelect.selectedIndex].text;
+	var selectedProfile_Array = [];
+	for (var i = 0, len = selectedProfile.length; i < len; i++) {
+		selectedProfile_Array[i] = selectedProfile.charCodeAt(i);
+	}
+	var	newProfileName_Value = document.getElementById("newProfileName").value.trim();
+	var newProfileName_Array = [];
+	for (var i = 0, len = newProfileName_Value.length; i < len; i++) {
+		newProfileName_Array[i] = newProfileName_Value.charCodeAt(i);
+	}
 	var profileName = {
-			currentName: selectedProfile,
-			newName: document.getElementById("newProfileName").value,
+			currentName: selectedProfile_Array,
+			newName: newProfileName_Array,
 	}
 	$.ajax({
 		url: "plugins/wifi/php/renameProfile.php",
@@ -669,8 +700,8 @@ function renameProfile(retry){
 		SDCERRtoString(msg.SDCERR);
 		if (document.getElementById("returnDataNav").innerHTML == "Success"){
 			for(var i = 0; i < profileSelect.options.length; i++) {
-				if (profileName.currentName == profileSelect.options[i].text){
-					profileSelect.options[i].text = profileName.newName;
+				if (selectedProfile == profileSelect.options[i].text){
+					profileSelect.options[i].text = newProfileName_Value;
 				}
 			}
 			$("#newProfileNameDisplay").addClass("hidden");
@@ -693,11 +724,15 @@ function showRenameProfile(){
 
 function removeProfile(){
 	var profileSelect = document.getElementById("profileSelect");
+	var profileSelect_Array = [];
+	for (var i = 0, len = profileSelect.value.length; i < len; i++) {
+		profileSelect_Array[i] = profileSelect.value.charCodeAt(i);
+	}
 	var activeProfile = document.getElementById("activeProfile");
 	var oldProfile = {
-		profileName: profileSelect.value
+		profileName: profileSelect_Array
 	}
-	if (oldProfile.profileName != activeProfile.text){
+	if (profileSelect.value != activeProfile.text){
 		$.ajax({
 			url: "plugins/wifi/php/removeProfile.php",
 			type: "POST",
@@ -712,33 +747,43 @@ function removeProfile(){
 			SDCERRtoString(msg.SDCERR);
 			if (document.getElementById("returnDataNav").innerHTML == "Success"){
 				for(var i = 0; i < profileSelect.options.length; i++) {
-					if (oldProfile.profileName == profileSelect.options[i].text){
+					if (profileSelect.value == profileSelect.options[i].text){
 						profileSelect.options.remove(i);
 						profileSelect.size = profileSelect.size - 1;
 					}
 				}
+				profileSelect.selectedIndex = activeProfile.index;
 			}
 		});
 	} else {
 		CustomErrMsg("Can't delete active profile");
 	}
-	profileSelect.selectedIndex = activeProfile.index;
 };
 
 function submitAutoProfile(retry){
 	var rows,index,profile,value;
-	autoProfileList = {};
+	var autoProfileList = [];
+	var autoProfileValues = [];
 	rows = document.getElementById("autoProfileTable").rows;
 	for (index = 1; index < rows.length; index++){
 		profile = rows[index].cells[0].innerHTML;
+		var profileSelect_Array = [];
+		for (var i = 0, len = profile.length; i < len; i++) {
+			profileSelect_Array[i] = profile.charCodeAt(i);
+		}
 		value = rows[index].cells[1].children[0].checked;
-		autoProfileList[profile] = value;
+		autoProfileList[index] = profileSelect_Array;
+		autoProfileValues[index] = value;
 	}
-	consoleLog(autoProfileList);
+	var autoProfile = {
+		profileList: autoProfileList,
+		profileValues: autoProfileValues,
+	}
+	consoleLog(autoProfile);
 	$.ajax({
 		url: "plugins/wifi/php/setAutoProfileList.php",
 		type: "POST",
-		data: JSON.stringify(autoProfileList),
+		data: JSON.stringify(autoProfile),
 		contentType: "application/json",
 	})
 	.done(function( msg ) {
@@ -863,7 +908,11 @@ function updateAddProfile(){
 }
 
 function addProfile(){
-	var profileName = document.getElementById("profileName").value;
+	profileName_Value = document.getElementById("profileName").value;
+	var profileName_Array = [];
+	for (var i = 0, len = profileName_Value.length; i < len; i++) {
+		profileName_Array[i] = profileName_Value.charCodeAt(i);
+	}
 	SSID_Value = document.getElementById("SSID").value;
 	var CharCode_Array = [];
 	for (var i = 0, len = SSID_Value.length; i < len; i++) {
@@ -885,9 +934,9 @@ function addProfile(){
 	for (var i = 0, len = PSK_Value.length; i < len; i++) {
 		PSK_Array[i] = PSK_Value.charCodeAt(i);
 	}
-	if (profileName != ""){
+	if (profileName_Value != ""){
 		var newProfile = {
-			profileName: profileName,
+			profileName: profileName_Array,
 			SSID: CharCode_Array,
 			clientName: document.getElementById("clientName").value,
 			txPower: txPower,
@@ -1283,21 +1332,30 @@ function submitGlobals(retry){
 	});
 }
 function scanToProfile(){
-	var profileName = document.getElementById("profileNameHidden").value;
-	selectedProfile(profileName,0);
+	profileName_Value = document.getElementById("profileNameHidden").value;
+	var profileName_Array = [];
+	for (var i = 0, len = profileName_Value.length; i < len; i++) {
+		profileName_Array[i] = profileName_Value.charCodeAt(i);
+	}
+	selectedProfile(profileName_Array,0);
 	$("li").removeClass("active");
 	$("#submenuEdit").addClass("active");
 
 }
 
 function addScanProfile(retry){
+	profileName_Value = document.getElementById("profileName").value;
+	var profileName_Array = [];
+	for (var i = 0, len = profileName_Value.length; i < len; i++) {
+		profileName_Array[i] = profileName_Value.charCodeAt(i);
+	}
 	SSID_Value = document.getElementById("newSSID").value;
 	var CharCode_Array = [];
 	for (var i = 0, len = SSID_Value.length; i < len; i++) {
 		CharCode_Array[i] = SSID_Value.charCodeAt(i);
 	}
 	var newProfile = {
-		profileName: document.getElementById("profileName").value,
+		profileName: profileName_Array,
 		SSID: CharCode_Array,
 		wepType: document.getElementById("security").value,
 		psk: "        ",
@@ -1323,9 +1381,9 @@ function addScanProfile(retry){
 		}
 		SDCERRtoString(msg.SDCERR);
 		if (document.getElementById("returnDataNav").innerHTML == "Success"){
-			document.getElementById("goToProfile").textContent = "Edit Profile " + newProfile.profileName;
+			document.getElementById("goToProfile").textContent = "Edit Profile " + profileName_Value;
 			$("#goToProfileDisplay").removeClass("hidden");
-			document.getElementById("profileNameHidden").value = newProfile.profileName;
+			document.getElementById("profileNameHidden").value = profileName_Value;
 			document.getElementById("addTable").reset();
 		}
 	})
