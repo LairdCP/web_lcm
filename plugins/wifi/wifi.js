@@ -699,9 +699,13 @@ function renameProfile(retry){
 		}
 		SDCERRtoString(msg.SDCERR);
 		if (document.getElementById("returnDataNav").innerHTML == "Success"){
+			var currentActiveProfile = document.getElementById("activeProfile").value;
 			for(var i = 0; i < profileSelect.options.length; i++) {
 				if (selectedProfile == profileSelect.options[i].text){
 					profileSelect.options[i].text = newProfileName_Value;
+					if (currentActiveProfile == selectedProfile){
+						$("#helpText").html("These are the current WiFi profiles. Profile " + newProfileName_Value + " is the active profile.");
+					}
 				}
 			}
 			$("#newProfileNameDisplay").addClass("hidden");
