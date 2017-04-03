@@ -146,6 +146,11 @@
 		}
 
 		function checkNotifyPermission(){
+			if (typeof Notification === 'undefined' || !Notification){
+				$("#enableNotify").addClass("disabled");
+				$("#enableNotify").html("Not Supported");
+				return;
+			}
 			if (Notification.permission === "granted"){
 				$("#enableNotify").html("Enabled");
 				$("#enableNotify").addClass("disabled");
@@ -154,6 +159,9 @@
 		}
 
 		function sendNotification(title, message){
+			if (typeof Notification === 'undefined' || !Notification){
+				return false;
+			}
 			if (Notification.permission === "granted"){
 				var mobile = document.getElementById("mobileMenu");
 				//Dont show notifications on mobile
