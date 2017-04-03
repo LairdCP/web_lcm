@@ -110,7 +110,7 @@ function showUpdateLog(retry){
 			}
 			if (data.log[logLength - 2].trim().substring(0,7) == "Errors:"){
 				$("#startOverButtonDisplay").removeClass("hidden");
-			} else if (data.log[logLength - 2].trim().search("[testmode]") != -1){
+			} else if (data.log[logLength - 2].trim().search("testmode") != -1){
 				$("#startOverButtonDisplay").removeClass("hidden");
 			} else{
 				$("#rebootButtonDisplay").removeClass("hidden");
