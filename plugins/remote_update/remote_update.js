@@ -133,6 +133,12 @@ function showUpdateLog(retry){
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log.join("\n").search("flash interrupted") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
 		}else{
 			if (!intervalId){
 				setIntervalUpdate(showUpdateLog);
