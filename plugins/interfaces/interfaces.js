@@ -232,10 +232,10 @@ function updateGetInterfacePage(interfaceName,retry){
 				}
 				displayDHCPv6(data.Interfaces[iface].IPv6.inet6);
 				switch (data.Interfaces[iface].IPv6.inet6){
-					case "dhcp":
+					case "auto":
 						document.getElementById("method6").selectedIndex = 0;
 						break;
-					case "auto":
+					case "dhcp":
 						document.getElementById("method6").selectedIndex = 1;
 						break;
 					case "static":
@@ -245,10 +245,12 @@ function updateGetInterfacePage(interfaceName,retry){
 						break;
 				}
 				switch (data.Interfaces[iface].IPv6.dhcp){
-					case "stateless":
+					case "0":
+					case "slaac":
 						document.getElementById("DHCP6").selectedIndex = 0;
 						break;
-					case "slaac":
+					case "1":
+					case "stateless":
 						document.getElementById("DHCP6").selectedIndex = 1;
 						break;
 					default:
