@@ -31,7 +31,7 @@
 			{
 				if ($_FILES["file"]["type"] == "application/octet-stream"){
 					$fileType = substr($_FILES["file"]["name"], -4);
-					if (($fileType != ".pac") && ($fileType != ".cnf") && ($fileType != ".pem")){
+					if (($fileType != ".pac") && ($fileType != ".cnf") && ($fileType != ".pem") && ($fileType != ".cer")){
 						$result = SDCERR_INVALID_FILE;
 					}
 				}
