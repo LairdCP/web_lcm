@@ -133,6 +133,12 @@ function displayDHCPv4(method){
 			$("#nameserver_2Display").removeClass("hidden");
 			break;
 		default:
+			$("#addressDisplay").removeClass("hidden");
+			$("#netmaskDisplay").removeClass("hidden");
+			$("#gatewayDisplay").removeClass("hidden");
+			$("#broadcastDisplay").removeClass("hidden");
+			$("#nameserver_1Display").removeClass("hidden");
+			$("#nameserver_2Display").removeClass("hidden");
 			break;
 	}
 }
@@ -164,6 +170,12 @@ function displayDHCPv6(method){
 			$("#nameserver6_2Display").removeClass("hidden");
 			break;
 		default:
+			$("#DHCP6Display").removeClass("hidden");
+			$("#address6Display").addClass("hidden");
+			$("#netmask6Display").addClass("hidden");
+			$("#gateway6Display").addClass("hidden");
+			$("#nameserver6_1Display").addClass("hidden");
+			$("#nameserver6_2Display").addClass("hidden");
 			break;
 	}
 }
