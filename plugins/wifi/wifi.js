@@ -912,7 +912,7 @@ function updateAddProfile(){
 }
 
 function addProfile(){
-	profileName_Value = document.getElementById("profileName").value;
+	profileName_Value = document.getElementById("profileName").value.trim();
 	var profileName_Array = [];
 	for (var i = 0, len = profileName_Value.length; i < len; i++) {
 		profileName_Array[i] = profileName_Value.charCodeAt(i);
@@ -989,6 +989,7 @@ function addProfile(){
 			}
 		});
 	} else {
+		CustomErrMsg("Profile name can't be empty");
 		consoleLog("Name is null");
 	}
 };
