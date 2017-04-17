@@ -86,6 +86,23 @@ function submitInterface(retry){
 			dhcp: document.getElementById("DHCP6").value,
 		},
 	}
+	if (InterfaceData.IPv4.method == "dhcp"){
+		InterfaceData.IPv4.address = InterfaceData.IPv4.netmask = InterfaceData.IPv4.gateway = "";
+		InterfaceData.IPv4.broadcast = InterfaceData.IPv4.nameserver_1 = InterfaceData.IPv4.nameserver_2 = "";
+	}
+	switch (InterfaceData.IPv6.method){
+		case "dhcp":
+			InterfaceData.IPv6.dhcp = "";
+		case "auto":
+			InterfaceData.IPv6.address = InterfaceData.IPv6.netmask = InterfaceData.IPv6.gateway = "";
+			InterfaceData.IPv6.nameserver_1 = InterfaceData.IPv6.nameserver_2 = "";
+			break;
+		case "static":
+			InterfaceData.IPv6.dhcp = "";
+			break;
+		default:
+			break;
+	}
 	consoleLog(InterfaceData);
 	$.ajax({
 		url: "plugins/interfaces/php/setInterfaces.php",
