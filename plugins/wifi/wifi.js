@@ -468,7 +468,9 @@ function updateGetProfilePage(profileName,retry){
 			$("#pskDisplay").removeClass("hidden");
 			document.getElementById("psk").value =  msg.PSK;
 		} else if (msg.eapType >= defines.PLUGINS.wifi.EAPTYPE.EAP_LEAP){
-			$("#certDisplay").removeClass("hidden");
+			if (msg.eapType > defines.PLUGINS.wifi.EAPTYPE.EAP_LEAP){
+				$("#certDisplay").removeClass("hidden");
+			}
 			$("#eapTypeDisplay").removeClass("hidden");
 			$("#userNameDisplay").removeClass("hidden");
 			document.getElementById("userName").value =  msg.userName;
