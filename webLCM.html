@@ -383,7 +383,8 @@
 				$("li").removeClass("active");
 				$('#main_section').html(data);
 				clearReturnData();
-				$("#helpText").html("Password must be 8 to 20 characters, and contain at least one numeric digit, one uppercase and one lowercase letter");
+				$("#helpText").html("Password must be 8 to 20 characters, and contain at least one numeric digit, one uppercase and one lowercase letter. ");
+				$("#helpText").append("Leading and trailing whitespace will get removed.");
 				checkNotifyPermission();
 			})
 			.fail(function() {

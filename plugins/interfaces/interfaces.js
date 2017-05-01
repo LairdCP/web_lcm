@@ -331,7 +331,7 @@ function selectedInterface(retry){
 			}
 			$('#main_section').html(data);
 			clearReturnData();
-			$("#helpText").html("Adjust interface settings.");
+			$("#helpText").html("Adjust interface settings. Interface must be restarted for changes to take effect.");
 		},
 		error: function (xhr, status) {
 			consoleLog("Error, couldn't get getInterface.html");
