@@ -108,13 +108,14 @@
 		case WPA2_PSK_TKIP:
 			$cfgs->eapType = EAP_NONE;
 			$psk = str_repeat(" ",PSK_SZ);
+			$new_psk = uchr($Profile->{'psk'});
 			$result = GetPSK($cfgs,$psk);
 			if($result == SDCERR_SUCCESS){
-				if ($Profile->{'psk'} != "********"){
-					$psk = $Profile->{'psk'};
+				if ($new_psk != "********"){
+					$psk = $new_psk;
 				}
 			}
-			$result = SetPSK($cfgs,uchr($psk));
+			$result = SetPSK($cfgs,$psk);
 			break;
 		case WEP_AUTO:
 		case WPA_TKIP:
