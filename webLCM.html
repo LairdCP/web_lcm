@@ -310,6 +310,10 @@
 				username: document.getElementById("username").value,
 				password: document.getElementById("password").value,
 			}
+
+			// Clear any old return code message
+			clearReturnData()
+
 			$.ajax({
 				url: "php/login.php",
 				data: JSON.stringify(creds),
@@ -324,7 +328,11 @@
 					$(".locked").removeClass("hidden");
 					clearReturnData();
 				} else {
-					CustomErrMsg("Credentials are invalid");
+					if (data.LOCKED){
+						CustomErrMsg("System is locked: " + data.TIME_LEFT + " seconds left");
+					} else {
+						CustomErrMsg("Credentials are invalid");
+					}
 				}
 				document.getElementById("username").value = null;
 				document.getElementById("password").value = null;
