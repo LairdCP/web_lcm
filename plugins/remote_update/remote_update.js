@@ -133,6 +133,12 @@ function showUpdateLog(retry){
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().search("Connection timed out") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
 		}else if (data.log.join("\n").search("flash interrupted") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
