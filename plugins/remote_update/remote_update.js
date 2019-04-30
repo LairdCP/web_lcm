@@ -127,13 +127,31 @@ function showUpdateLog(retry){
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("ERROR 404: Not Found.") != -1){
+		}else if (data.log[logLength - 1].trim().search("ERROR 404") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
 		}else if (data.log[logLength - 1].trim().search("Connection timed out") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().search("no response") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().search("ping: bad port") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().substring(0,24) == "...firmware-update-list?"){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
