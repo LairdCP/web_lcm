@@ -44,7 +44,7 @@ function rebootDevice(retry){
 		$("#updateLogTextDisplay").addClass("hidden");
 		$("#updateProgressDisplay").removeClass("hidden");
 		$("#helpText").html("Device is now rebooting. The page will attempt to redirect in 20 seconds if IP address remains the same.");
-		setTimeout("location.reload(true);", 20000);
+		setTimeout("location.reload(true);", 40000);
 	})
 	.fail(function() {
 		consoleLog("Failed to reboot device, retrying");
