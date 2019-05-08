@@ -151,6 +151,12 @@ function showUpdateLog(retry){
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
+		}else if (data.log[logLength - 1].trim().search("ping: sendto:") != -1){
+			if (intervalId){
+					clearInterval(intervalId);
+					intervalId = 0;
+			}
+			$("#startOverButtonDisplay").removeClass("hidden");
 		}else if (data.log[logLength - 1].trim().substring(0,24) == "...firmware-update-list?"){
 			if (intervalId){
 					clearInterval(intervalId);
