@@ -1,6 +1,6 @@
 <?php
 # Copyright (c) 2017, Laird
-# Contact: ews-support@lairdtech.com
+# Contact: support@lairdconnect.com
 
 define("FW_TM_File","fw_update.test");
 define("FW_TM_Directory","/etc/default/");

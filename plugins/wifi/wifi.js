@@ -1,5 +1,5 @@
 // Copyright (c) 2017, Laird
-// Contact: ews-support@lairdtech.com
+// Contact: support@lairdconnect.com
 
 function wifiAUTORUN(retry){
 	clickStatusPage(0);

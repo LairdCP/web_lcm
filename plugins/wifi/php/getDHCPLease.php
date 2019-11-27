@@ -1,6 +1,6 @@
 <?php
 # Copyright (c) 2018, Laird
-# Contact: ews-support@lairdtech.com
+# Contact: support@lairdconnect.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
 	require("wifi.php");

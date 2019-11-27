@@ -1,6 +1,6 @@
 <?php
 # Copyright (c) 2016, Laird
-# Contact: ews-support@lairdtech.com
+# Contact: support@lairdconnect.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/lrd_php_sdk.php");
 
