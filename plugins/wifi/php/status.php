@@ -33,6 +33,8 @@
 			for ($x = 0; $x <= ($ssid->len); $x++){
 				$SSID_Array[$x] = uchar_array_getitem($ssid->val,$x);
 			}
+		}else{
+			$SSID_Array = [];
 		}
 
 		if(GetCurrentConfig(NULL, $profileName)==SDCERR_SUCCESS){
@@ -63,6 +65,8 @@
 
 		if($ipAddress[0] != 0){
 			$IP = implode('.', $ipAddress);
+		}else{
+			$IP = '';
 		}
 
 		$resultp = new_SDCERRp();
