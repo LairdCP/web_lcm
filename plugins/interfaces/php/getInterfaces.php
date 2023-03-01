@@ -1,152 +1,127 @@
 <?php
-# Copyright (c) 2016, Laird
+# Copyright (c) 2016, Laird Connectivity
 # Contact: support@lairdconnect.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
 	$returnedResult['SESSION'] = verifyAuthentication(true);
-	if ($returnedResult['SESSION'] != SDCERR_SUCCESS){
+	if ($returnedResult['SESSION'] != SDCERR_SUCCESS) {
 		echo json_encode($returnedResult);
 		return;
 	}
 
-	$autoInterfaces = [];
-	$InterfaceList = [];
-	$InterfaceState = [];
-	$ENABLE = 0;
-	$DISABLE = -1;
-	$EMPTY = -2;
+	$returnedResult['Interfaces'] = [];
+	$returnedResult['AutoInterfaces'] = [];
+	$returnedResult['InterfaceState'] = [];
 
-	function checkLine($line){
-		global $ENABLE, $DISABLE, $EMPTY;
-		$trimmed = trim($line);
-		$pos = strpos($trimmed, '#');
-		$line = explode(" ", $trimmed);
-		$result = count($line);
-		if($pos === 0){
-			return $DISABLE;
-		} elseif($result <= 1){
-			return $EMPTY;
-		} else{
-			return $ENABLE;
+	$autoInterfaces = &$returnedResult['AutoInterfaces'];
+	$InterfaceList = &$returnedResult['Interfaces'];
+	$InterfaceState = &$returnedResult['InterfaceState'];
+
+	$state = 'none';
+
+	$lines = file('/etc/network/interfaces');
+	if (!$lines) {
+		$lines = [];
+	}
+	foreach ($lines as $line) {
+		$line = trim($line);
+
+		// Empty line, drop inet state and skip further processing
+		if (empty($line)) {
+			$state = 'none';
+			continue;
+		}
+
+		// Comment line, skip further processing
+		if (str_starts_with($line, '#')) {
+			continue;
+		}
+
+		// Split space seprated line
+		$strArray = preg_split('/\s+/', $line);
+
+		// Line has only 1 token, skip further processing
+		if (count($strArray) <= 1) {
+			continue;
+		}
+
+		switch ($state)
+		{
+		case 'none':
+			// System configuration processing
+			switch ($strArray[0])
+			{
+			case 'auto':
+				$autoInterfaces[$strArray[1]] = 1;
+				break;
+
+			case 'iface':
+				$Interface = $strArray[1];
+
+				if (is_readable('/sys/class/net/' . $Interface . '/uevent')) {
+					$slines = file('/sys/class/net/' . $Interface . '/uevent');
+					foreach ($slines as $sline) {
+						$stateArray = explode('=', trim($sline));
+						if ($stateArray[0] == "INTERFACE") {
+							$InterfaceState[] = $strArray[1];
+						}
+					}
+				}
+
+				if (!isset($autoInterfaces[$Interface])) {
+					$autoInterfaces[$Interface] = 0;
+				}
+
+				if ($strArray[2] == 'inet') {
+					$IpType = "IPv4";
+					$state = 'inet';
+					$InterfaceList[$Interface]["IPv4"]["state"] = "1";
+					$InterfaceList[$Interface]["IPv4"][$strArray[2]] = $strArray[3];
+				} elseif (!isset($InterfaceList[$Interface]["IPv4"]["state"])) {
+					$InterfaceList[$Interface]["IPv4"]["state"] = "0";
+				}
+
+				if ($strArray[2] == 'inet6') {
+					$IpType = "IPv6";
+					$state = 'inet6';
+					$InterfaceList[$Interface]["IPv6"]["state"] = "1";
+					$InterfaceList[$Interface]["IPv6"][$strArray[2]] = $strArray[3];
+				} elseif (!isset($InterfaceList[$Interface]["IPv6"]["state"])) {
+					$InterfaceList[$Interface]["IPv6"]["state"] = "0";
+				}
+				break;
+			}
+			break;
+
+		case 'inet':
+		case 'inet6':
+			// Specific interface configuration processing
+			switch ($strArray[0])
+			{
+			case 'bridge_ports':
+				$InterfaceList[$Interface][$IpType]['br_port_1'] = $strArray[1];
+				$InterfaceList[$Interface][$IpType]['br_port_2'] = $strArray[2];
+				break;
+
+			case 'nameserver':
+				if (empty($InterfaceList[$Interface][$IpType]['nameserver_1'])) {
+					$InterfaceList[$Interface][$IpType]['nameserver_1'] = $strArray[1];
+				} else {
+					$InterfaceList[$Interface][$IpType]['nameserver_2'] = $strArray[1];
+				}
+				break;
+
+			default:
+				$InterfaceList[$Interface][$IpType][$strArray[0]] = $strArray[1];
+				break;
+			}
+			break;
 		}
 	}
 
-	if(file_exists('/etc/network/interfaces')){
-		global $ENABLE, $DISABLE, $EMPTY;
-		$handle = fopen("/etc/network/interfaces", "r");
-		if ($handle) {
-			while (($line = fgets($handle)) !== false) {
-				$pos = strpos($line, 'iface');
-				if ($pos > 1){
-					$pos = FALSE;
-				}
-				if($pos !== FALSE){
-					$strArray = explode(' ',trim($line));
-					$Interface = $strArray[1];
-					if(file_exists('/sys/class/net/' . $Interface . '/uevent')){
-						$stateHandle = fopen('/sys/class/net/' . $Interface . '/uevent', "r");
-						if ($stateHandle) {
-							while (($line = fgets($stateHandle)) !== false) {
-								$stateArray = explode('=',trim($line));
-								if ($stateArray[0] == "INTERFACE"){
-									$InterfaceState[] = $strArray[1];
-								}
-							}
-						}
-					}
-					//IPv4
-					if ($strArray[2] == "inet"){
-						$InterfaceList[$Interface]["IPv4"]["state"] = "0";
-						if ($pos == 0){
-								$InterfaceList[$Interface]["IPv4"]["state"] = "1";
-						}
-						$InterfaceList[$Interface]["IPv4"][$strArray[2]] = $strArray[3];
-						while ((($line = fgets($handle)) !== false) && (checkLine($line) != $EMPTY)) {
-							if(checkLine($line) == $DISABLE){
-							}else {
-								$strArray = explode(' ',trim($line));
-								if ($strArray[0] == 'bridge_ports'){
-									$InterfaceList[$Interface]["IPv4"]['br_port_1'] = $strArray[1];
-									$InterfaceList[$Interface]["IPv4"]['br_port_2'] = $strArray[2];
-								} elseif ($strArray[0] == 'post-cfg-do'){
-									$InterfaceList[$Interface]["IPv4"]['post-cfg-do'] = $strArray[1];
-								} elseif ($strArray[0] == 'pre-dcfg-do'){
-									$InterfaceList[$Interface]["IPv4"]['pre-dcfg-do'] = $strArray[1];
-								} elseif ($strArray[0] == 'nameserver'){
-									if (empty($InterfaceList[$Interface]["IPv4"]['nameserver_1'])){
-										$InterfaceList[$Interface]["IPv4"]['nameserver_1'] = $strArray[1];
-									} else {
-										$InterfaceList[$Interface]["IPv4"]['nameserver_2'] = $strArray[1];
-									}
-								}else{
-									$InterfaceList[$Interface]["IPv4"][$strArray[0]] = $strArray[1];
-								}
-							}
-						}
-					}
-					if (!isset($InterfaceList[$Interface]["IPv4"]["state"])){
-						$InterfaceList[$Interface]["IPv4"]["state"] = "0";
-					}
-					//IPv6
-					if ($strArray[2] == "inet6"){
-						$InterfaceList[$Interface]["IPv6"]["state"] = "0";
-						if ($pos == 0){
-								$InterfaceList[$Interface]["IPv6"]["state"] = "1";
-						}
-						$InterfaceList[$Interface]["IPv6"][$strArray[2]] = $strArray[3];
-						while ((($line = fgets($handle)) !== false) && (checkLine($line) != $EMPTY)) {
-							if(checkLine($line) == $DISABLE){
-							}else {
-								$strArray = explode(' ',trim($line));
-								if ($strArray[0] == 'bridge_ports'){
-									$InterfaceList[$Interface]["IPv6"]['br_port_1'] = $strArray[1];
-									$InterfaceList[$Interface]["IPv6"]['br_port_2'] = $strArray[2];
-								} elseif ($strArray[0] == 'post-cfg-do'){
-									$InterfaceList[$Interface]["IPv6"]['post-cfg-do'] = $strArray[1];
-								} elseif ($strArray[0] == 'pre-dcfg-do'){
-									$InterfaceList[$Interface]["IPv6"]['pre-dcfg-do'] = $strArray[1];
-								} elseif ($strArray[0] == 'nameserver'){
-									if (empty($InterfaceList[$Interface]["IPv6"]['nameserver_1'])){
-										$InterfaceList[$Interface]["IPv6"]['nameserver_1'] = $strArray[1];
-									} else {
-										$InterfaceList[$Interface]["IPv6"]['nameserver_2'] = $strArray[1];
-									}
-								}else{
-									$InterfaceList[$Interface]["IPv6"][$strArray[0]] = $strArray[1];
-								}
-							}
-						}
-					}
-					if (!isset($InterfaceList[$Interface]["IPv6"]["state"])){
-						$InterfaceList[$Interface]["IPv6"]["state"] = "0";
-					}
-				}
-			}
-			fclose($handle);
-			$handle = fopen("/etc/network/interfaces", "r");
-			if ($handle) {
-				while (($line = fgets($handle)) !== false) {
-					$line = trim($line);
-					$pos = strpos($line, 'auto');
-					//Ignore iface [interface] inet6 auto lines
-					if ($pos > 1){
-						$pos = FALSE;
-					}
-					if((checkLine($line) == $ENABLE) && ($pos !== FALSE)){
-						$autoInterfaces[substr($line,5)] = 1;
-					}elseif($pos !== FALSE){
-						$autoInterfaces[substr($line,6)] = 0;
-					}
-				}
-				fclose($handle);
-				$returnedResult['SDCERR'] = SDCERR_SUCCESS;
-			}
-		}
-	}
+	unset($lines);
 
-	$returnedResult['Interfaces'] = $InterfaceList;
-	$returnedResult['AutoInterfaces'] = $autoInterfaces;
-	$returnedResult['InterfaceState'] = $InterfaceState;
+	$returnedResult['SDCERR'] = count($InterfaceList) ? SDCERR_SUCCESS : SDCERR_FAIL;
 
 	echo json_encode($returnedResult);
 ?>
