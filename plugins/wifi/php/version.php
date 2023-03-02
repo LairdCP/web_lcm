@@ -78,14 +78,18 @@
 	}
 
 	$returnedResult['build'] = "";
-	if(file_exists('/etc/laird-release') | file_exists('/etc/summit-release')){
+	if (is_readable('/etc/laird-release')) {
 		$BuildString = file_get_contents('/etc/laird-release');
-		if($BuildString == false){
-			$BuildString = file_get_contents('/etc/summit-release');
+	} elseif (is_readable('/etc/summit-release')) {
+		$BuildString = file_get_contents('/etc/summit-release');
+	} elseif (is_readable('/etc/os-release')) {
+		$ini = parse_ini_file('/etc/os-release');
+		if ($ini) {
+			$BuildString = $ini['BUILD_ID'];
 		}
-		if($BuildString != false){
-			$returnedResult['build'] = $BuildString;
-		}
+	}
+	if ($BuildString) {
+		$returnedResult['build'] = $BuildString;
 	}
 
 	$returnedResult['php_sdk'] = LRD_PHP_SDK_VERSION_MAJOR . "." . LRD_PHP_SDK_VERSION_MINOR . "." . LRD_PHP_SDK_VERSION_REVISION . "." . LRD_PHP_VERSION_SUB_REVISION;
