@@ -98,66 +98,73 @@ function showUpdateLog(retry){
 	})
 	.done(function( data ) {
 		var logLength = Object.keys(data.log).length;
+		function finished_text(data, go_back){
+			if (logLength > go_back){
+				return data.log[logLength - go_back].trim();
+			}
+			return '';
+		}
+
 		document.getElementById("updateLogText").rows = logLength + 3;
 		$("#updateProgressDisplay").addClass("hidden");
 		$("#updateLogDisplay").removeClass("hidden");
 		$("#updateLogTextDisplay").removeClass("hidden");
 		$("#updateLogText").html(data.log);
-		if (data.log[logLength - 1].trim() == "Done."){
+		if (finished_text(data,1) == "Done."){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
-			if (data.log[logLength - 2].trim().substring(0,7) == "Errors:"){
+			if (finished_text(data,2).substring(0,7) == "Errors:"){
 				$("#startOverButtonDisplay").removeClass("hidden");
-			} else if (data.log[logLength - 2].trim().search("testmode") != -1){
+			} else if (finished_text(data,2).search("testmode") != -1){
 				$("#startOverButtonDisplay").removeClass("hidden");
 			} else{
 				$("#rebootButtonDisplay").removeClass("hidden");
 			}
-		}else if (data.log[logLength - 1].trim().substring(0,7) == "failed:"){
+		}else if (finished_text(data,1).substring(0,7) == "failed:"){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("o_ping: not found") != -1){
+		}else if (finished_text(data,1).search("o_ping: not found") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("ERROR 404") != -1){
+		}else if (finished_text(data,1).search("ERROR 404") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("Connection timed out") != -1){
+		}else if (finished_text(data,1).search("Connection timed out") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("no response") != -1){
+		}else if (finished_text(data,1).search("no response") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("ping: bad port") != -1){
+		}else if (finished_text(data,1).search("ping: bad port") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().search("ping: sendto:") != -1){
+		}else if (finished_text(data,1).search("ping: sendto:") != -1){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
 			}
 			$("#startOverButtonDisplay").removeClass("hidden");
-		}else if (data.log[logLength - 1].trim().substring(0,24) == "...firmware-update-list?"){
+		}else if (finished_text(data,1).substring(0,24) == "...firmware-update-list?"){
 			if (intervalId){
 					clearInterval(intervalId);
 					intervalId = 0;
