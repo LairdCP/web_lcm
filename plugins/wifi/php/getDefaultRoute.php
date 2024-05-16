@@ -1,6 +1,6 @@
 <?php
-# Copyright (c) 2018, Laird
-# Contact: support@lairdconnect.com
+# Copyright (c) 2018, Ezurio
+# Contact: support@ezurio.com
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/php/webLCM.php");
 	require("wifi.php");

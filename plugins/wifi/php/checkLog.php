@@ -1,6 +1,6 @@
 <?php
-# Copyright (c) 2016, Laird
-# Contact: support@lairdconnect.com
+# Copyright (c) 2016, Ezurio
+# Contact: support@ezurio.com
 
 	header("Content-Type: application/json");
 

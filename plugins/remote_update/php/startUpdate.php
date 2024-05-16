@@ -1,6 +1,6 @@
 <?php
-# Copyright (c) 2017, Laird
-# Contact: support@lairdconnect.com
+# Copyright (c) 2017, Ezurio
+# Contact: support@ezurio.com
 
 	require("../../../php/webLCM.php");
 	require("remote_update.php");

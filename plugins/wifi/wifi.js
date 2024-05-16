@@ -1,5 +1,5 @@
-// Copyright (c) 2017, Laird
-// Contact: support@lairdconnect.com
+// Copyright (c) 2017, Ezurio
+// Contact: support@ezurio.com
 
 function wifiAUTORUN(retry){
 	clickStatusPage(0);

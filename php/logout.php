@@ -1,6 +1,6 @@
 <?php
-# Copyright (c) 2016, Laird
-# Contact: support@lairdconnect.com
+# Copyright (c) 2016, Ezurio
+# Contact: support@ezurio.com
 
 	if(!extension_loaded('lrd_php_sdk')){
 		syslog(LOG_WARNING, "ERROR: failed to load lrd_php_sdk");
